@@ -1,0 +1,9 @@
+#ifndef APPAPIINFO_HPP
+#define APPAPIINFO_HPP
+#include <QString>
+
+namespace tdlibQt {
+static const QString appid = QStringLiteral(\"$$APPID\");
+                                            static const QString apphash = QStringLiteral(\"$$APP_HASH\");
+} //namespace tdlibQt
+#endif // APPAPIINFO_HPP

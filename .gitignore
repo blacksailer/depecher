@@ -1,0 +1,7 @@
+json/*
+tdlibjson_wrapper/api_secret.pri
+json.tar
+*.mdj
+*.user
+*.cmd
+*.sh

@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/app.qml</file>
+        <file>qml/pages/AuthorizeDialog.qml</file>
+        <file>qml/cover/CoverPage.qml</file>
+        <file>qml/js/countries.js</file>
+        <file>qml/pages/DialogsPage.qml</file>
+        <file>qml/pages/items/CircleImage.qml</file>
+        <file>qml/pages/SettingsPage.qml</file>
+        <file>qml/pages/ContactsPage.qml</file>
+        <file>qml/pages/MessagingPage.qml</file>
+        <file>qml/pages/items/AttachComponent.qml</file>
+        <file>qml/pages/items/ShareComponent.qml</file>
+        <file>qml/pages/items/WritingItem.qml</file>
+        <file>qml/pages/components/ChatItem.qml</file>
+        <file>qml/pages/components/MenuComponent.qml</file>
+        <file>qml/pages/components/authorization/AreYouSureDialog.qml</file>
+        <file>qml/pages/components/authorization/SignInDialog.qml</file>
+    </qresource>
+</RCC>
