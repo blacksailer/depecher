@@ -95,7 +95,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                     return QVariant();
                 }
             }
-
+            if (messages[rowIndex]->content_->get_id() == messageUnsupported::ID)
+                return "Unsupported message type";
         }
         break;
     case ID: //int64

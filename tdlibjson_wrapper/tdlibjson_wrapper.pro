@@ -31,7 +31,9 @@ HEADERS += \
     tdlibQt/NotificationManager.hpp \
     tdlibQt/ListenScheduler.hpp \
     tdlibQt/include/AppApiInfo.hpp \
-    tdlibQt/include/AuthenticationHandler.hpp
+    tdlibQt/include/AuthenticationHandler.hpp \
+    tdlibQt/items/ProxyDAO.hpp \
+    tdlibQt/items/AboutMeDAO.hpp
 
 SOURCES += \
     tdlibQt/TdlibJsonWrapper.cpp \
@@ -44,7 +46,9 @@ SOURCES += \
     tdlibQt/FileWriter.cpp \
     tdlibQt/NotificationManager.cpp \
     tdlibQt/ListenScheduler.cpp \
-    tdlibQt/include/AuthenticationHandler.cpp
+    tdlibQt/include/AuthenticationHandler.cpp \
+    tdlibQt/items/ProxyDAO.cpp \
+    tdlibQt/items/AboutMeDAO.cpp
 
 info_file.input = $$PWD/tdlibQt/include/AppApiInfo.hpp.in
 info_file.output = $$PWD/tdlibQt/include/AppApiInfo.hpp

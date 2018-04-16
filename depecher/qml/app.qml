@@ -6,16 +6,6 @@ ApplicationWindow
 {
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
-    QtObject {
-        id: registrationStatus
-        readonly property int unknown: 0
-        readonly property int notRegistered: 1
-        readonly property int registered: 2
-        readonly property int error: 3
-    }
-    ChatsModel{
-        id:chatsModel
-    }
     Connections {
     target: c_telegramWrapper
     onAuthorizationStateChanged:{

@@ -50,6 +50,19 @@
         <source>Phone Number</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attention: If Telegram is blocked in your country, first setup
+proxy server in settings via PulleyMenu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -66,32 +79,16 @@
 <context>
     <name>DialogsPage</name>
     <message>
-        <source>Reset</source>
+        <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Menu</source>
+        <source>Reset dialogs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MenuComponent</name>
-    <message>
-        <source>New Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Secret Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Channel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Contacts</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Settings</source>
         <translation type="unfinished"></translation>
@@ -115,7 +112,55 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <source>LogOut</source>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Socks5 proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address. Set empty to disable proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

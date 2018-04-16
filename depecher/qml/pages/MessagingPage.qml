@@ -14,12 +14,20 @@ Page {
 
     MessagingModel{
         id:messagingModel
+        onChatTypeChanged: {
+            if(chatType === TdlibState.Channel) //Костыль!
+            {
+                writer.sendAreaHeight = 0
+                writer.bottomArea.visible = false
+            }
+        }
     }
     Component.onDestruction: {
         c_telegramWrapper.closeChat(messagingModel.peerId)
     }
     WritingItem{
         id:writer
+
         actionButton.onClicked:
         {
             messagingModel.sendTextMessage(textArea.text,0)
@@ -300,14 +308,10 @@ Page {
                                             font.pixelSize: Theme.fontSizeTiny
                                         }
                                     }
-
-
-
                                 }
                             }
                         }
                     }
-
                 }
             }
         }

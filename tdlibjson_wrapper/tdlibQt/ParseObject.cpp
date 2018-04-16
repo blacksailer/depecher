@@ -233,6 +233,16 @@ void ParseObject::parseResponse(const QByteArray &json)
         auto chatItem = doc.object();
         emit newChatReceived(chatItem);
     }
+    if (typeField == "user") {
+        auto userItem = doc.object();
+        if (userItem["@extra"].toString() == "getMe")
+            emit meReceived(userItem);
+    }
+    if (typeField == "proxyEmpty" || typeField == "proxySocks5") {
+        auto proxyItem = doc.object();
+        emit proxyReceived(proxyItem);
+    }
+
     if (typeField == "messages") {
         emit newMessages(doc.object());
 
@@ -344,14 +354,37 @@ QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
 QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObject
                                                                 &messageContentObject)
 {
+
+    auto typeMessageText = parseMessageText(QJsonObject());
+    typeMessageText->text_ = QSharedPointer<formattedText> (new formattedText);
+    typeMessageText->text_->text_ = "Unsupported";
+
     if (messageContentObject["@type"].toString() == "messagePhoto")
         return parseMessagePhoto(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageText")
         return parseMessageText(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
-//    if (messageContentObject["@type"].toString() == "messageAnimation")
-//        return parseMessageAnimation(messageContentObject);
+    if (messageContentObject["@type"].toString() == "messageAnimation") {
+        typeMessageText->text_->text_ = "Animation";
+        return typeMessageText;
+    }
+    if (messageContentObject["@type"].toString() == "messageAudio") {
+        typeMessageText->text_->text_ = "Audio";
+        return typeMessageText;
+    }
+    if (messageContentObject["@type"].toString() == "messageContact") {
+        typeMessageText->text_->text_ = "Contact";
+        return typeMessageText;
+    }
+    if (messageContentObject["@type"].toString() == "messageDocument") {
+        typeMessageText->text_->text_ = "Document";
+        return typeMessageText;
+    }
+    if (messageContentObject["@type"].toString() == "messageVideo") {
+        typeMessageText->text_->text_ = "Video";
+        return typeMessageText;
+    }
 
     /* messageAnimation
      * messageAudio
@@ -387,13 +420,13 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
      * messageVideoNote,
      * messageVoiceNote.
     */
-    return QSharedPointer<MessageContent>(new messageText);
+    return typeMessageText;
 }
 
 QSharedPointer<messageText> ParseObject::parseMessageText(const QJsonObject &messageTextObject)
 {
     if (messageTextObject["@type"].toString() != "messageText")
-        return QSharedPointer<messageText>(nullptr);
+        return QSharedPointer<messageText>(new messageText);
 
     auto resultMessageContent = QSharedPointer<messageText>(new messageText);
     resultMessageContent->web_page_  = QSharedPointer<webPage>(nullptr);

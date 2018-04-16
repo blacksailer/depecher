@@ -16,5 +16,6 @@
         <file>qml/pages/components/MenuComponent.qml</file>
         <file>qml/pages/components/authorization/AreYouSureDialog.qml</file>
         <file>qml/pages/components/authorization/SignInDialog.qml</file>
+        <file>qml/js/utils.js</file>
     </qresource>
 </RCC>

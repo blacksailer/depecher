@@ -1,12 +1,18 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import TelegramAuthentication 1.0
+import "../../../js/utils.js" as Utils
 Dialog {
     id:signInDialog
     property string fullPhoneNumber: ""
     property int phoneRegistrationStatus: registrationStatus.unknown
     property int authError: 0
-
+    Connections {
+        target: c_telegramWrapper
+        onConnectionStateChanged:{
+           var connectionStatus = Utils.setState(connectionState)
+        }
+    }
     onAcceptPendingChanged: {
         if (acceptPending) {
             pageStack.replaceAbove(null,Qt.resolvedUrl("../../DialogsPage.qml"));

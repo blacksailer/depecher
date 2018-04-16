@@ -8,8 +8,11 @@ import "components"
 
 Page {
     id: page
-
     allowedOrientations: Orientation.All
+    ChatsModel{
+        id:chatsModel
+    }
+
     property string titleHeader: "Depecher"
     Drawer{
         id:drawer
@@ -25,7 +28,7 @@ Page {
             }
             PullDownMenu {
                 MenuItem {
-                    text:qsTr("Reset")
+                    text:qsTr("Reset dialogs")
                     onClicked: chatsModel.reset()
                 }
                 MenuItem {
@@ -37,7 +40,7 @@ Page {
                 onClicked:{
                     c_telegramWrapper.openChat(id)
                     pageStack.push("MessagingPage.qml",{userName:title,chatId:id,chatType:type,
-                                   lastReadMessage:last_message_inbox_id,lastMessageId:last_message_id})
+                                       lastReadMessage:last_message_inbox_id,lastMessageId:last_message_id})
                 }
             }
         }
@@ -50,6 +53,5 @@ Page {
         background: MenuComponent{
             id:menuList
         }
-}
-
+    }
 }

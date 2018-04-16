@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import TelegramItems 1.0
+import "../items"
 
 SilicaListView{
     anchors.fill: parent
@@ -18,12 +20,17 @@ SilicaListView{
                 width: Theme.paddingSmall
                 height: 1
             }
-            Rectangle{
-                width:Theme.itemSizeMedium
-                height: width
-                radius: 90
-                color:"red"
+            CircleImage {
+                id: avatar
+                width:height
+                height: 135
+                source: aboutMe.photoPath ? "image://depecherDb/"+aboutMe.photoPath : ""
+                fallbackText: aboutMe.firstName.charAt(0)
+                fallbackItemVisible: aboutMe.photoPath ? false : true
             }
+        }
+        AboutMeDAO{
+        id:aboutMe
         }
         Row{
             width:parent.width
@@ -34,11 +41,11 @@ SilicaListView{
             Column{
                 width:parent.width-button.width
                 Label{
-                    text:c_selfItem.name
+                    text:aboutMe.fullName
                     color:Theme.highlightColor
                 }
                 Label{
-                    text:c_selfItem.peerId
+                    text:aboutMe.phoneNumber
                     color:Theme.secondaryHighlightColor
 
                 }
@@ -49,10 +56,21 @@ SilicaListView{
                                                                      ? Theme.highlightColor
                                                                      : Theme.primaryColor)
                 onClicked:{
-                    pageStack.push("MessagingPage.qml",{peerType:-1,chatId:c_selfItem.peerId})
+                    pageStack.push("../MessagingPage.qml",{userName:aboutMe.fullName,chatId:aboutMe.id,chatType:0,
+                                   lastReadMessage:0,lastMessageId:0})
                 }
             }
         }
+        Separator{
+        width:parent.width
+        color:Theme.primaryColor
+        }
+        Item{
+            //bottomPadding
+            width: parent.width
+            height: 1
+        }
+
     }
 
     delegate:BackgroundItem {
@@ -84,26 +102,26 @@ SilicaListView{
     }
     ListModel{
         id:menuModel
-        ListElement{
-            menuText:qsTr("New Group")
-            menuIcon: "icon-s-group-chat"
-            menuPage:""
-        }
-        ListElement{
-            menuText:qsTr("New Secret Chat")
-            menuIcon:"icon-s-secure"
-            menuPage:""
-        }
-        ListElement{
-            menuText:qsTr("New Channel")
-            menuIcon:"icon-m-media-radio"
-            menuPage:""
-        }
-        ListElement{
-            menuText:qsTr("Contacts")
-            menuIcon:"icon-m-media-artists"
-            menuPage:"ContactsPage.qml"
-        }
+//        ListElement{
+//            menuText:qsTr("New Group")
+//            menuIcon: "icon-s-group-chat"
+//            menuPage:""
+//        }
+//        ListElement{
+//            menuText:qsTr("New Secret Chat")
+//            menuIcon:"icon-s-secure"
+//            menuPage:""
+//        }
+//        ListElement{
+//            menuText:qsTr("New Channel")
+//            menuIcon:"icon-m-media-radio"
+//            menuPage:""
+//        }
+//        ListElement{
+//            menuText:qsTr("Contacts")
+//            menuIcon:"icon-m-media-artists"
+//            menuPage:"ContactsPage.qml"
+//        }
         ListElement{
             menuText:qsTr("Settings")
             menuIcon:"icon-s-setting"

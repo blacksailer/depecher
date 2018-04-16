@@ -119,6 +119,7 @@ signals:
 
     void updateNewMessage(const QVariantMap &msg);
     void updateFile(const QJsonObject &fileObject);
+    void meReceived(const QJsonObject &meObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
     void updateChatLastMessage(const QJsonObject &chatLastMessage);
     void updateChatReadInbox(const QJsonObject &chatReadInbox);
@@ -132,6 +133,8 @@ signals:
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);
     void updateTotalCount(int totalCount);
+    void proxyReceived(const QJsonObject &proxyObject);
+
 public slots:
     void parseResponse(const QByteArray &json);
 };

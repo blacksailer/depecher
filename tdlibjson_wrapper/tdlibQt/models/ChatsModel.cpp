@@ -8,6 +8,9 @@ namespace tdlibQt {
 ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     tdlibJson(TdlibJsonWrapper::instance())
 {
+    connect(this, &ChatsModel::totalUnreadCountChanged,
+            tdlibJson, &TdlibJsonWrapper::setTotalUnreadCount);
+
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
             this, &tdlibQt::ChatsModel::addChat);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
@@ -29,6 +32,7 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
             this, &tdlibQt::ChatsModel::updateMentionRead);
     connect(&chatActionTimer, &QTimer::timeout, this, &tdlibQt::ChatsModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
+
 }
 void ChatsModel::changeChatOrder(qint64 chatId, qint64 order)
 {
@@ -396,6 +400,7 @@ void ChatsModel::reset()
 {
     beginResetModel();
     chats.clear();
+    emit totalUnreadCountChanged(totalUnreadCount());
     fetchMore(QModelIndex());
     endResetModel();
 }

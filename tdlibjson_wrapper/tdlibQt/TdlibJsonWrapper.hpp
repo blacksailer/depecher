@@ -27,6 +27,8 @@ class TdlibJsonWrapper : public QObject
                setConnectionState
                NOTIFY
                connectionStateChanged)
+    Q_PROPERTY(int totalUnreadCount READ totalUnreadCount WRITE setTotalUnreadCount NOTIFY
+               totalUnreadCountChanged)
 
     QThread *listenThread;
     QThread *listenSchedulerThread;
@@ -39,6 +41,8 @@ class TdlibJsonWrapper : public QObject
     tdlibQt::Enums::AuthorizationState m_authorizationState;
     tdlibQt::Enums::ConnectionState m_connectionState;
     explicit TdlibJsonWrapper(QObject *parent = 0);
+
+    int m_totalUnreadCount;
 
 public:
     ParseObject *parseObject;
@@ -55,6 +59,11 @@ public:
 
     tdlibQt::Enums::ConnectionState connectionState() const;
 
+    int totalUnreadCount() const
+    {
+        return m_totalUnreadCount;
+    }
+
 signals:
 
     void isCredentialsEmptyChanged(bool isCredentialsEmpty);
@@ -62,6 +71,7 @@ signals:
     void newAuthorizationState(const QSharedPointer<AuthorizationState> authState);
     void connectionStateChanged(tdlibQt::Enums::ConnectionState connectionState);
     void newChatGenerated(const QJsonObject &chatObject);
+    void proxyReceived(const QJsonObject &proxyObject);
     void updateFile(const QJsonObject &fileObject);
 
     void newMessages(const QJsonObject &messageObject);
@@ -75,13 +85,20 @@ signals:
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
+    void meReceived(const QJsonObject &meObject);
+
+    void totalUnreadCountChanged(int totalUnreadCount);
 
 public slots:
     void openChat(const QString &chat_id);
     void closeChat(const QString &chat_id);
+    void getProxy();
+    void setProxy(const QString &type = "proxyEmpty", const QString &address = "",
+                  const int port = 0, const QString &username = "",
+                  const QString &password = "");
 
 
-    void setEncryptionKey(const QString &key = "abcd");
+    void setEncryptionKey(const QString &key = "");
     void setPhoneNumber(const QString &phone);
     void setCode(const QString &code); /*TODO check for numbers only*/
     void setCodeIfNewUser(const QString &code, const QString &firstName,
@@ -98,6 +115,15 @@ public slots:
     void setIsCredentialsEmpty(bool isCredentialsEmpty);
     void setAuthorizationState(tdlibQt::Enums::AuthorizationState &authorizationState);
     void setConnectionState(tdlibQt::Enums::ConnectionState &connState);
+    void getMe();
+    void setTotalUnreadCount(int totalUnreadCount)
+    {
+        if (m_totalUnreadCount == totalUnreadCount)
+            return;
+
+        m_totalUnreadCount = totalUnreadCount;
+        emit totalUnreadCountChanged(totalUnreadCount);
+    }
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

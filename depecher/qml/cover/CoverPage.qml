@@ -1,11 +1,12 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
+import "../js/utils.js" as Utils
 CoverBackground {
     Connections {
     target: c_telegramWrapper
     onConnectionStateChanged:{
-        status.text = status.setState(connectionState)
+        status.text = Utils.setState(connectionState)
     }
     }
     Column{
@@ -19,7 +20,7 @@ CoverBackground {
         Label {
             id: counter
             width:paintedWidth
-            text:chatsModel.totalUnreadCount
+            text:c_telegramWrapper.totalUnreadCount
             color: Theme.primaryColor
             font.pixelSize: Theme.fontSizeExtraLarge*3/2
         }
@@ -42,25 +43,8 @@ CoverBackground {
     Label {
     id:status
     color: Theme.highlightColor
-    text: setState(c_telegramWrapper.connectionState)
+    text: Utils.setState(c_telegramWrapper.connectionState)
     anchors.horizontalCenter: parent.horizontalCenter
-    function setState(state) {
-        switch(state){
-        case 0:
-            return "Waiting for network"
-                  case 1:
-                      return "Connecting"
-                  case 2:
-                      return "Connecting to proxy"
-                  case 3:
-                      return "Updating..."
-                  case 4:
-                      return "Ready"
-                default:
-                    return "Uknown"
-                  }
-
-    }
 }
 
     }

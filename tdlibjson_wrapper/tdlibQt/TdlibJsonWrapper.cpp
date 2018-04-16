@@ -14,7 +14,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     client = td_json_client_create();
     //SEG FAULT means that json has error input variable names
     QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
-                              "\"database_directory\":\"depecher\","
+                              "\"database_directory\":\"depecherDatabase\","
                               "\"api_id\":" + tdlibQt::appid + ","
                               "\"api_hash\":\"" + tdlibQt::apphash + "\","
                               "\"system_language_code\":\""
@@ -28,7 +28,6 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 //                              ",\"use_test_dc\":true"
                               "}}";
     td_json_client_send(client, tdlibParameters.toStdString().c_str());
-    qDebug() << tdlibParameters;
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
 
@@ -99,6 +98,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateChatMention);
     connect(parseObject, &ParseObject::updateMentionRead,
             this, &TdlibJsonWrapper::updateMentionRead);
+    connect(parseObject, &ParseObject::proxyReceived,
+            this, &TdlibJsonWrapper::proxyReceived);
+    connect(parseObject, &ParseObject::meReceived,
+            this, &TdlibJsonWrapper::meReceived);
     listenThread->start();
     parseThread->start();
 
@@ -134,6 +137,40 @@ void TdlibJsonWrapper::closeChat(const QString &chat_id)
     std::string closeChat = "{\"@type\":\"closeChat\","
                             "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
     td_json_client_send(client, closeChat.c_str());
+}
+
+void TdlibJsonWrapper::getMe()
+{
+    QString getMe = "{\"@type\":\"getMe\",\"@extra\":\"getMe\"}";
+    td_json_client_send(client, getMe.toStdString().c_str());
+}
+
+
+void TdlibJsonWrapper::getProxy()
+{
+    QString getProxy = "{\"@type\":\"getProxy\"}";
+    td_json_client_send(client, getProxy.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::setProxy(const QString &type, const QString &address, const int port,
+                                const QString &username, const QString &password)
+{
+    QString proxy = "{\"@type\":\"setProxy\","
+                    "\"proxy\":{\"@type\":\"proxyEmpty\"}"
+                    "}";
+    if (type == "proxySocks5")
+        proxy = "{\"@type\":\"setProxy\","
+                "\"proxy\":"
+                "{\"@type\":\"proxySocks5\","
+                "\"server\":\"" + address + "\","
+                "\"port\":" + QString::number(port) + ","
+                "\"username\":\"" + username + "\","
+                "\"password\":\"" + password + "\""
+                "}"
+                "}";
+
+    td_json_client_send(client, proxy.toStdString().c_str());
+
 }
 
 void TdlibJsonWrapper::setEncryptionKey(const QString &key)
