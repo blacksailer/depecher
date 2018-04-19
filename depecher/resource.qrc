@@ -17,5 +17,10 @@
         <file>qml/pages/components/authorization/AreYouSureDialog.qml</file>
         <file>qml/pages/components/authorization/SignInDialog.qml</file>
         <file>qml/js/utils.js</file>
+        <file>qml/pages/PicturePage.qml</file>
+        <file>qml/pages/AboutPage.qml</file>
+        <file>qml/assets/icons/git.svg</file>
+        <file>qml/assets/icons/paypal.svg</file>
+        <file>qml/assets/icons/rocket.svg</file>
     </qresource>
 </RCC>

@@ -35,6 +35,7 @@ Dialog {
             Label{
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
                 wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
                 text:qsTr("Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu")
                 color:Theme.secondaryColor

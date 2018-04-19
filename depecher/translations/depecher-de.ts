@@ -15,9 +15,32 @@
     </message>
 </context>
 <context>
+    <name>AboutPage</name>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AreYouSureDialog</name>
     <message>
         <source>Is phone correct?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To continue connection to Telegram is needed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -110,6 +133,13 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>PicturePage</name>
+    <message>
+        <source>Save to gallery</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -161,6 +191,10 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Address. Set empty to disable proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

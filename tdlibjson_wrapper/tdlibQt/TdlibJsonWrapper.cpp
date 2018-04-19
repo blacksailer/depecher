@@ -249,7 +249,6 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}" );
     }
-    qDebug() << getFile;
     td_json_client_send(client, getFile.toStdString().c_str());
 }
 
@@ -323,7 +322,6 @@ void TdlibJsonWrapper::setAuthorizationState(Enums::AuthorizationState &authoriz
         return;
 
     m_authorizationState = authorizationState;
-    qDebug() << "authorizationState is" << m_authorizationState;
     emit authorizationStateChanged(authorizationState);
 }
 

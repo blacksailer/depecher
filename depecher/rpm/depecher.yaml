@@ -5,14 +5,14 @@ Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
 Group: Applications/Communications
-URL: http://example.org/
+URL: https://github.com/blacksailer/depecher
 License: LICENSE
 # This must be generated before uploading a package to a remote build service.
 # Usually this line does not need to be modified.
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |
-  Short description of my Sailfish OS Application
+  Another Telegram client for Sailfish OS built on top of tdlib
 Configure: none
 # The qtc5 builder inserts macros to allow QtCreator to have fine
 # control over qmake/make execution
@@ -36,7 +36,7 @@ PkgConfigBR:
 # Runtime dependencies which are not automatically detected
 Requires:
   - sailfishsilica-qt5 >= 0.10.9 
-  - tdlibjson
+  - tdlibjson >= 1.2
 # All installed files
 Files:
   - '%{_bindir}'

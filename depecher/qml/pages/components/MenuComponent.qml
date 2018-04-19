@@ -98,7 +98,11 @@ SilicaListView{
                 anchors.verticalCenter:  iconSmall.verticalCenter
             }
         }
-        onClicked: pageStack.push(menuPage)
+        onClicked:{
+
+            pageStack.push(menuPage)
+
+        }
     }
     ListModel{
         id:menuModel

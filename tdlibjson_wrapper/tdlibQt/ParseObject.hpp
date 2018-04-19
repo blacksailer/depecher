@@ -111,6 +111,7 @@ public:
     static QSharedPointer<messageAnimation> parseMessageAnimation(const QJsonObject
                                                                   &messageAnimationObject);
     static QSharedPointer<animation> parseAnimation(const QJsonObject &animationObject);
+    static QSharedPointer<MessageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
 signals:
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
     void updateConnectionState(Enums::ConnectionState &connectionState);

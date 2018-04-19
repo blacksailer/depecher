@@ -8,6 +8,8 @@
 #include <QQuickView>
 #include <QQmlEngine>
 
+#include "FileWorker.hpp"
+
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/ChatsModel.hpp"
 #include "tdlibQt/models/MessagingModel.hpp"
@@ -28,6 +30,7 @@ int main(int argc, char *argv[])
     tdlib->setEncryptionKey();
     qmlRegisterUncreatableType<tdlibQt::Enums>("tdlibQtEnums", 1, 0, "TdlibState",
                                                "Error class uncreatable");
+    qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
     qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
     qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
     qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");

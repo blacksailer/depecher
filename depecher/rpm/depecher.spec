@@ -17,22 +17,21 @@ Version:    0.1
 Release:    1
 Group:      Applications/Communications
 License:    LICENSE
-URL:        http://example.org/
+URL:        https://github.com/blacksailer/depecher
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  depecher.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   tdlibjson
+Requires:   tdlibjson >= 1.2
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(tdlibjson)
-
 BuildRequires:  desktop-file-utils
 
 %description
-Short description of my Sailfish OS Application
+Another Telegram client for Sailfish OS built on top of tdlib
 
 
 %prep

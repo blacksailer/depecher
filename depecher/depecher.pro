@@ -38,7 +38,8 @@ CONFIG (debug, debug|release) {
 MOC_DIR = build/mocs
 
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/FileWorker.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -66,6 +67,8 @@ DISTFILES += \
     depecher.desktop \
     rpm/depecher.yaml \
     rpm/depecher.spec \
-    rpm/depecher.changes.in
+    rpm/depecher.changes.in \
+    ../README.md
 
-HEADERS +=
+HEADERS += \
+    src/FileWorker.hpp

@@ -8,7 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Apr 13 2014 Jack Tar <jack.tar@example.com> 0.0.1-1
-- Scrubbed the deck
-- Hoisted the sails
+* Tue Apr 17 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.1-1
+- View messages
+- View photos
+- View stickers
+- Receive notifications
 

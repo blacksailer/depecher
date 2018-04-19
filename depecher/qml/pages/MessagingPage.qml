@@ -15,7 +15,7 @@ Page {
     MessagingModel{
         id:messagingModel
         onChatTypeChanged: {
-            if(chatType === TdlibState.Channel) //Костыль!
+            if(chatType === TdlibState.Channel)
             {
                 writer.sendAreaHeight = 0
                 writer.bottomArea.visible = false
@@ -198,7 +198,10 @@ Page {
                                         width: messageListItem.width/4*3 < implicitWidth ? messageListItem.width/4*3 : implicitWidth
                                         fillMode: Image.PreserveAspectFit
                                         source:"image://depecherDb/"+content
-
+                                        MouseArea{
+                                            anchors.fill: parent
+                                            onClicked: pageStack.push("PicturePage.qml",{imagePath:content})
+                                        }
                                     }
                                     LinkedLabel {
                                         width: parent.width

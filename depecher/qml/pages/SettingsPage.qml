@@ -10,13 +10,16 @@ Page {
     property string connectionStatus: Utils.setState(c_telegramWrapper.connectionState)
     SilicaFlickable{
         anchors.fill: parent
+        contentHeight: column.height
+
         Notification {
             id:notificationProxy
-            summary: qsTr("Proxy is ready")
+            appName: "Depecher"
+            previewBody: qsTr("Proxy is ready")
         }
         Column{
-            width: parent.width - 2 *x
-            x: Theme.horizontalPageMargin
+            id:column
+            width: parent.width
             PageHeader{
                 title:qsTr("Settings")
             }
@@ -35,26 +38,30 @@ Page {
                 text: qsTr("Socks5 proxy")
             }
             Row{
-                width: parent.width
-            BusyIndicator{
-                id:busyIndicatorConnection
-            size: BusyIndicatorSize.Small
-            visible: isProxyConfiguring
-            running: isProxyConfiguring
+                width: parent.width -2 *x
+                x: Theme.horizontalPageMargin
+                
+                BusyIndicator{
+                    id:busyIndicatorConnection
+                    size: BusyIndicatorSize.Small
+                    visible: isProxyConfiguring
+                    running: isProxyConfiguring
+                }
+                Label{
+                    width: parent.width - busyIndicatorConnection.width
+                    wrapMode: Text.WordWrap
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryColor
+                    text: qsTr("Connection status: "+ root.connectionStatus)
+                }
             }
-            Label{
-                width: parent.width - busyIndicatorConnection.width
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.secondaryColor
-                text: qsTr("Connection status: "+ root.connectionStatus)
-            }
-        }
             ProxyDAO{
                 id:proxyDao
             }
             TextField {
                 id:addressField
+                x: Theme.horizontalPageMargin
+                
                 placeholderText: qsTr("Server address")
                 label: qsTr("Address. Set empty to disable proxy")
                 width: parent.width
@@ -64,6 +71,8 @@ Page {
             }
             TextField {
                 id:portField
+                x: Theme.horizontalPageMargin
+                
                 placeholderText: qsTr("Server port")
                 label: qsTr("port")
                 text:proxyDao.port
@@ -74,6 +83,9 @@ Page {
             }
             TextField {
                 id:usernameField
+                x: Theme.horizontalPageMargin
+                
+                
                 placeholderText: qsTr("Username")
                 label: qsTr("username")
                 text:proxyDao.username
@@ -83,13 +95,15 @@ Page {
             }
             PasswordField{
                 id:passwordField
+                x: Theme.horizontalPageMargin
+                
                 width: parent.width
                 text:proxyDao.password
                 placeholderText:qsTr("Password")
                 label:qsTr("Password")
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 EnterKey.onClicked:setupProxy()
-
+                
             }
             Button{
                 text:qsTr("Set proxy")
@@ -100,7 +114,22 @@ Page {
             }
             SectionHeader {
                 text: qsTr("General")
-                visible:isLogoutVisible
+            }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeMedium
+                Label{
+                    text:qsTr("About")
+                    x: Theme.horizontalPageMargin
+                    color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                onClicked: pageStack.push("AboutPage.qml")
+            }
+            Item{
+            //move button logout down
+                width: parent.width
+                height:Theme.itemSizeMedium
             }
             Button{
                 id:logoutButton

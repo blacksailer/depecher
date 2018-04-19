@@ -227,7 +227,6 @@ void MessagingModel::fetchMore(const QModelIndex &parent)
 bool MessagingModel::canFetchMore(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    qDebug() << "Can feych";
     return true;
 }
 
@@ -258,7 +257,6 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
     int totalCount = messagesObject["total_count"].toInt();
     QString extra = messagesObject["@extra"].toString("");
 
-    qDebug() << extra;
     QVariantList messagesIds;
 
     QJsonArray messagesArray = messagesObject["messages"].toArray();

@@ -1,6 +1,6 @@
 # Telegram app for Sailfish OS
 
-Depecher - telegram client for Sailfish os based on [tdlib library](https://github.com/blacksailer/td/tree/cmake)
+Depecher - telegram client for Sailfish OS based on [tdlib library](https://github.com/blacksailer/td/tree/cmake)
 
 
 Features:
@@ -11,6 +11,11 @@ Features:
 - Viewing stickers
 - Sending text messages
 
+#### Want to contribute?
+
+- Draw kickass icon!
+- Review code!
+- Create issue for missing features!
 
 To build this app required:
 

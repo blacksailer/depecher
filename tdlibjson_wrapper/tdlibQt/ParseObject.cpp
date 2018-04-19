@@ -311,10 +311,40 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
 
     resultMessage->content_ = parseMessageContent(messageObject["content"].toObject());
     resultMessage->reply_markup_ = QSharedPointer<ReplyMarkup>(nullptr);
-    resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>(nullptr);
+    resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>
+                                   (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
     resultMessage->sending_state_ = QSharedPointer<MessageSendingState>(nullptr);
 
     return resultMessage;
+}
+
+QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObject &forwardObject)
+{
+    if (forwardObject["@type"].toString() == "messageForwardedFromUser") {
+        auto resultMessageForwardedFromUser = QSharedPointer<messageForwardedFromUser>
+                                              (new messageForwardedFromUser);
+        resultMessageForwardedFromUser->date_ = forwardObject["date"].toInt();
+        resultMessageForwardedFromUser->forwarded_from_chat_id_ = getInt64(
+                                                                      forwardObject["forwarded_from_chat_id"]);
+        resultMessageForwardedFromUser->forwarded_from_message_id_ = getInt64(
+                                                                         forwardObject["forwarded_from_message_id"]);
+        resultMessageForwardedFromUser->sender_user_id_ = getInt64(forwardObject["sender_user_id"]);
+        return resultMessageForwardedFromUser;
+    }
+    if (forwardObject["@type"].toString() == "messageForwardedPost") {
+        auto resultMessageForwardedPost = QSharedPointer<messageForwardedPost>
+                                          (new messageForwardedPost);
+        resultMessageForwardedPost->author_signature_ =
+            forwardObject["author_signature"].toString().toStdString();
+        resultMessageForwardedPost->chat_id_ = getInt64(forwardObject["chat_id"]);
+        resultMessageForwardedPost->date_ = forwardObject["date"].toInt();
+        resultMessageForwardedPost->forwarded_from_chat_id_ = getInt64(
+                                                                  forwardObject["forwarded_from_chat_id"]);
+        resultMessageForwardedPost->forwarded_from_message_id_ = getInt64(
+                                                                     forwardObject["forwarded_from_message_id"]);
+        return resultMessageForwardedPost;
+
+    }
 }
 
 QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)

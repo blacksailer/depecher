@@ -5,7 +5,6 @@ import "../../../js/utils.js" as Utils
 Dialog {
     id:signInDialog
     property string fullPhoneNumber: ""
-    property int phoneRegistrationStatus: registrationStatus.unknown
     property int authError: 0
     Connections {
         target: c_telegramWrapper
