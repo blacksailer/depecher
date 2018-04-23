@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Apr 23 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.1-2
+- Avatar getMe issue fixed
+- In ChatsModel fixed nullptr in photos
+- Action typing color changed
+
 * Tue Apr 17 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.1-1
 - View messages
 - View photos

@@ -32,6 +32,7 @@ Page {
         {
             messagingModel.sendTextMessage(textArea.text,0)
             textArea.text = ""
+            textArea.forceActiveFocus(Qt.MouseFocusReason)
         }
         Column{
             width:page.width

@@ -190,7 +190,8 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
 
     case PHOTO:
         if (chats[rowIndex]->photo_.data() != nullptr) {
-            return QString::fromStdString(chats[rowIndex]->photo_->small_->local_->path_);
+            if (chats[rowIndex]->photo_->small_.data() != nullptr)
+                return QString::fromStdString(chats[rowIndex]->photo_->small_->local_->path_);
         }
         return QVariant();
     }
@@ -294,8 +295,9 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
 
     //getChatPhotos
     if (chatItem->photo_.data() != nullptr) {
-        if (!chatItem->photo_->small_->local_->is_downloading_completed_)
-            tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+        if (chatItem->photo_->small_.data() != nullptr)
+            if (!chatItem->photo_->small_->local_->is_downloading_completed_)
+                tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
     }
 }
 
@@ -305,14 +307,14 @@ void ChatsModel::updateChatPhoto(const QJsonObject &chatObject)
         auto fileObject = chatObject["file"].toObject();
         for (int i = 0; i < chats.size(); i++) {
             if (chats[i]->photo_.data() != nullptr) {
-
-                if (chats[i]->photo_->small_->id_ == fileObject["id"].toInt()) {
-                    chats[i]->photo_->small_ = ParseObject::parseFile(fileObject);
-                    QVector<int> photoRole;
-                    photoRole.append(PHOTO);
-                    emit dataChanged(this->createIndex(i, 0), this->createIndex(i, 0), photoRole);
-                    break;
-                }
+                if (chats[i]->photo_->small_.data() != nullptr)
+                    if (chats[i]->photo_->small_->id_ == fileObject["id"].toInt()) {
+                        chats[i]->photo_->small_ = ParseObject::parseFile(fileObject);
+                        QVector<int> photoRole;
+                        photoRole.append(PHOTO);
+                        emit dataChanged(this->createIndex(i, 0), this->createIndex(i, 0), photoRole);
+                        break;
+                    }
             }
         }
     }

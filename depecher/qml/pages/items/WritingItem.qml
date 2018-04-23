@@ -160,6 +160,7 @@ Drawer{
             anchors.right:messageArea.left
             anchors.bottomMargin: 25
             onClicked: attachDrawer.open=true
+            width:0
             visible: false
         }
         TextArea {

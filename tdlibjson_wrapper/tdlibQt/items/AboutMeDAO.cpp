@@ -54,13 +54,15 @@ void AboutMeDAO::setInfo(const QJsonObject &meObject)
     setLastName(meObject["last_name"].toString());
     setFullName(firstName() + " " + lastName());
     setPhoneNumber("+" + meObject["phone_number"].toString());
-    auto photoObject = meObject["profile_photo"].toObject();
-    auto smallPhoto = ParseObject::parseFile(photoObject["small"].toObject());
-    if (smallPhoto->local_->is_downloading_completed_)
-        setPhotoPath(QString::fromStdString(smallPhoto->local_->path_));
-    else {
-        m_profilePhotoId = smallPhoto->id_;
-        m_client->downloadFile(m_profilePhotoId);
+    if (meObject.contains("profile_photo")) {
+        auto photoObject = meObject["profile_photo"].toObject();
+        auto smallPhoto = ParseObject::parseFile(photoObject["small"].toObject());
+        if (smallPhoto->local_->is_downloading_completed_)
+            setPhotoPath(QString::fromStdString(smallPhoto->local_->path_));
+        else {
+            m_profilePhotoId = smallPhoto->id_;
+            m_client->downloadFile(m_profilePhotoId);
+        }
     }
 }
 

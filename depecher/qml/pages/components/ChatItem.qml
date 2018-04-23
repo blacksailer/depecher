@@ -111,7 +111,7 @@ ListItem {
                         font.pixelSize: Theme.fontSizeExtraSmall
                         maximumLineCount: 1
                         truncationMode:TruncationMode.Fade
-                        color: action  ? Theme.secondaryHighlightColor :
+                        color: action  ? Theme.secondaryColor :
                                          pressed ?
                                              Theme.highlightColor : Theme.primaryColor
 

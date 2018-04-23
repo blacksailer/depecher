@@ -5,6 +5,7 @@
 #include "NotificationManager.hpp"
 #include <QDateTime>
 #include <QGuiApplication>
+#include <QFile>
 
 namespace tdlibQt {
 ParseObject::ParseObject(QObject *parent) : QObject(parent)
@@ -21,8 +22,20 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     //    jsonWriter.writeJson(doc);
     QString typeField = doc.object()["@type"].toString();
-//    qDebug() << json;
-
+#ifdef QT_DEBUG
+    qDebug() << json;
+#endif
+#ifdef WITH_LOG
+    QFile logFile("/home/nemo/depecherDatabase/depecher.log");
+    if (logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        logFile.write(QString("["
+                              + QDateTime::currentDateTime().toString("MM.dd hh:mm:ss") +
+                              "] - " + json
+                              +
+                              "\n").toUtf8());
+        logFile.close();
+    }
+#endif
     //    switch (doc.object()["@type"].toString()) {
     //    case "updateBasicGroup":
     //    case "updateBasicGroupFullInfo":
@@ -281,7 +294,7 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
 {
 
     if (messageObject["@type"].toString() != "message")
-        return QSharedPointer<message>(nullptr);
+        return QSharedPointer<message>(new message);
 
 
     auto resultMessage =  QSharedPointer<message>(new message);
@@ -459,7 +472,7 @@ QSharedPointer<messageText> ParseObject::parseMessageText(const QJsonObject &mes
         return QSharedPointer<messageText>(new messageText);
 
     auto resultMessageContent = QSharedPointer<messageText>(new messageText);
-    resultMessageContent->web_page_  = QSharedPointer<webPage>(nullptr);
+    resultMessageContent->web_page_  = QSharedPointer<webPage>(new webPage);
     resultMessageContent->text_  = parseFormattedTextContent(messageTextObject["text"].toObject());
     return resultMessageContent;
 }
@@ -490,7 +503,7 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
     resultAnimation->width_ = animationObject["width"].toInt();
     resultAnimation->thumbnail_ = parsePhotoSize(animationObject["thumbnail"].toObject());
 
-
+    return resultAnimation;
 }
 QSharedPointer<messageSticker> ParseObject::parseMessageSticker(const QJsonObject
                                                                 &messageStikerObject)
@@ -551,7 +564,7 @@ QSharedPointer<notificationSettings> ParseObject::parseNotificationSettings(
 QSharedPointer<messagePhoto> ParseObject::parseMessagePhoto(const QJsonObject &messagePhotoObject)
 {
     if (messagePhotoObject["@type"].toString() != "messagePhoto")
-        return QSharedPointer<messagePhoto>(nullptr);
+        return QSharedPointer<messagePhoto>(new messagePhoto);
 
     auto resultMessagePhoto = QSharedPointer <messagePhoto>(new messagePhoto);
     resultMessagePhoto->photo_ = parsePhoto(messagePhotoObject["photo"].toObject());
@@ -565,7 +578,7 @@ QSharedPointer<photo> ParseObject::parsePhoto(const QJsonObject &photoObject)
 
     //HAS ADDITIONAL TYPE field
     if (photoObject["@type"].toString() != "photo")
-        return QSharedPointer<photo>(nullptr);
+        return QSharedPointer<photo>(new photo);
 
     auto resultMessagePhoto = QSharedPointer <photo>(new photo);
     resultMessagePhoto->id_ = getInt64(photoObject["id"]);
@@ -578,7 +591,7 @@ QSharedPointer<photo> ParseObject::parsePhoto(const QJsonObject &photoObject)
 QSharedPointer<photoSize> ParseObject::parsePhotoSize(const QJsonObject &photoSizeObject)
 {
     if (photoSizeObject["@type"].toString() != "photoSize")
-        return QSharedPointer<photoSize>(nullptr);
+        return QSharedPointer<photoSize>(new photoSize);
     auto resultPhotoSize = QSharedPointer <photoSize>(new photoSize);
     resultPhotoSize->width_ = photoSizeObject["width"].toInt();
     resultPhotoSize->height_ = photoSizeObject["height"].toInt();
@@ -590,7 +603,7 @@ QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJson
                                                                      &formattedTextObject)
 {
     if (formattedTextObject["@type"].toString() != "formattedText")
-        return QSharedPointer<formattedText>(nullptr);
+        return QSharedPointer<formattedText>(new formattedText);
 
     auto resultFormattedText  = QSharedPointer<formattedText>(new formattedText);
     resultFormattedText->text_ = formattedTextObject["text"].toString().toStdString();
@@ -601,7 +614,7 @@ QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJson
 QSharedPointer<chatPhoto> ParseObject::parseChatPhoto(const QJsonObject &chatPhotoObject)
 {
     if (chatPhotoObject["@type"].toString() != "chatPhoto")
-        return QSharedPointer<chatPhoto>(nullptr);
+        return QSharedPointer<chatPhoto>(new chatPhoto);
 
     auto resultChatPhoto = QSharedPointer<chatPhoto>(new chatPhoto);
     resultChatPhoto->small_ = parseFile(chatPhotoObject["small"].toObject());
@@ -612,7 +625,7 @@ QSharedPointer<chatPhoto> ParseObject::parseChatPhoto(const QJsonObject &chatPho
 QSharedPointer<file> ParseObject::parseFile(const QJsonObject &fileObject)
 {
     if (fileObject["@type"].toString() != "file")
-        return QSharedPointer<file>(nullptr);
+        return QSharedPointer<file>(new file);
 
     QSharedPointer<file> resultFile;
     auto smallPhotoObject = fileObject;

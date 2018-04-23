@@ -14,9 +14,9 @@ Name:       depecher
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    My Sailfish OS Application
 Version:    0.1
-Release:    1
+Release:    2
 Group:      Applications/Communications
-License:    LICENSE
+License:    LGPL 2.1
 URL:        https://github.com/blacksailer/depecher
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  depecher.yaml
