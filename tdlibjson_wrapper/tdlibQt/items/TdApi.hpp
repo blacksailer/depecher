@@ -276,6 +276,12 @@ class ChatType;
 
 class chats;
 
+class CheckChatUsernameResult;
+
+class connectedWebsite;
+
+class connectedWebsites;
+
 class ConnectionState;
 
 class contact;
@@ -522,6 +528,8 @@ class webPage;
 
 class webPageInstantView;
 
+class Object;
+
 class Object: public TlInterface
 {
 public:
@@ -535,14 +543,14 @@ public:
 class accountTtl final : public Object
 {
 public:
-    int32_t days_;
+    std::int32_t days_;
 
     accountTtl();
 
-    explicit accountTtl(int32_t days_);
+    explicit accountTtl(std::int32_t days_);
 
-    static const int32_t ID = 1324495492;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1324495492;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -553,9 +561,9 @@ public:
 class animation final : public Object
 {
 public:
-    int32_t duration_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t duration_;
+    std::int32_t width_;
+    std::int32_t height_;
     std::string file_name_;
     std::string mime_type_;
     object_ptr<photoSize> thumbnail_;
@@ -563,12 +571,12 @@ public:
 
     animation();
 
-    animation(int32_t duration_, int32_t width_, int32_t height_,
+    animation(std::int32_t duration_, std::int32_t width_, std::int32_t height_,
               std::string const &file_name_, std::string const &mime_type_, object_ptr<photoSize> &&thumbnail_,
               object_ptr<file> &&animation_);
 
-    static const int32_t ID = -1723168340;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1723168340;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -585,8 +593,8 @@ public:
 
     explicit animations(std::vector<object_ptr<animation>> &&animations_);
 
-    static const int32_t ID = 344216945;
-    int32_t get_id() const final
+    static const std::int32_t ID = 344216945;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -597,7 +605,7 @@ public:
 class audio final : public Object
 {
 public:
-    int32_t duration_;
+    std::int32_t duration_;
     std::string title_;
     std::string performer_;
     std::string file_name_;
@@ -607,12 +615,12 @@ public:
 
     audio();
 
-    audio(int32_t duration_, std::string const &title_, std::string const &performer_,
+    audio(std::int32_t duration_, std::string const &title_, std::string const &performer_,
           std::string const &file_name_, std::string const &mime_type_,
           object_ptr<photoSize> &&album_cover_thumbnail_, object_ptr<file> &&audio_);
 
-    static const int32_t ID = 383148432;
-    int32_t get_id() const final
+    static const std::int32_t ID = 383148432;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -623,17 +631,18 @@ public:
 class authenticationCodeInfo final : public Object
 {
 public:
+    std::string phone_number_;
     object_ptr<AuthenticationCodeType> type_;
     object_ptr<AuthenticationCodeType> next_type_;
-    int32_t timeout_;
+    std::int32_t timeout_;
 
     authenticationCodeInfo();
 
-    authenticationCodeInfo(object_ptr<AuthenticationCodeType> &&type_,
-                           object_ptr<AuthenticationCodeType> &&next_type_, int32_t timeout_);
+    authenticationCodeInfo(std::string const &phone_number_, object_ptr<AuthenticationCodeType> &&type_,
+                           object_ptr<AuthenticationCodeType> &&next_type_, std::int32_t timeout_);
 
-    static const int32_t ID = 1083930962;
-    int32_t get_id() const final
+    static const std::int32_t ID = -860345416;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -649,14 +658,14 @@ public:
 class authenticationCodeTypeTelegramMessage final : public AuthenticationCodeType
 {
 public:
-    int32_t length_;
+    std::int32_t length_;
 
     authenticationCodeTypeTelegramMessage();
 
-    explicit authenticationCodeTypeTelegramMessage(int32_t length_);
+    explicit authenticationCodeTypeTelegramMessage(std::int32_t length_);
 
-    static const int32_t ID = 2079628074;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2079628074;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -667,14 +676,14 @@ public:
 class authenticationCodeTypeSms final : public AuthenticationCodeType
 {
 public:
-    int32_t length_;
+    std::int32_t length_;
 
     authenticationCodeTypeSms();
 
-    explicit authenticationCodeTypeSms(int32_t length_);
+    explicit authenticationCodeTypeSms(std::int32_t length_);
 
-    static const int32_t ID = 962650760;
-    int32_t get_id() const final
+    static const std::int32_t ID = 962650760;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -685,14 +694,14 @@ public:
 class authenticationCodeTypeCall final : public AuthenticationCodeType
 {
 public:
-    int32_t length_;
+    std::int32_t length_;
 
     authenticationCodeTypeCall();
 
-    explicit authenticationCodeTypeCall(int32_t length_);
+    explicit authenticationCodeTypeCall(std::int32_t length_);
 
-    static const int32_t ID = 1636265063;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1636265063;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -709,8 +718,8 @@ public:
 
     explicit authenticationCodeTypeFlashCall(std::string const &pattern_);
 
-    static const int32_t ID = 1395882402;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1395882402;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -729,8 +738,8 @@ public:
 
     authorizationStateWaitTdlibParameters();
 
-    static const int32_t ID = 904720988;
-    int32_t get_id() const final
+    static const std::int32_t ID = 904720988;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -747,8 +756,8 @@ public:
 
     explicit authorizationStateWaitEncryptionKey(bool is_encrypted_);
 
-    static const int32_t ID = 612103496;
-    int32_t get_id() const final
+    static const std::int32_t ID = 612103496;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -762,8 +771,8 @@ public:
 
     authorizationStateWaitPhoneNumber();
 
-    static const int32_t ID = 306402531;
-    int32_t get_id() const final
+    static const std::int32_t ID = 306402531;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -781,8 +790,8 @@ public:
 
     authorizationStateWaitCode(bool is_registered_, object_ptr<authenticationCodeInfo> &&code_info_);
 
-    static const int32_t ID = -483510157;
-    int32_t get_id() const final
+    static const std::int32_t ID = -483510157;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -802,8 +811,8 @@ public:
     authorizationStateWaitPassword(std::string const &password_hint_, bool has_recovery_email_address_,
                                    std::string const &recovery_email_address_pattern_);
 
-    static const int32_t ID = 187548796;
-    int32_t get_id() const final
+    static const std::int32_t ID = 187548796;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -817,8 +826,8 @@ public:
 
     authorizationStateReady();
 
-    static const int32_t ID = -1834871737;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1834871737;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -832,8 +841,8 @@ public:
 
     authorizationStateLoggingOut();
 
-    static const int32_t ID = 154449270;
-    int32_t get_id() const final
+    static const std::int32_t ID = 154449270;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -847,8 +856,8 @@ public:
 
     authorizationStateClosing();
 
-    static const int32_t ID = 445855311;
-    int32_t get_id() const final
+    static const std::int32_t ID = 445855311;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -862,8 +871,8 @@ public:
 
     authorizationStateClosed();
 
-    static const int32_t ID = 1526047584;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1526047584;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -874,20 +883,20 @@ public:
 class basicGroup final : public Object
 {
 public:
-    int32_t id_;
-    int32_t member_count_;
+    std::int32_t id_;
+    std::int32_t member_count_;
     object_ptr<ChatMemberStatus> status_;
     bool everyone_is_administrator_;
     bool is_active_;
-    int32_t upgraded_to_supergroup_id_;
+    std::int32_t upgraded_to_supergroup_id_;
 
     basicGroup();
 
-    basicGroup(int32_t id_, int32_t member_count_, object_ptr<ChatMemberStatus> &&status_,
-               bool everyone_is_administrator_, bool is_active_, int32_t upgraded_to_supergroup_id_);
+    basicGroup(std::int32_t id_, std::int32_t member_count_, object_ptr<ChatMemberStatus> &&status_,
+               bool everyone_is_administrator_, bool is_active_, std::int32_t upgraded_to_supergroup_id_);
 
-    static const int32_t ID = 1572712718;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1572712718;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -898,17 +907,17 @@ public:
 class basicGroupFullInfo final : public Object
 {
 public:
-    int32_t creator_user_id_;
+    std::int32_t creator_user_id_;
     std::vector<object_ptr<chatMember>> members_;
     std::string invite_link_;
 
     basicGroupFullInfo();
 
-    basicGroupFullInfo(int32_t creator_user_id_, std::vector<object_ptr<chatMember>> &&members_,
+    basicGroupFullInfo(std::int32_t creator_user_id_, std::vector<object_ptr<chatMember>> &&members_,
                        std::string const &invite_link_);
 
-    static const int32_t ID = 952266076;
-    int32_t get_id() const final
+    static const std::int32_t ID = 952266076;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -926,8 +935,8 @@ public:
 
     botCommand(std::string const &command_, std::string const &description_);
 
-    static const int32_t ID = -1032140601;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1032140601;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -945,8 +954,8 @@ public:
 
     botInfo(std::string const &description_, std::vector<object_ptr<botCommand>> &&commands_);
 
-    static const int32_t ID = 1296528907;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1296528907;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -957,17 +966,17 @@ public:
 class call final : public Object
 {
 public:
-    int32_t id_;
-    int32_t user_id_;
+    std::int32_t id_;
+    std::int32_t user_id_;
     bool is_outgoing_;
     object_ptr<CallState> state_;
 
     call();
 
-    call(int32_t id_, int32_t user_id_, bool is_outgoing_, object_ptr<CallState> &&state_);
+    call(std::int32_t id_, std::int32_t user_id_, bool is_outgoing_, object_ptr<CallState> &&state_);
 
-    static const int32_t ID = -1837599107;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1837599107;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -978,19 +987,19 @@ public:
 class callConnection final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     std::string ip_;
     std::string ipv6_;
-    int32_t port_;
+    std::int32_t port_;
     std::string peer_tag_;
 
     callConnection();
 
-    callConnection(int64_t id_, std::string const &ip_, std::string const &ipv6_,
-                   int32_t port_, std::string const &peer_tag_);
+    callConnection(std::int64_t id_, std::string const &ip_, std::string const &ipv6_,
+                   std::int32_t port_, std::string const &peer_tag_);
 
-    static const int32_t ID = 1318542714;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1318542714;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1009,8 +1018,8 @@ public:
 
     callDiscardReasonEmpty();
 
-    static const int32_t ID = -1258917949;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1258917949;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1024,8 +1033,8 @@ public:
 
     callDiscardReasonMissed();
 
-    static const int32_t ID = 1680358012;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1680358012;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1039,8 +1048,8 @@ public:
 
     callDiscardReasonDeclined();
 
-    static const int32_t ID = -1729926094;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1729926094;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1054,8 +1063,8 @@ public:
 
     callDiscardReasonDisconnected();
 
-    static const int32_t ID = -1342872670;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1342872670;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1069,8 +1078,8 @@ public:
 
     callDiscardReasonHungUp();
 
-    static const int32_t ID = 438216166;
-    int32_t get_id() const final
+    static const std::int32_t ID = 438216166;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1081,14 +1090,14 @@ public:
 class callId final : public Object
 {
 public:
-    int32_t id_;
+    std::int32_t id_;
 
     callId();
 
-    explicit callId(int32_t id_);
+    explicit callId(std::int32_t id_);
 
-    static const int32_t ID = 65717769;
-    int32_t get_id() const final
+    static const std::int32_t ID = 65717769;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1101,15 +1110,15 @@ class callProtocol final : public Object
 public:
     bool udp_p2p_;
     bool udp_reflector_;
-    int32_t min_layer_;
-    int32_t max_layer_;
+    std::int32_t min_layer_;
+    std::int32_t max_layer_;
 
     callProtocol();
 
-    callProtocol(bool udp_p2p_, bool udp_reflector_, int32_t min_layer_, int32_t max_layer_);
+    callProtocol(bool udp_p2p_, bool udp_reflector_, std::int32_t min_layer_, std::int32_t max_layer_);
 
-    static const int32_t ID = -1042830667;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1042830667;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1132,8 +1141,8 @@ public:
 
     callStatePending(bool is_created_, bool is_received_);
 
-    static const int32_t ID = 1073048620;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1073048620;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1147,8 +1156,8 @@ public:
 
     callStateExchangingKeys();
 
-    static const int32_t ID = -1848149403;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1848149403;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1171,8 +1180,8 @@ public:
                    std::vector<object_ptr<callConnection>> &&connections_, std::string const &config_,
                    std::string const &encryption_key_, std::vector<std::string> &&emojis_);
 
-    static const int32_t ID = 1518705438;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1518705438;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1186,8 +1195,8 @@ public:
 
     callStateHangingUp();
 
-    static const int32_t ID = -2133790038;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2133790038;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1207,8 +1216,8 @@ public:
     callStateDiscarded(object_ptr<CallDiscardReason> &&reason_, bool need_rating_,
                        bool need_debug_information_);
 
-    static const int32_t ID = -190853167;
-    int32_t get_id() const final
+    static const std::int32_t ID = -190853167;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1225,8 +1234,8 @@ public:
 
     explicit callStateError(object_ptr<error> &&error_);
 
-    static const int32_t ID = -975215467;
-    int32_t get_id() const final
+    static const std::int32_t ID = -975215467;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1245,8 +1254,8 @@ public:
 
     callbackQueryAnswer(std::string const &text_, bool show_alert_, std::string const &url_);
 
-    static const int32_t ID = 360867933;
-    int32_t get_id() const final
+    static const std::int32_t ID = 360867933;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1268,8 +1277,8 @@ public:
 
     explicit callbackQueryPayloadData(std::string const &data_);
 
-    static const int32_t ID = -1977729946;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1977729946;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1286,8 +1295,8 @@ public:
 
     explicit callbackQueryPayloadGame(std::string const &game_short_name_);
 
-    static const int32_t ID = 1303571512;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1303571512;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1298,33 +1307,35 @@ public:
 class chat final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     object_ptr<ChatType> type_;
     std::string title_;
     object_ptr<chatPhoto> photo_;
     object_ptr<message> last_message_;
-    int64_t order_;
+    std::int64_t order_;
     bool is_pinned_;
-    int32_t unread_count_;
-    int64_t last_read_inbox_message_id_;
-    int64_t last_read_outbox_message_id_;
-    int32_t unread_mention_count_;
+    bool can_be_reported_;
+    std::int32_t unread_count_;
+    std::int64_t last_read_inbox_message_id_;
+    std::int64_t last_read_outbox_message_id_;
+    std::int32_t unread_mention_count_;
     object_ptr<notificationSettings> notification_settings_;
-    int64_t reply_markup_message_id_;
+    std::int64_t reply_markup_message_id_;
     object_ptr<draftMessage> draft_message_;
     std::string client_data_;
 
     chat();
 
-    chat(int64_t id_, object_ptr<ChatType> &&type_, std::string const &title_,
-         object_ptr<chatPhoto> &&photo_, object_ptr<message> &&last_message_, int64_t order_,
-         bool is_pinned_, int32_t unread_count_, int64_t last_read_inbox_message_id_,
-         int64_t last_read_outbox_message_id_, int32_t unread_mention_count_,
-         object_ptr<notificationSettings> &&notification_settings_, int64_t reply_markup_message_id_,
-         object_ptr<draftMessage> &&draft_message_, std::string const &client_data_);
+    chat(std::int64_t id_, object_ptr<ChatType> &&type_, std::string const &title_,
+         object_ptr<chatPhoto> &&photo_, object_ptr<message> &&last_message_, std::int64_t order_,
+         bool is_pinned_, bool can_be_reported_, std::int32_t unread_count_,
+         std::int64_t last_read_inbox_message_id_, std::int64_t last_read_outbox_message_id_,
+         std::int32_t unread_mention_count_, object_ptr<notificationSettings> &&notification_settings_,
+         std::int64_t reply_markup_message_id_, object_ptr<draftMessage> &&draft_message_,
+         std::string const &client_data_);
 
-    static const int32_t ID = -1350155540;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1599984597;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1343,8 +1354,8 @@ public:
 
     chatActionTyping();
 
-    static const int32_t ID = 380122167;
-    int32_t get_id() const final
+    static const std::int32_t ID = 380122167;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1358,8 +1369,8 @@ public:
 
     chatActionRecordingVideo();
 
-    static const int32_t ID = 216553362;
-    int32_t get_id() const final
+    static const std::int32_t ID = 216553362;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1370,14 +1381,14 @@ public:
 class chatActionUploadingVideo final : public ChatAction
 {
 public:
-    int32_t progress_;
+    std::int32_t progress_;
 
     chatActionUploadingVideo();
 
-    explicit chatActionUploadingVideo(int32_t progress_);
+    explicit chatActionUploadingVideo(std::int32_t progress_);
 
-    static const int32_t ID = 1234185270;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1234185270;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1391,8 +1402,8 @@ public:
 
     chatActionRecordingVoiceNote();
 
-    static const int32_t ID = -808850058;
-    int32_t get_id() const final
+    static const std::int32_t ID = -808850058;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1403,14 +1414,14 @@ public:
 class chatActionUploadingVoiceNote final : public ChatAction
 {
 public:
-    int32_t progress_;
+    std::int32_t progress_;
 
     chatActionUploadingVoiceNote();
 
-    explicit chatActionUploadingVoiceNote(int32_t progress_);
+    explicit chatActionUploadingVoiceNote(std::int32_t progress_);
 
-    static const int32_t ID = -613643666;
-    int32_t get_id() const final
+    static const std::int32_t ID = -613643666;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1421,14 +1432,14 @@ public:
 class chatActionUploadingPhoto final : public ChatAction
 {
 public:
-    int32_t progress_;
+    std::int32_t progress_;
 
     chatActionUploadingPhoto();
 
-    explicit chatActionUploadingPhoto(int32_t progress_);
+    explicit chatActionUploadingPhoto(std::int32_t progress_);
 
-    static const int32_t ID = 654240583;
-    int32_t get_id() const final
+    static const std::int32_t ID = 654240583;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1439,14 +1450,14 @@ public:
 class chatActionUploadingDocument final : public ChatAction
 {
 public:
-    int32_t progress_;
+    std::int32_t progress_;
 
     chatActionUploadingDocument();
 
-    explicit chatActionUploadingDocument(int32_t progress_);
+    explicit chatActionUploadingDocument(std::int32_t progress_);
 
-    static const int32_t ID = 167884362;
-    int32_t get_id() const final
+    static const std::int32_t ID = 167884362;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1460,8 +1471,8 @@ public:
 
     chatActionChoosingLocation();
 
-    static const int32_t ID = -2017893596;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2017893596;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1475,8 +1486,8 @@ public:
 
     chatActionChoosingContact();
 
-    static const int32_t ID = -1222507496;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1222507496;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1490,8 +1501,8 @@ public:
 
     chatActionStartPlayingGame();
 
-    static const int32_t ID = -865884164;
-    int32_t get_id() const final
+    static const std::int32_t ID = -865884164;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1505,8 +1516,8 @@ public:
 
     chatActionRecordingVideoNote();
 
-    static const int32_t ID = 16523393;
-    int32_t get_id() const final
+    static const std::int32_t ID = 16523393;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1517,14 +1528,14 @@ public:
 class chatActionUploadingVideoNote final : public ChatAction
 {
 public:
-    int32_t progress_;
+    std::int32_t progress_;
 
     chatActionUploadingVideoNote();
 
-    explicit chatActionUploadingVideoNote(int32_t progress_);
+    explicit chatActionUploadingVideoNote(std::int32_t progress_);
 
-    static const int32_t ID = 1172364918;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1172364918;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1538,8 +1549,8 @@ public:
 
     chatActionCancel();
 
-    static const int32_t ID = 1160523958;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1160523958;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1550,18 +1561,18 @@ public:
 class chatEvent final : public Object
 {
 public:
-    int64_t id_;
-    int32_t date_;
-    int32_t user_id_;
+    std::int64_t id_;
+    std::int32_t date_;
+    std::int32_t user_id_;
     object_ptr<ChatEventAction> action_;
 
     chatEvent();
 
-    chatEvent(int64_t id_, int32_t date_, int32_t user_id_,
+    chatEvent(std::int64_t id_, std::int32_t date_, std::int32_t user_id_,
               object_ptr<ChatEventAction> &&action_);
 
-    static const int32_t ID = -609912404;
-    int32_t get_id() const final
+    static const std::int32_t ID = -609912404;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1584,8 +1595,8 @@ public:
 
     chatEventMessageEdited(object_ptr<message> &&old_message_, object_ptr<message> &&new_message_);
 
-    static const int32_t ID = -430967304;
-    int32_t get_id() const final
+    static const std::int32_t ID = -430967304;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1602,8 +1613,8 @@ public:
 
     explicit chatEventMessageDeleted(object_ptr<message> &&message_);
 
-    static const int32_t ID = -892974601;
-    int32_t get_id() const final
+    static const std::int32_t ID = -892974601;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1620,8 +1631,8 @@ public:
 
     explicit chatEventMessagePinned(object_ptr<message> &&message_);
 
-    static const int32_t ID = 438742298;
-    int32_t get_id() const final
+    static const std::int32_t ID = 438742298;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1635,8 +1646,8 @@ public:
 
     chatEventMessageUnpinned();
 
-    static const int32_t ID = 2002594849;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2002594849;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1650,8 +1661,8 @@ public:
 
     chatEventMemberJoined();
 
-    static const int32_t ID = -235468508;
-    int32_t get_id() const final
+    static const std::int32_t ID = -235468508;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1665,8 +1676,8 @@ public:
 
     chatEventMemberLeft();
 
-    static const int32_t ID = -948420593;
-    int32_t get_id() const final
+    static const std::int32_t ID = -948420593;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1677,15 +1688,15 @@ public:
 class chatEventMemberInvited final : public ChatEventAction
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<ChatMemberStatus> status_;
 
     chatEventMemberInvited();
 
-    chatEventMemberInvited(int32_t user_id_, object_ptr<ChatMemberStatus> &&status_);
+    chatEventMemberInvited(std::int32_t user_id_, object_ptr<ChatMemberStatus> &&status_);
 
-    static const int32_t ID = -2093688706;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2093688706;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1696,17 +1707,17 @@ public:
 class chatEventMemberPromoted final : public ChatEventAction
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<ChatMemberStatus> old_status_;
     object_ptr<ChatMemberStatus> new_status_;
 
     chatEventMemberPromoted();
 
-    chatEventMemberPromoted(int32_t user_id_, object_ptr<ChatMemberStatus> &&old_status_,
+    chatEventMemberPromoted(std::int32_t user_id_, object_ptr<ChatMemberStatus> &&old_status_,
                             object_ptr<ChatMemberStatus> &&new_status_);
 
-    static const int32_t ID = 1887176186;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1887176186;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1717,17 +1728,17 @@ public:
 class chatEventMemberRestricted final : public ChatEventAction
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<ChatMemberStatus> old_status_;
     object_ptr<ChatMemberStatus> new_status_;
 
     chatEventMemberRestricted();
 
-    chatEventMemberRestricted(int32_t user_id_, object_ptr<ChatMemberStatus> &&old_status_,
+    chatEventMemberRestricted(std::int32_t user_id_, object_ptr<ChatMemberStatus> &&old_status_,
                               object_ptr<ChatMemberStatus> &&new_status_);
 
-    static const int32_t ID = 584946294;
-    int32_t get_id() const final
+    static const std::int32_t ID = 584946294;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1745,8 +1756,8 @@ public:
 
     chatEventTitleChanged(std::string const &old_title_, std::string const &new_title_);
 
-    static const int32_t ID = 1134103250;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1134103250;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1765,8 +1776,8 @@ public:
     chatEventDescriptionChanged(std::string const &old_description_,
                                 std::string const &new_description_);
 
-    static const int32_t ID = 39112478;
-    int32_t get_id() const final
+    static const std::int32_t ID = 39112478;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1784,8 +1795,8 @@ public:
 
     chatEventUsernameChanged(std::string const &old_username_, std::string const &new_username_);
 
-    static const int32_t ID = 1728558443;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1728558443;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1803,8 +1814,8 @@ public:
 
     chatEventPhotoChanged(object_ptr<chatPhoto> &&old_photo_, object_ptr<chatPhoto> &&new_photo_);
 
-    static const int32_t ID = -811572541;
-    int32_t get_id() const final
+    static const std::int32_t ID = -811572541;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1821,8 +1832,8 @@ public:
 
     explicit chatEventInvitesToggled(bool anyone_can_invite_);
 
-    static const int32_t ID = 568706937;
-    int32_t get_id() const final
+    static const std::int32_t ID = 568706937;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1839,8 +1850,8 @@ public:
 
     explicit chatEventSignMessagesToggled(bool sign_messages_);
 
-    static const int32_t ID = -1313265634;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1313265634;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1851,15 +1862,15 @@ public:
 class chatEventStickerSetChanged final : public ChatEventAction
 {
 public:
-    int64_t old_sticker_set_id_;
-    int64_t new_sticker_set_id_;
+    std::int64_t old_sticker_set_id_;
+    std::int64_t new_sticker_set_id_;
 
     chatEventStickerSetChanged();
 
-    chatEventStickerSetChanged(int64_t old_sticker_set_id_, int64_t new_sticker_set_id_);
+    chatEventStickerSetChanged(std::int64_t old_sticker_set_id_, std::int64_t new_sticker_set_id_);
 
-    static const int32_t ID = -1243130481;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1243130481;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1876,8 +1887,8 @@ public:
 
     explicit chatEventIsAllHistoryAvailableToggled(bool is_all_history_available_);
 
-    static const int32_t ID = -1599063019;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1599063019;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1905,8 +1916,8 @@ public:
                         bool member_joins_, bool member_leaves_, bool member_invites_, bool member_promotions_,
                         bool member_restrictions_, bool info_changes_, bool setting_changes_);
 
-    static const int32_t ID = 941939684;
-    int32_t get_id() const final
+    static const std::int32_t ID = 941939684;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1923,8 +1934,8 @@ public:
 
     explicit chatEvents(std::vector<object_ptr<chatEvent>> &&events_);
 
-    static const int32_t ID = -585329664;
-    int32_t get_id() const final
+    static const std::int32_t ID = -585329664;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1941,8 +1952,8 @@ public:
 
     explicit chatInviteLink(std::string const &invite_link_);
 
-    static const int32_t ID = -882072492;
-    int32_t get_id() const final
+    static const std::int32_t ID = -882072492;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1953,22 +1964,22 @@ public:
 class chatInviteLinkInfo final : public Object
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<ChatType> type_;
     std::string title_;
     object_ptr<chatPhoto> photo_;
-    int32_t member_count_;
-    std::vector<int32_t> member_user_ids_;
+    std::int32_t member_count_;
+    std::vector<std::int32_t> member_user_ids_;
     bool is_public_;
 
     chatInviteLinkInfo();
 
-    chatInviteLinkInfo(int64_t chat_id_, object_ptr<ChatType> &&type_, std::string const &title_,
-                       object_ptr<chatPhoto> &&photo_, int32_t member_count_,
-                       std::vector<int32_t> &&member_user_ids_, bool is_public_);
+    chatInviteLinkInfo(std::int64_t chat_id_, object_ptr<ChatType> &&type_, std::string const &title_,
+                       object_ptr<chatPhoto> &&photo_, std::int32_t member_count_,
+                       std::vector<std::int32_t> &&member_user_ids_, bool is_public_);
 
-    static const int32_t ID = -323394424;
-    int32_t get_id() const final
+    static const std::int32_t ID = -323394424;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -1979,19 +1990,19 @@ public:
 class chatMember final : public Object
 {
 public:
-    int32_t user_id_;
-    int32_t inviter_user_id_;
-    int32_t joined_chat_date_;
+    std::int32_t user_id_;
+    std::int32_t inviter_user_id_;
+    std::int32_t joined_chat_date_;
     object_ptr<ChatMemberStatus> status_;
     object_ptr<botInfo> bot_info_;
 
     chatMember();
 
-    chatMember(int32_t user_id_, int32_t inviter_user_id_, int32_t joined_chat_date_,
+    chatMember(std::int32_t user_id_, std::int32_t inviter_user_id_, std::int32_t joined_chat_date_,
                object_ptr<ChatMemberStatus> &&status_, object_ptr<botInfo> &&bot_info_);
 
-    static const int32_t ID = -806137076;
-    int32_t get_id() const final
+    static const std::int32_t ID = -806137076;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2013,8 +2024,8 @@ public:
 
     explicit chatMemberStatusCreator(bool is_member_);
 
-    static const int32_t ID = 1756320508;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1756320508;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2041,8 +2052,8 @@ public:
                                   bool can_edit_messages_, bool can_delete_messages_, bool can_invite_users_,
                                   bool can_restrict_members_, bool can_pin_messages_, bool can_promote_members_);
 
-    static const int32_t ID = 45106688;
-    int32_t get_id() const final
+    static const std::int32_t ID = 45106688;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2056,8 +2067,8 @@ public:
 
     chatMemberStatusMember();
 
-    static const int32_t ID = 844723285;
-    int32_t get_id() const final
+    static const std::int32_t ID = 844723285;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2069,7 +2080,7 @@ class chatMemberStatusRestricted final : public ChatMemberStatus
 {
 public:
     bool is_member_;
-    int32_t restricted_until_date_;
+    std::int32_t restricted_until_date_;
     bool can_send_messages_;
     bool can_send_media_messages_;
     bool can_send_other_messages_;
@@ -2077,12 +2088,12 @@ public:
 
     chatMemberStatusRestricted();
 
-    chatMemberStatusRestricted(bool is_member_, int32_t restricted_until_date_,
+    chatMemberStatusRestricted(bool is_member_, std::int32_t restricted_until_date_,
                                bool can_send_messages_, bool can_send_media_messages_, bool can_send_other_messages_,
                                bool can_add_web_page_previews_);
 
-    static const int32_t ID = 2068116214;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2068116214;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2096,8 +2107,8 @@ public:
 
     chatMemberStatusLeft();
 
-    static const int32_t ID = -5815259;
-    int32_t get_id() const final
+    static const std::int32_t ID = -5815259;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2108,14 +2119,14 @@ public:
 class chatMemberStatusBanned final : public ChatMemberStatus
 {
 public:
-    int32_t banned_until_date_;
+    std::int32_t banned_until_date_;
 
     chatMemberStatusBanned();
 
-    explicit chatMemberStatusBanned(int32_t banned_until_date_);
+    explicit chatMemberStatusBanned(std::int32_t banned_until_date_);
 
-    static const int32_t ID = -1653518666;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1653518666;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2126,15 +2137,15 @@ public:
 class chatMembers final : public Object
 {
 public:
-    int32_t total_count_;
+    std::int32_t total_count_;
     std::vector<object_ptr<chatMember>> members_;
 
     chatMembers();
 
-    chatMembers(int32_t total_count_, std::vector<object_ptr<chatMember>> &&members_);
+    chatMembers(std::int32_t total_count_, std::vector<object_ptr<chatMember>> &&members_);
 
-    static const int32_t ID = -497558622;
-    int32_t get_id() const final
+    static const std::int32_t ID = -497558622;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2152,8 +2163,8 @@ public:
 
     chatPhoto(object_ptr<file> &&small_, object_ptr<file> &&big_);
 
-    static const int32_t ID = -217062456;
-    int32_t get_id() const final
+    static const std::int32_t ID = -217062456;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2172,8 +2183,8 @@ public:
 
     chatReportReasonSpam();
 
-    static const int32_t ID = -510848863;
-    int32_t get_id() const final
+    static const std::int32_t ID = -510848863;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2187,8 +2198,8 @@ public:
 
     chatReportReasonViolence();
 
-    static const int32_t ID = -1330235395;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1330235395;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2202,8 +2213,8 @@ public:
 
     chatReportReasonPornography();
 
-    static const int32_t ID = 722614385;
-    int32_t get_id() const final
+    static const std::int32_t ID = 722614385;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2220,8 +2231,8 @@ public:
 
     explicit chatReportReasonCustom(std::string const &text_);
 
-    static const int32_t ID = 544575454;
-    int32_t get_id() const final
+    static const std::int32_t ID = 544575454;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2238,8 +2249,8 @@ public:
 
     explicit chatReportSpamState(bool can_report_spam_);
 
-    static const int32_t ID = -1919240972;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1919240972;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2255,14 +2266,14 @@ public:
 class chatTypePrivate final : public ChatType
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     chatTypePrivate();
 
-    explicit chatTypePrivate(int32_t user_id_);
+    explicit chatTypePrivate(std::int32_t user_id_);
 
-    static const int32_t ID = 1700720838;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1700720838;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2273,14 +2284,14 @@ public:
 class chatTypeBasicGroup final : public ChatType
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
 
     chatTypeBasicGroup();
 
-    explicit chatTypeBasicGroup(int32_t basic_group_id_);
+    explicit chatTypeBasicGroup(std::int32_t basic_group_id_);
 
-    static const int32_t ID = 21815278;
-    int32_t get_id() const final
+    static const std::int32_t ID = 21815278;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2291,15 +2302,15 @@ public:
 class chatTypeSupergroup final : public ChatType
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     bool is_channel_;
 
     chatTypeSupergroup();
 
-    chatTypeSupergroup(int32_t supergroup_id_, bool is_channel_);
+    chatTypeSupergroup(std::int32_t supergroup_id_, bool is_channel_);
 
-    static const int32_t ID = 955152366;
-    int32_t get_id() const final
+    static const std::int32_t ID = 955152366;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2310,15 +2321,15 @@ public:
 class chatTypeSecret final : public ChatType
 {
 public:
-    int32_t secret_chat_id_;
-    int32_t user_id_;
+    std::int32_t secret_chat_id_;
+    std::int32_t user_id_;
 
     chatTypeSecret();
 
-    chatTypeSecret(int32_t secret_chat_id_, int32_t user_id_);
+    chatTypeSecret(std::int32_t secret_chat_id_, std::int32_t user_id_);
 
-    static const int32_t ID = 136722563;
-    int32_t get_id() const final
+    static const std::int32_t ID = 136722563;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2329,14 +2340,140 @@ public:
 class chats final : public Object
 {
 public:
-    std::vector<int64_t> chat_ids_;
+    std::vector<std::int64_t> chat_ids_;
 
     chats();
 
-    explicit chats(std::vector<int64_t> &&chat_ids_);
+    explicit chats(std::vector<std::int64_t> &&chat_ids_);
 
-    static const int32_t ID = -1687756019;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1687756019;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class CheckChatUsernameResult: public Object
+{
+public:
+};
+
+class checkChatUsernameResultOk final : public CheckChatUsernameResult
+{
+public:
+
+    checkChatUsernameResultOk();
+
+    static const std::int32_t ID = -1498956964;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class checkChatUsernameResultUsernameInvalid final : public CheckChatUsernameResult
+{
+public:
+
+    checkChatUsernameResultUsernameInvalid();
+
+    static const std::int32_t ID = -636979370;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class checkChatUsernameResultUsernameOccupied final : public CheckChatUsernameResult
+{
+public:
+
+    checkChatUsernameResultUsernameOccupied();
+
+    static const std::int32_t ID = 1320892201;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class checkChatUsernameResultPublicChatsTooMuch final : public CheckChatUsernameResult
+{
+public:
+
+    checkChatUsernameResultPublicChatsTooMuch();
+
+    static const std::int32_t ID = 858247741;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class checkChatUsernameResultPublicGroupsUnavailable final : public CheckChatUsernameResult
+{
+public:
+
+    checkChatUsernameResultPublicGroupsUnavailable();
+
+    static const std::int32_t ID = -51833641;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class connectedWebsite final : public Object
+{
+public:
+    std::int64_t id_;
+    std::string domain_name_;
+    std::int32_t bot_user_id_;
+    std::string browser_;
+    std::string platform_;
+    std::int32_t log_in_date_;
+    std::int32_t last_active_date_;
+    std::string ip_;
+    std::string location_;
+
+    connectedWebsite();
+
+    connectedWebsite(std::int64_t id_, std::string const &domain_name_, std::int32_t bot_user_id_,
+                     std::string const &browser_, std::string const &platform_, std::int32_t log_in_date_,
+                     std::int32_t last_active_date_, std::string const &ip_, std::string const &location_);
+
+    static const std::int32_t ID = -1538986855;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class connectedWebsites final : public Object
+{
+public:
+    std::vector<object_ptr<connectedWebsite>> websites_;
+
+    connectedWebsites();
+
+    explicit connectedWebsites(std::vector<object_ptr<connectedWebsite>> &&websites_);
+
+    static const std::int32_t ID = -1727949694;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2355,8 +2492,8 @@ public:
 
     connectionStateWaitingForNetwork();
 
-    static const int32_t ID = 1695405912;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1695405912;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2370,8 +2507,8 @@ public:
 
     connectionStateConnectingToProxy();
 
-    static const int32_t ID = -93187239;
-    int32_t get_id() const final
+    static const std::int32_t ID = -93187239;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2385,8 +2522,8 @@ public:
 
     connectionStateConnecting();
 
-    static const int32_t ID = -1298400670;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1298400670;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2400,8 +2537,8 @@ public:
 
     connectionStateUpdating();
 
-    static const int32_t ID = -188104009;
-    int32_t get_id() const final
+    static const std::int32_t ID = -188104009;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2415,8 +2552,8 @@ public:
 
     connectionStateReady();
 
-    static const int32_t ID = 48608492;
-    int32_t get_id() const final
+    static const std::int32_t ID = 48608492;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2430,15 +2567,15 @@ public:
     std::string phone_number_;
     std::string first_name_;
     std::string last_name_;
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     contact();
 
     contact(std::string const &phone_number_, std::string const &first_name_,
-            std::string const &last_name_, int32_t user_id_);
+            std::string const &last_name_, std::int32_t user_id_);
 
-    static const int32_t ID = -2035981269;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2035981269;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2449,14 +2586,14 @@ public:
 class count final : public Object
 {
 public:
-    int32_t count_;
+    std::int32_t count_;
 
     count();
 
-    explicit count(int32_t count_);
+    explicit count(std::int32_t count_);
 
-    static const int32_t ID = 1295577348;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1295577348;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2473,8 +2610,8 @@ public:
 
     explicit customRequestResult(std::string const &result_);
 
-    static const int32_t ID = -2009960452;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2009960452;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2496,8 +2633,8 @@ public:
 
     explicit deviceTokenGoogleCloudMessaging(std::string const &token_);
 
-    static const int32_t ID = 1092220225;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1092220225;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2515,8 +2652,8 @@ public:
 
     deviceTokenApplePush(std::string const &device_token_, bool is_app_sandbox_);
 
-    static const int32_t ID = 387541955;
-    int32_t get_id() const final
+    static const std::int32_t ID = 387541955;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2534,8 +2671,8 @@ public:
 
     deviceTokenApplePushVoIP(std::string const &device_token_, bool is_app_sandbox_);
 
-    static const int32_t ID = -327676505;
-    int32_t get_id() const final
+    static const std::int32_t ID = -327676505;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2552,8 +2689,8 @@ public:
 
     explicit deviceTokenWindowsPush(std::string const &access_token_);
 
-    static const int32_t ID = -1410514289;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1410514289;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2570,8 +2707,8 @@ public:
 
     explicit deviceTokenMicrosoftPush(std::string const &channel_uri_);
 
-    static const int32_t ID = 1224269900;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1224269900;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2588,8 +2725,8 @@ public:
 
     explicit deviceTokenMicrosoftPushVoIP(std::string const &channel_uri_);
 
-    static const int32_t ID = -785603759;
-    int32_t get_id() const final
+    static const std::int32_t ID = -785603759;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2609,8 +2746,8 @@ public:
     deviceTokenWebPush(std::string const &endpoint_, std::string const &p256dh_base64url_,
                        std::string const &auth_base64url_);
 
-    static const int32_t ID = -1694507273;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1694507273;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2627,8 +2764,8 @@ public:
 
     explicit deviceTokenSimplePush(std::string const &endpoint_);
 
-    static const int32_t ID = 49584736;
-    int32_t get_id() const final
+    static const std::int32_t ID = 49584736;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2645,8 +2782,8 @@ public:
 
     explicit deviceTokenUbuntuPush(std::string const &token_);
 
-    static const int32_t ID = 1782320422;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1782320422;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2654,17 +2791,17 @@ public:
     void store(TlStorerToString &s, const char *field_name) const final;
 };
 
-class deviceTokenBlackberryPush final : public DeviceToken
+class deviceTokenBlackBerryPush final : public DeviceToken
 {
 public:
     std::string token_;
 
-    deviceTokenBlackberryPush();
+    deviceTokenBlackBerryPush();
 
-    explicit deviceTokenBlackberryPush(std::string const &token_);
+    explicit deviceTokenBlackBerryPush(std::string const &token_);
 
-    static const int32_t ID = 1159513083;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1559167234;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2681,8 +2818,8 @@ public:
 
     explicit deviceTokenTizenPush(std::string const &reg_id_);
 
-    static const int32_t ID = -1359947213;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1359947213;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2703,8 +2840,8 @@ public:
     document(std::string const &file_name_, std::string const &mime_type_,
              object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&document_);
 
-    static const int32_t ID = -736037786;
-    int32_t get_id() const final
+    static const std::int32_t ID = -736037786;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2715,16 +2852,16 @@ public:
 class draftMessage final : public Object
 {
 public:
-    int64_t reply_to_message_id_;
+    std::int64_t reply_to_message_id_;
     object_ptr<InputMessageContent> input_message_text_;
 
     draftMessage();
 
-    draftMessage(int64_t reply_to_message_id_,
+    draftMessage(std::int64_t reply_to_message_id_,
                  object_ptr<InputMessageContent> &&input_message_text_);
 
-    static const int32_t ID = 1902914742;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1902914742;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2735,15 +2872,15 @@ public:
 class error final : public Object
 {
 public:
-    int32_t code_;
+    std::int32_t code_;
     std::string message_;
 
     error();
 
-    error(int32_t code_, std::string const &message_);
+    error(std::int32_t code_, std::string const &message_);
 
-    static const int32_t ID = -1679978726;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1679978726;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2754,19 +2891,19 @@ public:
 class file final : public Object
 {
 public:
-    int32_t id_;
-    int32_t size_;
-    int32_t expected_size_;
+    std::int32_t id_;
+    std::int32_t size_;
+    std::int32_t expected_size_;
     object_ptr<localFile> local_;
     object_ptr<remoteFile> remote_;
 
     file();
 
-    file(int32_t id_, int32_t size_, int32_t expected_size_,
+    file(std::int32_t id_, std::int32_t size_, std::int32_t expected_size_,
          object_ptr<localFile> &&local_, object_ptr<remoteFile> &&remote_);
 
-    static const int32_t ID = 766337656;
-    int32_t get_id() const final
+    static const std::int32_t ID = 766337656;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2785,8 +2922,8 @@ public:
 
     fileTypeNone();
 
-    static const int32_t ID = 2003009189;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2003009189;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2800,8 +2937,8 @@ public:
 
     fileTypeAnimation();
 
-    static const int32_t ID = -290816582;
-    int32_t get_id() const final
+    static const std::int32_t ID = -290816582;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2815,8 +2952,8 @@ public:
 
     fileTypeAudio();
 
-    static const int32_t ID = -709112160;
-    int32_t get_id() const final
+    static const std::int32_t ID = -709112160;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2830,8 +2967,8 @@ public:
 
     fileTypeDocument();
 
-    static const int32_t ID = -564722929;
-    int32_t get_id() const final
+    static const std::int32_t ID = -564722929;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2845,8 +2982,8 @@ public:
 
     fileTypePhoto();
 
-    static const int32_t ID = -1718914651;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1718914651;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2860,8 +2997,8 @@ public:
 
     fileTypeProfilePhoto();
 
-    static const int32_t ID = 1795089315;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1795089315;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2875,8 +3012,8 @@ public:
 
     fileTypeSecret();
 
-    static const int32_t ID = -1871899401;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1871899401;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2890,8 +3027,8 @@ public:
 
     fileTypeSticker();
 
-    static const int32_t ID = 475233385;
-    int32_t get_id() const final
+    static const std::int32_t ID = 475233385;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2905,8 +3042,8 @@ public:
 
     fileTypeThumbnail();
 
-    static const int32_t ID = -12443298;
-    int32_t get_id() const final
+    static const std::int32_t ID = -12443298;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2920,8 +3057,8 @@ public:
 
     fileTypeUnknown();
 
-    static const int32_t ID = -2011566768;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2011566768;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2935,8 +3072,8 @@ public:
 
     fileTypeVideo();
 
-    static const int32_t ID = 1430816539;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1430816539;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2950,8 +3087,8 @@ public:
 
     fileTypeVideoNote();
 
-    static const int32_t ID = -518412385;
-    int32_t get_id() const final
+    static const std::int32_t ID = -518412385;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2965,8 +3102,8 @@ public:
 
     fileTypeVoiceNote();
 
-    static const int32_t ID = -588681661;
-    int32_t get_id() const final
+    static const std::int32_t ID = -588681661;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2980,8 +3117,8 @@ public:
 
     fileTypeWallpaper();
 
-    static const int32_t ID = 1854930076;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1854930076;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -2995,8 +3132,8 @@ public:
 
     fileTypeSecretThumbnail();
 
-    static const int32_t ID = -1401326026;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1401326026;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3014,8 +3151,8 @@ public:
 
     formattedText(std::string const &text_, std::vector<object_ptr<textEntity>> &&entities_);
 
-    static const int32_t ID = -252624564;
-    int32_t get_id() const final
+    static const std::int32_t ID = -252624564;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3027,14 +3164,14 @@ class foundMessages final : public Object
 {
 public:
     std::vector<object_ptr<message>> messages_;
-    int64_t next_from_search_id_;
+    std::int64_t next_from_search_id_;
 
     foundMessages();
 
-    foundMessages(std::vector<object_ptr<message>> &&messages_, int64_t next_from_search_id_);
+    foundMessages(std::vector<object_ptr<message>> &&messages_, std::int64_t next_from_search_id_);
 
-    static const int32_t ID = 2135623881;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2135623881;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3045,7 +3182,7 @@ public:
 class game final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     std::string short_name_;
     std::string title_;
     object_ptr<formattedText> text_;
@@ -3055,12 +3192,12 @@ public:
 
     game();
 
-    game(int64_t id_, std::string const &short_name_, std::string const &title_,
+    game(std::int64_t id_, std::string const &short_name_, std::string const &title_,
          object_ptr<formattedText> &&text_, std::string const &description_, object_ptr<photo> &&photo_,
          object_ptr<animation> &&animation_);
 
-    static const int32_t ID = -1565597752;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1565597752;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3071,16 +3208,16 @@ public:
 class gameHighScore final : public Object
 {
 public:
-    int32_t position_;
-    int32_t user_id_;
-    int32_t score_;
+    std::int32_t position_;
+    std::int32_t user_id_;
+    std::int32_t score_;
 
     gameHighScore();
 
-    gameHighScore(int32_t position_, int32_t user_id_, int32_t score_);
+    gameHighScore(std::int32_t position_, std::int32_t user_id_, std::int32_t score_);
 
-    static const int32_t ID = -30778358;
-    int32_t get_id() const final
+    static const std::int32_t ID = -30778358;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3097,8 +3234,8 @@ public:
 
     explicit gameHighScores(std::vector<object_ptr<gameHighScore>> &&scores_);
 
-    static const int32_t ID = -725770727;
-    int32_t get_id() const final
+    static const std::int32_t ID = -725770727;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3115,8 +3252,8 @@ public:
 
     explicit hashtags(std::vector<std::string> &&hashtags_);
 
-    static const int32_t ID = 676798885;
-    int32_t get_id() const final
+    static const std::int32_t ID = 676798885;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3127,16 +3264,16 @@ public:
 class importedContacts final : public Object
 {
 public:
-    std::vector<int32_t> user_ids_;
-    std::vector<int32_t> importer_count_;
+    std::vector<std::int32_t> user_ids_;
+    std::vector<std::int32_t> importer_count_;
 
     importedContacts();
 
-    importedContacts(std::vector<int32_t> &&user_ids_,
-                     std::vector<int32_t> &&importer_count_);
+    importedContacts(std::vector<std::int32_t> &&user_ids_,
+                     std::vector<std::int32_t> &&importer_count_);
 
-    static const int32_t ID = -741685354;
-    int32_t get_id() const final
+    static const std::int32_t ID = -741685354;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3154,8 +3291,8 @@ public:
 
     inlineKeyboardButton(std::string const &text_, object_ptr<InlineKeyboardButtonType> &&type_);
 
-    static const int32_t ID = -372105704;
-    int32_t get_id() const final
+    static const std::int32_t ID = -372105704;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3177,8 +3314,8 @@ public:
 
     explicit inlineKeyboardButtonTypeUrl(std::string const &url_);
 
-    static const int32_t ID = 1130741420;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1130741420;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3195,8 +3332,8 @@ public:
 
     explicit inlineKeyboardButtonTypeCallback(std::string const &data_);
 
-    static const int32_t ID = -1127515139;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1127515139;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3210,8 +3347,8 @@ public:
 
     inlineKeyboardButtonTypeCallbackGame();
 
-    static const int32_t ID = -383429528;
-    int32_t get_id() const final
+    static const std::int32_t ID = -383429528;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3229,8 +3366,8 @@ public:
 
     inlineKeyboardButtonTypeSwitchInline(std::string const &query_, bool in_current_chat_);
 
-    static const int32_t ID = -2035563307;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2035563307;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3244,8 +3381,8 @@ public:
 
     inlineKeyboardButtonTypeBuy();
 
-    static const int32_t ID = 1360739440;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1360739440;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3273,8 +3410,8 @@ public:
     inlineQueryResultArticle(std::string const &id_, std::string const &url_, bool hide_url_,
                              std::string const &title_, std::string const &description_, object_ptr<photoSize> &&thumbnail_);
 
-    static const int32_t ID = -518366710;
-    int32_t get_id() const final
+    static const std::int32_t ID = -518366710;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3294,8 +3431,8 @@ public:
     inlineQueryResultContact(std::string const &id_, object_ptr<contact> &&contact_,
                              object_ptr<photoSize> &&thumbnail_);
 
-    static const int32_t ID = 410081985;
-    int32_t get_id() const final
+    static const std::int32_t ID = 410081985;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3316,8 +3453,8 @@ public:
     inlineQueryResultLocation(std::string const &id_, object_ptr<location> &&location_,
                               std::string const &title_, object_ptr<photoSize> &&thumbnail_);
 
-    static const int32_t ID = -158305341;
-    int32_t get_id() const final
+    static const std::int32_t ID = -158305341;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3337,8 +3474,8 @@ public:
     inlineQueryResultVenue(std::string const &id_, object_ptr<venue> &&venue_,
                            object_ptr<photoSize> &&thumbnail_);
 
-    static const int32_t ID = -1592932211;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1592932211;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3356,8 +3493,8 @@ public:
 
     inlineQueryResultGame(std::string const &id_, object_ptr<game> &&game_);
 
-    static const int32_t ID = 1706916987;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1706916987;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3377,8 +3514,8 @@ public:
     inlineQueryResultAnimation(std::string const &id_, object_ptr<animation> &&animation_,
                                std::string const &title_);
 
-    static const int32_t ID = 2009984267;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2009984267;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3396,8 +3533,8 @@ public:
 
     inlineQueryResultAudio(std::string const &id_, object_ptr<audio> &&audio_);
 
-    static const int32_t ID = 842650360;
-    int32_t get_id() const final
+    static const std::int32_t ID = 842650360;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3418,8 +3555,8 @@ public:
     inlineQueryResultDocument(std::string const &id_, object_ptr<document> &&document_,
                               std::string const &title_, std::string const &description_);
 
-    static const int32_t ID = -1491268539;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1491268539;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3440,8 +3577,8 @@ public:
     inlineQueryResultPhoto(std::string const &id_, object_ptr<photo> &&photo_,
                            std::string const &title_, std::string const &description_);
 
-    static const int32_t ID = 1848319440;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1848319440;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3459,8 +3596,8 @@ public:
 
     inlineQueryResultSticker(std::string const &id_, object_ptr<sticker> &&sticker_);
 
-    static const int32_t ID = -1848224245;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1848224245;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3481,8 +3618,8 @@ public:
     inlineQueryResultVideo(std::string const &id_, object_ptr<video> &&video_,
                            std::string const &title_, std::string const &description_);
 
-    static const int32_t ID = -1373158683;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1373158683;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3502,8 +3639,8 @@ public:
     inlineQueryResultVoiceNote(std::string const &id_, object_ptr<voiceNote> &&voice_note_,
                                std::string const &title_);
 
-    static const int32_t ID = -1897393105;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1897393105;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3514,7 +3651,7 @@ public:
 class inlineQueryResults final : public Object
 {
 public:
-    int64_t inline_query_id_;
+    std::int64_t inline_query_id_;
     std::string next_offset_;
     std::vector<object_ptr<InlineQueryResult>> results_;
     std::string switch_pm_text_;
@@ -3522,12 +3659,12 @@ public:
 
     inlineQueryResults();
 
-    inlineQueryResults(int64_t inline_query_id_, std::string const &next_offset_,
+    inlineQueryResults(std::int64_t inline_query_id_, std::string const &next_offset_,
                        std::vector<object_ptr<InlineQueryResult>> &&results_, std::string const &switch_pm_text_,
                        std::string const &switch_pm_parameter_);
 
-    static const int32_t ID = 1000709656;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1000709656;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3549,8 +3686,8 @@ public:
 
     explicit inputCredentialsSaved(std::string const &saved_credentials_id_);
 
-    static const int32_t ID = -2034385364;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2034385364;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3568,8 +3705,8 @@ public:
 
     inputCredentialsNew(std::string const &data_, bool allow_save_);
 
-    static const int32_t ID = -829689558;
-    int32_t get_id() const final
+    static const std::int32_t ID = -829689558;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3586,8 +3723,8 @@ public:
 
     explicit inputCredentialsAndroidPay(std::string const &data_);
 
-    static const int32_t ID = 1979566832;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1979566832;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3604,8 +3741,8 @@ public:
 
     explicit inputCredentialsApplePay(std::string const &data_);
 
-    static const int32_t ID = -1246570799;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1246570799;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3621,14 +3758,14 @@ public:
 class inputFileId final : public InputFile
 {
 public:
-    int32_t id_;
+    std::int32_t id_;
 
     inputFileId();
 
-    explicit inputFileId(int32_t id_);
+    explicit inputFileId(std::int32_t id_);
 
-    static const int32_t ID = 1788906253;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1788906253;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3645,8 +3782,8 @@ public:
 
     explicit inputFileRemote(std::string const &id_);
 
-    static const int32_t ID = -107574466;
-    int32_t get_id() const final
+    static const std::int32_t ID = -107574466;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3663,8 +3800,8 @@ public:
 
     explicit inputFileLocal(std::string const &path_);
 
-    static const int32_t ID = 2056030919;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2056030919;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3677,15 +3814,15 @@ class inputFileGenerated final : public InputFile
 public:
     std::string original_path_;
     std::string conversion_;
-    int32_t expected_size_;
+    std::int32_t expected_size_;
 
     inputFileGenerated();
 
     inputFileGenerated(std::string const &original_path_, std::string const &conversion_,
-                       int32_t expected_size_);
+                       std::int32_t expected_size_);
 
-    static const int32_t ID = -1781351885;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1781351885;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3705,21 +3842,21 @@ public:
     std::string title_;
     std::string thumbnail_url_;
     std::string gif_url_;
-    int32_t gif_duration_;
-    int32_t gif_width_;
-    int32_t gif_height_;
+    std::int32_t gif_duration_;
+    std::int32_t gif_width_;
+    std::int32_t gif_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultAnimatedGif();
 
     inputInlineQueryResultAnimatedGif(std::string const &id_, std::string const &title_,
-                                      std::string const &thumbnail_url_, std::string const &gif_url_, int32_t gif_duration_,
-                                      int32_t gif_width_, int32_t gif_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                      std::string const &thumbnail_url_, std::string const &gif_url_, std::int32_t gif_duration_,
+                                      std::int32_t gif_width_, std::int32_t gif_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                       object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -891474894;
-    int32_t get_id() const final
+    static const std::int32_t ID = -891474894;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3734,21 +3871,21 @@ public:
     std::string title_;
     std::string thumbnail_url_;
     std::string mpeg4_url_;
-    int32_t mpeg4_duration_;
-    int32_t mpeg4_width_;
-    int32_t mpeg4_height_;
+    std::int32_t mpeg4_duration_;
+    std::int32_t mpeg4_width_;
+    std::int32_t mpeg4_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultAnimatedMpeg4();
 
     inputInlineQueryResultAnimatedMpeg4(std::string const &id_, std::string const &title_,
-                                        std::string const &thumbnail_url_, std::string const &mpeg4_url_, int32_t mpeg4_duration_,
-                                        int32_t mpeg4_width_, int32_t mpeg4_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                        std::string const &thumbnail_url_, std::string const &mpeg4_url_, std::int32_t mpeg4_duration_,
+                                        std::int32_t mpeg4_width_, std::int32_t mpeg4_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                         object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -1629529888;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1629529888;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3765,8 +3902,8 @@ public:
     std::string title_;
     std::string description_;
     std::string thumbnail_url_;
-    int32_t thumbnail_width_;
-    int32_t thumbnail_height_;
+    std::int32_t thumbnail_width_;
+    std::int32_t thumbnail_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
@@ -3774,11 +3911,11 @@ public:
 
     inputInlineQueryResultArticle(std::string const &id_, std::string const &url_, bool hide_url_,
                                   std::string const &title_, std::string const &description_, std::string const &thumbnail_url_,
-                                  int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                  std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                   object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 1973670156;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1973670156;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3793,18 +3930,18 @@ public:
     std::string title_;
     std::string performer_;
     std::string audio_url_;
-    int32_t audio_duration_;
+    std::int32_t audio_duration_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultAudio();
 
     inputInlineQueryResultAudio(std::string const &id_, std::string const &title_,
-                                std::string const &performer_, std::string const &audio_url_, int32_t audio_duration_,
+                                std::string const &performer_, std::string const &audio_url_, std::int32_t audio_duration_,
                                 object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 1260139988;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1260139988;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3818,19 +3955,19 @@ public:
     std::string id_;
     object_ptr<contact> contact_;
     std::string thumbnail_url_;
-    int32_t thumbnail_width_;
-    int32_t thumbnail_height_;
+    std::int32_t thumbnail_width_;
+    std::int32_t thumbnail_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultContact();
 
     inputInlineQueryResultContact(std::string const &id_, object_ptr<contact> &&contact_,
-                                  std::string const &thumbnail_url_, int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                  std::string const &thumbnail_url_, std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                   object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 1846064594;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1846064594;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3847,8 +3984,8 @@ public:
     std::string document_url_;
     std::string mime_type_;
     std::string thumbnail_url_;
-    int32_t thumbnail_width_;
-    int32_t thumbnail_height_;
+    std::int32_t thumbnail_width_;
+    std::int32_t thumbnail_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
@@ -3856,11 +3993,11 @@ public:
 
     inputInlineQueryResultDocument(std::string const &id_, std::string const &title_,
                                    std::string const &description_, std::string const &document_url_, std::string const &mime_type_,
-                                   std::string const &thumbnail_url_, int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                   std::string const &thumbnail_url_, std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                    object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 578801869;
-    int32_t get_id() const final
+    static const std::int32_t ID = 578801869;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3880,8 +4017,8 @@ public:
     inputInlineQueryResultGame(std::string const &id_, std::string const &game_short_name_,
                                object_ptr<ReplyMarkup> &&reply_markup_);
 
-    static const int32_t ID = 966074327;
-    int32_t get_id() const final
+    static const std::int32_t ID = 966074327;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3894,23 +4031,23 @@ class inputInlineQueryResultLocation final : public InputInlineQueryResult
 public:
     std::string id_;
     object_ptr<location> location_;
-    int32_t live_period_;
+    std::int32_t live_period_;
     std::string title_;
     std::string thumbnail_url_;
-    int32_t thumbnail_width_;
-    int32_t thumbnail_height_;
+    std::int32_t thumbnail_width_;
+    std::int32_t thumbnail_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultLocation();
 
     inputInlineQueryResultLocation(std::string const &id_, object_ptr<location> &&location_,
-                                   int32_t live_period_, std::string const &title_, std::string const &thumbnail_url_,
-                                   int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                   std::int32_t live_period_, std::string const &title_, std::string const &thumbnail_url_,
+                                   std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                    object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -1887650218;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1887650218;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3926,8 +4063,8 @@ public:
     std::string description_;
     std::string thumbnail_url_;
     std::string photo_url_;
-    int32_t photo_width_;
-    int32_t photo_height_;
+    std::int32_t photo_width_;
+    std::int32_t photo_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
@@ -3935,11 +4072,11 @@ public:
 
     inputInlineQueryResultPhoto(std::string const &id_, std::string const &title_,
                                 std::string const &description_, std::string const &thumbnail_url_, std::string const &photo_url_,
-                                int32_t photo_width_, int32_t photo_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                std::int32_t photo_width_, std::int32_t photo_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                 object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -1123338721;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1123338721;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3953,19 +4090,19 @@ public:
     std::string id_;
     std::string thumbnail_url_;
     std::string sticker_url_;
-    int32_t sticker_width_;
-    int32_t sticker_height_;
+    std::int32_t sticker_width_;
+    std::int32_t sticker_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultSticker();
 
     inputInlineQueryResultSticker(std::string const &id_, std::string const &thumbnail_url_,
-                                  std::string const &sticker_url_, int32_t sticker_width_, int32_t sticker_height_,
+                                  std::string const &sticker_url_, std::int32_t sticker_width_, std::int32_t sticker_height_,
                                   object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 274007129;
-    int32_t get_id() const final
+    static const std::int32_t ID = 274007129;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -3979,19 +4116,19 @@ public:
     std::string id_;
     object_ptr<venue> venue_;
     std::string thumbnail_url_;
-    int32_t thumbnail_width_;
-    int32_t thumbnail_height_;
+    std::int32_t thumbnail_width_;
+    std::int32_t thumbnail_height_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultVenue();
 
     inputInlineQueryResultVenue(std::string const &id_, object_ptr<venue> &&venue_,
-                                std::string const &thumbnail_url_, int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                std::string const &thumbnail_url_, std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                 object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 541704509;
-    int32_t get_id() const final
+    static const std::int32_t ID = 541704509;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4008,9 +4145,9 @@ public:
     std::string thumbnail_url_;
     std::string video_url_;
     std::string mime_type_;
-    int32_t video_width_;
-    int32_t video_height_;
-    int32_t video_duration_;
+    std::int32_t video_width_;
+    std::int32_t video_height_;
+    std::int32_t video_duration_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
@@ -4018,12 +4155,12 @@ public:
 
     inputInlineQueryResultVideo(std::string const &id_, std::string const &title_,
                                 std::string const &description_, std::string const &thumbnail_url_, std::string const &video_url_,
-                                std::string const &mime_type_, int32_t video_width_, int32_t video_height_,
-                                int32_t video_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                std::string const &mime_type_, std::int32_t video_width_, std::int32_t video_height_,
+                                std::int32_t video_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
                                 object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 1724073191;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1724073191;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4037,18 +4174,18 @@ public:
     std::string id_;
     std::string title_;
     std::string voice_note_url_;
-    int32_t voice_note_duration_;
+    std::int32_t voice_note_duration_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     inputInlineQueryResultVoiceNote();
 
     inputInlineQueryResultVoiceNote(std::string const &id_, std::string const &title_,
-                                    std::string const &voice_note_url_, int32_t voice_note_duration_,
+                                    std::string const &voice_note_url_, std::int32_t voice_note_duration_,
                                     object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -1790072503;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1790072503;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4073,8 +4210,8 @@ public:
     inputMessageText(object_ptr<formattedText> &&text_, bool disable_web_page_preview_,
                      bool clear_draft_);
 
-    static const int32_t ID = 247050392;
-    int32_t get_id() const final
+    static const std::int32_t ID = 247050392;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4087,19 +4224,19 @@ class inputMessageAnimation final : public InputMessageContent
 public:
     object_ptr<InputFile> animation_;
     object_ptr<inputThumbnail> thumbnail_;
-    int32_t duration_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t duration_;
+    std::int32_t width_;
+    std::int32_t height_;
     object_ptr<formattedText> caption_;
 
     inputMessageAnimation();
 
     inputMessageAnimation(object_ptr<InputFile> &&animation_, object_ptr<inputThumbnail> &&thumbnail_,
-                          int32_t duration_, int32_t width_, int32_t height_,
+                          std::int32_t duration_, std::int32_t width_, std::int32_t height_,
                           object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 926542724;
-    int32_t get_id() const final
+    static const std::int32_t ID = 926542724;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4112,7 +4249,7 @@ class inputMessageAudio final : public InputMessageContent
 public:
     object_ptr<InputFile> audio_;
     object_ptr<inputThumbnail> album_cover_thumbnail_;
-    int32_t duration_;
+    std::int32_t duration_;
     std::string title_;
     std::string performer_;
     object_ptr<formattedText> caption_;
@@ -4120,11 +4257,11 @@ public:
     inputMessageAudio();
 
     inputMessageAudio(object_ptr<InputFile> &&audio_,
-                      object_ptr<inputThumbnail> &&album_cover_thumbnail_, int32_t duration_,
+                      object_ptr<inputThumbnail> &&album_cover_thumbnail_, std::int32_t duration_,
                       std::string const &title_, std::string const &performer_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = -626786126;
-    int32_t get_id() const final
+    static const std::int32_t ID = -626786126;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4144,8 +4281,8 @@ public:
     inputMessageDocument(object_ptr<InputFile> &&document_, object_ptr<inputThumbnail> &&thumbnail_,
                          object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 937970604;
-    int32_t get_id() const final
+    static const std::int32_t ID = 937970604;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4158,20 +4295,20 @@ class inputMessagePhoto final : public InputMessageContent
 public:
     object_ptr<InputFile> photo_;
     object_ptr<inputThumbnail> thumbnail_;
-    std::vector<int32_t> added_sticker_file_ids_;
-    int32_t width_;
-    int32_t height_;
+    std::vector<std::int32_t> added_sticker_file_ids_;
+    std::int32_t width_;
+    std::int32_t height_;
     object_ptr<formattedText> caption_;
-    int32_t ttl_;
+    std::int32_t ttl_;
 
     inputMessagePhoto();
 
     inputMessagePhoto(object_ptr<InputFile> &&photo_, object_ptr<inputThumbnail> &&thumbnail_,
-                      std::vector<int32_t> &&added_sticker_file_ids_, int32_t width_, int32_t height_,
-                      object_ptr<formattedText> &&caption_, int32_t ttl_);
+                      std::vector<std::int32_t> &&added_sticker_file_ids_, std::int32_t width_, std::int32_t height_,
+                      object_ptr<formattedText> &&caption_, std::int32_t ttl_);
 
-    static const int32_t ID = 1648801584;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1648801584;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4184,16 +4321,16 @@ class inputMessageSticker final : public InputMessageContent
 public:
     object_ptr<InputFile> sticker_;
     object_ptr<inputThumbnail> thumbnail_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t width_;
+    std::int32_t height_;
 
     inputMessageSticker();
 
     inputMessageSticker(object_ptr<InputFile> &&sticker_, object_ptr<inputThumbnail> &&thumbnail_,
-                        int32_t width_, int32_t height_);
+                        std::int32_t width_, std::int32_t height_);
 
-    static const int32_t ID = 740776325;
-    int32_t get_id() const final
+    static const std::int32_t ID = 740776325;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4206,21 +4343,23 @@ class inputMessageVideo final : public InputMessageContent
 public:
     object_ptr<InputFile> video_;
     object_ptr<inputThumbnail> thumbnail_;
-    std::vector<int32_t> added_sticker_file_ids_;
-    int32_t duration_;
-    int32_t width_;
-    int32_t height_;
+    std::vector<std::int32_t> added_sticker_file_ids_;
+    std::int32_t duration_;
+    std::int32_t width_;
+    std::int32_t height_;
+    bool supports_streaming_;
     object_ptr<formattedText> caption_;
-    int32_t ttl_;
+    std::int32_t ttl_;
 
     inputMessageVideo();
 
     inputMessageVideo(object_ptr<InputFile> &&video_, object_ptr<inputThumbnail> &&thumbnail_,
-                      std::vector<int32_t> &&added_sticker_file_ids_, int32_t duration_, int32_t width_,
-                      int32_t height_, object_ptr<formattedText> &&caption_, int32_t ttl_);
+                      std::vector<std::int32_t> &&added_sticker_file_ids_, std::int32_t duration_, std::int32_t width_,
+                      std::int32_t height_, bool supports_streaming_, object_ptr<formattedText> &&caption_,
+                      std::int32_t ttl_);
 
-    static const int32_t ID = 502341237;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2108486755;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4233,16 +4372,16 @@ class inputMessageVideoNote final : public InputMessageContent
 public:
     object_ptr<InputFile> video_note_;
     object_ptr<inputThumbnail> thumbnail_;
-    int32_t duration_;
-    int32_t length_;
+    std::int32_t duration_;
+    std::int32_t length_;
 
     inputMessageVideoNote();
 
     inputMessageVideoNote(object_ptr<InputFile> &&video_note_, object_ptr<inputThumbnail> &&thumbnail_,
-                          int32_t duration_, int32_t length_);
+                          std::int32_t duration_, std::int32_t length_);
 
-    static const int32_t ID = 279108859;
-    int32_t get_id() const final
+    static const std::int32_t ID = 279108859;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4254,17 +4393,17 @@ class inputMessageVoiceNote final : public InputMessageContent
 {
 public:
     object_ptr<InputFile> voice_note_;
-    int32_t duration_;
+    std::int32_t duration_;
     std::string waveform_;
     object_ptr<formattedText> caption_;
 
     inputMessageVoiceNote();
 
-    inputMessageVoiceNote(object_ptr<InputFile> &&voice_note_, int32_t duration_,
+    inputMessageVoiceNote(object_ptr<InputFile> &&voice_note_, std::int32_t duration_,
                           std::string const &waveform_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 2136519657;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2136519657;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4276,14 +4415,14 @@ class inputMessageLocation final : public InputMessageContent
 {
 public:
     object_ptr<location> location_;
-    int32_t live_period_;
+    std::int32_t live_period_;
 
     inputMessageLocation();
 
-    inputMessageLocation(object_ptr<location> &&location_, int32_t live_period_);
+    inputMessageLocation(object_ptr<location> &&location_, std::int32_t live_period_);
 
-    static const int32_t ID = -1624179655;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1624179655;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4300,8 +4439,8 @@ public:
 
     explicit inputMessageVenue(object_ptr<venue> &&venue_);
 
-    static const int32_t ID = 1447926269;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1447926269;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4318,8 +4457,8 @@ public:
 
     explicit inputMessageContact(object_ptr<contact> &&contact_);
 
-    static const int32_t ID = -982446849;
-    int32_t get_id() const final
+    static const std::int32_t ID = -982446849;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4330,15 +4469,15 @@ public:
 class inputMessageGame final : public InputMessageContent
 {
 public:
-    int32_t bot_user_id_;
+    std::int32_t bot_user_id_;
     std::string game_short_name_;
 
     inputMessageGame();
 
-    inputMessageGame(int32_t bot_user_id_, std::string const &game_short_name_);
+    inputMessageGame(std::int32_t bot_user_id_, std::string const &game_short_name_);
 
-    static const int32_t ID = -1728000914;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1728000914;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4353,9 +4492,9 @@ public:
     std::string title_;
     std::string description_;
     std::string photo_url_;
-    int32_t photo_size_;
-    int32_t photo_width_;
-    int32_t photo_height_;
+    std::int32_t photo_size_;
+    std::int32_t photo_width_;
+    std::int32_t photo_height_;
     std::string payload_;
     std::string provider_token_;
     std::string provider_data_;
@@ -4364,13 +4503,13 @@ public:
     inputMessageInvoice();
 
     inputMessageInvoice(object_ptr<invoice> &&invoice_, std::string const &title_,
-                        std::string const &description_, std::string const &photo_url_, int32_t photo_size_,
-                        int32_t photo_width_, int32_t photo_height_, std::string const &payload_,
+                        std::string const &description_, std::string const &photo_url_, std::int32_t photo_size_,
+                        std::int32_t photo_width_, std::int32_t photo_height_, std::string const &payload_,
                         std::string const &provider_token_, std::string const &provider_data_,
                         std::string const &start_parameter_);
 
-    static const int32_t ID = 1038812175;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1038812175;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4381,16 +4520,16 @@ public:
 class inputMessageForwarded final : public InputMessageContent
 {
 public:
-    int64_t from_chat_id_;
-    int64_t message_id_;
+    std::int64_t from_chat_id_;
+    std::int64_t message_id_;
     bool in_game_share_;
 
     inputMessageForwarded();
 
-    inputMessageForwarded(int64_t from_chat_id_, int64_t message_id_, bool in_game_share_);
+    inputMessageForwarded(std::int64_t from_chat_id_, std::int64_t message_id_, bool in_game_share_);
 
-    static const int32_t ID = 1561363198;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1561363198;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4410,8 +4549,8 @@ public:
     inputSticker(object_ptr<InputFile> &&png_sticker_, std::string const &emojis_,
                  object_ptr<maskPosition> &&mask_position_);
 
-    static const int32_t ID = -1998602205;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1998602205;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4423,15 +4562,15 @@ class inputThumbnail final : public Object
 {
 public:
     object_ptr<InputFile> thumbnail_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t width_;
+    std::int32_t height_;
 
     inputThumbnail();
 
-    inputThumbnail(object_ptr<InputFile> &&thumbnail_, int32_t width_, int32_t height_);
+    inputThumbnail(object_ptr<InputFile> &&thumbnail_, std::int32_t width_, std::int32_t height_);
 
-    static const int32_t ID = 1582387236;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1582387236;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4460,8 +4599,8 @@ public:
             bool need_shipping_address_, bool send_phone_number_to_provider_,
             bool send_email_address_to_provider_, bool is_flexible_);
 
-    static const int32_t ID = -368451690;
-    int32_t get_id() const final
+    static const std::int32_t ID = -368451690;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4479,8 +4618,8 @@ public:
 
     keyboardButton(std::string const &text_, object_ptr<KeyboardButtonType> &&type_);
 
-    static const int32_t ID = -2069836172;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2069836172;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4499,8 +4638,8 @@ public:
 
     keyboardButtonTypeText();
 
-    static const int32_t ID = -1773037256;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1773037256;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4514,8 +4653,8 @@ public:
 
     keyboardButtonTypeRequestPhoneNumber();
 
-    static const int32_t ID = -1529235527;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1529235527;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4529,8 +4668,8 @@ public:
 
     keyboardButtonTypeRequestLocation();
 
-    static const int32_t ID = -125661955;
-    int32_t get_id() const final
+    static const std::int32_t ID = -125661955;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4542,14 +4681,14 @@ class labeledPricePart final : public Object
 {
 public:
     std::string label_;
-    int64_t amount_;
+    std::int64_t amount_;
 
     labeledPricePart();
 
-    labeledPricePart(std::string const &label_, int64_t amount_);
+    labeledPricePart(std::string const &label_, std::int64_t amount_);
 
-    static const int32_t ID = 552789798;
-    int32_t get_id() const final
+    static const std::int32_t ID = 552789798;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4568,8 +4707,8 @@ public:
 
     linkStateNone();
 
-    static const int32_t ID = 951430287;
-    int32_t get_id() const final
+    static const std::int32_t ID = 951430287;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4583,8 +4722,8 @@ public:
 
     linkStateKnowsPhoneNumber();
 
-    static const int32_t ID = 380898199;
-    int32_t get_id() const final
+    static const std::int32_t ID = 380898199;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4598,8 +4737,8 @@ public:
 
     linkStateIsContact();
 
-    static const int32_t ID = -1000499465;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1000499465;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4615,17 +4754,17 @@ public:
     bool can_be_deleted_;
     bool is_downloading_active_;
     bool is_downloading_completed_;
-    int32_t downloaded_prefix_size_;
-    int32_t downloaded_size_;
+    std::int32_t downloaded_prefix_size_;
+    std::int32_t downloaded_size_;
 
     localFile();
 
     localFile(std::string const &path_, bool can_be_downloaded_, bool can_be_deleted_,
-              bool is_downloading_active_, bool is_downloading_completed_, int32_t downloaded_prefix_size_,
-              int32_t downloaded_size_);
+              bool is_downloading_active_, bool is_downloading_completed_, std::int32_t downloaded_prefix_size_,
+              std::int32_t downloaded_size_);
 
-    static const int32_t ID = 847939462;
-    int32_t get_id() const final
+    static const std::int32_t ID = 847939462;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4643,8 +4782,8 @@ public:
 
     location(double latitude_, double longitude_);
 
-    static const int32_t ID = 749028016;
-    int32_t get_id() const final
+    static const std::int32_t ID = 749028016;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4663,8 +4802,8 @@ public:
 
     maskPointForehead();
 
-    static const int32_t ID = 1027512005;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1027512005;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4678,8 +4817,8 @@ public:
 
     maskPointEyes();
 
-    static const int32_t ID = 1748310861;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1748310861;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4693,8 +4832,8 @@ public:
 
     maskPointMouth();
 
-    static const int32_t ID = 411773406;
-    int32_t get_id() const final
+    static const std::int32_t ID = 411773406;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4708,8 +4847,8 @@ public:
 
     maskPointChin();
 
-    static const int32_t ID = 534995335;
-    int32_t get_id() const final
+    static const std::int32_t ID = 534995335;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4729,8 +4868,8 @@ public:
 
     maskPosition(object_ptr<MaskPoint> &&point_, double x_shift_, double y_shift_, double scale_);
 
-    static const int32_t ID = -2097433026;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2097433026;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4741,9 +4880,9 @@ public:
 class message final : public Object
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
-    int64_t chat_id_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
+    std::int64_t chat_id_;
     object_ptr<MessageSendingState> sending_state_;
     bool is_outgoing_;
     bool can_be_edited_;
@@ -4752,32 +4891,32 @@ public:
     bool can_be_deleted_for_all_users_;
     bool is_channel_post_;
     bool contains_unread_mention_;
-    int32_t date_;
-    int32_t edit_date_;
+    std::int32_t date_;
+    std::int32_t edit_date_;
     object_ptr<MessageForwardInfo> forward_info_;
-    int64_t reply_to_message_id_;
-    int32_t ttl_;
+    std::int64_t reply_to_message_id_;
+    std::int32_t ttl_;
     double ttl_expires_in_;
-    int32_t via_bot_user_id_;
+    std::int32_t via_bot_user_id_;
     std::string author_signature_;
-    int32_t views_;
-    int64_t media_album_id_;
+    std::int32_t views_;
+    std::int64_t media_album_id_;
     object_ptr<MessageContent> content_;
     object_ptr<ReplyMarkup> reply_markup_;
 
     message();
 
-    message(int64_t id_, int32_t sender_user_id_, int64_t chat_id_,
+    message(std::int64_t id_, std::int32_t sender_user_id_, std::int64_t chat_id_,
             object_ptr<MessageSendingState> &&sending_state_, bool is_outgoing_, bool can_be_edited_,
             bool can_be_forwarded_, bool can_be_deleted_only_for_self_, bool can_be_deleted_for_all_users_,
-            bool is_channel_post_, bool contains_unread_mention_, int32_t date_, int32_t edit_date_,
-            object_ptr<MessageForwardInfo> &&forward_info_, int64_t reply_to_message_id_,
-            int32_t ttl_, double ttl_expires_in_, int32_t via_bot_user_id_,
-            std::string const &author_signature_, int32_t views_, int64_t media_album_id_,
+            bool is_channel_post_, bool contains_unread_mention_, std::int32_t date_, std::int32_t edit_date_,
+            object_ptr<MessageForwardInfo> &&forward_info_, std::int64_t reply_to_message_id_,
+            std::int32_t ttl_, double ttl_expires_in_, std::int32_t via_bot_user_id_,
+            std::string const &author_signature_, std::int32_t views_, std::int64_t media_album_id_,
             object_ptr<MessageContent> &&content_, object_ptr<ReplyMarkup> &&reply_markup_);
 
-    static const int32_t ID = -675737627;
-    int32_t get_id() const final
+    static const std::int32_t ID = -675737627;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4800,8 +4939,8 @@ public:
 
     messageText(object_ptr<formattedText> &&text_, object_ptr<webPage> &&web_page_);
 
-    static const int32_t ID = 1989037971;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1989037971;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4814,13 +4953,15 @@ class messageAnimation final : public MessageContent
 public:
     object_ptr<animation> animation_;
     object_ptr<formattedText> caption_;
+    bool is_secret_;
 
     messageAnimation();
 
-    messageAnimation(object_ptr<animation> &&animation_, object_ptr<formattedText> &&caption_);
+    messageAnimation(object_ptr<animation> &&animation_, object_ptr<formattedText> &&caption_,
+                     bool is_secret_);
 
-    static const int32_t ID = 251458960;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1306939396;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4838,8 +4979,8 @@ public:
 
     messageAudio(object_ptr<audio> &&audio_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 276722716;
-    int32_t get_id() const final
+    static const std::int32_t ID = 276722716;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4857,8 +4998,8 @@ public:
 
     messageDocument(object_ptr<document> &&document_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 596945783;
-    int32_t get_id() const final
+    static const std::int32_t ID = 596945783;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4871,13 +5012,14 @@ class messagePhoto final : public MessageContent
 public:
     object_ptr<photo> photo_;
     object_ptr<formattedText> caption_;
+    bool is_secret_;
 
     messagePhoto();
 
-    messagePhoto(object_ptr<photo> &&photo_, object_ptr<formattedText> &&caption_);
+    messagePhoto(object_ptr<photo> &&photo_, object_ptr<formattedText> &&caption_, bool is_secret_);
 
-    static const int32_t ID = 1740718156;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1851395174;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4891,8 +5033,8 @@ public:
 
     messageExpiredPhoto();
 
-    static const int32_t ID = -1404641801;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1404641801;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4909,8 +5051,8 @@ public:
 
     explicit messageSticker(object_ptr<sticker> &&sticker_);
 
-    static const int32_t ID = 1779022878;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1779022878;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4923,13 +5065,14 @@ class messageVideo final : public MessageContent
 public:
     object_ptr<video> video_;
     object_ptr<formattedText> caption_;
+    bool is_secret_;
 
     messageVideo();
 
-    messageVideo(object_ptr<video> &&video_, object_ptr<formattedText> &&caption_);
+    messageVideo(object_ptr<video> &&video_, object_ptr<formattedText> &&caption_, bool is_secret_);
 
-    static const int32_t ID = -668896935;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2021281344;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4943,8 +5086,8 @@ public:
 
     messageExpiredVideo();
 
-    static const int32_t ID = -1212209981;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1212209981;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4957,13 +5100,14 @@ class messageVideoNote final : public MessageContent
 public:
     object_ptr<videoNote> video_note_;
     bool is_viewed_;
+    bool is_secret_;
 
     messageVideoNote();
 
-    messageVideoNote(object_ptr<videoNote> &&video_note_, bool is_viewed_);
+    messageVideoNote(object_ptr<videoNote> &&video_note_, bool is_viewed_, bool is_secret_);
 
-    static const int32_t ID = 283807685;
-    int32_t get_id() const final
+    static const std::int32_t ID = 963323014;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4983,8 +5127,8 @@ public:
     messageVoiceNote(object_ptr<voiceNote> &&voice_note_, object_ptr<formattedText> &&caption_,
                      bool is_listened_);
 
-    static const int32_t ID = 527777781;
-    int32_t get_id() const final
+    static const std::int32_t ID = 527777781;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -4996,14 +5140,16 @@ class messageLocation final : public MessageContent
 {
 public:
     object_ptr<location> location_;
-    int32_t live_period_;
+    std::int32_t live_period_;
+    std::int32_t expires_in_;
 
     messageLocation();
 
-    messageLocation(object_ptr<location> &&location_, int32_t live_period_);
+    messageLocation(object_ptr<location> &&location_, std::int32_t live_period_,
+                    std::int32_t expires_in_);
 
-    static const int32_t ID = -1537763861;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1301887786;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5020,8 +5166,8 @@ public:
 
     explicit messageVenue(object_ptr<venue> &&venue_);
 
-    static const int32_t ID = -2146492043;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2146492043;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5038,8 +5184,8 @@ public:
 
     explicit messageContact(object_ptr<contact> &&contact_);
 
-    static const int32_t ID = -512684966;
-    int32_t get_id() const final
+    static const std::int32_t ID = -512684966;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5056,8 +5202,8 @@ public:
 
     explicit messageGame(object_ptr<game> &&game_);
 
-    static const int32_t ID = -69441162;
-    int32_t get_id() const final
+    static const std::int32_t ID = -69441162;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5072,21 +5218,21 @@ public:
     std::string description_;
     object_ptr<photo> photo_;
     std::string currency_;
-    int64_t total_amount_;
+    std::int64_t total_amount_;
     std::string start_parameter_;
     bool is_test_;
     bool need_shipping_address_;
-    int64_t receipt_message_id_;
+    std::int64_t receipt_message_id_;
 
     messageInvoice();
 
     messageInvoice(std::string const &title_, std::string const &description_,
-                   object_ptr<photo> &&photo_, std::string const &currency_, int64_t total_amount_,
+                   object_ptr<photo> &&photo_, std::string const &currency_, std::int64_t total_amount_,
                    std::string const &start_parameter_, bool is_test_, bool need_shipping_address_,
-                   int64_t receipt_message_id_);
+                   std::int64_t receipt_message_id_);
 
-    static const int32_t ID = -1916671476;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1916671476;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5098,14 +5244,14 @@ class messageCall final : public MessageContent
 {
 public:
     object_ptr<CallDiscardReason> discard_reason_;
-    int32_t duration_;
+    std::int32_t duration_;
 
     messageCall();
 
-    messageCall(object_ptr<CallDiscardReason> &&discard_reason_, int32_t duration_);
+    messageCall(object_ptr<CallDiscardReason> &&discard_reason_, std::int32_t duration_);
 
-    static const int32_t ID = 366512596;
-    int32_t get_id() const final
+    static const std::int32_t ID = 366512596;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5117,15 +5263,15 @@ class messageBasicGroupChatCreate final : public MessageContent
 {
 public:
     std::string title_;
-    std::vector<int32_t> member_user_ids_;
+    std::vector<std::int32_t> member_user_ids_;
 
     messageBasicGroupChatCreate();
 
     messageBasicGroupChatCreate(std::string const &title_,
-                                std::vector<int32_t> &&member_user_ids_);
+                                std::vector<std::int32_t> &&member_user_ids_);
 
-    static const int32_t ID = 1575377646;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1575377646;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5142,8 +5288,8 @@ public:
 
     explicit messageSupergroupChatCreate(std::string const &title_);
 
-    static const int32_t ID = -434325733;
-    int32_t get_id() const final
+    static const std::int32_t ID = -434325733;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5160,8 +5306,8 @@ public:
 
     explicit messageChatChangeTitle(std::string const &title_);
 
-    static const int32_t ID = 748272449;
-    int32_t get_id() const final
+    static const std::int32_t ID = 748272449;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5178,8 +5324,8 @@ public:
 
     explicit messageChatChangePhoto(object_ptr<photo> &&photo_);
 
-    static const int32_t ID = 319630249;
-    int32_t get_id() const final
+    static const std::int32_t ID = 319630249;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5193,8 +5339,8 @@ public:
 
     messageChatDeletePhoto();
 
-    static const int32_t ID = -184374809;
-    int32_t get_id() const final
+    static const std::int32_t ID = -184374809;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5205,14 +5351,14 @@ public:
 class messageChatAddMembers final : public MessageContent
 {
 public:
-    std::vector<int32_t> member_user_ids_;
+    std::vector<std::int32_t> member_user_ids_;
 
     messageChatAddMembers();
 
-    explicit messageChatAddMembers(std::vector<int32_t> &&member_user_ids_);
+    explicit messageChatAddMembers(std::vector<std::int32_t> &&member_user_ids_);
 
-    static const int32_t ID = 401228326;
-    int32_t get_id() const final
+    static const std::int32_t ID = 401228326;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5226,8 +5372,8 @@ public:
 
     messageChatJoinByLink();
 
-    static const int32_t ID = 1846493311;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1846493311;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5238,14 +5384,14 @@ public:
 class messageChatDeleteMember final : public MessageContent
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     messageChatDeleteMember();
 
-    explicit messageChatDeleteMember(int32_t user_id_);
+    explicit messageChatDeleteMember(std::int32_t user_id_);
 
-    static const int32_t ID = 1164414043;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1164414043;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5256,14 +5402,14 @@ public:
 class messageChatUpgradeTo final : public MessageContent
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
 
     messageChatUpgradeTo();
 
-    explicit messageChatUpgradeTo(int32_t supergroup_id_);
+    explicit messageChatUpgradeTo(std::int32_t supergroup_id_);
 
-    static const int32_t ID = 1957816681;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1957816681;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5275,14 +5421,14 @@ class messageChatUpgradeFrom final : public MessageContent
 {
 public:
     std::string title_;
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
 
     messageChatUpgradeFrom();
 
-    messageChatUpgradeFrom(std::string const &title_, int32_t basic_group_id_);
+    messageChatUpgradeFrom(std::string const &title_, std::int32_t basic_group_id_);
 
-    static const int32_t ID = 1642272558;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1642272558;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5293,14 +5439,14 @@ public:
 class messagePinMessage final : public MessageContent
 {
 public:
-    int64_t message_id_;
+    std::int64_t message_id_;
 
     messagePinMessage();
 
-    explicit messagePinMessage(int64_t message_id_);
+    explicit messagePinMessage(std::int64_t message_id_);
 
-    static const int32_t ID = 953503801;
-    int32_t get_id() const final
+    static const std::int32_t ID = 953503801;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5314,8 +5460,8 @@ public:
 
     messageScreenshotTaken();
 
-    static const int32_t ID = -1564971605;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1564971605;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5326,14 +5472,14 @@ public:
 class messageChatSetTtl final : public MessageContent
 {
 public:
-    int32_t ttl_;
+    std::int32_t ttl_;
 
     messageChatSetTtl();
 
-    explicit messageChatSetTtl(int32_t ttl_);
+    explicit messageChatSetTtl(std::int32_t ttl_);
 
-    static const int32_t ID = 1810060209;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1810060209;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5350,8 +5496,8 @@ public:
 
     explicit messageCustomServiceAction(std::string const &text_);
 
-    static const int32_t ID = 1435879282;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1435879282;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5362,16 +5508,16 @@ public:
 class messageGameScore final : public MessageContent
 {
 public:
-    int64_t game_message_id_;
-    int64_t game_id_;
-    int32_t score_;
+    std::int64_t game_message_id_;
+    std::int64_t game_id_;
+    std::int32_t score_;
 
     messageGameScore();
 
-    messageGameScore(int64_t game_message_id_, int64_t game_id_, int32_t score_);
+    messageGameScore(std::int64_t game_message_id_, std::int64_t game_id_, std::int32_t score_);
 
-    static const int32_t ID = 1344904575;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1344904575;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5382,17 +5528,17 @@ public:
 class messagePaymentSuccessful final : public MessageContent
 {
 public:
-    int64_t invoice_message_id_;
+    std::int64_t invoice_message_id_;
     std::string currency_;
-    int64_t total_amount_;
+    std::int64_t total_amount_;
 
     messagePaymentSuccessful();
 
-    messagePaymentSuccessful(int64_t invoice_message_id_, std::string const &currency_,
-                             int64_t total_amount_);
+    messagePaymentSuccessful(std::int64_t invoice_message_id_, std::string const &currency_,
+                             std::int64_t total_amount_);
 
-    static const int32_t ID = -595962993;
-    int32_t get_id() const final
+    static const std::int32_t ID = -595962993;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5403,9 +5549,9 @@ public:
 class messagePaymentSuccessfulBot final : public MessageContent
 {
 public:
-    int64_t invoice_message_id_;
+    std::int64_t invoice_message_id_;
     std::string currency_;
-    int64_t total_amount_;
+    std::int64_t total_amount_;
     std::string invoice_payload_;
     std::string shipping_option_id_;
     object_ptr<orderInfo> order_info_;
@@ -5414,13 +5560,13 @@ public:
 
     messagePaymentSuccessfulBot();
 
-    messagePaymentSuccessfulBot(int64_t invoice_message_id_, std::string const &currency_,
-                                int64_t total_amount_, std::string const &invoice_payload_,
+    messagePaymentSuccessfulBot(std::int64_t invoice_message_id_, std::string const &currency_,
+                                std::int64_t total_amount_, std::string const &invoice_payload_,
                                 std::string const &shipping_option_id_, object_ptr<orderInfo> &&order_info_,
                                 std::string const &telegram_payment_charge_id_, std::string const &provider_payment_charge_id_);
 
-    static const int32_t ID = -412310696;
-    int32_t get_id() const final
+    static const std::int32_t ID = -412310696;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5434,8 +5580,26 @@ public:
 
     messageContactRegistered();
 
-    static const int32_t ID = -1502020353;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1502020353;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class messageWebsiteConnected final : public MessageContent
+{
+public:
+    std::string domain_name_;
+
+    messageWebsiteConnected();
+
+    explicit messageWebsiteConnected(std::string const &domain_name_);
+
+    static const std::int32_t ID = -1074551800;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5449,8 +5613,8 @@ public:
 
     messageUnsupported();
 
-    static const int32_t ID = -1816726139;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1816726139;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5466,18 +5630,18 @@ public:
 class messageForwardedFromUser final : public MessageForwardInfo
 {
 public:
-    int32_t sender_user_id_;
-    int32_t date_;
-    int64_t forwarded_from_chat_id_;
-    int64_t forwarded_from_message_id_;
+    std::int32_t sender_user_id_;
+    std::int32_t date_;
+    std::int64_t forwarded_from_chat_id_;
+    std::int64_t forwarded_from_message_id_;
 
     messageForwardedFromUser();
 
-    messageForwardedFromUser(int32_t sender_user_id_, int32_t date_,
-                             int64_t forwarded_from_chat_id_, int64_t forwarded_from_message_id_);
+    messageForwardedFromUser(std::int32_t sender_user_id_, std::int32_t date_,
+                             std::int64_t forwarded_from_chat_id_, std::int64_t forwarded_from_message_id_);
 
-    static const int32_t ID = 1004332765;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1004332765;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5488,21 +5652,21 @@ public:
 class messageForwardedPost final : public MessageForwardInfo
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string author_signature_;
-    int32_t date_;
-    int64_t message_id_;
-    int64_t forwarded_from_chat_id_;
-    int64_t forwarded_from_message_id_;
+    std::int32_t date_;
+    std::int64_t message_id_;
+    std::int64_t forwarded_from_chat_id_;
+    std::int64_t forwarded_from_message_id_;
 
     messageForwardedPost();
 
-    messageForwardedPost(int64_t chat_id_, std::string const &author_signature_,
-                         int32_t date_, int64_t message_id_, int64_t forwarded_from_chat_id_,
-                         int64_t forwarded_from_message_id_);
+    messageForwardedPost(std::int64_t chat_id_, std::string const &author_signature_,
+                         std::int32_t date_, std::int64_t message_id_, std::int64_t forwarded_from_chat_id_,
+                         std::int64_t forwarded_from_message_id_);
 
-    static const int32_t ID = -244050875;
-    int32_t get_id() const final
+    static const std::int32_t ID = -244050875;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5521,8 +5685,8 @@ public:
 
     messageSendingStatePending();
 
-    static const int32_t ID = -1381803582;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1381803582;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5536,8 +5700,8 @@ public:
 
     messageSendingStateFailed();
 
-    static const int32_t ID = -546610323;
-    int32_t get_id() const final
+    static const std::int32_t ID = -546610323;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5548,15 +5712,15 @@ public:
 class messages final : public Object
 {
 public:
-    int32_t total_count_;
+    std::int32_t total_count_;
     std::vector<object_ptr<message>> messages_;
 
     messages();
 
-    messages(int32_t total_count_, std::vector<object_ptr<message>> &&messages_);
+    messages(std::int32_t total_count_, std::vector<object_ptr<message>> &&messages_);
 
-    static const int32_t ID = -16498159;
-    int32_t get_id() const final
+    static const std::int32_t ID = -16498159;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5567,16 +5731,16 @@ public:
 class networkStatistics final : public Object
 {
 public:
-    int32_t since_date_;
+    std::int32_t since_date_;
     std::vector<object_ptr<NetworkStatisticsEntry>> entries_;
 
     networkStatistics();
 
-    networkStatistics(int32_t since_date_,
+    networkStatistics(std::int32_t since_date_,
                       std::vector<object_ptr<NetworkStatisticsEntry>> &&entries_);
 
-    static const int32_t ID = 1615554212;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1615554212;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5594,16 +5758,16 @@ class networkStatisticsEntryFile final : public NetworkStatisticsEntry
 public:
     object_ptr<FileType> file_type_;
     object_ptr<NetworkType> network_type_;
-    int64_t sent_bytes_;
-    int64_t received_bytes_;
+    std::int64_t sent_bytes_;
+    std::int64_t received_bytes_;
 
     networkStatisticsEntryFile();
 
     networkStatisticsEntryFile(object_ptr<FileType> &&file_type_,
-                               object_ptr<NetworkType> &&network_type_, int64_t sent_bytes_, int64_t received_bytes_);
+                               object_ptr<NetworkType> &&network_type_, std::int64_t sent_bytes_, std::int64_t received_bytes_);
 
-    static const int32_t ID = 188452706;
-    int32_t get_id() const final
+    static const std::int32_t ID = 188452706;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5615,17 +5779,17 @@ class networkStatisticsEntryCall final : public NetworkStatisticsEntry
 {
 public:
     object_ptr<NetworkType> network_type_;
-    int64_t sent_bytes_;
-    int64_t received_bytes_;
+    std::int64_t sent_bytes_;
+    std::int64_t received_bytes_;
     double duration_;
 
     networkStatisticsEntryCall();
 
-    networkStatisticsEntryCall(object_ptr<NetworkType> &&network_type_, int64_t sent_bytes_,
-                               int64_t received_bytes_, double duration_);
+    networkStatisticsEntryCall(object_ptr<NetworkType> &&network_type_, std::int64_t sent_bytes_,
+                               std::int64_t received_bytes_, double duration_);
 
-    static const int32_t ID = 737000365;
-    int32_t get_id() const final
+    static const std::int32_t ID = 737000365;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5644,8 +5808,8 @@ public:
 
     networkTypeNone();
 
-    static const int32_t ID = -1971691759;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1971691759;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5659,8 +5823,8 @@ public:
 
     networkTypeMobile();
 
-    static const int32_t ID = 819228239;
-    int32_t get_id() const final
+    static const std::int32_t ID = 819228239;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5674,8 +5838,8 @@ public:
 
     networkTypeMobileRoaming();
 
-    static const int32_t ID = -1435199760;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1435199760;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5689,8 +5853,8 @@ public:
 
     networkTypeWiFi();
 
-    static const int32_t ID = -633872070;
-    int32_t get_id() const final
+    static const std::int32_t ID = -633872070;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5704,8 +5868,8 @@ public:
 
     networkTypeOther();
 
-    static const int32_t ID = 1942128539;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1942128539;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5716,16 +5880,16 @@ public:
 class notificationSettings final : public Object
 {
 public:
-    int32_t mute_for_;
+    std::int32_t mute_for_;
     std::string sound_;
     bool show_preview_;
 
     notificationSettings();
 
-    notificationSettings(int32_t mute_for_, std::string const &sound_, bool show_preview_);
+    notificationSettings(std::int32_t mute_for_, std::string const &sound_, bool show_preview_);
 
-    static const int32_t ID = 1737538681;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1737538681;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5741,14 +5905,14 @@ public:
 class notificationSettingsScopeChat final : public NotificationSettingsScope
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     notificationSettingsScopeChat();
 
-    explicit notificationSettingsScopeChat(int64_t chat_id_);
+    explicit notificationSettingsScopeChat(std::int64_t chat_id_);
 
-    static const int32_t ID = 1855845499;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1855845499;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5762,8 +5926,8 @@ public:
 
     notificationSettingsScopePrivateChats();
 
-    static const int32_t ID = 937446759;
-    int32_t get_id() const final
+    static const std::int32_t ID = 937446759;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5777,8 +5941,8 @@ public:
 
     notificationSettingsScopeBasicGroupChats();
 
-    static const int32_t ID = -1358646601;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1358646601;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5792,8 +5956,8 @@ public:
 
     notificationSettingsScopeAllChats();
 
-    static const int32_t ID = -1345889922;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1345889922;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5807,8 +5971,8 @@ public:
 
     ok();
 
-    static const int32_t ID = -722616727;
-    int32_t get_id() const final
+    static const std::int32_t ID = -722616727;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5830,8 +5994,8 @@ public:
 
     explicit optionValueBoolean(bool value_);
 
-    static const int32_t ID = 63135518;
-    int32_t get_id() const final
+    static const std::int32_t ID = 63135518;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5845,8 +6009,8 @@ public:
 
     optionValueEmpty();
 
-    static const int32_t ID = 918955155;
-    int32_t get_id() const final
+    static const std::int32_t ID = 918955155;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5857,14 +6021,14 @@ public:
 class optionValueInteger final : public OptionValue
 {
 public:
-    int32_t value_;
+    std::int32_t value_;
 
     optionValueInteger();
 
-    explicit optionValueInteger(int32_t value_);
+    explicit optionValueInteger(std::int32_t value_);
 
-    static const int32_t ID = -1400911104;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1400911104;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5881,8 +6045,8 @@ public:
 
     explicit optionValueString(std::string const &value_);
 
-    static const int32_t ID = 756248212;
-    int32_t get_id() const final
+    static const std::int32_t ID = 756248212;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5903,8 +6067,8 @@ public:
     orderInfo(std::string const &name_, std::string const &phone_number_,
               std::string const &email_address_, object_ptr<shippingAddress> &&shipping_address_);
 
-    static const int32_t ID = -1830611784;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1830611784;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5926,8 +6090,8 @@ public:
 
     explicit pageBlockTitle(object_ptr<RichText> &&title_);
 
-    static const int32_t ID = 1629664784;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1629664784;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5944,8 +6108,8 @@ public:
 
     explicit pageBlockSubtitle(object_ptr<RichText> &&subtitle_);
 
-    static const int32_t ID = 264524263;
-    int32_t get_id() const final
+    static const std::int32_t ID = 264524263;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5957,14 +6121,14 @@ class pageBlockAuthorDate final : public PageBlock
 {
 public:
     object_ptr<RichText> author_;
-    int32_t publish_date_;
+    std::int32_t publish_date_;
 
     pageBlockAuthorDate();
 
-    pageBlockAuthorDate(object_ptr<RichText> &&author_, int32_t publish_date_);
+    pageBlockAuthorDate(object_ptr<RichText> &&author_, std::int32_t publish_date_);
 
-    static const int32_t ID = 1300231184;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1300231184;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5981,8 +6145,8 @@ public:
 
     explicit pageBlockHeader(object_ptr<RichText> &&header_);
 
-    static const int32_t ID = 1402854811;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1402854811;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -5999,8 +6163,8 @@ public:
 
     explicit pageBlockSubheader(object_ptr<RichText> &&subheader_);
 
-    static const int32_t ID = 1263956774;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1263956774;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6017,8 +6181,8 @@ public:
 
     explicit pageBlockParagraph(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = 1182402406;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1182402406;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6036,8 +6200,8 @@ public:
 
     pageBlockPreformatted(object_ptr<RichText> &&text_, std::string const &language_);
 
-    static const int32_t ID = -1066346178;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1066346178;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6054,8 +6218,8 @@ public:
 
     explicit pageBlockFooter(object_ptr<RichText> &&footer_);
 
-    static const int32_t ID = 886429480;
-    int32_t get_id() const final
+    static const std::int32_t ID = 886429480;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6069,8 +6233,8 @@ public:
 
     pageBlockDivider();
 
-    static const int32_t ID = -618614392;
-    int32_t get_id() const final
+    static const std::int32_t ID = -618614392;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6087,8 +6251,8 @@ public:
 
     explicit pageBlockAnchor(std::string const &name_);
 
-    static const int32_t ID = -837994576;
-    int32_t get_id() const final
+    static const std::int32_t ID = -837994576;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6106,8 +6270,8 @@ public:
 
     pageBlockList(std::vector<object_ptr<RichText>> &&items_, bool is_ordered_);
 
-    static const int32_t ID = -1752631674;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1752631674;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6125,8 +6289,8 @@ public:
 
     pageBlockBlockQuote(object_ptr<RichText> &&text_, object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = -37421406;
-    int32_t get_id() const final
+    static const std::int32_t ID = -37421406;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6144,8 +6308,8 @@ public:
 
     pageBlockPullQuote(object_ptr<RichText> &&text_, object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = -1799498665;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1799498665;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6165,8 +6329,8 @@ public:
     pageBlockAnimation(object_ptr<animation> &&animation_, object_ptr<RichText> &&caption_,
                        bool need_autoplay_);
 
-    static const int32_t ID = 1639478661;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1639478661;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6184,8 +6348,8 @@ public:
 
     pageBlockAudio(object_ptr<audio> &&audio_, object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = 1898245855;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1898245855;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6203,8 +6367,8 @@ public:
 
     pageBlockPhoto(object_ptr<photo> &&photo_, object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = -637181825;
-    int32_t get_id() const final
+    static const std::int32_t ID = -637181825;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6225,8 +6389,8 @@ public:
     pageBlockVideo(object_ptr<video> &&video_, object_ptr<RichText> &&caption_, bool need_autoplay_,
                    bool is_looped_);
 
-    static const int32_t ID = 1610373002;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1610373002;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6243,8 +6407,8 @@ public:
 
     explicit pageBlockCover(object_ptr<PageBlock> &&cover_);
 
-    static const int32_t ID = 972174080;
-    int32_t get_id() const final
+    static const std::int32_t ID = 972174080;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6258,8 +6422,8 @@ public:
     std::string url_;
     std::string html_;
     object_ptr<photo> poster_photo_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t width_;
+    std::int32_t height_;
     object_ptr<RichText> caption_;
     bool is_full_width_;
     bool allow_scrolling_;
@@ -6267,11 +6431,11 @@ public:
     pageBlockEmbedded();
 
     pageBlockEmbedded(std::string const &url_, std::string const &html_,
-                      object_ptr<photo> &&poster_photo_, int32_t width_, int32_t height_,
+                      object_ptr<photo> &&poster_photo_, std::int32_t width_, std::int32_t height_,
                       object_ptr<RichText> &&caption_, bool is_full_width_, bool allow_scrolling_);
 
-    static const int32_t ID = -211257334;
-    int32_t get_id() const final
+    static const std::int32_t ID = -211257334;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6285,18 +6449,18 @@ public:
     std::string url_;
     std::string author_;
     object_ptr<photo> author_photo_;
-    int32_t date_;
+    std::int32_t date_;
     std::vector<object_ptr<PageBlock>> page_blocks_;
     object_ptr<RichText> caption_;
 
     pageBlockEmbeddedPost();
 
     pageBlockEmbeddedPost(std::string const &url_, std::string const &author_,
-                          object_ptr<photo> &&author_photo_, int32_t date_,
+                          object_ptr<photo> &&author_photo_, std::int32_t date_,
                           std::vector<object_ptr<PageBlock>> &&page_blocks_, object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = 1049948772;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1049948772;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6315,8 +6479,8 @@ public:
     pageBlockCollage(std::vector<object_ptr<PageBlock>> &&page_blocks_,
                      object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = 911142202;
-    int32_t get_id() const final
+    static const std::int32_t ID = 911142202;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6335,8 +6499,8 @@ public:
     pageBlockSlideshow(std::vector<object_ptr<PageBlock>> &&page_blocks_,
                        object_ptr<RichText> &&caption_);
 
-    static const int32_t ID = 178557514;
-    int32_t get_id() const final
+    static const std::int32_t ID = 178557514;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6356,8 +6520,8 @@ public:
     pageBlockChatLink(std::string const &title_, object_ptr<chatPhoto> &&photo_,
                       std::string const &username_);
 
-    static const int32_t ID = 214606645;
-    int32_t get_id() const final
+    static const std::int32_t ID = 214606645;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6374,8 +6538,8 @@ public:
 
     explicit passwordRecoveryInfo(std::string const &recovery_email_address_pattern_);
 
-    static const int32_t ID = 1483233330;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1483233330;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6396,8 +6560,8 @@ public:
     passwordState(bool has_password_, std::string const &password_hint_,
                   bool has_recovery_email_address_, std::string const &unconfirmed_recovery_email_address_pattern_);
 
-    static const int32_t ID = 1383061922;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1383061922;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6422,8 +6586,8 @@ public:
                 object_ptr<paymentsProviderStripe> &&payments_provider_, object_ptr<orderInfo> &&saved_order_info_,
                 object_ptr<savedCredentials> &&saved_credentials_, bool can_save_credentials_, bool need_password_);
 
-    static const int32_t ID = -200418230;
-    int32_t get_id() const final
+    static const std::int32_t ID = -200418230;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6434,8 +6598,8 @@ public:
 class paymentReceipt final : public Object
 {
 public:
-    int32_t date_;
-    int32_t payments_provider_user_id_;
+    std::int32_t date_;
+    std::int32_t payments_provider_user_id_;
     object_ptr<invoice> invoice_;
     object_ptr<orderInfo> order_info_;
     object_ptr<shippingOption> shipping_option_;
@@ -6443,12 +6607,12 @@ public:
 
     paymentReceipt();
 
-    paymentReceipt(int32_t date_, int32_t payments_provider_user_id_,
+    paymentReceipt(std::int32_t date_, std::int32_t payments_provider_user_id_,
                    object_ptr<invoice> &&invoice_, object_ptr<orderInfo> &&order_info_,
                    object_ptr<shippingOption> &&shipping_option_, std::string const &credentials_title_);
 
-    static const int32_t ID = -1171223545;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1171223545;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6466,8 +6630,8 @@ public:
 
     paymentResult(bool success_, std::string const &verification_url_);
 
-    static const int32_t ID = -804263843;
-    int32_t get_id() const final
+    static const std::int32_t ID = -804263843;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6488,8 +6652,8 @@ public:
     paymentsProviderStripe(std::string const &publishable_key_, bool need_country_,
                            bool need_postal_code_, bool need_cardholder_name_);
 
-    static const int32_t ID = 1090791032;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1090791032;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6500,16 +6664,16 @@ public:
 class photo final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     bool has_stickers_;
     std::vector<object_ptr<photoSize>> sizes_;
 
     photo();
 
-    photo(int64_t id_, bool has_stickers_, std::vector<object_ptr<photoSize>> &&sizes_);
+    photo(std::int64_t id_, bool has_stickers_, std::vector<object_ptr<photoSize>> &&sizes_);
 
-    static const int32_t ID = -1949521787;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1949521787;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6522,16 +6686,16 @@ class photoSize final : public Object
 public:
     std::string type_;
     object_ptr<file> photo_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t width_;
+    std::int32_t height_;
 
     photoSize();
 
-    photoSize(std::string const &type_, object_ptr<file> &&photo_, int32_t width_,
-              int32_t height_);
+    photoSize(std::string const &type_, object_ptr<file> &&photo_, std::int32_t width_,
+              std::int32_t height_);
 
-    static const int32_t ID = 421980227;
-    int32_t get_id() const final
+    static const std::int32_t ID = 421980227;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6542,16 +6706,16 @@ public:
 class profilePhoto final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     object_ptr<file> small_;
     object_ptr<file> big_;
 
     profilePhoto();
 
-    profilePhoto(int64_t id_, object_ptr<file> &&small_, object_ptr<file> &&big_);
+    profilePhoto(std::int64_t id_, object_ptr<file> &&small_, object_ptr<file> &&big_);
 
-    static const int32_t ID = 978085937;
-    int32_t get_id() const final
+    static const std::int32_t ID = 978085937;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6570,8 +6734,8 @@ public:
 
     proxyEmpty();
 
-    static const int32_t ID = 748440246;
-    int32_t get_id() const final
+    static const std::int32_t ID = 748440246;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6583,17 +6747,17 @@ class proxySocks5 final : public Proxy
 {
 public:
     std::string server_;
-    int32_t port_;
+    std::int32_t port_;
     std::string username_;
     std::string password_;
 
     proxySocks5();
 
-    proxySocks5(std::string const &server_, int32_t port_, std::string const &username_,
+    proxySocks5(std::string const &server_, std::int32_t port_, std::string const &username_,
                 std::string const &password_);
 
-    static const int32_t ID = 1456461592;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1456461592;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6611,8 +6775,8 @@ public:
 
     publicMessageLink(std::string const &link_, std::string const &html_);
 
-    static const int32_t ID = -679603433;
-    int32_t get_id() const final
+    static const std::int32_t ID = -679603433;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6629,8 +6793,8 @@ public:
 
     explicit recoveryEmailAddress(std::string const &recovery_email_address_);
 
-    static const int32_t ID = 1290526187;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1290526187;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6644,15 +6808,15 @@ public:
     std::string id_;
     bool is_uploading_active_;
     bool is_uploading_completed_;
-    int32_t uploaded_size_;
+    std::int32_t uploaded_size_;
 
     remoteFile();
 
     remoteFile(std::string const &id_, bool is_uploading_active_, bool is_uploading_completed_,
-               int32_t uploaded_size_);
+               std::int32_t uploaded_size_);
 
-    static const int32_t ID = 1761289748;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1761289748;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6674,8 +6838,8 @@ public:
 
     explicit replyMarkupRemoveKeyboard(bool is_personal_);
 
-    static const int32_t ID = -691252879;
-    int32_t get_id() const final
+    static const std::int32_t ID = -691252879;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6692,8 +6856,8 @@ public:
 
     explicit replyMarkupForceReply(bool is_personal_);
 
-    static const int32_t ID = 1039104593;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1039104593;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6714,8 +6878,8 @@ public:
     replyMarkupShowKeyboard(std::vector<std::vector<object_ptr<keyboardButton>>> &&rows_,
                             bool resize_keyboard_, bool one_time_, bool is_personal_);
 
-    static const int32_t ID = -992627133;
-    int32_t get_id() const final
+    static const std::int32_t ID = -992627133;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6733,8 +6897,8 @@ public:
     explicit replyMarkupInlineKeyboard(std::vector<std::vector<object_ptr<inlineKeyboardButton>>>
                                        &&rows_);
 
-    static const int32_t ID = -619317658;
-    int32_t get_id() const final
+    static const std::int32_t ID = -619317658;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6756,8 +6920,8 @@ public:
 
     explicit richTextPlain(std::string const &text_);
 
-    static const int32_t ID = 482617702;
-    int32_t get_id() const final
+    static const std::int32_t ID = 482617702;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6774,8 +6938,8 @@ public:
 
     explicit richTextBold(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = 1670844268;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1670844268;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6792,8 +6956,8 @@ public:
 
     explicit richTextItalic(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = 1853354047;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1853354047;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6810,8 +6974,8 @@ public:
 
     explicit richTextUnderline(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = -536019572;
-    int32_t get_id() const final
+    static const std::int32_t ID = -536019572;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6828,8 +6992,8 @@ public:
 
     explicit richTextStrikethrough(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = 723413585;
-    int32_t get_id() const final
+    static const std::int32_t ID = 723413585;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6846,8 +7010,8 @@ public:
 
     explicit richTextFixed(object_ptr<RichText> &&text_);
 
-    static const int32_t ID = -1271496249;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1271496249;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6865,8 +7029,8 @@ public:
 
     richTextUrl(object_ptr<RichText> &&text_, std::string const &url_);
 
-    static const int32_t ID = 1967248447;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1967248447;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6884,8 +7048,8 @@ public:
 
     richTextEmailAddress(object_ptr<RichText> &&text_, std::string const &email_address_);
 
-    static const int32_t ID = 40018679;
-    int32_t get_id() const final
+    static const std::int32_t ID = 40018679;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6902,8 +7066,8 @@ public:
 
     explicit richTexts(std::vector<object_ptr<RichText>> &&texts_);
 
-    static const int32_t ID = 1647457821;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1647457821;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6921,8 +7085,8 @@ public:
 
     savedCredentials(std::string const &id_, std::string const &title_);
 
-    static const int32_t ID = -370273060;
-    int32_t get_id() const final
+    static const std::int32_t ID = -370273060;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6941,8 +7105,8 @@ public:
 
     searchMessagesFilterEmpty();
 
-    static const int32_t ID = -869395657;
-    int32_t get_id() const final
+    static const std::int32_t ID = -869395657;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6956,8 +7120,8 @@ public:
 
     searchMessagesFilterAnimation();
 
-    static const int32_t ID = -155713339;
-    int32_t get_id() const final
+    static const std::int32_t ID = -155713339;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6971,8 +7135,8 @@ public:
 
     searchMessagesFilterAudio();
 
-    static const int32_t ID = 867505275;
-    int32_t get_id() const final
+    static const std::int32_t ID = 867505275;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -6986,8 +7150,8 @@ public:
 
     searchMessagesFilterDocument();
 
-    static const int32_t ID = 1526331215;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1526331215;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7001,8 +7165,8 @@ public:
 
     searchMessagesFilterPhoto();
 
-    static const int32_t ID = 925932293;
-    int32_t get_id() const final
+    static const std::int32_t ID = 925932293;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7016,8 +7180,8 @@ public:
 
     searchMessagesFilterVideo();
 
-    static const int32_t ID = 115538222;
-    int32_t get_id() const final
+    static const std::int32_t ID = 115538222;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7031,8 +7195,8 @@ public:
 
     searchMessagesFilterVoiceNote();
 
-    static const int32_t ID = 1841439357;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1841439357;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7046,8 +7210,8 @@ public:
 
     searchMessagesFilterPhotoAndVideo();
 
-    static const int32_t ID = 1352130963;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1352130963;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7061,8 +7225,8 @@ public:
 
     searchMessagesFilterUrl();
 
-    static const int32_t ID = -1828724341;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1828724341;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7076,8 +7240,8 @@ public:
 
     searchMessagesFilterChatPhoto();
 
-    static const int32_t ID = -1247751329;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1247751329;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7091,8 +7255,8 @@ public:
 
     searchMessagesFilterCall();
 
-    static const int32_t ID = 1305231012;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1305231012;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7106,8 +7270,8 @@ public:
 
     searchMessagesFilterMissedCall();
 
-    static const int32_t ID = 970663098;
-    int32_t get_id() const final
+    static const std::int32_t ID = 970663098;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7121,8 +7285,8 @@ public:
 
     searchMessagesFilterVideoNote();
 
-    static const int32_t ID = 564323321;
-    int32_t get_id() const final
+    static const std::int32_t ID = 564323321;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7136,8 +7300,8 @@ public:
 
     searchMessagesFilterVoiceAndVideoNote();
 
-    static const int32_t ID = 664174819;
-    int32_t get_id() const final
+    static const std::int32_t ID = 664174819;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7151,8 +7315,8 @@ public:
 
     searchMessagesFilterMention();
 
-    static const int32_t ID = 2001258652;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2001258652;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7166,8 +7330,8 @@ public:
 
     searchMessagesFilterUnreadMention();
 
-    static const int32_t ID = -95769149;
-    int32_t get_id() const final
+    static const std::int32_t ID = -95769149;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7178,21 +7342,21 @@ public:
 class secretChat final : public Object
 {
 public:
-    int32_t id_;
-    int32_t user_id_;
+    std::int32_t id_;
+    std::int32_t user_id_;
     object_ptr<SecretChatState> state_;
     bool is_outbound_;
-    int32_t ttl_;
+    std::int32_t ttl_;
     std::string key_hash_;
-    int32_t layer_;
+    std::int32_t layer_;
 
     secretChat();
 
-    secretChat(int32_t id_, int32_t user_id_, object_ptr<SecretChatState> &&state_,
-               bool is_outbound_, int32_t ttl_, std::string const &key_hash_, int32_t layer_);
+    secretChat(std::int32_t id_, std::int32_t user_id_, object_ptr<SecretChatState> &&state_,
+               bool is_outbound_, std::int32_t ttl_, std::string const &key_hash_, std::int32_t layer_);
 
-    static const int32_t ID = 1279231629;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1279231629;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7211,8 +7375,8 @@ public:
 
     secretChatStatePending();
 
-    static const int32_t ID = -1637050756;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1637050756;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7226,8 +7390,8 @@ public:
 
     secretChatStateReady();
 
-    static const int32_t ID = -1611352087;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1611352087;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7241,8 +7405,8 @@ public:
 
     secretChatStateClosed();
 
-    static const int32_t ID = -1945106707;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1945106707;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7253,31 +7417,31 @@ public:
 class session final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     bool is_current_;
-    int32_t api_id_;
+    std::int32_t api_id_;
     std::string application_name_;
     std::string application_version_;
     bool is_official_application_;
     std::string device_model_;
     std::string platform_;
     std::string system_version_;
-    int32_t log_in_date_;
-    int32_t last_active_date_;
+    std::int32_t log_in_date_;
+    std::int32_t last_active_date_;
     std::string ip_;
     std::string country_;
     std::string region_;
 
     session();
 
-    session(int64_t id_, bool is_current_, int32_t api_id_,
+    session(std::int64_t id_, bool is_current_, std::int32_t api_id_,
             std::string const &application_name_, std::string const &application_version_,
             bool is_official_application_, std::string const &device_model_, std::string const &platform_,
-            std::string const &system_version_, int32_t log_in_date_, int32_t last_active_date_,
+            std::string const &system_version_, std::int32_t log_in_date_, std::int32_t last_active_date_,
             std::string const &ip_, std::string const &country_, std::string const &region_);
 
-    static const int32_t ID = 1715359000;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1715359000;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7294,8 +7458,8 @@ public:
 
     explicit sessions(std::vector<object_ptr<session>> &&sessions_);
 
-    static const int32_t ID = -463118121;
-    int32_t get_id() const final
+    static const std::int32_t ID = -463118121;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7319,8 +7483,8 @@ public:
                     std::string const &city_, std::string const &street_line1_, std::string const &street_line2_,
                     std::string const &postal_code_);
 
-    static const int32_t ID = 565574826;
-    int32_t get_id() const final
+    static const std::int32_t ID = 565574826;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7340,8 +7504,8 @@ public:
     shippingOption(std::string const &id_, std::string const &title_,
                    std::vector<object_ptr<labeledPricePart>> &&price_parts_);
 
-    static const int32_t ID = 1425690001;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1425690001;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7352,9 +7516,9 @@ public:
 class sticker final : public Object
 {
 public:
-    int64_t set_id_;
-    int32_t width_;
-    int32_t height_;
+    std::int64_t set_id_;
+    std::int32_t width_;
+    std::int32_t height_;
     std::string emoji_;
     bool is_mask_;
     object_ptr<maskPosition> mask_position_;
@@ -7363,12 +7527,12 @@ public:
 
     sticker();
 
-    sticker(int64_t set_id_, int32_t width_, int32_t height_, std::string const &emoji_,
+    sticker(std::int64_t set_id_, std::int32_t width_, std::int32_t height_, std::string const &emoji_,
             bool is_mask_, object_ptr<maskPosition> &&mask_position_, object_ptr<photoSize> &&thumbnail_,
             object_ptr<file> &&sticker_);
 
-    static const int32_t ID = -876442962;
-    int32_t get_id() const final
+    static const std::int32_t ID = -876442962;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7385,8 +7549,8 @@ public:
 
     explicit stickerEmojis(std::vector<std::string> &&emojis_);
 
-    static const int32_t ID = -1781588570;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1781588570;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7397,7 +7561,7 @@ public:
 class stickerSet final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     std::string title_;
     std::string name_;
     bool is_installed_;
@@ -7410,12 +7574,12 @@ public:
 
     stickerSet();
 
-    stickerSet(int64_t id_, std::string const &title_, std::string const &name_,
+    stickerSet(std::int64_t id_, std::string const &title_, std::string const &name_,
                bool is_installed_, bool is_archived_, bool is_official_, bool is_masks_, bool is_viewed_,
                std::vector<object_ptr<sticker>> &&stickers_, std::vector<object_ptr<stickerEmojis>> &&emojis_);
 
-    static const int32_t ID = 72047469;
-    int32_t get_id() const final
+    static const std::int32_t ID = 72047469;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7426,7 +7590,7 @@ public:
 class stickerSetInfo final : public Object
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     std::string title_;
     std::string name_;
     bool is_installed_;
@@ -7434,17 +7598,17 @@ public:
     bool is_official_;
     bool is_masks_;
     bool is_viewed_;
-    int32_t size_;
+    std::int32_t size_;
     std::vector<object_ptr<sticker>> covers_;
 
     stickerSetInfo();
 
-    stickerSetInfo(int64_t id_, std::string const &title_, std::string const &name_,
+    stickerSetInfo(std::int64_t id_, std::string const &title_, std::string const &name_,
                    bool is_installed_, bool is_archived_, bool is_official_, bool is_masks_, bool is_viewed_,
-                   int32_t size_, std::vector<object_ptr<sticker>> &&covers_);
+                   std::int32_t size_, std::vector<object_ptr<sticker>> &&covers_);
 
-    static const int32_t ID = 1469837113;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1469837113;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7455,15 +7619,15 @@ public:
 class stickerSets final : public Object
 {
 public:
-    int32_t total_count_;
+    std::int32_t total_count_;
     std::vector<object_ptr<stickerSetInfo>> sets_;
 
     stickerSets();
 
-    stickerSets(int32_t total_count_, std::vector<object_ptr<stickerSetInfo>> &&sets_);
+    stickerSets(std::int32_t total_count_, std::vector<object_ptr<stickerSetInfo>> &&sets_);
 
-    static const int32_t ID = -1883828812;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1883828812;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7480,8 +7644,8 @@ public:
 
     explicit stickers(std::vector<object_ptr<sticker>> &&stickers_);
 
-    static const int32_t ID = 1974859260;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1974859260;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7492,17 +7656,17 @@ public:
 class storageStatistics final : public Object
 {
 public:
-    int64_t size_;
-    int32_t count_;
+    std::int64_t size_;
+    std::int32_t count_;
     std::vector<object_ptr<storageStatisticsByChat>> by_chat_;
 
     storageStatistics();
 
-    storageStatistics(int64_t size_, int32_t count_,
+    storageStatistics(std::int64_t size_, std::int32_t count_,
                       std::vector<object_ptr<storageStatisticsByChat>> &&by_chat_);
 
-    static const int32_t ID = 217237013;
-    int32_t get_id() const final
+    static const std::int32_t ID = 217237013;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7513,18 +7677,18 @@ public:
 class storageStatisticsByChat final : public Object
 {
 public:
-    int64_t chat_id_;
-    int64_t size_;
-    int32_t count_;
+    std::int64_t chat_id_;
+    std::int64_t size_;
+    std::int32_t count_;
     std::vector<object_ptr<storageStatisticsByFileType>> by_file_type_;
 
     storageStatisticsByChat();
 
-    storageStatisticsByChat(int64_t chat_id_, int64_t size_, int32_t count_,
+    storageStatisticsByChat(std::int64_t chat_id_, std::int64_t size_, std::int32_t count_,
                             std::vector<object_ptr<storageStatisticsByFileType>> &&by_file_type_);
 
-    static const int32_t ID = 635434531;
-    int32_t get_id() const final
+    static const std::int32_t ID = 635434531;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7536,16 +7700,16 @@ class storageStatisticsByFileType final : public Object
 {
 public:
     object_ptr<FileType> file_type_;
-    int64_t size_;
-    int32_t count_;
+    std::int64_t size_;
+    std::int32_t count_;
 
     storageStatisticsByFileType();
 
-    storageStatisticsByFileType(object_ptr<FileType> &&file_type_, int64_t size_,
-                                int32_t count_);
+    storageStatisticsByFileType(object_ptr<FileType> &&file_type_, std::int64_t size_,
+                                std::int32_t count_);
 
-    static const int32_t ID = 714012840;
-    int32_t get_id() const final
+    static const std::int32_t ID = 714012840;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7556,17 +7720,17 @@ public:
 class storageStatisticsFast final : public Object
 {
 public:
-    int64_t files_size_;
-    int32_t file_count_;
-    int64_t database_size_;
+    std::int64_t files_size_;
+    std::int32_t file_count_;
+    std::int64_t database_size_;
 
     storageStatisticsFast();
 
-    storageStatisticsFast(int64_t files_size_, int32_t file_count_,
-                          int64_t database_size_);
+    storageStatisticsFast(std::int64_t files_size_, std::int32_t file_count_,
+                          std::int64_t database_size_);
 
-    static const int32_t ID = -2005401007;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2005401007;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7577,11 +7741,11 @@ public:
 class supergroup final : public Object
 {
 public:
-    int32_t id_;
+    std::int32_t id_;
     std::string username_;
-    int32_t date_;
+    std::int32_t date_;
     object_ptr<ChatMemberStatus> status_;
-    int32_t member_count_;
+    std::int32_t member_count_;
     bool anyone_can_invite_;
     bool sign_messages_;
     bool is_channel_;
@@ -7590,12 +7754,12 @@ public:
 
     supergroup();
 
-    supergroup(int32_t id_, std::string const &username_, int32_t date_,
-               object_ptr<ChatMemberStatus> &&status_, int32_t member_count_, bool anyone_can_invite_,
+    supergroup(std::int32_t id_, std::string const &username_, std::int32_t date_,
+               object_ptr<ChatMemberStatus> &&status_, std::int32_t member_count_, bool anyone_can_invite_,
                bool sign_messages_, bool is_channel_, bool is_verified_, std::string const &restriction_reason_);
 
-    static const int32_t ID = -1737513476;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1737513476;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7607,31 +7771,31 @@ class supergroupFullInfo final : public Object
 {
 public:
     std::string description_;
-    int32_t member_count_;
-    int32_t administrator_count_;
-    int32_t restricted_count_;
-    int32_t banned_count_;
+    std::int32_t member_count_;
+    std::int32_t administrator_count_;
+    std::int32_t restricted_count_;
+    std::int32_t banned_count_;
     bool can_get_members_;
     bool can_set_username_;
     bool can_set_sticker_set_;
     bool is_all_history_available_;
-    int64_t sticker_set_id_;
+    std::int64_t sticker_set_id_;
     std::string invite_link_;
-    int64_t pinned_message_id_;
-    int32_t upgraded_from_basic_group_id_;
-    int64_t upgraded_from_max_message_id_;
+    std::int64_t pinned_message_id_;
+    std::int32_t upgraded_from_basic_group_id_;
+    std::int64_t upgraded_from_max_message_id_;
 
     supergroupFullInfo();
 
-    supergroupFullInfo(std::string const &description_, int32_t member_count_,
-                       int32_t administrator_count_, int32_t restricted_count_, int32_t banned_count_,
+    supergroupFullInfo(std::string const &description_, std::int32_t member_count_,
+                       std::int32_t administrator_count_, std::int32_t restricted_count_, std::int32_t banned_count_,
                        bool can_get_members_, bool can_set_username_, bool can_set_sticker_set_,
-                       bool is_all_history_available_, int64_t sticker_set_id_, std::string const &invite_link_,
-                       int64_t pinned_message_id_, int32_t upgraded_from_basic_group_id_,
-                       int64_t upgraded_from_max_message_id_);
+                       bool is_all_history_available_, std::int64_t sticker_set_id_, std::string const &invite_link_,
+                       std::int64_t pinned_message_id_, std::int32_t upgraded_from_basic_group_id_,
+                       std::int64_t upgraded_from_max_message_id_);
 
-    static const int32_t ID = -1482349223;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1482349223;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7650,8 +7814,8 @@ public:
 
     supergroupMembersFilterRecent();
 
-    static const int32_t ID = 1178199509;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1178199509;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7665,8 +7829,8 @@ public:
 
     supergroupMembersFilterAdministrators();
 
-    static const int32_t ID = -2097380265;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2097380265;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7683,8 +7847,8 @@ public:
 
     explicit supergroupMembersFilterSearch(std::string const &query_);
 
-    static const int32_t ID = -1696358469;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1696358469;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7701,8 +7865,8 @@ public:
 
     explicit supergroupMembersFilterRestricted(std::string const &query_);
 
-    static const int32_t ID = -1107800034;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1107800034;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7719,8 +7883,8 @@ public:
 
     explicit supergroupMembersFilterBanned(std::string const &query_);
 
-    static const int32_t ID = -1210621683;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1210621683;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7734,8 +7898,8 @@ public:
 
     supergroupMembersFilterBots();
 
-    static const int32_t ID = 492138918;
-    int32_t get_id() const final
+    static const std::int32_t ID = 492138918;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7753,8 +7917,8 @@ public:
 
     tMeUrl(std::string const &url_, object_ptr<TMeUrlType> &&type_);
 
-    static const int32_t ID = -1140786622;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1140786622;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7770,14 +7934,14 @@ public:
 class tMeUrlTypeUser final : public TMeUrlType
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     tMeUrlTypeUser();
 
-    explicit tMeUrlTypeUser(int32_t user_id_);
+    explicit tMeUrlTypeUser(std::int32_t user_id_);
 
-    static const int32_t ID = -1198700130;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1198700130;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7788,14 +7952,14 @@ public:
 class tMeUrlTypeSupergroup final : public TMeUrlType
 {
 public:
-    int64_t supergroup_id_;
+    std::int64_t supergroup_id_;
 
     tMeUrlTypeSupergroup();
 
-    explicit tMeUrlTypeSupergroup(int64_t supergroup_id_);
+    explicit tMeUrlTypeSupergroup(std::int64_t supergroup_id_);
 
-    static const int32_t ID = -1353369944;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1353369944;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7812,8 +7976,8 @@ public:
 
     explicit tMeUrlTypeChatInvite(object_ptr<chatInviteLinkInfo> &&info_);
 
-    static const int32_t ID = 313907785;
-    int32_t get_id() const final
+    static const std::int32_t ID = 313907785;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7824,14 +7988,14 @@ public:
 class tMeUrlTypeStickerSet final : public TMeUrlType
 {
 public:
-    int64_t sticker_set_id_;
+    std::int64_t sticker_set_id_;
 
     tMeUrlTypeStickerSet();
 
-    explicit tMeUrlTypeStickerSet(int64_t sticker_set_id_);
+    explicit tMeUrlTypeStickerSet(std::int64_t sticker_set_id_);
 
-    static const int32_t ID = 1602473196;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1602473196;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7848,8 +8012,8 @@ public:
 
     explicit tMeUrls(std::vector<object_ptr<tMeUrl>> &&urls_);
 
-    static const int32_t ID = -1130595098;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1130595098;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7867,7 +8031,7 @@ public:
     bool use_chat_info_database_;
     bool use_message_database_;
     bool use_secret_chats_;
-    int32_t api_id_;
+    std::int32_t api_id_;
     std::string api_hash_;
     std::string system_language_code_;
     std::string device_model_;
@@ -7880,13 +8044,13 @@ public:
 
     tdlibParameters(bool use_test_dc_, std::string const &database_directory_,
                     std::string const &files_directory_, bool use_file_database_, bool use_chat_info_database_,
-                    bool use_message_database_, bool use_secret_chats_, int32_t api_id_,
+                    bool use_message_database_, bool use_secret_chats_, std::int32_t api_id_,
                     std::string const &api_hash_, std::string const &system_language_code_,
                     std::string const &device_model_, std::string const &system_version_,
                     std::string const &application_version_, bool enable_storage_optimizer_, bool ignore_file_names_);
 
-    static const int32_t ID = -761520773;
-    int32_t get_id() const final
+    static const std::int32_t ID = -761520773;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7898,14 +8062,14 @@ class temporaryPasswordState final : public Object
 {
 public:
     bool has_password_;
-    int32_t valid_for_;
+    std::int32_t valid_for_;
 
     temporaryPasswordState();
 
-    temporaryPasswordState(bool has_password_, int32_t valid_for_);
+    temporaryPasswordState(bool has_password_, std::int32_t valid_for_);
 
-    static const int32_t ID = 939837410;
-    int32_t get_id() const final
+    static const std::int32_t ID = 939837410;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7922,8 +8086,8 @@ public:
 
     explicit testBytes(std::string const &value_);
 
-    static const int32_t ID = -1541225250;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1541225250;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7934,14 +8098,14 @@ public:
 class testInt final : public Object
 {
 public:
-    int32_t value_;
+    std::int32_t value_;
 
     testInt();
 
-    explicit testInt(int32_t value_);
+    explicit testInt(std::int32_t value_);
 
-    static const int32_t ID = -574804983;
-    int32_t get_id() const final
+    static const std::int32_t ID = -574804983;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7958,8 +8122,8 @@ public:
 
     explicit testString(std::string const &value_);
 
-    static const int32_t ID = -27891572;
-    int32_t get_id() const final
+    static const std::int32_t ID = -27891572;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7970,14 +8134,14 @@ public:
 class testVectorInt final : public Object
 {
 public:
-    std::vector<int32_t> value_;
+    std::vector<std::int32_t> value_;
 
     testVectorInt();
 
-    explicit testVectorInt(std::vector<int32_t> &&value_);
+    explicit testVectorInt(std::vector<std::int32_t> &&value_);
 
-    static const int32_t ID = 593682027;
-    int32_t get_id() const final
+    static const std::int32_t ID = 593682027;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -7994,8 +8158,8 @@ public:
 
     explicit testVectorIntObject(std::vector<object_ptr<testInt>> &&value_);
 
-    static const int32_t ID = 125891546;
-    int32_t get_id() const final
+    static const std::int32_t ID = 125891546;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8012,8 +8176,8 @@ public:
 
     explicit testVectorString(std::vector<std::string> &&value_);
 
-    static const int32_t ID = 79339995;
-    int32_t get_id() const final
+    static const std::int32_t ID = 79339995;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8030,8 +8194,8 @@ public:
 
     explicit testVectorStringObject(std::vector<object_ptr<testString>> &&value_);
 
-    static const int32_t ID = 80780537;
-    int32_t get_id() const final
+    static const std::int32_t ID = 80780537;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8048,8 +8212,8 @@ public:
 
     explicit text(std::string const &text_);
 
-    static const int32_t ID = 578181272;
-    int32_t get_id() const final
+    static const std::int32_t ID = 578181272;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8066,8 +8230,8 @@ public:
 
     explicit textEntities(std::vector<object_ptr<textEntity>> &&entities_);
 
-    static const int32_t ID = -933199172;
-    int32_t get_id() const final
+    static const std::int32_t ID = -933199172;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8078,16 +8242,16 @@ public:
 class textEntity final : public Object
 {
 public:
-    int32_t offset_;
-    int32_t length_;
+    std::int32_t offset_;
+    std::int32_t length_;
     object_ptr<TextEntityType> type_;
 
     textEntity();
 
-    textEntity(int32_t offset_, int32_t length_, object_ptr<TextEntityType> &&type_);
+    textEntity(std::int32_t offset_, std::int32_t length_, object_ptr<TextEntityType> &&type_);
 
-    static const int32_t ID = -1951688280;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1951688280;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8106,8 +8270,8 @@ public:
 
     textEntityTypeMention();
 
-    static const int32_t ID = 934535013;
-    int32_t get_id() const final
+    static const std::int32_t ID = 934535013;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8121,8 +8285,23 @@ public:
 
     textEntityTypeHashtag();
 
-    static const int32_t ID = -1023958307;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1023958307;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class textEntityTypeCashtag final : public TextEntityType
+{
+public:
+
+    textEntityTypeCashtag();
+
+    static const std::int32_t ID = 1222915915;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8136,8 +8315,8 @@ public:
 
     textEntityTypeBotCommand();
 
-    static const int32_t ID = -1150997581;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1150997581;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8151,8 +8330,8 @@ public:
 
     textEntityTypeUrl();
 
-    static const int32_t ID = -1312762756;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1312762756;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8166,8 +8345,8 @@ public:
 
     textEntityTypeEmailAddress();
 
-    static const int32_t ID = 1425545249;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1425545249;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8181,8 +8360,8 @@ public:
 
     textEntityTypeBold();
 
-    static const int32_t ID = -1128210000;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1128210000;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8196,8 +8375,8 @@ public:
 
     textEntityTypeItalic();
 
-    static const int32_t ID = -118253987;
-    int32_t get_id() const final
+    static const std::int32_t ID = -118253987;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8211,8 +8390,8 @@ public:
 
     textEntityTypeCode();
 
-    static const int32_t ID = -974534326;
-    int32_t get_id() const final
+    static const std::int32_t ID = -974534326;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8226,8 +8405,8 @@ public:
 
     textEntityTypePre();
 
-    static const int32_t ID = 1648958606;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1648958606;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8244,8 +8423,8 @@ public:
 
     explicit textEntityTypePreCode(std::string const &language_);
 
-    static const int32_t ID = -945325397;
-    int32_t get_id() const final
+    static const std::int32_t ID = -945325397;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8262,8 +8441,8 @@ public:
 
     explicit textEntityTypeTextUrl(std::string const &url_);
 
-    static const int32_t ID = 445719651;
-    int32_t get_id() const final
+    static const std::int32_t ID = 445719651;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8274,14 +8453,29 @@ public:
 class textEntityTypeMentionName final : public TextEntityType
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     textEntityTypeMentionName();
 
-    explicit textEntityTypeMentionName(int32_t user_id_);
+    explicit textEntityTypeMentionName(std::int32_t user_id_);
 
-    static const int32_t ID = -791517091;
-    int32_t get_id() const final
+    static const std::int32_t ID = -791517091;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class textEntityTypePhoneNumber final : public TextEntityType
+{
+public:
+
+    textEntityTypePhoneNumber();
+
+    static const std::int32_t ID = -1160140246;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8300,8 +8494,8 @@ public:
 
     textParseModeMarkdown();
 
-    static const int32_t ID = 969225580;
-    int32_t get_id() const final
+    static const std::int32_t ID = 969225580;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8315,8 +8509,8 @@ public:
 
     textParseModeHTML();
 
-    static const int32_t ID = 1660208627;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1660208627;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8335,8 +8529,8 @@ public:
 
     topChatCategoryUsers();
 
-    static const int32_t ID = 1026706816;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1026706816;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8350,8 +8544,8 @@ public:
 
     topChatCategoryBots();
 
-    static const int32_t ID = -1577129195;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1577129195;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8365,8 +8559,8 @@ public:
 
     topChatCategoryGroups();
 
-    static const int32_t ID = 1530056846;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1530056846;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8380,8 +8574,8 @@ public:
 
     topChatCategoryChannels();
 
-    static const int32_t ID = -500825885;
-    int32_t get_id() const final
+    static const std::int32_t ID = -500825885;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8395,8 +8589,8 @@ public:
 
     topChatCategoryInlineBots();
 
-    static const int32_t ID = 377023356;
-    int32_t get_id() const final
+    static const std::int32_t ID = 377023356;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8410,8 +8604,8 @@ public:
 
     topChatCategoryCalls();
 
-    static const int32_t ID = 356208861;
-    int32_t get_id() const final
+    static const std::int32_t ID = 356208861;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8433,8 +8627,8 @@ public:
 
     explicit updateAuthorizationState(object_ptr<AuthorizationState> &&authorization_state_);
 
-    static const int32_t ID = 1622347490;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1622347490;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8454,8 +8648,8 @@ public:
     updateNewMessage(object_ptr<message> &&message_, bool disable_notification_,
                      bool contains_mention_);
 
-    static const int32_t ID = 238944219;
-    int32_t get_id() const final
+    static const std::int32_t ID = 238944219;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8466,15 +8660,15 @@ public:
 class updateMessageSendAcknowledged final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     updateMessageSendAcknowledged();
 
-    updateMessageSendAcknowledged(int64_t chat_id_, int64_t message_id_);
+    updateMessageSendAcknowledged(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = 1302843961;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1302843961;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8486,14 +8680,14 @@ class updateMessageSendSucceeded final : public Update
 {
 public:
     object_ptr<message> message_;
-    int64_t old_message_id_;
+    std::int64_t old_message_id_;
 
     updateMessageSendSucceeded();
 
-    updateMessageSendSucceeded(object_ptr<message> &&message_, int64_t old_message_id_);
+    updateMessageSendSucceeded(object_ptr<message> &&message_, std::int64_t old_message_id_);
 
-    static const int32_t ID = 1815715197;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1815715197;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8505,17 +8699,17 @@ class updateMessageSendFailed final : public Update
 {
 public:
     object_ptr<message> message_;
-    int64_t old_message_id_;
-    int32_t error_code_;
+    std::int64_t old_message_id_;
+    std::int32_t error_code_;
     std::string error_message_;
 
     updateMessageSendFailed();
 
-    updateMessageSendFailed(object_ptr<message> &&message_, int64_t old_message_id_,
-                            int32_t error_code_, std::string const &error_message_);
+    updateMessageSendFailed(object_ptr<message> &&message_, std::int64_t old_message_id_,
+                            std::int32_t error_code_, std::string const &error_message_);
 
-    static const int32_t ID = -1032335779;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1032335779;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8526,17 +8720,17 @@ public:
 class updateMessageContent final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<MessageContent> new_content_;
 
     updateMessageContent();
 
-    updateMessageContent(int64_t chat_id_, int64_t message_id_,
+    updateMessageContent(std::int64_t chat_id_, std::int64_t message_id_,
                          object_ptr<MessageContent> &&new_content_);
 
-    static const int32_t ID = 506903332;
-    int32_t get_id() const final
+    static const std::int32_t ID = 506903332;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8547,18 +8741,18 @@ public:
 class updateMessageEdited final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
-    int32_t edit_date_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+    std::int32_t edit_date_;
     object_ptr<ReplyMarkup> reply_markup_;
 
     updateMessageEdited();
 
-    updateMessageEdited(int64_t chat_id_, int64_t message_id_, int32_t edit_date_,
+    updateMessageEdited(std::int64_t chat_id_, std::int64_t message_id_, std::int32_t edit_date_,
                         object_ptr<ReplyMarkup> &&reply_markup_);
 
-    static const int32_t ID = -559545626;
-    int32_t get_id() const final
+    static const std::int32_t ID = -559545626;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8569,16 +8763,16 @@ public:
 class updateMessageViews final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
-    int32_t views_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+    std::int32_t views_;
 
     updateMessageViews();
 
-    updateMessageViews(int64_t chat_id_, int64_t message_id_, int32_t views_);
+    updateMessageViews(std::int64_t chat_id_, std::int64_t message_id_, std::int32_t views_);
 
-    static const int32_t ID = -1854131125;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1854131125;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8589,15 +8783,15 @@ public:
 class updateMessageContentOpened final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     updateMessageContentOpened();
 
-    updateMessageContentOpened(int64_t chat_id_, int64_t message_id_);
+    updateMessageContentOpened(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = -1520523131;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1520523131;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8608,17 +8802,17 @@ public:
 class updateMessageMentionRead final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
-    int32_t unread_mention_count_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+    std::int32_t unread_mention_count_;
 
     updateMessageMentionRead();
 
-    updateMessageMentionRead(int64_t chat_id_, int64_t message_id_,
-                             int32_t unread_mention_count_);
+    updateMessageMentionRead(std::int64_t chat_id_, std::int64_t message_id_,
+                             std::int32_t unread_mention_count_);
 
-    static const int32_t ID = -252228282;
-    int32_t get_id() const final
+    static const std::int32_t ID = -252228282;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8635,8 +8829,8 @@ public:
 
     explicit updateNewChat(object_ptr<chat> &&chat_);
 
-    static const int32_t ID = 2075757773;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2075757773;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8647,15 +8841,15 @@ public:
 class updateChatTitle final : public Update
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string title_;
 
     updateChatTitle();
 
-    updateChatTitle(int64_t chat_id_, std::string const &title_);
+    updateChatTitle(std::int64_t chat_id_, std::string const &title_);
 
-    static const int32_t ID = -175405660;
-    int32_t get_id() const final
+    static const std::int32_t ID = -175405660;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8666,15 +8860,15 @@ public:
 class updateChatPhoto final : public Update
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<chatPhoto> photo_;
 
     updateChatPhoto();
 
-    updateChatPhoto(int64_t chat_id_, object_ptr<chatPhoto> &&photo_);
+    updateChatPhoto(std::int64_t chat_id_, object_ptr<chatPhoto> &&photo_);
 
-    static const int32_t ID = -209353966;
-    int32_t get_id() const final
+    static const std::int32_t ID = -209353966;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8685,17 +8879,17 @@ public:
 class updateChatLastMessage final : public Update
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<message> last_message_;
-    int64_t order_;
+    std::int64_t order_;
 
     updateChatLastMessage();
 
-    updateChatLastMessage(int64_t chat_id_, object_ptr<message> &&last_message_,
-                          int64_t order_);
+    updateChatLastMessage(std::int64_t chat_id_, object_ptr<message> &&last_message_,
+                          std::int64_t order_);
 
-    static const int32_t ID = 580348828;
-    int32_t get_id() const final
+    static const std::int32_t ID = 580348828;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8706,15 +8900,15 @@ public:
 class updateChatOrder final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t order_;
+    std::int64_t chat_id_;
+    std::int64_t order_;
 
     updateChatOrder();
 
-    updateChatOrder(int64_t chat_id_, int64_t order_);
+    updateChatOrder(std::int64_t chat_id_, std::int64_t order_);
 
-    static const int32_t ID = -1601888026;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1601888026;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8725,16 +8919,16 @@ public:
 class updateChatIsPinned final : public Update
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     bool is_pinned_;
-    int64_t order_;
+    std::int64_t order_;
 
     updateChatIsPinned();
 
-    updateChatIsPinned(int64_t chat_id_, bool is_pinned_, int64_t order_);
+    updateChatIsPinned(std::int64_t chat_id_, bool is_pinned_, std::int64_t order_);
 
-    static const int32_t ID = 488876260;
-    int32_t get_id() const final
+    static const std::int32_t ID = 488876260;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8745,17 +8939,17 @@ public:
 class updateChatReadInbox final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t last_read_inbox_message_id_;
-    int32_t unread_count_;
+    std::int64_t chat_id_;
+    std::int64_t last_read_inbox_message_id_;
+    std::int32_t unread_count_;
 
     updateChatReadInbox();
 
-    updateChatReadInbox(int64_t chat_id_, int64_t last_read_inbox_message_id_,
-                        int32_t unread_count_);
+    updateChatReadInbox(std::int64_t chat_id_, std::int64_t last_read_inbox_message_id_,
+                        std::int32_t unread_count_);
 
-    static const int32_t ID = -797952281;
-    int32_t get_id() const final
+    static const std::int32_t ID = -797952281;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8766,15 +8960,15 @@ public:
 class updateChatReadOutbox final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t last_read_outbox_message_id_;
+    std::int64_t chat_id_;
+    std::int64_t last_read_outbox_message_id_;
 
     updateChatReadOutbox();
 
-    updateChatReadOutbox(int64_t chat_id_, int64_t last_read_outbox_message_id_);
+    updateChatReadOutbox(std::int64_t chat_id_, std::int64_t last_read_outbox_message_id_);
 
-    static const int32_t ID = 708334213;
-    int32_t get_id() const final
+    static const std::int32_t ID = 708334213;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8785,15 +8979,15 @@ public:
 class updateChatUnreadMentionCount final : public Update
 {
 public:
-    int64_t chat_id_;
-    int32_t unread_mention_count_;
+    std::int64_t chat_id_;
+    std::int32_t unread_mention_count_;
 
     updateChatUnreadMentionCount();
 
-    updateChatUnreadMentionCount(int64_t chat_id_, int32_t unread_mention_count_);
+    updateChatUnreadMentionCount(std::int64_t chat_id_, std::int32_t unread_mention_count_);
 
-    static const int32_t ID = -2131461348;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2131461348;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8812,8 +9006,8 @@ public:
     updateNotificationSettings(object_ptr<NotificationSettingsScope> &&scope_,
                                object_ptr<notificationSettings> &&notification_settings_);
 
-    static const int32_t ID = -1767306883;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1767306883;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8824,15 +9018,15 @@ public:
 class updateChatReplyMarkup final : public Update
 {
 public:
-    int64_t chat_id_;
-    int64_t reply_markup_message_id_;
+    std::int64_t chat_id_;
+    std::int64_t reply_markup_message_id_;
 
     updateChatReplyMarkup();
 
-    updateChatReplyMarkup(int64_t chat_id_, int64_t reply_markup_message_id_);
+    updateChatReplyMarkup(std::int64_t chat_id_, std::int64_t reply_markup_message_id_);
 
-    static const int32_t ID = 1309386144;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1309386144;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8843,17 +9037,17 @@ public:
 class updateChatDraftMessage final : public Update
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<draftMessage> draft_message_;
-    int64_t order_;
+    std::int64_t order_;
 
     updateChatDraftMessage();
 
-    updateChatDraftMessage(int64_t chat_id_, object_ptr<draftMessage> &&draft_message_,
-                           int64_t order_);
+    updateChatDraftMessage(std::int64_t chat_id_, object_ptr<draftMessage> &&draft_message_,
+                           std::int64_t order_);
 
-    static const int32_t ID = -1436617498;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1436617498;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8864,18 +9058,18 @@ public:
 class updateDeleteMessages final : public Update
 {
 public:
-    int64_t chat_id_;
-    std::vector<int64_t> message_ids_;
+    std::int64_t chat_id_;
+    std::vector<std::int64_t> message_ids_;
     bool is_permanent_;
     bool from_cache_;
 
     updateDeleteMessages();
 
-    updateDeleteMessages(int64_t chat_id_, std::vector<int64_t> &&message_ids_,
+    updateDeleteMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&message_ids_,
                          bool is_permanent_, bool from_cache_);
 
-    static const int32_t ID = 1669252686;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1669252686;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8886,17 +9080,17 @@ public:
 class updateUserChatAction final : public Update
 {
 public:
-    int64_t chat_id_;
-    int32_t user_id_;
+    std::int64_t chat_id_;
+    std::int32_t user_id_;
     object_ptr<ChatAction> action_;
 
     updateUserChatAction();
 
-    updateUserChatAction(int64_t chat_id_, int32_t user_id_,
+    updateUserChatAction(std::int64_t chat_id_, std::int32_t user_id_,
                          object_ptr<ChatAction> &&action_);
 
-    static const int32_t ID = 1444133514;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1444133514;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8907,15 +9101,15 @@ public:
 class updateUserStatus final : public Update
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<UserStatus> status_;
 
     updateUserStatus();
 
-    updateUserStatus(int32_t user_id_, object_ptr<UserStatus> &&status_);
+    updateUserStatus(std::int32_t user_id_, object_ptr<UserStatus> &&status_);
 
-    static const int32_t ID = -1443545195;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1443545195;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8932,8 +9126,8 @@ public:
 
     explicit updateUser(object_ptr<user> &&user_);
 
-    static const int32_t ID = 1183394041;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1183394041;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8950,8 +9144,8 @@ public:
 
     explicit updateBasicGroup(object_ptr<basicGroup> &&basic_group_);
 
-    static const int32_t ID = -1003239581;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1003239581;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8968,8 +9162,8 @@ public:
 
     explicit updateSupergroup(object_ptr<supergroup> &&supergroup_);
 
-    static const int32_t ID = -76782300;
-    int32_t get_id() const final
+    static const std::int32_t ID = -76782300;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8986,8 +9180,8 @@ public:
 
     explicit updateSecretChat(object_ptr<secretChat> &&secret_chat_);
 
-    static const int32_t ID = -1666903253;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1666903253;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -8998,15 +9192,15 @@ public:
 class updateUserFullInfo final : public Update
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<userFullInfo> user_full_info_;
 
     updateUserFullInfo();
 
-    updateUserFullInfo(int32_t user_id_, object_ptr<userFullInfo> &&user_full_info_);
+    updateUserFullInfo(std::int32_t user_id_, object_ptr<userFullInfo> &&user_full_info_);
 
-    static const int32_t ID = 222103874;
-    int32_t get_id() const final
+    static const std::int32_t ID = 222103874;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9017,16 +9211,16 @@ public:
 class updateBasicGroupFullInfo final : public Update
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
     object_ptr<basicGroupFullInfo> basic_group_full_info_;
 
     updateBasicGroupFullInfo();
 
-    updateBasicGroupFullInfo(int32_t basic_group_id_,
+    updateBasicGroupFullInfo(std::int32_t basic_group_id_,
                              object_ptr<basicGroupFullInfo> &&basic_group_full_info_);
 
-    static const int32_t ID = 924030531;
-    int32_t get_id() const final
+    static const std::int32_t ID = 924030531;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9037,16 +9231,16 @@ public:
 class updateSupergroupFullInfo final : public Update
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     object_ptr<supergroupFullInfo> supergroup_full_info_;
 
     updateSupergroupFullInfo();
 
-    updateSupergroupFullInfo(int32_t supergroup_id_,
+    updateSupergroupFullInfo(std::int32_t supergroup_id_,
                              object_ptr<supergroupFullInfo> &&supergroup_full_info_);
 
-    static const int32_t ID = 1288828758;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1288828758;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9064,8 +9258,8 @@ public:
 
     updateServiceNotification(std::string const &type_, object_ptr<MessageContent> &&content_);
 
-    static const int32_t ID = 1318622637;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1318622637;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9082,8 +9276,8 @@ public:
 
     explicit updateFile(object_ptr<file> &&file_);
 
-    static const int32_t ID = 114132831;
-    int32_t get_id() const final
+    static const std::int32_t ID = 114132831;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9094,18 +9288,18 @@ public:
 class updateFileGenerationStart final : public Update
 {
 public:
-    int64_t generation_id_;
+    std::int64_t generation_id_;
     std::string original_path_;
     std::string destination_path_;
     std::string conversion_;
 
     updateFileGenerationStart();
 
-    updateFileGenerationStart(int64_t generation_id_, std::string const &original_path_,
+    updateFileGenerationStart(std::int64_t generation_id_, std::string const &original_path_,
                               std::string const &destination_path_, std::string const &conversion_);
 
-    static const int32_t ID = 216817388;
-    int32_t get_id() const final
+    static const std::int32_t ID = 216817388;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9116,14 +9310,14 @@ public:
 class updateFileGenerationStop final : public Update
 {
 public:
-    int64_t generation_id_;
+    std::int64_t generation_id_;
 
     updateFileGenerationStop();
 
-    explicit updateFileGenerationStop(int64_t generation_id_);
+    explicit updateFileGenerationStop(std::int64_t generation_id_);
 
-    static const int32_t ID = -1894449685;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1894449685;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9140,8 +9334,8 @@ public:
 
     explicit updateCall(object_ptr<call> &&call_);
 
-    static const int32_t ID = 1337184477;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1337184477;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9160,8 +9354,27 @@ public:
     updateUserPrivacySettingRules(object_ptr<UserPrivacySetting> &&setting_,
                                   object_ptr<userPrivacySettingRules> &&rules_);
 
-    static const int32_t ID = -912960778;
-    int32_t get_id() const final
+    static const std::int32_t ID = -912960778;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class updateUnreadMessageCount final : public Update
+{
+public:
+    std::int32_t unread_count_;
+    std::int32_t unread_unmuted_count_;
+
+    updateUnreadMessageCount();
+
+    updateUnreadMessageCount(std::int32_t unread_count_, std::int32_t unread_unmuted_count_);
+
+    static const std::int32_t ID = -824420376;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9179,8 +9392,8 @@ public:
 
     updateOption(std::string const &name_, object_ptr<OptionValue> &&value_);
 
-    static const int32_t ID = 900822020;
-    int32_t get_id() const final
+    static const std::int32_t ID = 900822020;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9192,14 +9405,14 @@ class updateInstalledStickerSets final : public Update
 {
 public:
     bool is_masks_;
-    std::vector<int64_t> sticker_set_ids_;
+    std::vector<std::int64_t> sticker_set_ids_;
 
     updateInstalledStickerSets();
 
-    updateInstalledStickerSets(bool is_masks_, std::vector<int64_t> &&sticker_set_ids_);
+    updateInstalledStickerSets(bool is_masks_, std::vector<std::int64_t> &&sticker_set_ids_);
 
-    static const int32_t ID = 1125575977;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1125575977;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9216,8 +9429,8 @@ public:
 
     explicit updateTrendingStickerSets(object_ptr<stickerSets> &&sticker_sets_);
 
-    static const int32_t ID = 450714593;
-    int32_t get_id() const final
+    static const std::int32_t ID = 450714593;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9229,14 +9442,14 @@ class updateRecentStickers final : public Update
 {
 public:
     bool is_attached_;
-    std::vector<int32_t> sticker_ids_;
+    std::vector<std::int32_t> sticker_ids_;
 
     updateRecentStickers();
 
-    updateRecentStickers(bool is_attached_, std::vector<int32_t> &&sticker_ids_);
+    updateRecentStickers(bool is_attached_, std::vector<std::int32_t> &&sticker_ids_);
 
-    static const int32_t ID = 1906403540;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1906403540;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9247,14 +9460,14 @@ public:
 class updateFavoriteStickers final : public Update
 {
 public:
-    std::vector<int32_t> sticker_ids_;
+    std::vector<std::int32_t> sticker_ids_;
 
     updateFavoriteStickers();
 
-    explicit updateFavoriteStickers(std::vector<int32_t> &&sticker_ids_);
+    explicit updateFavoriteStickers(std::vector<std::int32_t> &&sticker_ids_);
 
-    static const int32_t ID = 1662240999;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1662240999;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9265,14 +9478,14 @@ public:
 class updateSavedAnimations final : public Update
 {
 public:
-    std::vector<int32_t> animation_ids_;
+    std::vector<std::int32_t> animation_ids_;
 
     updateSavedAnimations();
 
-    explicit updateSavedAnimations(std::vector<int32_t> &&animation_ids_);
+    explicit updateSavedAnimations(std::vector<std::int32_t> &&animation_ids_);
 
-    static const int32_t ID = 65563814;
-    int32_t get_id() const final
+    static const std::int32_t ID = 65563814;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9289,8 +9502,8 @@ public:
 
     explicit updateConnectionState(object_ptr<ConnectionState> &&state_);
 
-    static const int32_t ID = 1469292078;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1469292078;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9301,19 +9514,19 @@ public:
 class updateNewInlineQuery final : public Update
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
     object_ptr<location> user_location_;
     std::string query_;
     std::string offset_;
 
     updateNewInlineQuery();
 
-    updateNewInlineQuery(int64_t id_, int32_t sender_user_id_,
+    updateNewInlineQuery(std::int64_t id_, std::int32_t sender_user_id_,
                          object_ptr<location> &&user_location_, std::string const &query_, std::string const &offset_);
 
-    static const int32_t ID = 2064730634;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2064730634;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9324,7 +9537,7 @@ public:
 class updateNewChosenInlineResult final : public Update
 {
 public:
-    int32_t sender_user_id_;
+    std::int32_t sender_user_id_;
     object_ptr<location> user_location_;
     std::string query_;
     std::string result_id_;
@@ -9332,11 +9545,11 @@ public:
 
     updateNewChosenInlineResult();
 
-    updateNewChosenInlineResult(int32_t sender_user_id_, object_ptr<location> &&user_location_,
+    updateNewChosenInlineResult(std::int32_t sender_user_id_, object_ptr<location> &&user_location_,
                                 std::string const &query_, std::string const &result_id_, std::string const &inline_message_id_);
 
-    static const int32_t ID = 527526965;
-    int32_t get_id() const final
+    static const std::int32_t ID = 527526965;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9347,20 +9560,20 @@ public:
 class updateNewCallbackQuery final : public Update
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
-    int64_t chat_id_;
-    int64_t message_id_;
-    int64_t chat_instance_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+    std::int64_t chat_instance_;
     object_ptr<CallbackQueryPayload> payload_;
 
     updateNewCallbackQuery();
 
-    updateNewCallbackQuery(int64_t id_, int32_t sender_user_id_, int64_t chat_id_,
-                           int64_t message_id_, int64_t chat_instance_, object_ptr<CallbackQueryPayload> &&payload_);
+    updateNewCallbackQuery(std::int64_t id_, std::int32_t sender_user_id_, std::int64_t chat_id_,
+                           std::int64_t message_id_, std::int64_t chat_instance_, object_ptr<CallbackQueryPayload> &&payload_);
 
-    static const int32_t ID = -2044226370;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2044226370;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9371,20 +9584,20 @@ public:
 class updateNewInlineCallbackQuery final : public Update
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
     std::string inline_message_id_;
-    int64_t chat_instance_;
+    std::int64_t chat_instance_;
     object_ptr<CallbackQueryPayload> payload_;
 
     updateNewInlineCallbackQuery();
 
-    updateNewInlineCallbackQuery(int64_t id_, int32_t sender_user_id_,
-                                 std::string const &inline_message_id_, int64_t chat_instance_,
+    updateNewInlineCallbackQuery(std::int64_t id_, std::int32_t sender_user_id_,
+                                 std::string const &inline_message_id_, std::int64_t chat_instance_,
                                  object_ptr<CallbackQueryPayload> &&payload_);
 
-    static const int32_t ID = -1879154829;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1879154829;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9395,18 +9608,18 @@ public:
 class updateNewShippingQuery final : public Update
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
     std::string invoice_payload_;
     object_ptr<shippingAddress> shipping_address_;
 
     updateNewShippingQuery();
 
-    updateNewShippingQuery(int64_t id_, int32_t sender_user_id_,
+    updateNewShippingQuery(std::int64_t id_, std::int32_t sender_user_id_,
                            std::string const &invoice_payload_, object_ptr<shippingAddress> &&shipping_address_);
 
-    static const int32_t ID = 1877838488;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1877838488;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9417,22 +9630,22 @@ public:
 class updateNewPreCheckoutQuery final : public Update
 {
 public:
-    int64_t id_;
-    int32_t sender_user_id_;
+    std::int64_t id_;
+    std::int32_t sender_user_id_;
     std::string currency_;
-    int64_t total_amount_;
+    std::int64_t total_amount_;
     std::string invoice_payload_;
     std::string shipping_option_id_;
     object_ptr<orderInfo> order_info_;
 
     updateNewPreCheckoutQuery();
 
-    updateNewPreCheckoutQuery(int64_t id_, int32_t sender_user_id_,
-                              std::string const &currency_, int64_t total_amount_, std::string const &invoice_payload_,
+    updateNewPreCheckoutQuery(std::int64_t id_, std::int32_t sender_user_id_,
+                              std::string const &currency_, std::int64_t total_amount_, std::string const &invoice_payload_,
                               std::string const &shipping_option_id_, object_ptr<orderInfo> &&order_info_);
 
-    static const int32_t ID = 87964006;
-    int32_t get_id() const final
+    static const std::int32_t ID = 87964006;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9449,8 +9662,8 @@ public:
 
     explicit updateNewCustomEvent(std::string const &event_);
 
-    static const int32_t ID = 1994222092;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1994222092;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9461,16 +9674,16 @@ public:
 class updateNewCustomQuery final : public Update
 {
 public:
-    int64_t id_;
+    std::int64_t id_;
     std::string data_;
-    int32_t timeout_;
+    std::int32_t timeout_;
 
     updateNewCustomQuery();
 
-    updateNewCustomQuery(int64_t id_, std::string const &data_, int32_t timeout_);
+    updateNewCustomQuery(std::int64_t id_, std::string const &data_, std::int32_t timeout_);
 
-    static const int32_t ID = -687670874;
-    int32_t get_id() const final
+    static const std::int32_t ID = -687670874;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9481,7 +9694,7 @@ public:
 class user final : public Object
 {
 public:
-    int32_t id_;
+    std::int32_t id_;
     std::string first_name_;
     std::string last_name_;
     std::string username_;
@@ -9498,14 +9711,14 @@ public:
 
     user();
 
-    user(int32_t id_, std::string const &first_name_, std::string const &last_name_,
+    user(std::int32_t id_, std::string const &first_name_, std::string const &last_name_,
          std::string const &username_, std::string const &phone_number_, object_ptr<UserStatus> &&status_,
          object_ptr<profilePhoto> &&profile_photo_, object_ptr<LinkState> &&outgoing_link_,
          object_ptr<LinkState> &&incoming_link_, bool is_verified_, std::string const &restriction_reason_,
          bool have_access_, object_ptr<UserType> &&type_, std::string const &language_code_);
 
-    static const int32_t ID = -732086407;
-    int32_t get_id() const final
+    static const std::int32_t ID = -732086407;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9521,17 +9734,17 @@ public:
     bool has_private_calls_;
     std::string bio_;
     std::string share_text_;
-    int32_t group_in_common_count_;
+    std::int32_t group_in_common_count_;
     object_ptr<botInfo> bot_info_;
 
     userFullInfo();
 
     userFullInfo(bool is_blocked_, bool can_be_called_, bool has_private_calls_,
-                 std::string const &bio_, std::string const &share_text_, int32_t group_in_common_count_,
+                 std::string const &bio_, std::string const &share_text_, std::int32_t group_in_common_count_,
                  object_ptr<botInfo> &&bot_info_);
 
-    static const int32_t ID = 1076948004;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1076948004;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9550,8 +9763,8 @@ public:
 
     userPrivacySettingShowStatus();
 
-    static const int32_t ID = 1862829310;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1862829310;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9565,8 +9778,8 @@ public:
 
     userPrivacySettingAllowChatInvites();
 
-    static const int32_t ID = 1271668007;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1271668007;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9580,8 +9793,8 @@ public:
 
     userPrivacySettingAllowCalls();
 
-    static const int32_t ID = -906967291;
-    int32_t get_id() const final
+    static const std::int32_t ID = -906967291;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9600,8 +9813,8 @@ public:
 
     userPrivacySettingRuleAllowAll();
 
-    static const int32_t ID = -1967186881;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1967186881;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9615,8 +9828,8 @@ public:
 
     userPrivacySettingRuleAllowContacts();
 
-    static const int32_t ID = -1892733680;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1892733680;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9627,14 +9840,14 @@ public:
 class userPrivacySettingRuleAllowUsers final : public UserPrivacySettingRule
 {
 public:
-    std::vector<int32_t> user_ids_;
+    std::vector<std::int32_t> user_ids_;
 
     userPrivacySettingRuleAllowUsers();
 
-    explicit userPrivacySettingRuleAllowUsers(std::vector<int32_t> &&user_ids_);
+    explicit userPrivacySettingRuleAllowUsers(std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = 427601278;
-    int32_t get_id() const final
+    static const std::int32_t ID = 427601278;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9648,8 +9861,8 @@ public:
 
     userPrivacySettingRuleRestrictAll();
 
-    static const int32_t ID = -1406495408;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1406495408;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9663,8 +9876,8 @@ public:
 
     userPrivacySettingRuleRestrictContacts();
 
-    static const int32_t ID = 1008389378;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1008389378;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9675,14 +9888,14 @@ public:
 class userPrivacySettingRuleRestrictUsers final : public UserPrivacySettingRule
 {
 public:
-    std::vector<int32_t> user_ids_;
+    std::vector<std::int32_t> user_ids_;
 
     userPrivacySettingRuleRestrictUsers();
 
-    explicit userPrivacySettingRuleRestrictUsers(std::vector<int32_t> &&user_ids_);
+    explicit userPrivacySettingRuleRestrictUsers(std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = 2119951802;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2119951802;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9699,8 +9912,8 @@ public:
 
     explicit userPrivacySettingRules(std::vector<object_ptr<UserPrivacySettingRule>> &&rules_);
 
-    static const int32_t ID = 322477541;
-    int32_t get_id() const final
+    static const std::int32_t ID = 322477541;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9711,15 +9924,15 @@ public:
 class userProfilePhotos final : public Object
 {
 public:
-    int32_t total_count_;
+    std::int32_t total_count_;
     std::vector<object_ptr<photo>> photos_;
 
     userProfilePhotos();
 
-    userProfilePhotos(int32_t total_count_, std::vector<object_ptr<photo>> &&photos_);
+    userProfilePhotos(std::int32_t total_count_, std::vector<object_ptr<photo>> &&photos_);
 
-    static const int32_t ID = 1388892074;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1388892074;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9738,8 +9951,8 @@ public:
 
     userStatusEmpty();
 
-    static const int32_t ID = 164646985;
-    int32_t get_id() const final
+    static const std::int32_t ID = 164646985;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9750,14 +9963,14 @@ public:
 class userStatusOnline final : public UserStatus
 {
 public:
-    int32_t expires_;
+    std::int32_t expires_;
 
     userStatusOnline();
 
-    explicit userStatusOnline(int32_t expires_);
+    explicit userStatusOnline(std::int32_t expires_);
 
-    static const int32_t ID = -1529460876;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1529460876;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9768,14 +9981,14 @@ public:
 class userStatusOffline final : public UserStatus
 {
 public:
-    int32_t was_online_;
+    std::int32_t was_online_;
 
     userStatusOffline();
 
-    explicit userStatusOffline(int32_t was_online_);
+    explicit userStatusOffline(std::int32_t was_online_);
 
-    static const int32_t ID = -759984891;
-    int32_t get_id() const final
+    static const std::int32_t ID = -759984891;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9789,8 +10002,8 @@ public:
 
     userStatusRecently();
 
-    static const int32_t ID = -496024847;
-    int32_t get_id() const final
+    static const std::int32_t ID = -496024847;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9804,8 +10017,8 @@ public:
 
     userStatusLastWeek();
 
-    static const int32_t ID = 129960444;
-    int32_t get_id() const final
+    static const std::int32_t ID = 129960444;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9819,8 +10032,8 @@ public:
 
     userStatusLastMonth();
 
-    static const int32_t ID = 2011940674;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2011940674;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9839,8 +10052,8 @@ public:
 
     userTypeRegular();
 
-    static const int32_t ID = -598644325;
-    int32_t get_id() const final
+    static const std::int32_t ID = -598644325;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9854,8 +10067,8 @@ public:
 
     userTypeDeleted();
 
-    static const int32_t ID = -1807729372;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1807729372;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9877,8 +10090,8 @@ public:
     userTypeBot(bool can_join_groups_, bool can_read_all_group_messages_, bool is_inline_,
                 std::string const &inline_query_placeholder_, bool need_location_);
 
-    static const int32_t ID = 1262387765;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1262387765;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9892,8 +10105,8 @@ public:
 
     userTypeUnknown();
 
-    static const int32_t ID = -724541123;
-    int32_t get_id() const final
+    static const std::int32_t ID = -724541123;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9904,15 +10117,15 @@ public:
 class users final : public Object
 {
 public:
-    int32_t total_count_;
-    std::vector<int32_t> user_ids_;
+    std::int32_t total_count_;
+    std::vector<std::int32_t> user_ids_;
 
     users();
 
-    users(int32_t total_count_, std::vector<int32_t> &&user_ids_);
+    users(std::int32_t total_count_, std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = 273760088;
-    int32_t get_id() const final
+    static const std::int32_t ID = 273760088;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9931,8 +10144,8 @@ public:
     validatedOrderInfo(std::string const &order_info_id_,
                        std::vector<object_ptr<shippingOption>> &&shipping_options_);
 
-    static const int32_t ID = 1511451484;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1511451484;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9954,8 +10167,8 @@ public:
     venue(object_ptr<location> &&location_, std::string const &title_, std::string const &address_,
           std::string const &provider_, std::string const &id_);
 
-    static const int32_t ID = -674687867;
-    int32_t get_id() const final
+    static const std::int32_t ID = -674687867;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9966,23 +10179,24 @@ public:
 class video final : public Object
 {
 public:
-    int32_t duration_;
-    int32_t width_;
-    int32_t height_;
+    std::int32_t duration_;
+    std::int32_t width_;
+    std::int32_t height_;
     std::string file_name_;
     std::string mime_type_;
     bool has_stickers_;
+    bool supports_streaming_;
     object_ptr<photoSize> thumbnail_;
     object_ptr<file> video_;
 
     video();
 
-    video(int32_t duration_, int32_t width_, int32_t height_,
+    video(std::int32_t duration_, std::int32_t width_, std::int32_t height_,
           std::string const &file_name_, std::string const &mime_type_, bool has_stickers_,
-          object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&video_);
+          bool supports_streaming_, object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&video_);
 
-    static const int32_t ID = 1823593727;
-    int32_t get_id() const final
+    static const std::int32_t ID = -437410347;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -9993,18 +10207,18 @@ public:
 class videoNote final : public Object
 {
 public:
-    int32_t duration_;
-    int32_t length_;
+    std::int32_t duration_;
+    std::int32_t length_;
     object_ptr<photoSize> thumbnail_;
     object_ptr<file> video_;
 
     videoNote();
 
-    videoNote(int32_t duration_, int32_t length_, object_ptr<photoSize> &&thumbnail_,
+    videoNote(std::int32_t duration_, std::int32_t length_, object_ptr<photoSize> &&thumbnail_,
               object_ptr<file> &&video_);
 
-    static const int32_t ID = -1177396120;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1177396120;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10015,18 +10229,18 @@ public:
 class voiceNote final : public Object
 {
 public:
-    int32_t duration_;
+    std::int32_t duration_;
     std::string waveform_;
     std::string mime_type_;
     object_ptr<file> voice_;
 
     voiceNote();
 
-    voiceNote(int32_t duration_, std::string const &waveform_, std::string const &mime_type_,
+    voiceNote(std::int32_t duration_, std::string const &waveform_, std::string const &mime_type_,
               object_ptr<file> &&voice_);
 
-    static const int32_t ID = -2066012058;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2066012058;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10037,16 +10251,16 @@ public:
 class wallpaper final : public Object
 {
 public:
-    int32_t id_;
+    std::int32_t id_;
     std::vector<object_ptr<photoSize>> sizes_;
-    int32_t color_;
+    std::int32_t color_;
 
     wallpaper();
 
-    wallpaper(int32_t id_, std::vector<object_ptr<photoSize>> &&sizes_, int32_t color_);
+    wallpaper(std::int32_t id_, std::vector<object_ptr<photoSize>> &&sizes_, std::int32_t color_);
 
-    static const int32_t ID = 282771691;
-    int32_t get_id() const final
+    static const std::int32_t ID = 282771691;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10063,8 +10277,8 @@ public:
 
     explicit wallpapers(std::vector<object_ptr<wallpaper>> &&wallpapers_);
 
-    static const int32_t ID = 877926640;
-    int32_t get_id() const final
+    static const std::int32_t ID = 877926640;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10084,9 +10298,9 @@ public:
     object_ptr<photo> photo_;
     std::string embed_url_;
     std::string embed_type_;
-    int32_t embed_width_;
-    int32_t embed_height_;
-    int32_t duration_;
+    std::int32_t embed_width_;
+    std::int32_t embed_height_;
+    std::int32_t duration_;
     std::string author_;
     object_ptr<animation> animation_;
     object_ptr<audio> audio_;
@@ -10102,13 +10316,13 @@ public:
     webPage(std::string const &url_, std::string const &display_url_, std::string const &type_,
             std::string const &site_name_, std::string const &title_, std::string const &description_,
             object_ptr<photo> &&photo_, std::string const &embed_url_, std::string const &embed_type_,
-            int32_t embed_width_, int32_t embed_height_, int32_t duration_,
+            std::int32_t embed_width_, std::int32_t embed_height_, std::int32_t duration_,
             std::string const &author_, object_ptr<animation> &&animation_, object_ptr<audio> &&audio_,
             object_ptr<document> &&document_, object_ptr<sticker> &&sticker_, object_ptr<video> &&video_,
             object_ptr<videoNote> &&video_note_, object_ptr<voiceNote> &&voice_note_, bool has_instant_view_);
 
-    static const int32_t ID = 1465949075;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1465949075;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10126,8 +10340,8 @@ public:
 
     webPageInstantView(std::vector<object_ptr<PageBlock>> &&page_blocks_, bool is_full_);
 
-    static const int32_t ID = 1804324850;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1804324850;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10138,15 +10352,15 @@ public:
 class acceptCall final : public Function
 {
 public:
-    int32_t call_id_;
+    std::int32_t call_id_;
     object_ptr<callProtocol> protocol_;
 
     acceptCall();
 
-    acceptCall(int32_t call_id_, object_ptr<callProtocol> &&protocol_);
+    acceptCall(std::int32_t call_id_, object_ptr<callProtocol> &&protocol_);
 
-    static const int32_t ID = -646618416;
-    int32_t get_id() const final
+    static const std::int32_t ID = -646618416;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10159,16 +10373,16 @@ public:
 class addChatMember final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t user_id_;
-    int32_t forward_limit_;
+    std::int64_t chat_id_;
+    std::int32_t user_id_;
+    std::int32_t forward_limit_;
 
     addChatMember();
 
-    addChatMember(int64_t chat_id_, int32_t user_id_, int32_t forward_limit_);
+    addChatMember(std::int64_t chat_id_, std::int32_t user_id_, std::int32_t forward_limit_);
 
-    static const int32_t ID = 1182817962;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1182817962;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10181,15 +10395,15 @@ public:
 class addChatMembers final : public Function
 {
 public:
-    int64_t chat_id_;
-    std::vector<int32_t> user_ids_;
+    std::int64_t chat_id_;
+    std::vector<std::int32_t> user_ids_;
 
     addChatMembers();
 
-    addChatMembers(int64_t chat_id_, std::vector<int32_t> &&user_ids_);
+    addChatMembers(std::int64_t chat_id_, std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = 1234094617;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1234094617;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10208,8 +10422,8 @@ public:
 
     explicit addFavoriteSticker(object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = 324504799;
-    int32_t get_id() const final
+    static const std::int32_t ID = 324504799;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10228,8 +10442,8 @@ public:
 
     explicit addNetworkStatistics(object_ptr<NetworkStatisticsEntry> &&entry_);
 
-    static const int32_t ID = 1264825305;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1264825305;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10249,8 +10463,8 @@ public:
 
     addRecentSticker(bool is_attached_, object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = -1478109026;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1478109026;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10263,14 +10477,14 @@ public:
 class addRecentlyFoundChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     addRecentlyFoundChat();
 
-    explicit addRecentlyFoundChat(int64_t chat_id_);
+    explicit addRecentlyFoundChat(std::int64_t chat_id_);
 
-    static const int32_t ID = -1746396787;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1746396787;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10289,8 +10503,8 @@ public:
 
     explicit addSavedAnimation(object_ptr<InputFile> &&animation_);
 
-    static const int32_t ID = -1538525088;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1538525088;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10303,17 +10517,17 @@ public:
 class addStickerToSet final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     std::string name_;
     object_ptr<inputSticker> sticker_;
 
     addStickerToSet();
 
-    addStickerToSet(int32_t user_id_, std::string const &name_,
+    addStickerToSet(std::int32_t user_id_, std::string const &name_,
                     object_ptr<inputSticker> &&sticker_);
 
-    static const int32_t ID = 1422402800;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1422402800;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10326,19 +10540,19 @@ public:
 class answerCallbackQuery final : public Function
 {
 public:
-    int64_t callback_query_id_;
+    std::int64_t callback_query_id_;
     std::string text_;
     bool show_alert_;
     std::string url_;
-    int32_t cache_time_;
+    std::int32_t cache_time_;
 
     answerCallbackQuery();
 
-    answerCallbackQuery(int64_t callback_query_id_, std::string const &text_, bool show_alert_,
-                        std::string const &url_, int32_t cache_time_);
+    answerCallbackQuery(std::int64_t callback_query_id_, std::string const &text_, bool show_alert_,
+                        std::string const &url_, std::int32_t cache_time_);
 
-    static const int32_t ID = -1153028490;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1153028490;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10351,15 +10565,15 @@ public:
 class answerCustomQuery final : public Function
 {
 public:
-    int64_t custom_query_id_;
+    std::int64_t custom_query_id_;
     std::string data_;
 
     answerCustomQuery();
 
-    answerCustomQuery(int64_t custom_query_id_, std::string const &data_);
+    answerCustomQuery(std::int64_t custom_query_id_, std::string const &data_);
 
-    static const int32_t ID = -1293603521;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1293603521;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10372,23 +10586,23 @@ public:
 class answerInlineQuery final : public Function
 {
 public:
-    int64_t inline_query_id_;
+    std::int64_t inline_query_id_;
     bool is_personal_;
     std::vector<object_ptr<InputInlineQueryResult>> results_;
-    int32_t cache_time_;
+    std::int32_t cache_time_;
     std::string next_offset_;
     std::string switch_pm_text_;
     std::string switch_pm_parameter_;
 
     answerInlineQuery();
 
-    answerInlineQuery(int64_t inline_query_id_, bool is_personal_,
-                      std::vector<object_ptr<InputInlineQueryResult>> &&results_, int32_t cache_time_,
+    answerInlineQuery(std::int64_t inline_query_id_, bool is_personal_,
+                      std::vector<object_ptr<InputInlineQueryResult>> &&results_, std::int32_t cache_time_,
                       std::string const &next_offset_, std::string const &switch_pm_text_,
                       std::string const &switch_pm_parameter_);
 
-    static const int32_t ID = 485879477;
-    int32_t get_id() const final
+    static const std::int32_t ID = 485879477;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10401,15 +10615,15 @@ public:
 class answerPreCheckoutQuery final : public Function
 {
 public:
-    int64_t pre_checkout_query_id_;
+    std::int64_t pre_checkout_query_id_;
     std::string error_message_;
 
     answerPreCheckoutQuery();
 
-    answerPreCheckoutQuery(int64_t pre_checkout_query_id_, std::string const &error_message_);
+    answerPreCheckoutQuery(std::int64_t pre_checkout_query_id_, std::string const &error_message_);
 
-    static const int32_t ID = -1486789653;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1486789653;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10422,17 +10636,17 @@ public:
 class answerShippingQuery final : public Function
 {
 public:
-    int64_t shipping_query_id_;
+    std::int64_t shipping_query_id_;
     std::vector<object_ptr<shippingOption>> shipping_options_;
     std::string error_message_;
 
     answerShippingQuery();
 
-    answerShippingQuery(int64_t shipping_query_id_,
+    answerShippingQuery(std::int64_t shipping_query_id_,
                         std::vector<object_ptr<shippingOption>> &&shipping_options_, std::string const &error_message_);
 
-    static const int32_t ID = -434601324;
-    int32_t get_id() const final
+    static const std::int32_t ID = -434601324;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10445,14 +10659,14 @@ public:
 class blockUser final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     blockUser();
 
-    explicit blockUser(int32_t user_id_);
+    explicit blockUser(std::int32_t user_id_);
 
-    static const int32_t ID = -1239315139;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1239315139;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10465,15 +10679,15 @@ public:
 class cancelDownloadFile final : public Function
 {
 public:
-    int32_t file_id_;
+    std::int32_t file_id_;
     bool only_if_pending_;
 
     cancelDownloadFile();
 
-    cancelDownloadFile(int32_t file_id_, bool only_if_pending_);
+    cancelDownloadFile(std::int32_t file_id_, bool only_if_pending_);
 
-    static const int32_t ID = -1954524450;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1954524450;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10486,14 +10700,14 @@ public:
 class cancelUploadFile final : public Function
 {
 public:
-    int32_t file_id_;
+    std::int32_t file_id_;
 
     cancelUploadFile();
 
-    explicit cancelUploadFile(int32_t file_id_);
+    explicit cancelUploadFile(std::int32_t file_id_);
 
-    static const int32_t ID = 1623539600;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1623539600;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10506,15 +10720,15 @@ public:
 class changeChatReportSpamState final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     bool is_spam_chat_;
 
     changeChatReportSpamState();
 
-    changeChatReportSpamState(int64_t chat_id_, bool is_spam_chat_);
+    changeChatReportSpamState(std::int64_t chat_id_, bool is_spam_chat_);
 
-    static const int32_t ID = 1768597097;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1768597097;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10533,8 +10747,8 @@ public:
 
     explicit changeImportedContacts(std::vector<object_ptr<contact>> &&contacts_);
 
-    static const int32_t ID = 1968207955;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1968207955;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10556,8 +10770,8 @@ public:
     changePhoneNumber(std::string const &phone_number_, bool allow_flash_call_,
                       bool is_current_phone_number_);
 
-    static const int32_t ID = -1510625218;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1510625218;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10570,16 +10784,16 @@ public:
 class changeStickerSet final : public Function
 {
 public:
-    int64_t set_id_;
+    std::int64_t set_id_;
     bool is_installed_;
     bool is_archived_;
 
     changeStickerSet();
 
-    changeStickerSet(int64_t set_id_, bool is_installed_, bool is_archived_);
+    changeStickerSet(std::int64_t set_id_, bool is_installed_, bool is_archived_);
 
-    static const int32_t ID = 449357293;
-    int32_t get_id() const final
+    static const std::int32_t ID = 449357293;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10598,8 +10812,8 @@ public:
 
     explicit checkAuthenticationBotToken(std::string const &token_);
 
-    static const int32_t ID = 639321206;
-    int32_t get_id() const final
+    static const std::int32_t ID = 639321206;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10621,8 +10835,8 @@ public:
     checkAuthenticationCode(std::string const &code_, std::string const &first_name_,
                             std::string const &last_name_);
 
-    static const int32_t ID = -707293555;
-    int32_t get_id() const final
+    static const std::int32_t ID = -707293555;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10641,8 +10855,8 @@ public:
 
     explicit checkAuthenticationPassword(std::string const &password_);
 
-    static const int32_t ID = -2025698400;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2025698400;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10661,8 +10875,8 @@ public:
 
     explicit checkChangePhoneNumberCode(std::string const &code_);
 
-    static const int32_t ID = -1720278429;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1720278429;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10681,13 +10895,34 @@ public:
 
     explicit checkChatInviteLink(std::string const &invite_link_);
 
-    static const int32_t ID = -496940997;
-    int32_t get_id() const final
+    static const std::int32_t ID = -496940997;
+    std::int32_t get_id() const final
     {
         return ID;
     }
 
     using ReturnType = object_ptr<chatInviteLinkInfo>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class checkChatUsername final : public Function
+{
+public:
+    std::int64_t chat_id_;
+    std::string username_;
+
+    checkChatUsername();
+
+    checkChatUsername(std::int64_t chat_id_, std::string const &username_);
+
+    static const std::int32_t ID = -2003506154;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<CheckChatUsernameResult>;
 
     void store(TlStorerToString &s, const char *field_name) const final;
 };
@@ -10701,8 +10936,8 @@ public:
 
     explicit checkDatabaseEncryptionKey(std::string const &encryption_key_);
 
-    static const int32_t ID = 1018769307;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1018769307;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10718,8 +10953,8 @@ public:
 
     clearImportedContacts();
 
-    static const int32_t ID = 869503298;
-    int32_t get_id() const final
+    static const std::int32_t ID = 869503298;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10738,8 +10973,8 @@ public:
 
     explicit clearRecentStickers(bool is_attached_);
 
-    static const int32_t ID = -321242684;
-    int32_t get_id() const final
+    static const std::int32_t ID = -321242684;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10755,8 +10990,8 @@ public:
 
     clearRecentlyFoundChats();
 
-    static const int32_t ID = -285582542;
-    int32_t get_id() const final
+    static const std::int32_t ID = -285582542;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10772,8 +11007,8 @@ public:
 
     close();
 
-    static const int32_t ID = -1187782273;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1187782273;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10786,14 +11021,14 @@ public:
 class closeChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     closeChat();
 
-    explicit closeChat(int64_t chat_id_);
+    explicit closeChat(std::int64_t chat_id_);
 
-    static const int32_t ID = 39749353;
-    int32_t get_id() const final
+    static const std::int32_t ID = 39749353;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10806,14 +11041,14 @@ public:
 class closeSecretChat final : public Function
 {
 public:
-    int32_t secret_chat_id_;
+    std::int32_t secret_chat_id_;
 
     closeSecretChat();
 
-    explicit closeSecretChat(int32_t secret_chat_id_);
+    explicit closeSecretChat(std::int32_t secret_chat_id_);
 
-    static const int32_t ID = -471006133;
-    int32_t get_id() const final
+    static const std::int32_t ID = -471006133;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10826,15 +11061,15 @@ public:
 class createBasicGroupChat final : public Function
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
     bool force_;
 
     createBasicGroupChat();
 
-    createBasicGroupChat(int32_t basic_group_id_, bool force_);
+    createBasicGroupChat(std::int32_t basic_group_id_, bool force_);
 
-    static const int32_t ID = 642492777;
-    int32_t get_id() const final
+    static const std::int32_t ID = 642492777;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10847,15 +11082,15 @@ public:
 class createCall final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<callProtocol> protocol_;
 
     createCall();
 
-    createCall(int32_t user_id_, object_ptr<callProtocol> &&protocol_);
+    createCall(std::int32_t user_id_, object_ptr<callProtocol> &&protocol_);
 
-    static const int32_t ID = -1742408159;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1742408159;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10868,15 +11103,15 @@ public:
 class createNewBasicGroupChat final : public Function
 {
 public:
-    std::vector<int32_t> user_ids_;
+    std::vector<std::int32_t> user_ids_;
     std::string title_;
 
     createNewBasicGroupChat();
 
-    createNewBasicGroupChat(std::vector<int32_t> &&user_ids_, std::string const &title_);
+    createNewBasicGroupChat(std::vector<std::int32_t> &&user_ids_, std::string const &title_);
 
-    static const int32_t ID = 1874532069;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1874532069;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10889,14 +11124,14 @@ public:
 class createNewSecretChat final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     createNewSecretChat();
 
-    explicit createNewSecretChat(int32_t user_id_);
+    explicit createNewSecretChat(std::int32_t user_id_);
 
-    static const int32_t ID = 1689344881;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1689344881;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10909,7 +11144,7 @@ public:
 class createNewStickerSet final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     std::string title_;
     std::string name_;
     bool is_masks_;
@@ -10917,11 +11152,11 @@ public:
 
     createNewStickerSet();
 
-    createNewStickerSet(int32_t user_id_, std::string const &title_, std::string const &name_,
+    createNewStickerSet(std::int32_t user_id_, std::string const &title_, std::string const &name_,
                         bool is_masks_, std::vector<object_ptr<inputSticker>> &&stickers_);
 
-    static const int32_t ID = 205093058;
-    int32_t get_id() const final
+    static const std::int32_t ID = 205093058;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10943,8 +11178,8 @@ public:
     createNewSupergroupChat(std::string const &title_, bool is_channel_,
                             std::string const &description_);
 
-    static const int32_t ID = 1284982268;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1284982268;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10957,15 +11192,15 @@ public:
 class createPrivateChat final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     bool force_;
 
     createPrivateChat();
 
-    createPrivateChat(int32_t user_id_, bool force_);
+    createPrivateChat(std::int32_t user_id_, bool force_);
 
-    static const int32_t ID = -1807530364;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1807530364;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10978,14 +11213,14 @@ public:
 class createSecretChat final : public Function
 {
 public:
-    int32_t secret_chat_id_;
+    std::int32_t secret_chat_id_;
 
     createSecretChat();
 
-    explicit createSecretChat(int32_t secret_chat_id_);
+    explicit createSecretChat(std::int32_t secret_chat_id_);
 
-    static const int32_t ID = 1930285615;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1930285615;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -10998,15 +11233,15 @@ public:
 class createSupergroupChat final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     bool force_;
 
     createSupergroupChat();
 
-    createSupergroupChat(int32_t supergroup_id_, bool force_);
+    createSupergroupChat(std::int32_t supergroup_id_, bool force_);
 
-    static const int32_t ID = 352742758;
-    int32_t get_id() const final
+    static const std::int32_t ID = 352742758;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11020,14 +11255,14 @@ class createTemporaryPassword final : public Function
 {
 public:
     std::string password_;
-    int32_t valid_for_;
+    std::int32_t valid_for_;
 
     createTemporaryPassword();
 
-    createTemporaryPassword(std::string const &password_, int32_t valid_for_);
+    createTemporaryPassword(std::string const &password_, std::int32_t valid_for_);
 
-    static const int32_t ID = -1626509434;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1626509434;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11046,8 +11281,8 @@ public:
 
     explicit deleteAccount(std::string const &reason_);
 
-    static const int32_t ID = -1203056508;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1203056508;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11060,15 +11295,15 @@ public:
 class deleteChatHistory final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     bool remove_from_chat_list_;
 
     deleteChatHistory();
 
-    deleteChatHistory(int64_t chat_id_, bool remove_from_chat_list_);
+    deleteChatHistory(std::int64_t chat_id_, bool remove_from_chat_list_);
 
-    static const int32_t ID = -1384632722;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1384632722;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11081,15 +11316,15 @@ public:
 class deleteChatMessagesFromUser final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t user_id_;
+    std::int64_t chat_id_;
+    std::int32_t user_id_;
 
     deleteChatMessagesFromUser();
 
-    deleteChatMessagesFromUser(int64_t chat_id_, int32_t user_id_);
+    deleteChatMessagesFromUser(std::int64_t chat_id_, std::int32_t user_id_);
 
-    static const int32_t ID = -1599689199;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1599689199;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11102,15 +11337,15 @@ public:
 class deleteChatReplyMarkup final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     deleteChatReplyMarkup();
 
-    deleteChatReplyMarkup(int64_t chat_id_, int64_t message_id_);
+    deleteChatReplyMarkup(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = 100637531;
-    int32_t get_id() const final
+    static const std::int32_t ID = 100637531;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11123,14 +11358,14 @@ public:
 class deleteFile final : public Function
 {
 public:
-    int32_t file_id_;
+    std::int32_t file_id_;
 
     deleteFile();
 
-    explicit deleteFile(int32_t file_id_);
+    explicit deleteFile(std::int32_t file_id_);
 
-    static const int32_t ID = 1807653676;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1807653676;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11143,16 +11378,16 @@ public:
 class deleteMessages final : public Function
 {
 public:
-    int64_t chat_id_;
-    std::vector<int64_t> message_ids_;
+    std::int64_t chat_id_;
+    std::vector<std::int64_t> message_ids_;
     bool revoke_;
 
     deleteMessages();
 
-    deleteMessages(int64_t chat_id_, std::vector<int64_t> &&message_ids_, bool revoke_);
+    deleteMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&message_ids_, bool revoke_);
 
-    static const int32_t ID = 1130090173;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1130090173;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11165,14 +11400,14 @@ public:
 class deleteProfilePhoto final : public Function
 {
 public:
-    int64_t profile_photo_id_;
+    std::int64_t profile_photo_id_;
 
     deleteProfilePhoto();
 
-    explicit deleteProfilePhoto(int64_t profile_photo_id_);
+    explicit deleteProfilePhoto(std::int64_t profile_photo_id_);
 
-    static const int32_t ID = 1319794625;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1319794625;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11188,8 +11423,8 @@ public:
 
     deleteSavedCredentials();
 
-    static const int32_t ID = 826300114;
-    int32_t get_id() const final
+    static const std::int32_t ID = 826300114;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11205,8 +11440,8 @@ public:
 
     deleteSavedOrderInfo();
 
-    static const int32_t ID = 1629058164;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1629058164;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11219,14 +11454,14 @@ public:
 class deleteSupergroup final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
 
     deleteSupergroup();
 
-    explicit deleteSupergroup(int32_t supergroup_id_);
+    explicit deleteSupergroup(std::int32_t supergroup_id_);
 
-    static const int32_t ID = -1999855965;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1999855965;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11242,8 +11477,8 @@ public:
 
     destroy();
 
-    static const int32_t ID = 685331274;
-    int32_t get_id() const final
+    static const std::int32_t ID = 685331274;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11256,18 +11491,55 @@ public:
 class discardCall final : public Function
 {
 public:
-    int32_t call_id_;
+    std::int32_t call_id_;
     bool is_disconnected_;
-    int32_t duration_;
-    int64_t connection_id_;
+    std::int32_t duration_;
+    std::int64_t connection_id_;
 
     discardCall();
 
-    discardCall(int32_t call_id_, bool is_disconnected_, int32_t duration_,
-                int64_t connection_id_);
+    discardCall(std::int32_t call_id_, bool is_disconnected_, std::int32_t duration_,
+                std::int64_t connection_id_);
 
-    static const int32_t ID = -923187372;
-    int32_t get_id() const final
+    static const std::int32_t ID = -923187372;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<ok>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class disconnectAllWebsites final : public Function
+{
+public:
+
+    disconnectAllWebsites();
+
+    static const std::int32_t ID = -1082985981;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<ok>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class disconnectWebsite final : public Function
+{
+public:
+    std::int64_t website_id_;
+
+    disconnectWebsite();
+
+    explicit disconnectWebsite(std::int64_t website_id_);
+
+    static const std::int32_t ID = -778767395;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11280,15 +11552,15 @@ public:
 class downloadFile final : public Function
 {
 public:
-    int32_t file_id_;
-    int32_t priority_;
+    std::int32_t file_id_;
+    std::int32_t priority_;
 
     downloadFile();
 
-    downloadFile(int32_t file_id_, int32_t priority_);
+    downloadFile(std::int32_t file_id_, std::int32_t priority_);
 
-    static const int32_t ID = 1531851978;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1531851978;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11310,8 +11582,8 @@ public:
     editInlineMessageCaption(std::string const &inline_message_id_,
                              object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = -760985929;
-    int32_t get_id() const final
+    static const std::int32_t ID = -760985929;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11333,8 +11605,8 @@ public:
     editInlineMessageLiveLocation(std::string const &inline_message_id_,
                                   object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<location> &&location_);
 
-    static const int32_t ID = 655046316;
-    int32_t get_id() const final
+    static const std::int32_t ID = 655046316;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11355,8 +11627,8 @@ public:
     editInlineMessageReplyMarkup(std::string const &inline_message_id_,
                                  object_ptr<ReplyMarkup> &&reply_markup_);
 
-    static const int32_t ID = -67565858;
-    int32_t get_id() const final
+    static const std::int32_t ID = -67565858;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11378,8 +11650,8 @@ public:
     editInlineMessageText(std::string const &inline_message_id_,
                           object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = -855457307;
-    int32_t get_id() const final
+    static const std::int32_t ID = -855457307;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11392,18 +11664,18 @@ public:
 class editMessageCaption final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<formattedText> caption_;
 
     editMessageCaption();
 
-    editMessageCaption(int64_t chat_id_, int64_t message_id_,
+    editMessageCaption(std::int64_t chat_id_, std::int64_t message_id_,
                        object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<formattedText> &&caption_);
 
-    static const int32_t ID = 1154677038;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1154677038;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11416,18 +11688,18 @@ public:
 class editMessageLiveLocation final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<location> location_;
 
     editMessageLiveLocation();
 
-    editMessageLiveLocation(int64_t chat_id_, int64_t message_id_,
+    editMessageLiveLocation(std::int64_t chat_id_, std::int64_t message_id_,
                             object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<location> &&location_);
 
-    static const int32_t ID = -1146772745;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1146772745;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11440,17 +11712,17 @@ public:
 class editMessageReplyMarkup final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<ReplyMarkup> reply_markup_;
 
     editMessageReplyMarkup();
 
-    editMessageReplyMarkup(int64_t chat_id_, int64_t message_id_,
+    editMessageReplyMarkup(std::int64_t chat_id_, std::int64_t message_id_,
                            object_ptr<ReplyMarkup> &&reply_markup_);
 
-    static const int32_t ID = 332127881;
-    int32_t get_id() const final
+    static const std::int32_t ID = 332127881;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11463,18 +11735,18 @@ public:
 class editMessageText final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<ReplyMarkup> reply_markup_;
     object_ptr<InputMessageContent> input_message_content_;
 
     editMessageText();
 
-    editMessageText(int64_t chat_id_, int64_t message_id_,
+    editMessageText(std::int64_t chat_id_, std::int64_t message_id_,
                     object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 196272567;
-    int32_t get_id() const final
+    static const std::int32_t ID = 196272567;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11487,15 +11759,15 @@ public:
 class finishFileGeneration final : public Function
 {
 public:
-    int64_t generation_id_;
+    std::int64_t generation_id_;
     object_ptr<error> error_;
 
     finishFileGeneration();
 
-    finishFileGeneration(int64_t generation_id_, object_ptr<error> &&error_);
+    finishFileGeneration(std::int64_t generation_id_, object_ptr<error> &&error_);
 
-    static const int32_t ID = -1055060835;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1055060835;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11508,21 +11780,21 @@ public:
 class forwardMessages final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t from_chat_id_;
-    std::vector<int64_t> message_ids_;
+    std::int64_t chat_id_;
+    std::int64_t from_chat_id_;
+    std::vector<std::int64_t> message_ids_;
     bool disable_notification_;
     bool from_background_;
     bool as_album_;
 
     forwardMessages();
 
-    forwardMessages(int64_t chat_id_, int64_t from_chat_id_,
-                    std::vector<int64_t> &&message_ids_, bool disable_notification_, bool from_background_,
+    forwardMessages(std::int64_t chat_id_, std::int64_t from_chat_id_,
+                    std::vector<std::int64_t> &&message_ids_, bool disable_notification_, bool from_background_,
                     bool as_album_);
 
-    static const int32_t ID = -537573308;
-    int32_t get_id() const final
+    static const std::int32_t ID = -537573308;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11535,14 +11807,14 @@ public:
 class generateChatInviteLink final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     generateChatInviteLink();
 
-    explicit generateChatInviteLink(int64_t chat_id_);
+    explicit generateChatInviteLink(std::int64_t chat_id_);
 
-    static const int32_t ID = 1945532500;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1945532500;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11558,8 +11830,8 @@ public:
 
     getAccountTtl();
 
-    static const int32_t ID = -443905161;
-    int32_t get_id() const final
+    static const std::int32_t ID = -443905161;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11575,8 +11847,8 @@ public:
 
     getActiveLiveLocationMessages();
 
-    static const int32_t ID = -1425459567;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1425459567;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11592,8 +11864,8 @@ public:
 
     getActiveSessions();
 
-    static const int32_t ID = 1119710526;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1119710526;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11607,15 +11879,15 @@ class getArchivedStickerSets final : public Function
 {
 public:
     bool is_masks_;
-    int64_t offset_sticker_set_id_;
-    int32_t limit_;
+    std::int64_t offset_sticker_set_id_;
+    std::int32_t limit_;
 
     getArchivedStickerSets();
 
-    getArchivedStickerSets(bool is_masks_, int64_t offset_sticker_set_id_, int32_t limit_);
+    getArchivedStickerSets(bool is_masks_, std::int64_t offset_sticker_set_id_, std::int32_t limit_);
 
-    static const int32_t ID = 1996943238;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1996943238;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11628,14 +11900,14 @@ public:
 class getAttachedStickerSets final : public Function
 {
 public:
-    int32_t file_id_;
+    std::int32_t file_id_;
 
     getAttachedStickerSets();
 
-    explicit getAttachedStickerSets(int32_t file_id_);
+    explicit getAttachedStickerSets(std::int32_t file_id_);
 
-    static const int32_t ID = 1302172429;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1302172429;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11651,8 +11923,8 @@ public:
 
     getAuthorizationState();
 
-    static const int32_t ID = 1949154877;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1949154877;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11665,14 +11937,14 @@ public:
 class getBasicGroup final : public Function
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
 
     getBasicGroup();
 
-    explicit getBasicGroup(int32_t basic_group_id_);
+    explicit getBasicGroup(std::int32_t basic_group_id_);
 
-    static const int32_t ID = 561775568;
-    int32_t get_id() const final
+    static const std::int32_t ID = 561775568;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11685,14 +11957,14 @@ public:
 class getBasicGroupFullInfo final : public Function
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
 
     getBasicGroupFullInfo();
 
-    explicit getBasicGroupFullInfo(int32_t basic_group_id_);
+    explicit getBasicGroupFullInfo(std::int32_t basic_group_id_);
 
-    static const int32_t ID = 1770517905;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1770517905;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11705,15 +11977,15 @@ public:
 class getBlockedUsers final : public Function
 {
 public:
-    int32_t offset_;
-    int32_t limit_;
+    std::int32_t offset_;
+    std::int32_t limit_;
 
     getBlockedUsers();
 
-    getBlockedUsers(int32_t offset_, int32_t limit_);
+    getBlockedUsers(std::int32_t offset_, std::int32_t limit_);
 
-    static const int32_t ID = -742912777;
-    int32_t get_id() const final
+    static const std::int32_t ID = -742912777;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11726,17 +11998,17 @@ public:
 class getCallbackQueryAnswer final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<CallbackQueryPayload> payload_;
 
     getCallbackQueryAnswer();
 
-    getCallbackQueryAnswer(int64_t chat_id_, int64_t message_id_,
+    getCallbackQueryAnswer(std::int64_t chat_id_, std::int64_t message_id_,
                            object_ptr<CallbackQueryPayload> &&payload_);
 
-    static const int32_t ID = 116357727;
-    int32_t get_id() const final
+    static const std::int32_t ID = 116357727;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11749,14 +12021,14 @@ public:
 class getChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     getChat();
 
-    explicit getChat(int64_t chat_id_);
+    explicit getChat(std::int64_t chat_id_);
 
-    static const int32_t ID = 1866601536;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1866601536;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11769,14 +12041,14 @@ public:
 class getChatAdministrators final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     getChatAdministrators();
 
-    explicit getChatAdministrators(int64_t chat_id_);
+    explicit getChatAdministrators(std::int64_t chat_id_);
 
-    static const int32_t ID = 508231041;
-    int32_t get_id() const final
+    static const std::int32_t ID = 508231041;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11789,21 +12061,21 @@ public:
 class getChatEventLog final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string query_;
-    int64_t from_event_id_;
-    int32_t limit_;
+    std::int64_t from_event_id_;
+    std::int32_t limit_;
     object_ptr<chatEventLogFilters> filters_;
-    std::vector<int32_t> user_ids_;
+    std::vector<std::int32_t> user_ids_;
 
     getChatEventLog();
 
-    getChatEventLog(int64_t chat_id_, std::string const &query_, int64_t from_event_id_,
-                    int32_t limit_, object_ptr<chatEventLogFilters> &&filters_,
-                    std::vector<int32_t> &&user_ids_);
+    getChatEventLog(std::int64_t chat_id_, std::string const &query_, std::int64_t from_event_id_,
+                    std::int32_t limit_, object_ptr<chatEventLogFilters> &&filters_,
+                    std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = 206900967;
-    int32_t get_id() const final
+    static const std::int32_t ID = 206900967;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11816,19 +12088,19 @@ public:
 class getChatHistory final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t from_message_id_;
-    int32_t offset_;
-    int32_t limit_;
+    std::int64_t chat_id_;
+    std::int64_t from_message_id_;
+    std::int32_t offset_;
+    std::int32_t limit_;
     bool only_local_;
 
     getChatHistory();
 
-    getChatHistory(int64_t chat_id_, int64_t from_message_id_, int32_t offset_,
-                   int32_t limit_, bool only_local_);
+    getChatHistory(std::int64_t chat_id_, std::int64_t from_message_id_, std::int32_t offset_,
+                   std::int32_t limit_, bool only_local_);
 
-    static const int32_t ID = -799960451;
-    int32_t get_id() const final
+    static const std::int32_t ID = -799960451;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11841,15 +12113,15 @@ public:
 class getChatMember final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t user_id_;
+    std::int64_t chat_id_;
+    std::int32_t user_id_;
 
     getChatMember();
 
-    getChatMember(int64_t chat_id_, int32_t user_id_);
+    getChatMember(std::int64_t chat_id_, std::int32_t user_id_);
 
-    static const int32_t ID = 677085892;
-    int32_t get_id() const final
+    static const std::int32_t ID = 677085892;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11862,20 +12134,40 @@ public:
 class getChatMessageByDate final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t date_;
+    std::int64_t chat_id_;
+    std::int32_t date_;
 
     getChatMessageByDate();
 
-    getChatMessageByDate(int64_t chat_id_, int32_t date_);
+    getChatMessageByDate(std::int64_t chat_id_, std::int32_t date_);
 
-    static const int32_t ID = -729083933;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1062564150;
+    std::int32_t get_id() const final
     {
         return ID;
     }
 
-    using ReturnType = object_ptr<messages>;
+    using ReturnType = object_ptr<message>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class getChatPinnedMessage final : public Function
+{
+public:
+    std::int64_t chat_id_;
+
+    getChatPinnedMessage();
+
+    explicit getChatPinnedMessage(std::int64_t chat_id_);
+
+    static const std::int32_t ID = 359865008;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<message>;
 
     void store(TlStorerToString &s, const char *field_name) const final;
 };
@@ -11883,14 +12175,14 @@ public:
 class getChatReportSpamState final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     getChatReportSpamState();
 
-    explicit getChatReportSpamState(int64_t chat_id_);
+    explicit getChatReportSpamState(std::int64_t chat_id_);
 
-    static const int32_t ID = -748866856;
-    int32_t get_id() const final
+    static const std::int32_t ID = -748866856;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11903,21 +12195,55 @@ public:
 class getChats final : public Function
 {
 public:
-    int64_t offset_order_;
-    int64_t offset_chat_id_;
-    int32_t limit_;
+    std::int64_t offset_order_;
+    std::int64_t offset_chat_id_;
+    std::int32_t limit_;
 
     getChats();
 
-    getChats(int64_t offset_order_, int64_t offset_chat_id_, int32_t limit_);
+    getChats(std::int64_t offset_order_, std::int64_t offset_chat_id_, std::int32_t limit_);
 
-    static const int32_t ID = -2121381601;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2121381601;
+    std::int32_t get_id() const final
     {
         return ID;
     }
 
     using ReturnType = object_ptr<chats>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class getConnectedWebsites final : public Function
+{
+public:
+
+    getConnectedWebsites();
+
+    static const std::int32_t ID = -170536110;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<connectedWebsites>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class getCountryCode final : public Function
+{
+public:
+
+    getCountryCode();
+
+    static const std::int32_t ID = 1540593906;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<text>;
 
     void store(TlStorerToString &s, const char *field_name) const final;
 };
@@ -11928,8 +12254,8 @@ public:
 
     getCreatedPublicChats();
 
-    static const int32_t ID = 1609082914;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1609082914;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11945,8 +12271,8 @@ public:
 
     getFavoriteStickers();
 
-    static const int32_t ID = -338964672;
-    int32_t get_id() const final
+    static const std::int32_t ID = -338964672;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11959,14 +12285,14 @@ public:
 class getFile final : public Function
 {
 public:
-    int32_t file_id_;
+    std::int32_t file_id_;
 
     getFile();
 
-    explicit getFile(int32_t file_id_);
+    explicit getFile(std::int32_t file_id_);
 
-    static const int32_t ID = 1553923406;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1553923406;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -11985,8 +12311,8 @@ public:
 
     explicit getFileExtension(std::string const &mime_type_);
 
-    static const int32_t ID = -106055372;
-    int32_t get_id() const final
+    static const std::int32_t ID = -106055372;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12005,8 +12331,8 @@ public:
 
     explicit getFileMimeType(std::string const &file_name_);
 
-    static const int32_t ID = -2073879671;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2073879671;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12019,16 +12345,16 @@ public:
 class getGameHighScores final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
-    int32_t user_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+    std::int32_t user_id_;
 
     getGameHighScores();
 
-    getGameHighScores(int64_t chat_id_, int64_t message_id_, int32_t user_id_);
+    getGameHighScores(std::int64_t chat_id_, std::int64_t message_id_, std::int32_t user_id_);
 
-    static const int32_t ID = 1920923753;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1920923753;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12041,16 +12367,16 @@ public:
 class getGroupsInCommon final : public Function
 {
 public:
-    int32_t user_id_;
-    int64_t offset_chat_id_;
-    int32_t limit_;
+    std::int32_t user_id_;
+    std::int64_t offset_chat_id_;
+    std::int32_t limit_;
 
     getGroupsInCommon();
 
-    getGroupsInCommon(int32_t user_id_, int64_t offset_chat_id_, int32_t limit_);
+    getGroupsInCommon(std::int32_t user_id_, std::int64_t offset_chat_id_, std::int32_t limit_);
 
-    static const int32_t ID = -23238689;
-    int32_t get_id() const final
+    static const std::int32_t ID = -23238689;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12066,8 +12392,8 @@ public:
 
     getImportedContactCount();
 
-    static const int32_t ID = -656336346;
-    int32_t get_id() const final
+    static const std::int32_t ID = -656336346;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12081,14 +12407,14 @@ class getInlineGameHighScores final : public Function
 {
 public:
     std::string inline_message_id_;
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     getInlineGameHighScores();
 
-    getInlineGameHighScores(std::string const &inline_message_id_, int32_t user_id_);
+    getInlineGameHighScores(std::string const &inline_message_id_, std::int32_t user_id_);
 
-    static const int32_t ID = -1833445800;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1833445800;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12101,19 +12427,19 @@ public:
 class getInlineQueryResults final : public Function
 {
 public:
-    int32_t bot_user_id_;
-    int64_t chat_id_;
+    std::int32_t bot_user_id_;
+    std::int64_t chat_id_;
     object_ptr<location> user_location_;
     std::string query_;
     std::string offset_;
 
     getInlineQueryResults();
 
-    getInlineQueryResults(int32_t bot_user_id_, int64_t chat_id_,
+    getInlineQueryResults(std::int32_t bot_user_id_, std::int64_t chat_id_,
                           object_ptr<location> &&user_location_, std::string const &query_, std::string const &offset_);
 
-    static const int32_t ID = -1182511172;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1182511172;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12132,8 +12458,8 @@ public:
 
     explicit getInstalledStickerSets(bool is_masks_);
 
-    static const int32_t ID = 1214523749;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1214523749;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12149,8 +12475,8 @@ public:
 
     getInviteText();
 
-    static const int32_t ID = 794573512;
-    int32_t get_id() const final
+    static const std::int32_t ID = 794573512;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12166,8 +12492,8 @@ public:
 
     getMe();
 
-    static const int32_t ID = -191516033;
-    int32_t get_id() const final
+    static const std::int32_t ID = -191516033;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12180,15 +12506,15 @@ public:
 class getMessage final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     getMessage();
 
-    getMessage(int64_t chat_id_, int64_t message_id_);
+    getMessage(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = -1821196160;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1821196160;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12201,15 +12527,15 @@ public:
 class getMessages final : public Function
 {
 public:
-    int64_t chat_id_;
-    std::vector<int64_t> message_ids_;
+    std::int64_t chat_id_;
+    std::vector<std::int64_t> message_ids_;
 
     getMessages();
 
-    getMessages(int64_t chat_id_, std::vector<int64_t> &&message_ids_);
+    getMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&message_ids_);
 
-    static const int32_t ID = 425299338;
-    int32_t get_id() const final
+    static const std::int32_t ID = 425299338;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12228,8 +12554,8 @@ public:
 
     explicit getNetworkStatistics(bool only_current_);
 
-    static const int32_t ID = -986228706;
-    int32_t get_id() const final
+    static const std::int32_t ID = -986228706;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12248,8 +12574,8 @@ public:
 
     explicit getNotificationSettings(object_ptr<NotificationSettingsScope> &&scope_);
 
-    static const int32_t ID = 907144391;
-    int32_t get_id() const final
+    static const std::int32_t ID = 907144391;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12268,8 +12594,8 @@ public:
 
     explicit getOption(std::string const &name_);
 
-    static const int32_t ID = -1572495746;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1572495746;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12285,8 +12611,8 @@ public:
 
     getPasswordState();
 
-    static const int32_t ID = -174752904;
-    int32_t get_id() const final
+    static const std::int32_t ID = -174752904;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12299,15 +12625,15 @@ public:
 class getPaymentForm final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     getPaymentForm();
 
-    getPaymentForm(int64_t chat_id_, int64_t message_id_);
+    getPaymentForm(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = -2146950882;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2146950882;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12320,15 +12646,15 @@ public:
 class getPaymentReceipt final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     getPaymentReceipt();
 
-    getPaymentReceipt(int64_t chat_id_, int64_t message_id_);
+    getPaymentReceipt(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = 1013758294;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1013758294;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12344,8 +12670,8 @@ public:
 
     getProxy();
 
-    static const int32_t ID = 1389343170;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1389343170;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12358,16 +12684,16 @@ public:
 class getPublicMessageLink final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     bool for_album_;
 
     getPublicMessageLink();
 
-    getPublicMessageLink(int64_t chat_id_, int64_t message_id_, bool for_album_);
+    getPublicMessageLink(std::int64_t chat_id_, std::int64_t message_id_, bool for_album_);
 
-    static const int32_t ID = -374642839;
-    int32_t get_id() const final
+    static const std::int32_t ID = -374642839;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12383,8 +12709,8 @@ public:
 
     getRecentInlineBots();
 
-    static const int32_t ID = 1437823548;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1437823548;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12403,8 +12729,8 @@ public:
 
     explicit getRecentStickers(bool is_attached_);
 
-    static const int32_t ID = -579622241;
-    int32_t get_id() const final
+    static const std::int32_t ID = -579622241;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12423,8 +12749,8 @@ public:
 
     explicit getRecentlyVisitedTMeUrls(std::string const &referrer_);
 
-    static const int32_t ID = 806754961;
-    int32_t get_id() const final
+    static const std::int32_t ID = 806754961;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12443,8 +12769,8 @@ public:
 
     explicit getRecoveryEmailAddress(std::string const &password_);
 
-    static const int32_t ID = -1594770947;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1594770947;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12464,13 +12790,34 @@ public:
 
     getRemoteFile(std::string const &remote_file_id_, object_ptr<FileType> &&file_type_);
 
-    static const int32_t ID = 2137204530;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2137204530;
+    std::int32_t get_id() const final
     {
         return ID;
     }
 
     using ReturnType = object_ptr<file>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class getRepliedMessage final : public Function
+{
+public:
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
+
+    getRepliedMessage();
+
+    getRepliedMessage(std::int64_t chat_id_, std::int64_t message_id_);
+
+    static const std::int32_t ID = -641918531;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<message>;
 
     void store(TlStorerToString &s, const char *field_name) const final;
 };
@@ -12481,8 +12828,8 @@ public:
 
     getSavedAnimations();
 
-    static const int32_t ID = 7051032;
-    int32_t get_id() const final
+    static const std::int32_t ID = 7051032;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12498,8 +12845,8 @@ public:
 
     getSavedOrderInfo();
 
-    static const int32_t ID = -1152016675;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1152016675;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12512,14 +12859,14 @@ public:
 class getSecretChat final : public Function
 {
 public:
-    int32_t secret_chat_id_;
+    std::int32_t secret_chat_id_;
 
     getSecretChat();
 
-    explicit getSecretChat(int32_t secret_chat_id_);
+    explicit getSecretChat(std::int32_t secret_chat_id_);
 
-    static const int32_t ID = 40599169;
-    int32_t get_id() const final
+    static const std::int32_t ID = 40599169;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12538,8 +12885,8 @@ public:
 
     explicit getStickerEmojis(object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = 95352475;
-    int32_t get_id() const final
+    static const std::int32_t ID = 95352475;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12552,14 +12899,14 @@ public:
 class getStickerSet final : public Function
 {
 public:
-    int64_t set_id_;
+    std::int64_t set_id_;
 
     getStickerSet();
 
-    explicit getStickerSet(int64_t set_id_);
+    explicit getStickerSet(std::int64_t set_id_);
 
-    static const int32_t ID = 1052318659;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1052318659;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12573,14 +12920,14 @@ class getStickers final : public Function
 {
 public:
     std::string emoji_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     getStickers();
 
-    getStickers(std::string const &emoji_, int32_t limit_);
+    getStickers(std::string const &emoji_, std::int32_t limit_);
 
-    static const int32_t ID = -1594919556;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1594919556;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12593,14 +12940,14 @@ public:
 class getStorageStatistics final : public Function
 {
 public:
-    int32_t chat_limit_;
+    std::int32_t chat_limit_;
 
     getStorageStatistics();
 
-    explicit getStorageStatistics(int32_t chat_limit_);
+    explicit getStorageStatistics(std::int32_t chat_limit_);
 
-    static const int32_t ID = -853193929;
-    int32_t get_id() const final
+    static const std::int32_t ID = -853193929;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12616,8 +12963,8 @@ public:
 
     getStorageStatisticsFast();
 
-    static const int32_t ID = 61368066;
-    int32_t get_id() const final
+    static const std::int32_t ID = 61368066;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12630,14 +12977,14 @@ public:
 class getSupergroup final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
 
     getSupergroup();
 
-    explicit getSupergroup(int32_t supergroup_id_);
+    explicit getSupergroup(std::int32_t supergroup_id_);
 
-    static const int32_t ID = -2063063706;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2063063706;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12650,14 +12997,14 @@ public:
 class getSupergroupFullInfo final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
 
     getSupergroupFullInfo();
 
-    explicit getSupergroupFullInfo(int32_t supergroup_id_);
+    explicit getSupergroupFullInfo(std::int32_t supergroup_id_);
 
-    static const int32_t ID = -1150331262;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1150331262;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12670,18 +13017,18 @@ public:
 class getSupergroupMembers final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     object_ptr<SupergroupMembersFilter> filter_;
-    int32_t offset_;
-    int32_t limit_;
+    std::int32_t offset_;
+    std::int32_t limit_;
 
     getSupergroupMembers();
 
-    getSupergroupMembers(int32_t supergroup_id_, object_ptr<SupergroupMembersFilter> &&filter_,
-                         int32_t offset_, int32_t limit_);
+    getSupergroupMembers(std::int32_t supergroup_id_, object_ptr<SupergroupMembersFilter> &&filter_,
+                         std::int32_t offset_, std::int32_t limit_);
 
-    static const int32_t ID = 1427643098;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1427643098;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12697,8 +13044,8 @@ public:
 
     getSupportUser();
 
-    static const int32_t ID = -1733497700;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1733497700;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12714,8 +13061,8 @@ public:
 
     getTemporaryPasswordState();
 
-    static const int32_t ID = -12670830;
-    int32_t get_id() const final
+    static const std::int32_t ID = -12670830;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12731,8 +13078,8 @@ public:
 
     getTermsOfService();
 
-    static const int32_t ID = 1835034646;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1835034646;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12751,8 +13098,8 @@ public:
 
     explicit getTextEntities(std::string const &text_);
 
-    static const int32_t ID = -341490693;
-    int32_t get_id() const final
+    static const std::int32_t ID = -341490693;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12766,14 +13113,14 @@ class getTopChats final : public Function
 {
 public:
     object_ptr<TopChatCategory> category_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     getTopChats();
 
-    getTopChats(object_ptr<TopChatCategory> &&category_, int32_t limit_);
+    getTopChats(object_ptr<TopChatCategory> &&category_, std::int32_t limit_);
 
-    static const int32_t ID = -388410847;
-    int32_t get_id() const final
+    static const std::int32_t ID = -388410847;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12789,8 +13136,8 @@ public:
 
     getTrendingStickerSets();
 
-    static const int32_t ID = -1729129957;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1729129957;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12803,14 +13150,14 @@ public:
 class getUser final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     getUser();
 
-    explicit getUser(int32_t user_id_);
+    explicit getUser(std::int32_t user_id_);
 
-    static const int32_t ID = -47586017;
-    int32_t get_id() const final
+    static const std::int32_t ID = -47586017;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12823,14 +13170,14 @@ public:
 class getUserFullInfo final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     getUserFullInfo();
 
-    explicit getUserFullInfo(int32_t user_id_);
+    explicit getUserFullInfo(std::int32_t user_id_);
 
-    static const int32_t ID = -655443263;
-    int32_t get_id() const final
+    static const std::int32_t ID = -655443263;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12849,8 +13196,8 @@ public:
 
     explicit getUserPrivacySettingRules(object_ptr<UserPrivacySetting> &&setting_);
 
-    static const int32_t ID = -2077223311;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2077223311;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12863,16 +13210,16 @@ public:
 class getUserProfilePhotos final : public Function
 {
 public:
-    int32_t user_id_;
-    int32_t offset_;
-    int32_t limit_;
+    std::int32_t user_id_;
+    std::int32_t offset_;
+    std::int32_t limit_;
 
     getUserProfilePhotos();
 
-    getUserProfilePhotos(int32_t user_id_, int32_t offset_, int32_t limit_);
+    getUserProfilePhotos(std::int32_t user_id_, std::int32_t offset_, std::int32_t limit_);
 
-    static const int32_t ID = -2062927433;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2062927433;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12888,8 +13235,8 @@ public:
 
     getWallpapers();
 
-    static const int32_t ID = 2097518555;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2097518555;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12909,8 +13256,8 @@ public:
 
     getWebPageInstantView(std::string const &url_, bool force_full_);
 
-    static const int32_t ID = -1962649975;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1962649975;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12923,14 +13270,14 @@ public:
 class getWebPagePreview final : public Function
 {
 public:
-    std::string message_text_;
+    object_ptr<formattedText> text_;
 
     getWebPagePreview();
 
-    explicit getWebPagePreview(std::string const &message_text_);
+    explicit getWebPagePreview(object_ptr<formattedText> &&text_);
 
-    static const int32_t ID = 1322216444;
-    int32_t get_id() const final
+    static const std::int32_t ID = 573441580;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12949,8 +13296,8 @@ public:
 
     explicit importContacts(std::vector<object_ptr<contact>> &&contacts_);
 
-    static const int32_t ID = -215132767;
-    int32_t get_id() const final
+    static const std::int32_t ID = -215132767;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -12969,13 +13316,13 @@ public:
 
     explicit joinChatByInviteLink(std::string const &invite_link_);
 
-    static const int32_t ID = 1034753911;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1049973882;
+    std::int32_t get_id() const final
     {
         return ID;
     }
 
-    using ReturnType = object_ptr<ok>;
+    using ReturnType = object_ptr<chat>;
 
     void store(TlStorerToString &s, const char *field_name) const final;
 };
@@ -12986,8 +13333,8 @@ public:
 
     logOut();
 
-    static const int32_t ID = -1581923301;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1581923301;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13000,14 +13347,14 @@ public:
 class openChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     openChat();
 
-    explicit openChat(int64_t chat_id_);
+    explicit openChat(std::int64_t chat_id_);
 
-    static const int32_t ID = -323371509;
-    int32_t get_id() const final
+    static const std::int32_t ID = -323371509;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13020,15 +13367,15 @@ public:
 class openMessageContent final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
 
     openMessageContent();
 
-    openMessageContent(int64_t chat_id_, int64_t message_id_);
+    openMessageContent(std::int64_t chat_id_, std::int64_t message_id_);
 
-    static const int32_t ID = -739088005;
-    int32_t get_id() const final
+    static const std::int32_t ID = -739088005;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13041,24 +13388,24 @@ public:
 class optimizeStorage final : public Function
 {
 public:
-    int64_t size_;
-    int32_t ttl_;
-    int32_t count_;
-    int32_t immunity_delay_;
+    std::int64_t size_;
+    std::int32_t ttl_;
+    std::int32_t count_;
+    std::int32_t immunity_delay_;
     std::vector<object_ptr<FileType>> file_types_;
-    std::vector<int64_t> chat_ids_;
-    std::vector<int64_t> exclude_chat_ids_;
-    int32_t chat_limit_;
+    std::vector<std::int64_t> chat_ids_;
+    std::vector<std::int64_t> exclude_chat_ids_;
+    std::int32_t chat_limit_;
 
     optimizeStorage();
 
-    optimizeStorage(int64_t size_, int32_t ttl_, int32_t count_,
-                    int32_t immunity_delay_, std::vector<object_ptr<FileType>> &&file_types_,
-                    std::vector<int64_t> &&chat_ids_, std::vector<int64_t> &&exclude_chat_ids_,
-                    int32_t chat_limit_);
+    optimizeStorage(std::int64_t size_, std::int32_t ttl_, std::int32_t count_,
+                    std::int32_t immunity_delay_, std::vector<object_ptr<FileType>> &&file_types_,
+                    std::vector<std::int64_t> &&chat_ids_, std::vector<std::int64_t> &&exclude_chat_ids_,
+                    std::int32_t chat_limit_);
 
-    static const int32_t ID = 980397489;
-    int32_t get_id() const final
+    static const std::int32_t ID = 980397489;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13078,8 +13425,8 @@ public:
 
     parseTextEntities(std::string const &text_, object_ptr<TextParseMode> &&parse_mode_);
 
-    static const int32_t ID = -1709194593;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1709194593;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13092,17 +13439,17 @@ public:
 class pinSupergroupMessage final : public Function
 {
 public:
-    int32_t supergroup_id_;
-    int64_t message_id_;
+    std::int32_t supergroup_id_;
+    std::int64_t message_id_;
     bool disable_notification_;
 
     pinSupergroupMessage();
 
-    pinSupergroupMessage(int32_t supergroup_id_, int64_t message_id_,
+    pinSupergroupMessage(std::int32_t supergroup_id_, std::int64_t message_id_,
                          bool disable_notification_);
 
-    static const int32_t ID = 1141187557;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1141187557;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13122,8 +13469,8 @@ public:
 
     processDcUpdate(std::string const &dc_, std::string const &addr_);
 
-    static const int32_t ID = -1806562997;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1806562997;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13136,14 +13483,14 @@ public:
 class readAllChatMentions final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     readAllChatMentions();
 
-    explicit readAllChatMentions(int64_t chat_id_);
+    explicit readAllChatMentions(std::int64_t chat_id_);
 
-    static const int32_t ID = 1357558453;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1357558453;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13162,8 +13509,8 @@ public:
 
     explicit recoverAuthenticationPassword(std::string const &recovery_code_);
 
-    static const int32_t ID = 787436412;
-    int32_t get_id() const final
+    static const std::int32_t ID = 787436412;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13182,8 +13529,8 @@ public:
 
     explicit recoverPassword(std::string const &recovery_code_);
 
-    static const int32_t ID = 1660185903;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1660185903;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13197,15 +13544,15 @@ class registerDevice final : public Function
 {
 public:
     object_ptr<DeviceToken> device_token_;
-    std::vector<int32_t> other_user_ids_;
+    std::vector<std::int32_t> other_user_ids_;
 
     registerDevice();
 
     registerDevice(object_ptr<DeviceToken> &&device_token_,
-                   std::vector<int32_t> &&other_user_ids_);
+                   std::vector<std::int32_t> &&other_user_ids_);
 
-    static const int32_t ID = -413637293;
-    int32_t get_id() const final
+    static const std::int32_t ID = -413637293;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13218,14 +13565,14 @@ public:
 class removeContacts final : public Function
 {
 public:
-    std::vector<int32_t> user_ids_;
+    std::vector<std::int32_t> user_ids_;
 
     removeContacts();
 
-    explicit removeContacts(std::vector<int32_t> &&user_ids_);
+    explicit removeContacts(std::vector<std::int32_t> &&user_ids_);
 
-    static const int32_t ID = -615510759;
-    int32_t get_id() const final
+    static const std::int32_t ID = -615510759;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13244,8 +13591,8 @@ public:
 
     explicit removeFavoriteSticker(object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = 1152945264;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1152945264;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13264,8 +13611,8 @@ public:
 
     explicit removeRecentHashtag(std::string const &hashtag_);
 
-    static const int32_t ID = -1013735260;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1013735260;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13285,8 +13632,8 @@ public:
 
     removeRecentSticker(bool is_attached_, object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = 1246577677;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1246577677;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13299,14 +13646,14 @@ public:
 class removeRecentlyFoundChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     removeRecentlyFoundChat();
 
-    explicit removeRecentlyFoundChat(int64_t chat_id_);
+    explicit removeRecentlyFoundChat(std::int64_t chat_id_);
 
-    static const int32_t ID = 717340444;
-    int32_t get_id() const final
+    static const std::int32_t ID = 717340444;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13325,8 +13672,8 @@ public:
 
     explicit removeSavedAnimation(object_ptr<InputFile> &&animation_);
 
-    static const int32_t ID = -495605479;
-    int32_t get_id() const final
+    static const std::int32_t ID = -495605479;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13345,8 +13692,8 @@ public:
 
     explicit removeStickerFromSet(object_ptr<InputFile> &&sticker_);
 
-    static const int32_t ID = 1642196644;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1642196644;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13360,14 +13707,14 @@ class removeTopChat final : public Function
 {
 public:
     object_ptr<TopChatCategory> category_;
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     removeTopChat();
 
-    removeTopChat(object_ptr<TopChatCategory> &&category_, int64_t chat_id_);
+    removeTopChat(object_ptr<TopChatCategory> &&category_, std::int64_t chat_id_);
 
-    static const int32_t ID = -1907876267;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1907876267;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13381,14 +13728,14 @@ class reorderInstalledStickerSets final : public Function
 {
 public:
     bool is_masks_;
-    std::vector<int64_t> sticker_set_ids_;
+    std::vector<std::int64_t> sticker_set_ids_;
 
     reorderInstalledStickerSets();
 
-    reorderInstalledStickerSets(bool is_masks_, std::vector<int64_t> &&sticker_set_ids_);
+    reorderInstalledStickerSets(bool is_masks_, std::vector<std::int64_t> &&sticker_set_ids_);
 
-    static const int32_t ID = 1114537563;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1114537563;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13401,15 +13748,17 @@ public:
 class reportChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<ChatReportReason> reason_;
+    std::vector<std::int64_t> message_ids_;
 
     reportChat();
 
-    reportChat(int64_t chat_id_, object_ptr<ChatReportReason> &&reason_);
+    reportChat(std::int64_t chat_id_, object_ptr<ChatReportReason> &&reason_,
+               std::vector<std::int64_t> &&message_ids_);
 
-    static const int32_t ID = 737809476;
-    int32_t get_id() const final
+    static const std::int32_t ID = -312579772;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13422,17 +13771,17 @@ public:
 class reportSupergroupSpam final : public Function
 {
 public:
-    int32_t supergroup_id_;
-    int32_t user_id_;
-    std::vector<int64_t> message_ids_;
+    std::int32_t supergroup_id_;
+    std::int32_t user_id_;
+    std::vector<std::int64_t> message_ids_;
 
     reportSupergroupSpam();
 
-    reportSupergroupSpam(int32_t supergroup_id_, int32_t user_id_,
-                         std::vector<int64_t> &&message_ids_);
+    reportSupergroupSpam(std::int32_t supergroup_id_, std::int32_t user_id_,
+                         std::vector<std::int64_t> &&message_ids_);
 
-    static const int32_t ID = -2125451498;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2125451498;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13448,8 +13797,8 @@ public:
 
     requestAuthenticationPasswordRecovery();
 
-    static const int32_t ID = 1393896118;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1393896118;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13465,8 +13814,8 @@ public:
 
     requestPasswordRecovery();
 
-    static const int32_t ID = 1989252384;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1989252384;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13482,8 +13831,8 @@ public:
 
     resendAuthenticationCode();
 
-    static const int32_t ID = -814377191;
-    int32_t get_id() const final
+    static const std::int32_t ID = -814377191;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13499,8 +13848,8 @@ public:
 
     resendChangePhoneNumberCode();
 
-    static const int32_t ID = -786772060;
-    int32_t get_id() const final
+    static const std::int32_t ID = -786772060;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13516,8 +13865,8 @@ public:
 
     resetAllNotificationSettings();
 
-    static const int32_t ID = -174020359;
-    int32_t get_id() const final
+    static const std::int32_t ID = -174020359;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13533,8 +13882,8 @@ public:
 
     resetNetworkStatistics();
 
-    static const int32_t ID = 1646452102;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1646452102;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13547,16 +13896,16 @@ public:
 class searchCallMessages final : public Function
 {
 public:
-    int64_t from_message_id_;
-    int32_t limit_;
+    std::int64_t from_message_id_;
+    std::int32_t limit_;
     bool only_missed_;
 
     searchCallMessages();
 
-    searchCallMessages(int64_t from_message_id_, int32_t limit_, bool only_missed_);
+    searchCallMessages(std::int64_t from_message_id_, std::int32_t limit_, bool only_missed_);
 
-    static const int32_t ID = -1077230820;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1077230820;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13569,16 +13918,16 @@ public:
 class searchChatMembers final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string query_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     searchChatMembers();
 
-    searchChatMembers(int64_t chat_id_, std::string const &query_, int32_t limit_);
+    searchChatMembers(std::int64_t chat_id_, std::string const &query_, std::int32_t limit_);
 
-    static const int32_t ID = -1538035890;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1538035890;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13591,22 +13940,22 @@ public:
 class searchChatMessages final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string query_;
-    int32_t sender_user_id_;
-    int64_t from_message_id_;
-    int32_t offset_;
-    int32_t limit_;
+    std::int32_t sender_user_id_;
+    std::int64_t from_message_id_;
+    std::int32_t offset_;
+    std::int32_t limit_;
     object_ptr<SearchMessagesFilter> filter_;
 
     searchChatMessages();
 
-    searchChatMessages(int64_t chat_id_, std::string const &query_, int32_t sender_user_id_,
-                       int64_t from_message_id_, int32_t offset_, int32_t limit_,
+    searchChatMessages(std::int64_t chat_id_, std::string const &query_, std::int32_t sender_user_id_,
+                       std::int64_t from_message_id_, std::int32_t offset_, std::int32_t limit_,
                        object_ptr<SearchMessagesFilter> &&filter_);
 
-    static const int32_t ID = -1528846671;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1528846671;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13619,15 +13968,15 @@ public:
 class searchChatRecentLocationMessages final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t limit_;
+    std::int64_t chat_id_;
+    std::int32_t limit_;
 
     searchChatRecentLocationMessages();
 
-    searchChatRecentLocationMessages(int64_t chat_id_, int32_t limit_);
+    searchChatRecentLocationMessages(std::int64_t chat_id_, std::int32_t limit_);
 
-    static const int32_t ID = 950238950;
-    int32_t get_id() const final
+    static const std::int32_t ID = 950238950;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13641,14 +13990,14 @@ class searchChats final : public Function
 {
 public:
     std::string query_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     searchChats();
 
-    searchChats(std::string const &query_, int32_t limit_);
+    searchChats(std::string const &query_, std::int32_t limit_);
 
-    static const int32_t ID = -1879787060;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1879787060;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13662,14 +14011,14 @@ class searchChatsOnServer final : public Function
 {
 public:
     std::string query_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     searchChatsOnServer();
 
-    searchChatsOnServer(std::string const &query_, int32_t limit_);
+    searchChatsOnServer(std::string const &query_, std::int32_t limit_);
 
-    static const int32_t ID = -1158402188;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1158402188;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13683,14 +14032,14 @@ class searchContacts final : public Function
 {
 public:
     std::string query_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     searchContacts();
 
-    searchContacts(std::string const &query_, int32_t limit_);
+    searchContacts(std::string const &query_, std::int32_t limit_);
 
-    static const int32_t ID = -1794690715;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1794690715;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13704,14 +14053,14 @@ class searchHashtags final : public Function
 {
 public:
     std::string prefix_;
-    int32_t limit_;
+    std::int32_t limit_;
 
     searchHashtags();
 
-    searchHashtags(std::string const &prefix_, int32_t limit_);
+    searchHashtags(std::string const &prefix_, std::int32_t limit_);
 
-    static const int32_t ID = 1043637617;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1043637617;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13721,22 +14070,44 @@ public:
     void store(TlStorerToString &s, const char *field_name) const final;
 };
 
+class searchInstalledStickerSets final : public Function
+{
+public:
+    bool is_masks_;
+    std::string query_;
+    std::int32_t limit_;
+
+    searchInstalledStickerSets();
+
+    searchInstalledStickerSets(bool is_masks_, std::string const &query_, std::int32_t limit_);
+
+    static const std::int32_t ID = 681171344;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<stickerSets>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
 class searchMessages final : public Function
 {
 public:
     std::string query_;
-    int32_t offset_date_;
-    int64_t offset_chat_id_;
-    int64_t offset_message_id_;
-    int32_t limit_;
+    std::int32_t offset_date_;
+    std::int64_t offset_chat_id_;
+    std::int64_t offset_message_id_;
+    std::int32_t limit_;
 
     searchMessages();
 
-    searchMessages(std::string const &query_, int32_t offset_date_, int64_t offset_chat_id_,
-                   int64_t offset_message_id_, int32_t limit_);
+    searchMessages(std::string const &query_, std::int32_t offset_date_, std::int64_t offset_chat_id_,
+                   std::int64_t offset_message_id_, std::int32_t limit_);
 
-    static const int32_t ID = 1579305146;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1579305146;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13755,8 +14126,8 @@ public:
 
     explicit searchPublicChat(std::string const &username_);
 
-    static const int32_t ID = 857135533;
-    int32_t get_id() const final
+    static const std::int32_t ID = 857135533;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13775,8 +14146,8 @@ public:
 
     explicit searchPublicChats(std::string const &query_);
 
-    static const int32_t ID = 970385337;
-    int32_t get_id() const final
+    static const std::int32_t ID = 970385337;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13789,19 +14160,19 @@ public:
 class searchSecretMessages final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string query_;
-    int64_t from_search_id_;
-    int32_t limit_;
+    std::int64_t from_search_id_;
+    std::int32_t limit_;
     object_ptr<SearchMessagesFilter> filter_;
 
     searchSecretMessages();
 
-    searchSecretMessages(int64_t chat_id_, std::string const &query_, int64_t from_search_id_,
-                         int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_);
+    searchSecretMessages(std::int64_t chat_id_, std::string const &query_, std::int64_t from_search_id_,
+                         std::int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_);
 
-    static const int32_t ID = -1670627915;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1670627915;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13820,8 +14191,8 @@ public:
 
     explicit searchStickerSet(std::string const &name_);
 
-    static const int32_t ID = 1157930222;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1157930222;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13831,20 +14202,61 @@ public:
     void store(TlStorerToString &s, const char *field_name) const final;
 };
 
+class searchStickerSets final : public Function
+{
+public:
+    std::string query_;
+
+    searchStickerSets();
+
+    explicit searchStickerSets(std::string const &query_);
+
+    static const std::int32_t ID = -1082314629;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<stickerSets>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
+class searchStickers final : public Function
+{
+public:
+    std::string emoji_;
+    std::int32_t limit_;
+
+    searchStickers();
+
+    searchStickers(std::string const &emoji_, std::int32_t limit_);
+
+    static const std::int32_t ID = 1555771203;
+    std::int32_t get_id() const final
+    {
+        return ID;
+    }
+
+    using ReturnType = object_ptr<stickers>;
+
+    void store(TlStorerToString &s, const char *field_name) const final;
+};
+
 class sendBotStartMessage final : public Function
 {
 public:
-    int32_t bot_user_id_;
-    int64_t chat_id_;
+    std::int32_t bot_user_id_;
+    std::int64_t chat_id_;
     std::string parameter_;
 
     sendBotStartMessage();
 
-    sendBotStartMessage(int32_t bot_user_id_, int64_t chat_id_,
+    sendBotStartMessage(std::int32_t bot_user_id_, std::int64_t chat_id_,
                         std::string const &parameter_);
 
-    static const int32_t ID = 1112181339;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1112181339;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13857,15 +14269,15 @@ public:
 class sendCallDebugInformation final : public Function
 {
 public:
-    int32_t call_id_;
+    std::int32_t call_id_;
     std::string debug_information_;
 
     sendCallDebugInformation();
 
-    sendCallDebugInformation(int32_t call_id_, std::string const &debug_information_);
+    sendCallDebugInformation(std::int32_t call_id_, std::string const &debug_information_);
 
-    static const int32_t ID = 2019243839;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2019243839;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13878,16 +14290,16 @@ public:
 class sendCallRating final : public Function
 {
 public:
-    int32_t call_id_;
-    int32_t rating_;
+    std::int32_t call_id_;
+    std::int32_t rating_;
     std::string comment_;
 
     sendCallRating();
 
-    sendCallRating(int32_t call_id_, int32_t rating_, std::string const &comment_);
+    sendCallRating(std::int32_t call_id_, std::int32_t rating_, std::string const &comment_);
 
-    static const int32_t ID = 243075146;
-    int32_t get_id() const final
+    static const std::int32_t ID = 243075146;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13900,15 +14312,15 @@ public:
 class sendChatAction final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<ChatAction> action_;
 
     sendChatAction();
 
-    sendChatAction(int64_t chat_id_, object_ptr<ChatAction> &&action_);
+    sendChatAction(std::int64_t chat_id_, object_ptr<ChatAction> &&action_);
 
-    static const int32_t ID = -841357536;
-    int32_t get_id() const final
+    static const std::int32_t ID = -841357536;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13921,14 +14333,14 @@ public:
 class sendChatScreenshotTakenNotification final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     sendChatScreenshotTakenNotification();
 
-    explicit sendChatScreenshotTakenNotification(int64_t chat_id_);
+    explicit sendChatScreenshotTakenNotification(std::int64_t chat_id_);
 
-    static const int32_t ID = 448399457;
-    int32_t get_id() const final
+    static const std::int32_t ID = 448399457;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13941,15 +14353,15 @@ public:
 class sendChatSetTtlMessage final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t ttl_;
+    std::int64_t chat_id_;
+    std::int32_t ttl_;
 
     sendChatSetTtlMessage();
 
-    sendChatSetTtlMessage(int64_t chat_id_, int32_t ttl_);
+    sendChatSetTtlMessage(std::int64_t chat_id_, std::int32_t ttl_);
 
-    static const int32_t ID = 1432535564;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1432535564;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13969,8 +14381,8 @@ public:
 
     sendCustomRequest(std::string const &method_, std::string const &parameters_);
 
-    static const int32_t ID = 285045153;
-    int32_t get_id() const final
+    static const std::int32_t ID = 285045153;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -13983,21 +14395,21 @@ public:
 class sendInlineQueryResultMessage final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t reply_to_message_id_;
+    std::int64_t chat_id_;
+    std::int64_t reply_to_message_id_;
     bool disable_notification_;
     bool from_background_;
-    int64_t query_id_;
+    std::int64_t query_id_;
     std::string result_id_;
 
     sendInlineQueryResultMessage();
 
-    sendInlineQueryResultMessage(int64_t chat_id_, int64_t reply_to_message_id_,
-                                 bool disable_notification_, bool from_background_, int64_t query_id_,
+    sendInlineQueryResultMessage(std::int64_t chat_id_, std::int64_t reply_to_message_id_,
+                                 bool disable_notification_, bool from_background_, std::int64_t query_id_,
                                  std::string const &result_id_);
 
-    static const int32_t ID = -643910868;
-    int32_t get_id() const final
+    static const std::int32_t ID = -643910868;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14010,8 +14422,8 @@ public:
 class sendMessage final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t reply_to_message_id_;
+    std::int64_t chat_id_;
+    std::int64_t reply_to_message_id_;
     bool disable_notification_;
     bool from_background_;
     object_ptr<ReplyMarkup> reply_markup_;
@@ -14019,12 +14431,12 @@ public:
 
     sendMessage();
 
-    sendMessage(int64_t chat_id_, int64_t reply_to_message_id_, bool disable_notification_,
+    sendMessage(std::int64_t chat_id_, std::int64_t reply_to_message_id_, bool disable_notification_,
                 bool from_background_, object_ptr<ReplyMarkup> &&reply_markup_,
                 object_ptr<InputMessageContent> &&input_message_content_);
 
-    static const int32_t ID = 1694632114;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1694632114;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14037,20 +14449,20 @@ public:
 class sendMessageAlbum final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t reply_to_message_id_;
+    std::int64_t chat_id_;
+    std::int64_t reply_to_message_id_;
     bool disable_notification_;
     bool from_background_;
     std::vector<object_ptr<InputMessageContent>> input_message_contents_;
 
     sendMessageAlbum();
 
-    sendMessageAlbum(int64_t chat_id_, int64_t reply_to_message_id_,
+    sendMessageAlbum(std::int64_t chat_id_, std::int64_t reply_to_message_id_,
                      bool disable_notification_, bool from_background_,
                      std::vector<object_ptr<InputMessageContent>> &&input_message_contents_);
 
-    static const int32_t ID = -291823014;
-    int32_t get_id() const final
+    static const std::int32_t ID = -291823014;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14063,19 +14475,19 @@ public:
 class sendPaymentForm final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     std::string order_info_id_;
     std::string shipping_option_id_;
     object_ptr<InputCredentials> credentials_;
 
     sendPaymentForm();
 
-    sendPaymentForm(int64_t chat_id_, int64_t message_id_, std::string const &order_info_id_,
+    sendPaymentForm(std::int64_t chat_id_, std::int64_t message_id_, std::string const &order_info_id_,
                     std::string const &shipping_option_id_, object_ptr<InputCredentials> &&credentials_);
 
-    static const int32_t ID = 591581572;
-    int32_t get_id() const final
+    static const std::int32_t ID = 591581572;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14094,8 +14506,8 @@ public:
 
     explicit setAccountTtl(object_ptr<accountTtl> &&ttl_);
 
-    static const int32_t ID = 701389032;
-    int32_t get_id() const final
+    static const std::int32_t ID = 701389032;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14114,8 +14526,8 @@ public:
 
     explicit setAlarm(double seconds_);
 
-    static const int32_t ID = -873497067;
-    int32_t get_id() const final
+    static const std::int32_t ID = -873497067;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14137,8 +14549,8 @@ public:
     setAuthenticationPhoneNumber(std::string const &phone_number_, bool allow_flash_call_,
                                  bool is_current_phone_number_);
 
-    static const int32_t ID = -856055465;
-    int32_t get_id() const final
+    static const std::int32_t ID = -856055465;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14157,8 +14569,8 @@ public:
 
     explicit setBio(std::string const &bio_);
 
-    static const int32_t ID = -1619582124;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1619582124;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14171,15 +14583,15 @@ public:
 class setBotUpdatesStatus final : public Function
 {
 public:
-    int32_t pending_update_count_;
+    std::int32_t pending_update_count_;
     std::string error_message_;
 
     setBotUpdatesStatus();
 
-    setBotUpdatesStatus(int32_t pending_update_count_, std::string const &error_message_);
+    setBotUpdatesStatus(std::int32_t pending_update_count_, std::string const &error_message_);
 
-    static const int32_t ID = -1154926191;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1154926191;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14192,15 +14604,15 @@ public:
 class setChatClientData final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string client_data_;
 
     setChatClientData();
 
-    setChatClientData(int64_t chat_id_, std::string const &client_data_);
+    setChatClientData(std::int64_t chat_id_, std::string const &client_data_);
 
-    static const int32_t ID = -827119811;
-    int32_t get_id() const final
+    static const std::int32_t ID = -827119811;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14213,15 +14625,15 @@ public:
 class setChatDraftMessage final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<draftMessage> draft_message_;
 
     setChatDraftMessage();
 
-    setChatDraftMessage(int64_t chat_id_, object_ptr<draftMessage> &&draft_message_);
+    setChatDraftMessage(std::int64_t chat_id_, object_ptr<draftMessage> &&draft_message_);
 
-    static const int32_t ID = -588175579;
-    int32_t get_id() const final
+    static const std::int32_t ID = -588175579;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14234,17 +14646,17 @@ public:
 class setChatMemberStatus final : public Function
 {
 public:
-    int64_t chat_id_;
-    int32_t user_id_;
+    std::int64_t chat_id_;
+    std::int32_t user_id_;
     object_ptr<ChatMemberStatus> status_;
 
     setChatMemberStatus();
 
-    setChatMemberStatus(int64_t chat_id_, int32_t user_id_,
+    setChatMemberStatus(std::int64_t chat_id_, std::int32_t user_id_,
                         object_ptr<ChatMemberStatus> &&status_);
 
-    static const int32_t ID = -1754439241;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1754439241;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14257,15 +14669,15 @@ public:
 class setChatPhoto final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     object_ptr<InputFile> photo_;
 
     setChatPhoto();
 
-    setChatPhoto(int64_t chat_id_, object_ptr<InputFile> &&photo_);
+    setChatPhoto(std::int64_t chat_id_, object_ptr<InputFile> &&photo_);
 
-    static const int32_t ID = 132244217;
-    int32_t get_id() const final
+    static const std::int32_t ID = 132244217;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14278,15 +14690,15 @@ public:
 class setChatTitle final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     std::string title_;
 
     setChatTitle();
 
-    setChatTitle(int64_t chat_id_, std::string const &title_);
+    setChatTitle(std::int64_t chat_id_, std::string const &title_);
 
-    static const int32_t ID = 164282047;
-    int32_t get_id() const final
+    static const std::int32_t ID = 164282047;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14305,8 +14717,8 @@ public:
 
     explicit setDatabaseEncryptionKey(std::string const &new_encryption_key_);
 
-    static const int32_t ID = -1204599371;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1204599371;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14319,17 +14731,17 @@ public:
 class setFileGenerationProgress final : public Function
 {
 public:
-    int64_t generation_id_;
-    int32_t expected_size_;
-    int32_t local_prefix_size_;
+    std::int64_t generation_id_;
+    std::int32_t expected_size_;
+    std::int32_t local_prefix_size_;
 
     setFileGenerationProgress();
 
-    setFileGenerationProgress(int64_t generation_id_, int32_t expected_size_,
-                              int32_t local_prefix_size_);
+    setFileGenerationProgress(std::int64_t generation_id_, std::int32_t expected_size_,
+                              std::int32_t local_prefix_size_);
 
-    static const int32_t ID = -540459953;
-    int32_t get_id() const final
+    static const std::int32_t ID = -540459953;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14342,20 +14754,20 @@ public:
 class setGameScore final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     bool edit_message_;
-    int32_t user_id_;
-    int32_t score_;
+    std::int32_t user_id_;
+    std::int32_t score_;
     bool force_;
 
     setGameScore();
 
-    setGameScore(int64_t chat_id_, int64_t message_id_, bool edit_message_,
-                 int32_t user_id_, int32_t score_, bool force_);
+    setGameScore(std::int64_t chat_id_, std::int64_t message_id_, bool edit_message_,
+                 std::int32_t user_id_, std::int32_t score_, bool force_);
 
-    static const int32_t ID = -1768307069;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1768307069;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14370,17 +14782,17 @@ class setInlineGameScore final : public Function
 public:
     std::string inline_message_id_;
     bool edit_message_;
-    int32_t user_id_;
-    int32_t score_;
+    std::int32_t user_id_;
+    std::int32_t score_;
     bool force_;
 
     setInlineGameScore();
 
-    setInlineGameScore(std::string const &inline_message_id_, bool edit_message_, int32_t user_id_,
-                       int32_t score_, bool force_);
+    setInlineGameScore(std::string const &inline_message_id_, bool edit_message_, std::int32_t user_id_,
+                       std::int32_t score_, bool force_);
 
-    static const int32_t ID = 758435487;
-    int32_t get_id() const final
+    static const std::int32_t ID = 758435487;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14400,8 +14812,8 @@ public:
 
     setName(std::string const &first_name_, std::string const &last_name_);
 
-    static const int32_t ID = 1711693584;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1711693584;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14420,8 +14832,8 @@ public:
 
     explicit setNetworkType(object_ptr<NetworkType> &&type_);
 
-    static const int32_t ID = -701635234;
-    int32_t get_id() const final
+    static const std::int32_t ID = -701635234;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14442,8 +14854,8 @@ public:
     setNotificationSettings(object_ptr<NotificationSettingsScope> &&scope_,
                             object_ptr<notificationSettings> &&notification_settings_);
 
-    static const int32_t ID = -134430483;
-    int32_t get_id() const final
+    static const std::int32_t ID = -134430483;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14463,8 +14875,8 @@ public:
 
     setOption(std::string const &name_, object_ptr<OptionValue> &&value_);
 
-    static const int32_t ID = 2114670322;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2114670322;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14489,8 +14901,8 @@ public:
                 std::string const &new_hint_, bool set_recovery_email_address_,
                 std::string const &new_recovery_email_address_);
 
-    static const int32_t ID = -1193589027;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1193589027;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14503,14 +14915,14 @@ public:
 class setPinnedChats final : public Function
 {
 public:
-    std::vector<int64_t> chat_ids_;
+    std::vector<std::int64_t> chat_ids_;
 
     setPinnedChats();
 
-    explicit setPinnedChats(std::vector<int64_t> &&chat_ids_);
+    explicit setPinnedChats(std::vector<std::int64_t> &&chat_ids_);
 
-    static const int32_t ID = -1369665719;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1369665719;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14529,8 +14941,8 @@ public:
 
     explicit setProfilePhoto(object_ptr<InputFile> &&photo_);
 
-    static const int32_t ID = 1594734550;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1594734550;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14549,8 +14961,8 @@ public:
 
     explicit setProxy(object_ptr<Proxy> &&proxy_);
 
-    static const int32_t ID = -656782179;
-    int32_t get_id() const final
+    static const std::int32_t ID = -656782179;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14571,8 +14983,8 @@ public:
     setRecoveryEmailAddress(std::string const &password_,
                             std::string const &new_recovery_email_address_);
 
-    static const int32_t ID = -1981836385;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1981836385;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14586,14 +14998,14 @@ class setStickerPositionInSet final : public Function
 {
 public:
     object_ptr<InputFile> sticker_;
-    int32_t position_;
+    std::int32_t position_;
 
     setStickerPositionInSet();
 
-    setStickerPositionInSet(object_ptr<InputFile> &&sticker_, int32_t position_);
+    setStickerPositionInSet(object_ptr<InputFile> &&sticker_, std::int32_t position_);
 
-    static const int32_t ID = 2075281185;
-    int32_t get_id() const final
+    static const std::int32_t ID = 2075281185;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14606,15 +15018,15 @@ public:
 class setSupergroupDescription final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     std::string description_;
 
     setSupergroupDescription();
 
-    setSupergroupDescription(int32_t supergroup_id_, std::string const &description_);
+    setSupergroupDescription(std::int32_t supergroup_id_, std::string const &description_);
 
-    static const int32_t ID = 227623488;
-    int32_t get_id() const final
+    static const std::int32_t ID = 227623488;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14627,15 +15039,15 @@ public:
 class setSupergroupStickerSet final : public Function
 {
 public:
-    int32_t supergroup_id_;
-    int64_t sticker_set_id_;
+    std::int32_t supergroup_id_;
+    std::int64_t sticker_set_id_;
 
     setSupergroupStickerSet();
 
-    setSupergroupStickerSet(int32_t supergroup_id_, int64_t sticker_set_id_);
+    setSupergroupStickerSet(std::int32_t supergroup_id_, std::int64_t sticker_set_id_);
 
-    static const int32_t ID = -295782298;
-    int32_t get_id() const final
+    static const std::int32_t ID = -295782298;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14648,15 +15060,15 @@ public:
 class setSupergroupUsername final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     std::string username_;
 
     setSupergroupUsername();
 
-    setSupergroupUsername(int32_t supergroup_id_, std::string const &username_);
+    setSupergroupUsername(std::int32_t supergroup_id_, std::string const &username_);
 
-    static const int32_t ID = -1428333122;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1428333122;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14675,8 +15087,8 @@ public:
 
     explicit setTdlibParameters(object_ptr<tdlibParameters> &&parameters_);
 
-    static const int32_t ID = -1912557997;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1912557997;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14697,8 +15109,8 @@ public:
     setUserPrivacySettingRules(object_ptr<UserPrivacySetting> &&setting_,
                                object_ptr<userPrivacySettingRules> &&rules_);
 
-    static const int32_t ID = -473812741;
-    int32_t get_id() const final
+    static const std::int32_t ID = -473812741;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14717,8 +15129,8 @@ public:
 
     explicit setUsername(std::string const &username_);
 
-    static const int32_t ID = 439901214;
-    int32_t get_id() const final
+    static const std::int32_t ID = 439901214;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14734,8 +15146,8 @@ public:
 
     terminateAllOtherSessions();
 
-    static const int32_t ID = 1874485523;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1874485523;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14748,14 +15160,14 @@ public:
 class terminateSession final : public Function
 {
 public:
-    int64_t session_id_;
+    std::int64_t session_id_;
 
     terminateSession();
 
-    explicit terminateSession(int64_t session_id_);
+    explicit terminateSession(std::int64_t session_id_);
 
-    static const int32_t ID = -407385812;
-    int32_t get_id() const final
+    static const std::int32_t ID = -407385812;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14774,8 +15186,8 @@ public:
 
     explicit testCallBytes(std::string const &x_);
 
-    static const int32_t ID = -736011607;
-    int32_t get_id() const final
+    static const std::int32_t ID = -736011607;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14791,8 +15203,8 @@ public:
 
     testCallEmpty();
 
-    static const int32_t ID = -627291626;
-    int32_t get_id() const final
+    static const std::int32_t ID = -627291626;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14811,8 +15223,8 @@ public:
 
     explicit testCallString(std::string const &x_);
 
-    static const int32_t ID = -1732818385;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1732818385;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14825,14 +15237,14 @@ public:
 class testCallVectorInt final : public Function
 {
 public:
-    std::vector<int32_t> x_;
+    std::vector<std::int32_t> x_;
 
     testCallVectorInt();
 
-    explicit testCallVectorInt(std::vector<int32_t> &&x_);
+    explicit testCallVectorInt(std::vector<std::int32_t> &&x_);
 
-    static const int32_t ID = -2137277793;
-    int32_t get_id() const final
+    static const std::int32_t ID = -2137277793;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14851,8 +15263,8 @@ public:
 
     explicit testCallVectorIntObject(std::vector<object_ptr<testInt>> &&x_);
 
-    static const int32_t ID = 1825428218;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1825428218;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14871,8 +15283,8 @@ public:
 
     explicit testCallVectorString(std::vector<std::string> &&x_);
 
-    static const int32_t ID = -408600900;
-    int32_t get_id() const final
+    static const std::int32_t ID = -408600900;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14891,8 +15303,8 @@ public:
 
     explicit testCallVectorStringObject(std::vector<object_ptr<testString>> &&x_);
 
-    static const int32_t ID = 1527666429;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1527666429;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14908,8 +15320,8 @@ public:
 
     testGetDifference();
 
-    static const int32_t ID = 1747084069;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1747084069;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14925,8 +15337,8 @@ public:
 
     testNetwork();
 
-    static const int32_t ID = -1343998901;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1343998901;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14939,14 +15351,14 @@ public:
 class testSquareInt final : public Function
 {
 public:
-    int32_t x_;
+    std::int32_t x_;
 
     testSquareInt();
 
-    explicit testSquareInt(int32_t x_);
+    explicit testSquareInt(std::int32_t x_);
 
-    static const int32_t ID = -60135024;
-    int32_t get_id() const final
+    static const std::int32_t ID = -60135024;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14962,8 +15374,8 @@ public:
 
     testUseError();
 
-    static const int32_t ID = 528842186;
-    int32_t get_id() const final
+    static const std::int32_t ID = 528842186;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14979,8 +15391,8 @@ public:
 
     testUseUpdate();
 
-    static const int32_t ID = 717094686;
-    int32_t get_id() const final
+    static const std::int32_t ID = 717094686;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -14993,15 +15405,15 @@ public:
 class toggleBasicGroupAdministrators final : public Function
 {
 public:
-    int32_t basic_group_id_;
+    std::int32_t basic_group_id_;
     bool everyone_is_administrator_;
 
     toggleBasicGroupAdministrators();
 
-    toggleBasicGroupAdministrators(int32_t basic_group_id_, bool everyone_is_administrator_);
+    toggleBasicGroupAdministrators(std::int32_t basic_group_id_, bool everyone_is_administrator_);
 
-    static const int32_t ID = -591395611;
-    int32_t get_id() const final
+    static const std::int32_t ID = -591395611;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15014,15 +15426,15 @@ public:
 class toggleChatIsPinned final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
     bool is_pinned_;
 
     toggleChatIsPinned();
 
-    toggleChatIsPinned(int64_t chat_id_, bool is_pinned_);
+    toggleChatIsPinned(std::int64_t chat_id_, bool is_pinned_);
 
-    static const int32_t ID = -1166802621;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1166802621;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15035,15 +15447,15 @@ public:
 class toggleSupergroupInvites final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     bool anyone_can_invite_;
 
     toggleSupergroupInvites();
 
-    toggleSupergroupInvites(int32_t supergroup_id_, bool anyone_can_invite_);
+    toggleSupergroupInvites(std::int32_t supergroup_id_, bool anyone_can_invite_);
 
-    static const int32_t ID = -797384141;
-    int32_t get_id() const final
+    static const std::int32_t ID = -797384141;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15056,15 +15468,15 @@ public:
 class toggleSupergroupIsAllHistoryAvailable final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     bool is_all_history_available_;
 
     toggleSupergroupIsAllHistoryAvailable();
 
-    toggleSupergroupIsAllHistoryAvailable(int32_t supergroup_id_, bool is_all_history_available_);
+    toggleSupergroupIsAllHistoryAvailable(std::int32_t supergroup_id_, bool is_all_history_available_);
 
-    static const int32_t ID = 1701526555;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1701526555;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15077,15 +15489,15 @@ public:
 class toggleSupergroupSignMessages final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
     bool sign_messages_;
 
     toggleSupergroupSignMessages();
 
-    toggleSupergroupSignMessages(int32_t supergroup_id_, bool sign_messages_);
+    toggleSupergroupSignMessages(std::int32_t supergroup_id_, bool sign_messages_);
 
-    static const int32_t ID = -558196581;
-    int32_t get_id() const final
+    static const std::int32_t ID = -558196581;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15098,14 +15510,14 @@ public:
 class unblockUser final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
 
     unblockUser();
 
-    explicit unblockUser(int32_t user_id_);
+    explicit unblockUser(std::int32_t user_id_);
 
-    static const int32_t ID = -307286367;
-    int32_t get_id() const final
+    static const std::int32_t ID = -307286367;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15118,14 +15530,14 @@ public:
 class unpinSupergroupMessage final : public Function
 {
 public:
-    int32_t supergroup_id_;
+    std::int32_t supergroup_id_;
 
     unpinSupergroupMessage();
 
-    explicit unpinSupergroupMessage(int32_t supergroup_id_);
+    explicit unpinSupergroupMessage(std::int32_t supergroup_id_);
 
-    static const int32_t ID = -1987029530;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1987029530;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15138,14 +15550,14 @@ public:
 class upgradeBasicGroupChatToSupergroupChat final : public Function
 {
 public:
-    int64_t chat_id_;
+    std::int64_t chat_id_;
 
     upgradeBasicGroupChatToSupergroupChat();
 
-    explicit upgradeBasicGroupChatToSupergroupChat(int64_t chat_id_);
+    explicit upgradeBasicGroupChatToSupergroupChat(std::int64_t chat_id_);
 
-    static const int32_t ID = 300488122;
-    int32_t get_id() const final
+    static const std::int32_t ID = 300488122;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15160,15 +15572,15 @@ class uploadFile final : public Function
 public:
     object_ptr<InputFile> file_;
     object_ptr<FileType> file_type_;
-    int32_t priority_;
+    std::int32_t priority_;
 
     uploadFile();
 
     uploadFile(object_ptr<InputFile> &&file_, object_ptr<FileType> &&file_type_,
-               int32_t priority_);
+               std::int32_t priority_);
 
-    static const int32_t ID = -745597786;
-    int32_t get_id() const final
+    static const std::int32_t ID = -745597786;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15181,15 +15593,15 @@ public:
 class uploadStickerFile final : public Function
 {
 public:
-    int32_t user_id_;
+    std::int32_t user_id_;
     object_ptr<InputFile> png_sticker_;
 
     uploadStickerFile();
 
-    uploadStickerFile(int32_t user_id_, object_ptr<InputFile> &&png_sticker_);
+    uploadStickerFile(std::int32_t user_id_, object_ptr<InputFile> &&png_sticker_);
 
-    static const int32_t ID = 1134087551;
-    int32_t get_id() const final
+    static const std::int32_t ID = 1134087551;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15202,18 +15614,18 @@ public:
 class validateOrderInfo final : public Function
 {
 public:
-    int64_t chat_id_;
-    int64_t message_id_;
+    std::int64_t chat_id_;
+    std::int64_t message_id_;
     object_ptr<orderInfo> order_info_;
     bool allow_save_;
 
     validateOrderInfo();
 
-    validateOrderInfo(int64_t chat_id_, int64_t message_id_,
+    validateOrderInfo(std::int64_t chat_id_, std::int64_t message_id_,
                       object_ptr<orderInfo> &&order_info_, bool allow_save_);
 
-    static const int32_t ID = 9480644;
-    int32_t get_id() const final
+    static const std::int32_t ID = 9480644;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15226,16 +15638,16 @@ public:
 class viewMessages final : public Function
 {
 public:
-    int64_t chat_id_;
-    std::vector<int64_t> message_ids_;
+    std::int64_t chat_id_;
+    std::vector<std::int64_t> message_ids_;
     bool force_read_;
 
     viewMessages();
 
-    viewMessages(int64_t chat_id_, std::vector<int64_t> &&message_ids_, bool force_read_);
+    viewMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&message_ids_, bool force_read_);
 
-    static const int32_t ID = -1925784915;
-    int32_t get_id() const final
+    static const std::int32_t ID = -1925784915;
+    std::int32_t get_id() const final
     {
         return ID;
     }
@@ -15248,14 +15660,14 @@ public:
 class viewTrendingStickerSets final : public Function
 {
 public:
-    std::vector<int64_t> sticker_set_ids_;
+    std::vector<std::int64_t> sticker_set_ids_;
 
     viewTrendingStickerSets();
 
-    explicit viewTrendingStickerSets(std::vector<int64_t> &&sticker_set_ids_);
+    explicit viewTrendingStickerSets(std::vector<std::int64_t> &&sticker_set_ids_);
 
-    static const int32_t ID = -952416520;
-    int32_t get_id() const final
+    static const std::int32_t ID = -952416520;
+    std::int32_t get_id() const final
     {
         return ID;
     }

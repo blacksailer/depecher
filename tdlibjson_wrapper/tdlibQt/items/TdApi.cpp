@@ -21,17 +21,19 @@ accountTtl::accountTtl()
     : days_()
 {}
 
-accountTtl::accountTtl(int32_t days_)
+accountTtl::accountTtl(std::int32_t days_)
     : days_(days_)
 {}
 
-const int32_t accountTtl::ID;
+const std::int32_t accountTtl::ID;
 
 void accountTtl::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "accountTtl");
-    s.store_field("days", days_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "accountTtl");
+        s.store_field("days", days_);
+        s.store_class_end();
+    }
 }
 
 animation::animation()
@@ -44,7 +46,7 @@ animation::animation()
     , animation_()
 {}
 
-animation::animation(int32_t duration_, int32_t width_, int32_t height_,
+animation::animation(std::int32_t duration_, std::int32_t width_, std::int32_t height_,
                      std::string const &file_name_, std::string const &mime_type_, object_ptr<photoSize> &&thumbnail_,
                      object_ptr<file> &&animation_)
     : duration_(duration_)
@@ -56,27 +58,29 @@ animation::animation(int32_t duration_, int32_t width_, int32_t height_,
     , animation_(std::move(animation_))
 {}
 
-const int32_t animation::ID;
+const std::int32_t animation::ID;
 
 void animation::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "animation");
-    s.store_field("duration", duration_);
-    s.store_field("width", width_);
-    s.store_field("height", height_);
-    s.store_field("file_name", file_name_);
-    s.store_field("mime_type", mime_type_);
-    if (thumbnail_ == nullptr) {
-        s.store_field("thumbnail", "null");
-    } else {
-        thumbnail_->store(s, "thumbnail");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "animation");
+        s.store_field("duration", duration_);
+        s.store_field("width", width_);
+        s.store_field("height", height_);
+        s.store_field("file_name", file_name_);
+        s.store_field("mime_type", mime_type_);
+        if (thumbnail_ == nullptr) {
+            s.store_field("thumbnail", "null");
+        } else {
+            thumbnail_->store(s, "thumbnail");
+        }
+        if (animation_ == nullptr) {
+            s.store_field("animation", "null");
+        } else {
+            animation_->store(s, "animation");
+        }
+        s.store_class_end();
     }
-    if (animation_ == nullptr) {
-        s.store_field("animation", "null");
-    } else {
-        animation_->store(s, "animation");
-    }
-    s.store_class_end();
 }
 
 animations::animations()
@@ -87,26 +91,28 @@ animations::animations(std::vector<object_ptr<animation>> &&animations_)
     : animations_(std::move(animations_))
 {}
 
-const int32_t animations::ID;
+const std::int32_t animations::ID;
 
 void animations::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "animations");
-    {
-        const std::vector<object_ptr<animation>> &v = animations_;
-        const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
-        const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
-        s.store_class_begin("animations", vector_name.c_str());
-        for (std::uint32_t i = 0; i < multiplicity; i++) {
-            if (v[i] == nullptr) {
-                s.store_field("", "null");
-            } else {
-                v[i]->store(s, "");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "animations");
+        {
+            const std::vector<object_ptr<animation>> &v = animations_;
+            const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
+            const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
+            s.store_class_begin("animations", vector_name.c_str());
+            for (std::uint32_t i = 0; i < multiplicity; i++) {
+                if (v[i] == nullptr) {
+                    s.store_field("", "null");
+                } else {
+                    v[i]->store(s, "");
+                }
             }
+            s.store_class_end();
         }
         s.store_class_end();
     }
-    s.store_class_end();
 }
 
 audio::audio()
@@ -119,7 +125,7 @@ audio::audio()
     , audio_()
 {}
 
-audio::audio(int32_t duration_, std::string const &title_, std::string const &performer_,
+audio::audio(std::int32_t duration_, std::string const &title_, std::string const &performer_,
              std::string const &file_name_, std::string const &mime_type_,
              object_ptr<photoSize> &&album_cover_thumbnail_, object_ptr<file> &&audio_)
     : duration_(duration_)
@@ -131,111 +137,125 @@ audio::audio(int32_t duration_, std::string const &title_, std::string const &pe
     , audio_(std::move(audio_))
 {}
 
-const int32_t audio::ID;
+const std::int32_t audio::ID;
 
 void audio::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "audio");
-    s.store_field("duration", duration_);
-    s.store_field("title", title_);
-    s.store_field("performer", performer_);
-    s.store_field("file_name", file_name_);
-    s.store_field("mime_type", mime_type_);
-    if (album_cover_thumbnail_ == nullptr) {
-        s.store_field("album_cover_thumbnail", "null");
-    } else {
-        album_cover_thumbnail_->store(s, "album_cover_thumbnail");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "audio");
+        s.store_field("duration", duration_);
+        s.store_field("title", title_);
+        s.store_field("performer", performer_);
+        s.store_field("file_name", file_name_);
+        s.store_field("mime_type", mime_type_);
+        if (album_cover_thumbnail_ == nullptr) {
+            s.store_field("album_cover_thumbnail", "null");
+        } else {
+            album_cover_thumbnail_->store(s, "album_cover_thumbnail");
+        }
+        if (audio_ == nullptr) {
+            s.store_field("audio", "null");
+        } else {
+            audio_->store(s, "audio");
+        }
+        s.store_class_end();
     }
-    if (audio_ == nullptr) {
-        s.store_field("audio", "null");
-    } else {
-        audio_->store(s, "audio");
-    }
-    s.store_class_end();
 }
 
 authenticationCodeInfo::authenticationCodeInfo()
-    : type_()
+    : phone_number_()
+    , type_()
     , next_type_()
     , timeout_()
 {}
 
-authenticationCodeInfo::authenticationCodeInfo(object_ptr<AuthenticationCodeType> &&type_,
-                                               object_ptr<AuthenticationCodeType> &&next_type_, int32_t timeout_)
-    : type_(std::move(type_))
+authenticationCodeInfo::authenticationCodeInfo(std::string const &phone_number_,
+                                               object_ptr<AuthenticationCodeType> &&type_, object_ptr<AuthenticationCodeType> &&next_type_,
+                                               std::int32_t timeout_)
+    : phone_number_(std::move(phone_number_))
+    , type_(std::move(type_))
     , next_type_(std::move(next_type_))
     , timeout_(timeout_)
 {}
 
-const int32_t authenticationCodeInfo::ID;
+const std::int32_t authenticationCodeInfo::ID;
 
 void authenticationCodeInfo::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authenticationCodeInfo");
-    if (type_ == nullptr) {
-        s.store_field("type", "null");
-    } else {
-        type_->store(s, "type");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authenticationCodeInfo");
+        s.store_field("phone_number", phone_number_);
+        if (type_ == nullptr) {
+            s.store_field("type", "null");
+        } else {
+            type_->store(s, "type");
+        }
+        if (next_type_ == nullptr) {
+            s.store_field("next_type", "null");
+        } else {
+            next_type_->store(s, "next_type");
+        }
+        s.store_field("timeout", timeout_);
+        s.store_class_end();
     }
-    if (next_type_ == nullptr) {
-        s.store_field("next_type", "null");
-    } else {
-        next_type_->store(s, "next_type");
-    }
-    s.store_field("timeout", timeout_);
-    s.store_class_end();
 }
 
 authenticationCodeTypeTelegramMessage::authenticationCodeTypeTelegramMessage()
     : length_()
 {}
 
-authenticationCodeTypeTelegramMessage::authenticationCodeTypeTelegramMessage(int32_t length_)
+authenticationCodeTypeTelegramMessage::authenticationCodeTypeTelegramMessage(std::int32_t length_)
     : length_(length_)
 {}
 
-const int32_t authenticationCodeTypeTelegramMessage::ID;
+const std::int32_t authenticationCodeTypeTelegramMessage::ID;
 
 void authenticationCodeTypeTelegramMessage::store(TlStorerToString &s,
                                                   const char *field_name) const
 {
-    s.store_class_begin(field_name, "authenticationCodeTypeTelegramMessage");
-    s.store_field("length", length_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authenticationCodeTypeTelegramMessage");
+        s.store_field("length", length_);
+        s.store_class_end();
+    }
 }
 
 authenticationCodeTypeSms::authenticationCodeTypeSms()
     : length_()
 {}
 
-authenticationCodeTypeSms::authenticationCodeTypeSms(int32_t length_)
+authenticationCodeTypeSms::authenticationCodeTypeSms(std::int32_t length_)
     : length_(length_)
 {}
 
-const int32_t authenticationCodeTypeSms::ID;
+const std::int32_t authenticationCodeTypeSms::ID;
 
 void authenticationCodeTypeSms::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authenticationCodeTypeSms");
-    s.store_field("length", length_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authenticationCodeTypeSms");
+        s.store_field("length", length_);
+        s.store_class_end();
+    }
 }
 
 authenticationCodeTypeCall::authenticationCodeTypeCall()
     : length_()
 {}
 
-authenticationCodeTypeCall::authenticationCodeTypeCall(int32_t length_)
+authenticationCodeTypeCall::authenticationCodeTypeCall(std::int32_t length_)
     : length_(length_)
 {}
 
-const int32_t authenticationCodeTypeCall::ID;
+const std::int32_t authenticationCodeTypeCall::ID;
 
 void authenticationCodeTypeCall::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authenticationCodeTypeCall");
-    s.store_field("length", length_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authenticationCodeTypeCall");
+        s.store_field("length", length_);
+        s.store_class_end();
+    }
 }
 
 authenticationCodeTypeFlashCall::authenticationCodeTypeFlashCall()
@@ -246,26 +266,30 @@ authenticationCodeTypeFlashCall::authenticationCodeTypeFlashCall(std::string con
     : pattern_(std::move(pattern_))
 {}
 
-const int32_t authenticationCodeTypeFlashCall::ID;
+const std::int32_t authenticationCodeTypeFlashCall::ID;
 
 void authenticationCodeTypeFlashCall::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authenticationCodeTypeFlashCall");
-    s.store_field("pattern", pattern_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authenticationCodeTypeFlashCall");
+        s.store_field("pattern", pattern_);
+        s.store_class_end();
+    }
 }
 
 authorizationStateWaitTdlibParameters::authorizationStateWaitTdlibParameters()
 {
 }
 
-const int32_t authorizationStateWaitTdlibParameters::ID;
+const std::int32_t authorizationStateWaitTdlibParameters::ID;
 
 void authorizationStateWaitTdlibParameters::store(TlStorerToString &s,
                                                   const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateWaitTdlibParameters");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateWaitTdlibParameters");
+        s.store_class_end();
+    }
 }
 
 authorizationStateWaitEncryptionKey::authorizationStateWaitEncryptionKey()
@@ -276,25 +300,29 @@ authorizationStateWaitEncryptionKey::authorizationStateWaitEncryptionKey(bool is
     : is_encrypted_(is_encrypted_)
 {}
 
-const int32_t authorizationStateWaitEncryptionKey::ID;
+const std::int32_t authorizationStateWaitEncryptionKey::ID;
 
 void authorizationStateWaitEncryptionKey::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateWaitEncryptionKey");
-    s.store_field("is_encrypted", is_encrypted_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateWaitEncryptionKey");
+        s.store_field("is_encrypted", is_encrypted_);
+        s.store_class_end();
+    }
 }
 
 authorizationStateWaitPhoneNumber::authorizationStateWaitPhoneNumber()
 {
 }
 
-const int32_t authorizationStateWaitPhoneNumber::ID;
+const std::int32_t authorizationStateWaitPhoneNumber::ID;
 
 void authorizationStateWaitPhoneNumber::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateWaitPhoneNumber");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateWaitPhoneNumber");
+        s.store_class_end();
+    }
 }
 
 authorizationStateWaitCode::authorizationStateWaitCode()
@@ -308,18 +336,20 @@ authorizationStateWaitCode::authorizationStateWaitCode(bool is_registered_,
     , code_info_(std::move(code_info_))
 {}
 
-const int32_t authorizationStateWaitCode::ID;
+const std::int32_t authorizationStateWaitCode::ID;
 
 void authorizationStateWaitCode::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateWaitCode");
-    s.store_field("is_registered", is_registered_);
-    if (code_info_ == nullptr) {
-        s.store_field("code_info", "null");
-    } else {
-        code_info_->store(s, "code_info");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateWaitCode");
+        s.store_field("is_registered", is_registered_);
+        if (code_info_ == nullptr) {
+            s.store_field("code_info", "null");
+        } else {
+            code_info_->store(s, "code_info");
+        }
+        s.store_class_end();
     }
-    s.store_class_end();
 }
 
 authorizationStateWaitPassword::authorizationStateWaitPassword()
@@ -335,63 +365,73 @@ authorizationStateWaitPassword::authorizationStateWaitPassword(std::string const
     , recovery_email_address_pattern_(std::move(recovery_email_address_pattern_))
 {}
 
-const int32_t authorizationStateWaitPassword::ID;
+const std::int32_t authorizationStateWaitPassword::ID;
 
 void authorizationStateWaitPassword::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateWaitPassword");
-    s.store_field("password_hint", password_hint_);
-    s.store_field("has_recovery_email_address", has_recovery_email_address_);
-    s.store_field("recovery_email_address_pattern", recovery_email_address_pattern_);
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateWaitPassword");
+        s.store_field("password_hint", password_hint_);
+        s.store_field("has_recovery_email_address", has_recovery_email_address_);
+        s.store_field("recovery_email_address_pattern", recovery_email_address_pattern_);
+        s.store_class_end();
+    }
 }
 
 authorizationStateReady::authorizationStateReady()
 {
 }
 
-const int32_t authorizationStateReady::ID;
+const std::int32_t authorizationStateReady::ID;
 
 void authorizationStateReady::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateReady");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateReady");
+        s.store_class_end();
+    }
 }
 
 authorizationStateLoggingOut::authorizationStateLoggingOut()
 {
 }
 
-const int32_t authorizationStateLoggingOut::ID;
+const std::int32_t authorizationStateLoggingOut::ID;
 
 void authorizationStateLoggingOut::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateLoggingOut");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateLoggingOut");
+        s.store_class_end();
+    }
 }
 
 authorizationStateClosing::authorizationStateClosing()
 {
 }
 
-const int32_t authorizationStateClosing::ID;
+const std::int32_t authorizationStateClosing::ID;
 
 void authorizationStateClosing::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateClosing");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateClosing");
+        s.store_class_end();
+    }
 }
 
 authorizationStateClosed::authorizationStateClosed()
 {
 }
 
-const int32_t authorizationStateClosed::ID;
+const std::int32_t authorizationStateClosed::ID;
 
 void authorizationStateClosed::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "authorizationStateClosed");
-    s.store_class_end();
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "authorizationStateClosed");
+        s.store_class_end();
+    }
 }
 
 basicGroup::basicGroup()
@@ -403,9 +443,9 @@ basicGroup::basicGroup()
     , upgraded_to_supergroup_id_()
 {}
 
-basicGroup::basicGroup(int32_t id_, int32_t member_count_,
+basicGroup::basicGroup(std::int32_t id_, std::int32_t member_count_,
                        object_ptr<ChatMemberStatus> &&status_, bool everyone_is_administrator_, bool is_active_,
-                       int32_t upgraded_to_supergroup_id_)
+                       std::int32_t upgraded_to_supergroup_id_)
     : id_(id_)
     , member_count_(member_count_)
     , status_(std::move(status_))
@@ -414,22 +454,24 @@ basicGroup::basicGroup(int32_t id_, int32_t member_count_,
     , upgraded_to_supergroup_id_(upgraded_to_supergroup_id_)
 {}
 
-const int32_t basicGroup::ID;
+const std::int32_t basicGroup::ID;
 
 void basicGroup::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "basicGroup");
-    s.store_field("id", id_);
-    s.store_field("member_count", member_count_);
-    if (status_ == nullptr) {
-        s.store_field("status", "null");
-    } else {
-        status_->store(s, "status");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "basicGroup");
+        s.store_field("id", id_);
+        s.store_field("member_count", member_count_);
+        if (status_ == nullptr) {
+            s.store_field("status", "null");
+        } else {
+            status_->store(s, "status");
+        }
+        s.store_field("everyone_is_administrator", everyone_is_administrator_);
+        s.store_field("is_active", is_active_);
+        s.store_field("upgraded_to_supergroup_id", upgraded_to_supergroup_id_);
+        s.store_class_end();
     }
-    s.store_field("everyone_is_administrator", everyone_is_administrator_);
-    s.store_field("is_active", is_active_);
-    s.store_field("upgraded_to_supergroup_id", upgraded_to_supergroup_id_);
-    s.store_class_end();
 }
 
 basicGroupFullInfo::basicGroupFullInfo()
@@ -438,35 +480,37 @@ basicGroupFullInfo::basicGroupFullInfo()
     , invite_link_()
 {}
 
-basicGroupFullInfo::basicGroupFullInfo(int32_t creator_user_id_,
+basicGroupFullInfo::basicGroupFullInfo(std::int32_t creator_user_id_,
                                        std::vector<object_ptr<chatMember>> &&members_, std::string const &invite_link_)
     : creator_user_id_(creator_user_id_)
     , members_(std::move(members_))
     , invite_link_(std::move(invite_link_))
 {}
 
-const int32_t basicGroupFullInfo::ID;
+const std::int32_t basicGroupFullInfo::ID;
 
 void basicGroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
-    s.store_class_begin(field_name, "basicGroupFullInfo");
-    s.store_field("creator_user_id", creator_user_id_);
-    {
-        const std::vector<object_ptr<chatMember>> &v = members_;
-        const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
-        const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
-        s.store_class_begin("members", vector_name.c_str());
-        for (std::uint32_t i = 0; i < multiplicity; i++) {
-            if (v[i] == nullptr) {
-                s.store_field("", "null");
-            } else {
-                v[i]->store(s, "");
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "basicGroupFullInfo");
+        s.store_field("creator_user_id", creator_user_id_);
+        {
+            const std::vector<object_ptr<chatMember>> &v = members_;
+            const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
+            const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
+            s.store_class_begin("members", vector_name.c_str());
+            for (std::uint32_t i = 0; i < multiplicity; i++) {
+                if (v[i] == nullptr) {
+                    s.store_field("", "null");
+                } else {
+                    v[i]->store(s, "");
+                }
             }
+            s.store_class_end();
         }
+        s.store_field("invite_link", invite_link_);
         s.store_class_end();
     }
-    s.store_field("invite_link", invite_link_);
-    s.store_class_end();
 }
 
 botCommand::botCommand()
@@ -479,7 +523,7 @@ botCommand::botCommand(std::string const &command_, std::string const &descripti
     , description_(std::move(description_))
 {}
 
-const int32_t botCommand::ID;
+const std::int32_t botCommand::ID;
 
 void botCommand::store(TlStorerToString &s, const char *field_name) const
 {
@@ -501,7 +545,7 @@ botInfo::botInfo(std::string const &description_, std::vector<object_ptr<botComm
     , commands_(std::move(commands_))
 {}
 
-const int32_t botInfo::ID;
+const std::int32_t botInfo::ID;
 
 void botInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -533,7 +577,7 @@ call::call()
     , state_()
 {}
 
-call::call(int32_t id_, int32_t user_id_, bool is_outgoing_,
+call::call(std::int32_t id_, std::int32_t user_id_, bool is_outgoing_,
            object_ptr<CallState> &&state_)
     : id_(id_)
     , user_id_(user_id_)
@@ -541,7 +585,7 @@ call::call(int32_t id_, int32_t user_id_, bool is_outgoing_,
     , state_(std::move(state_))
 {}
 
-const int32_t call::ID;
+const std::int32_t call::ID;
 
 void call::store(TlStorerToString &s, const char *field_name) const
 {
@@ -568,7 +612,7 @@ callConnection::callConnection()
 {}
 
 callConnection::callConnection(std::int64_t id_, std::string const &ip_, std::string const &ipv6_,
-                               int32_t port_, std::string const &peer_tag_)
+                               std::int32_t port_, std::string const &peer_tag_)
     : id_(id_)
     , ip_(std::move(ip_))
     , ipv6_(std::move(ipv6_))
@@ -576,7 +620,7 @@ callConnection::callConnection(std::int64_t id_, std::string const &ip_, std::st
     , peer_tag_(std::move(peer_tag_))
 {}
 
-const int32_t callConnection::ID;
+const std::int32_t callConnection::ID;
 
 void callConnection::store(TlStorerToString &s, const char *field_name) const
 {
@@ -595,7 +639,7 @@ callDiscardReasonEmpty::callDiscardReasonEmpty()
 {
 }
 
-const int32_t callDiscardReasonEmpty::ID;
+const std::int32_t callDiscardReasonEmpty::ID;
 
 void callDiscardReasonEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -609,7 +653,7 @@ callDiscardReasonMissed::callDiscardReasonMissed()
 {
 }
 
-const int32_t callDiscardReasonMissed::ID;
+const std::int32_t callDiscardReasonMissed::ID;
 
 void callDiscardReasonMissed::store(TlStorerToString &s, const char *field_name) const
 {
@@ -623,7 +667,7 @@ callDiscardReasonDeclined::callDiscardReasonDeclined()
 {
 }
 
-const int32_t callDiscardReasonDeclined::ID;
+const std::int32_t callDiscardReasonDeclined::ID;
 
 void callDiscardReasonDeclined::store(TlStorerToString &s, const char *field_name) const
 {
@@ -637,7 +681,7 @@ callDiscardReasonDisconnected::callDiscardReasonDisconnected()
 {
 }
 
-const int32_t callDiscardReasonDisconnected::ID;
+const std::int32_t callDiscardReasonDisconnected::ID;
 
 void callDiscardReasonDisconnected::store(TlStorerToString &s, const char *field_name) const
 {
@@ -651,7 +695,7 @@ callDiscardReasonHungUp::callDiscardReasonHungUp()
 {
 }
 
-const int32_t callDiscardReasonHungUp::ID;
+const std::int32_t callDiscardReasonHungUp::ID;
 
 void callDiscardReasonHungUp::store(TlStorerToString &s, const char *field_name) const
 {
@@ -665,11 +709,11 @@ callId::callId()
     : id_()
 {}
 
-callId::callId(int32_t id_)
+callId::callId(std::int32_t id_)
     : id_(id_)
 {}
 
-const int32_t callId::ID;
+const std::int32_t callId::ID;
 
 void callId::store(TlStorerToString &s, const char *field_name) const
 {
@@ -687,15 +731,15 @@ callProtocol::callProtocol()
     , max_layer_()
 {}
 
-callProtocol::callProtocol(bool udp_p2p_, bool udp_reflector_, int32_t min_layer_,
-                           int32_t max_layer_)
+callProtocol::callProtocol(bool udp_p2p_, bool udp_reflector_, std::int32_t min_layer_,
+                           std::int32_t max_layer_)
     : udp_p2p_(udp_p2p_)
     , udp_reflector_(udp_reflector_)
     , min_layer_(min_layer_)
     , max_layer_(max_layer_)
 {}
 
-const int32_t callProtocol::ID;
+const std::int32_t callProtocol::ID;
 
 void callProtocol::store(TlStorerToString &s, const char *field_name) const
 {
@@ -719,7 +763,7 @@ callStatePending::callStatePending(bool is_created_, bool is_received_)
     , is_received_(is_received_)
 {}
 
-const int32_t callStatePending::ID;
+const std::int32_t callStatePending::ID;
 
 void callStatePending::store(TlStorerToString &s, const char *field_name) const
 {
@@ -735,7 +779,7 @@ callStateExchangingKeys::callStateExchangingKeys()
 {
 }
 
-const int32_t callStateExchangingKeys::ID;
+const std::int32_t callStateExchangingKeys::ID;
 
 void callStateExchangingKeys::store(TlStorerToString &s, const char *field_name) const
 {
@@ -763,7 +807,7 @@ callStateReady::callStateReady(object_ptr<callProtocol> &&protocol_,
     , emojis_(std::move(emojis_))
 {}
 
-const int32_t callStateReady::ID;
+const std::int32_t callStateReady::ID;
 
 void callStateReady::store(TlStorerToString &s, const char *field_name) const
 {
@@ -808,7 +852,7 @@ callStateHangingUp::callStateHangingUp()
 {
 }
 
-const int32_t callStateHangingUp::ID;
+const std::int32_t callStateHangingUp::ID;
 
 void callStateHangingUp::store(TlStorerToString &s, const char *field_name) const
 {
@@ -831,7 +875,7 @@ callStateDiscarded::callStateDiscarded(object_ptr<CallDiscardReason> &&reason_, 
     , need_debug_information_(need_debug_information_)
 {}
 
-const int32_t callStateDiscarded::ID;
+const std::int32_t callStateDiscarded::ID;
 
 void callStateDiscarded::store(TlStorerToString &s, const char *field_name) const
 {
@@ -856,7 +900,7 @@ callStateError::callStateError(object_ptr<error> &&error_)
     : error_(std::move(error_))
 {}
 
-const int32_t callStateError::ID;
+const std::int32_t callStateError::ID;
 
 void callStateError::store(TlStorerToString &s, const char *field_name) const
 {
@@ -884,7 +928,7 @@ callbackQueryAnswer::callbackQueryAnswer(std::string const &text_, bool show_ale
     , url_(std::move(url_))
 {}
 
-const int32_t callbackQueryAnswer::ID;
+const std::int32_t callbackQueryAnswer::ID;
 
 void callbackQueryAnswer::store(TlStorerToString &s, const char *field_name) const
 {
@@ -905,7 +949,7 @@ callbackQueryPayloadData::callbackQueryPayloadData(std::string const &data_)
     : data_(std::move(data_))
 {}
 
-const int32_t callbackQueryPayloadData::ID;
+const std::int32_t callbackQueryPayloadData::ID;
 
 void callbackQueryPayloadData::store(TlStorerToString &s, const char *field_name) const
 {
@@ -924,7 +968,7 @@ callbackQueryPayloadGame::callbackQueryPayloadGame(std::string const &game_short
     : game_short_name_(std::move(game_short_name_))
 {}
 
-const int32_t callbackQueryPayloadGame::ID;
+const std::int32_t callbackQueryPayloadGame::ID;
 
 void callbackQueryPayloadGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -943,6 +987,7 @@ chat::chat()
     , last_message_()
     , order_()
     , is_pinned_()
+    , can_be_reported_()
     , unread_count_()
     , last_read_inbox_message_id_()
     , last_read_outbox_message_id_()
@@ -955,10 +1000,11 @@ chat::chat()
 
 chat::chat(std::int64_t id_, object_ptr<ChatType> &&type_, std::string const &title_,
            object_ptr<chatPhoto> &&photo_, object_ptr<message> &&last_message_, std::int64_t order_,
-           bool is_pinned_, int32_t unread_count_, std::int64_t last_read_inbox_message_id_,
-           std::int64_t last_read_outbox_message_id_, int32_t unread_mention_count_,
-           object_ptr<notificationSettings> &&notification_settings_, std::int64_t reply_markup_message_id_,
-           object_ptr<draftMessage> &&draft_message_, std::string const &client_data_)
+           bool is_pinned_, bool can_be_reported_, std::int32_t unread_count_,
+           std::int64_t last_read_inbox_message_id_, std::int64_t last_read_outbox_message_id_,
+           std::int32_t unread_mention_count_, object_ptr<notificationSettings> &&notification_settings_,
+           std::int64_t reply_markup_message_id_, object_ptr<draftMessage> &&draft_message_,
+           std::string const &client_data_)
     : id_(id_)
     , type_(std::move(type_))
     , title_(std::move(title_))
@@ -966,6 +1012,7 @@ chat::chat(std::int64_t id_, object_ptr<ChatType> &&type_, std::string const &ti
     , last_message_(std::move(last_message_))
     , order_(order_)
     , is_pinned_(is_pinned_)
+    , can_be_reported_(can_be_reported_)
     , unread_count_(unread_count_)
     , last_read_inbox_message_id_(last_read_inbox_message_id_)
     , last_read_outbox_message_id_(last_read_outbox_message_id_)
@@ -976,7 +1023,7 @@ chat::chat(std::int64_t id_, object_ptr<ChatType> &&type_, std::string const &ti
     , client_data_(std::move(client_data_))
 {}
 
-const int32_t chat::ID;
+const std::int32_t chat::ID;
 
 void chat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1001,6 +1048,7 @@ void chat::store(TlStorerToString &s, const char *field_name) const
         }
         s.store_field("order", order_);
         s.store_field("is_pinned", is_pinned_);
+        s.store_field("can_be_reported", can_be_reported_);
         s.store_field("unread_count", unread_count_);
         s.store_field("last_read_inbox_message_id", last_read_inbox_message_id_);
         s.store_field("last_read_outbox_message_id", last_read_outbox_message_id_);
@@ -1025,7 +1073,7 @@ chatActionTyping::chatActionTyping()
 {
 }
 
-const int32_t chatActionTyping::ID;
+const std::int32_t chatActionTyping::ID;
 
 void chatActionTyping::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1039,7 +1087,7 @@ chatActionRecordingVideo::chatActionRecordingVideo()
 {
 }
 
-const int32_t chatActionRecordingVideo::ID;
+const std::int32_t chatActionRecordingVideo::ID;
 
 void chatActionRecordingVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1053,11 +1101,11 @@ chatActionUploadingVideo::chatActionUploadingVideo()
     : progress_()
 {}
 
-chatActionUploadingVideo::chatActionUploadingVideo(int32_t progress_)
+chatActionUploadingVideo::chatActionUploadingVideo(std::int32_t progress_)
     : progress_(progress_)
 {}
 
-const int32_t chatActionUploadingVideo::ID;
+const std::int32_t chatActionUploadingVideo::ID;
 
 void chatActionUploadingVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1072,7 +1120,7 @@ chatActionRecordingVoiceNote::chatActionRecordingVoiceNote()
 {
 }
 
-const int32_t chatActionRecordingVoiceNote::ID;
+const std::int32_t chatActionRecordingVoiceNote::ID;
 
 void chatActionRecordingVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1086,11 +1134,11 @@ chatActionUploadingVoiceNote::chatActionUploadingVoiceNote()
     : progress_()
 {}
 
-chatActionUploadingVoiceNote::chatActionUploadingVoiceNote(int32_t progress_)
+chatActionUploadingVoiceNote::chatActionUploadingVoiceNote(std::int32_t progress_)
     : progress_(progress_)
 {}
 
-const int32_t chatActionUploadingVoiceNote::ID;
+const std::int32_t chatActionUploadingVoiceNote::ID;
 
 void chatActionUploadingVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1105,11 +1153,11 @@ chatActionUploadingPhoto::chatActionUploadingPhoto()
     : progress_()
 {}
 
-chatActionUploadingPhoto::chatActionUploadingPhoto(int32_t progress_)
+chatActionUploadingPhoto::chatActionUploadingPhoto(std::int32_t progress_)
     : progress_(progress_)
 {}
 
-const int32_t chatActionUploadingPhoto::ID;
+const std::int32_t chatActionUploadingPhoto::ID;
 
 void chatActionUploadingPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1124,11 +1172,11 @@ chatActionUploadingDocument::chatActionUploadingDocument()
     : progress_()
 {}
 
-chatActionUploadingDocument::chatActionUploadingDocument(int32_t progress_)
+chatActionUploadingDocument::chatActionUploadingDocument(std::int32_t progress_)
     : progress_(progress_)
 {}
 
-const int32_t chatActionUploadingDocument::ID;
+const std::int32_t chatActionUploadingDocument::ID;
 
 void chatActionUploadingDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1143,7 +1191,7 @@ chatActionChoosingLocation::chatActionChoosingLocation()
 {
 }
 
-const int32_t chatActionChoosingLocation::ID;
+const std::int32_t chatActionChoosingLocation::ID;
 
 void chatActionChoosingLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1157,7 +1205,7 @@ chatActionChoosingContact::chatActionChoosingContact()
 {
 }
 
-const int32_t chatActionChoosingContact::ID;
+const std::int32_t chatActionChoosingContact::ID;
 
 void chatActionChoosingContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1171,7 +1219,7 @@ chatActionStartPlayingGame::chatActionStartPlayingGame()
 {
 }
 
-const int32_t chatActionStartPlayingGame::ID;
+const std::int32_t chatActionStartPlayingGame::ID;
 
 void chatActionStartPlayingGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1185,7 +1233,7 @@ chatActionRecordingVideoNote::chatActionRecordingVideoNote()
 {
 }
 
-const int32_t chatActionRecordingVideoNote::ID;
+const std::int32_t chatActionRecordingVideoNote::ID;
 
 void chatActionRecordingVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1199,11 +1247,11 @@ chatActionUploadingVideoNote::chatActionUploadingVideoNote()
     : progress_()
 {}
 
-chatActionUploadingVideoNote::chatActionUploadingVideoNote(int32_t progress_)
+chatActionUploadingVideoNote::chatActionUploadingVideoNote(std::int32_t progress_)
     : progress_(progress_)
 {}
 
-const int32_t chatActionUploadingVideoNote::ID;
+const std::int32_t chatActionUploadingVideoNote::ID;
 
 void chatActionUploadingVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1218,7 +1266,7 @@ chatActionCancel::chatActionCancel()
 {
 }
 
-const int32_t chatActionCancel::ID;
+const std::int32_t chatActionCancel::ID;
 
 void chatActionCancel::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1235,7 +1283,7 @@ chatEvent::chatEvent()
     , action_()
 {}
 
-chatEvent::chatEvent(std::int64_t id_, int32_t date_, int32_t user_id_,
+chatEvent::chatEvent(std::int64_t id_, std::int32_t date_, std::int32_t user_id_,
                      object_ptr<ChatEventAction> &&action_)
     : id_(id_)
     , date_(date_)
@@ -1243,7 +1291,7 @@ chatEvent::chatEvent(std::int64_t id_, int32_t date_, int32_t user_id_,
     , action_(std::move(action_))
 {}
 
-const int32_t chatEvent::ID;
+const std::int32_t chatEvent::ID;
 
 void chatEvent::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1272,7 +1320,7 @@ chatEventMessageEdited::chatEventMessageEdited(object_ptr<message> &&old_message
     , new_message_(std::move(new_message_))
 {}
 
-const int32_t chatEventMessageEdited::ID;
+const std::int32_t chatEventMessageEdited::ID;
 
 void chatEventMessageEdited::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1300,7 +1348,7 @@ chatEventMessageDeleted::chatEventMessageDeleted(object_ptr<message> &&message_)
     : message_(std::move(message_))
 {}
 
-const int32_t chatEventMessageDeleted::ID;
+const std::int32_t chatEventMessageDeleted::ID;
 
 void chatEventMessageDeleted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1323,7 +1371,7 @@ chatEventMessagePinned::chatEventMessagePinned(object_ptr<message> &&message_)
     : message_(std::move(message_))
 {}
 
-const int32_t chatEventMessagePinned::ID;
+const std::int32_t chatEventMessagePinned::ID;
 
 void chatEventMessagePinned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1342,7 +1390,7 @@ chatEventMessageUnpinned::chatEventMessageUnpinned()
 {
 }
 
-const int32_t chatEventMessageUnpinned::ID;
+const std::int32_t chatEventMessageUnpinned::ID;
 
 void chatEventMessageUnpinned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1356,7 +1404,7 @@ chatEventMemberJoined::chatEventMemberJoined()
 {
 }
 
-const int32_t chatEventMemberJoined::ID;
+const std::int32_t chatEventMemberJoined::ID;
 
 void chatEventMemberJoined::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1370,7 +1418,7 @@ chatEventMemberLeft::chatEventMemberLeft()
 {
 }
 
-const int32_t chatEventMemberLeft::ID;
+const std::int32_t chatEventMemberLeft::ID;
 
 void chatEventMemberLeft::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1385,13 +1433,13 @@ chatEventMemberInvited::chatEventMemberInvited()
     , status_()
 {}
 
-chatEventMemberInvited::chatEventMemberInvited(int32_t user_id_,
+chatEventMemberInvited::chatEventMemberInvited(std::int32_t user_id_,
                                                object_ptr<ChatMemberStatus> &&status_)
     : user_id_(user_id_)
     , status_(std::move(status_))
 {}
 
-const int32_t chatEventMemberInvited::ID;
+const std::int32_t chatEventMemberInvited::ID;
 
 void chatEventMemberInvited::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1413,14 +1461,14 @@ chatEventMemberPromoted::chatEventMemberPromoted()
     , new_status_()
 {}
 
-chatEventMemberPromoted::chatEventMemberPromoted(int32_t user_id_,
+chatEventMemberPromoted::chatEventMemberPromoted(std::int32_t user_id_,
                                                  object_ptr<ChatMemberStatus> &&old_status_, object_ptr<ChatMemberStatus> &&new_status_)
     : user_id_(user_id_)
     , old_status_(std::move(old_status_))
     , new_status_(std::move(new_status_))
 {}
 
-const int32_t chatEventMemberPromoted::ID;
+const std::int32_t chatEventMemberPromoted::ID;
 
 void chatEventMemberPromoted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1447,14 +1495,14 @@ chatEventMemberRestricted::chatEventMemberRestricted()
     , new_status_()
 {}
 
-chatEventMemberRestricted::chatEventMemberRestricted(int32_t user_id_,
+chatEventMemberRestricted::chatEventMemberRestricted(std::int32_t user_id_,
                                                      object_ptr<ChatMemberStatus> &&old_status_, object_ptr<ChatMemberStatus> &&new_status_)
     : user_id_(user_id_)
     , old_status_(std::move(old_status_))
     , new_status_(std::move(new_status_))
 {}
 
-const int32_t chatEventMemberRestricted::ID;
+const std::int32_t chatEventMemberRestricted::ID;
 
 void chatEventMemberRestricted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1486,7 +1534,7 @@ chatEventTitleChanged::chatEventTitleChanged(std::string const &old_title_,
     , new_title_(std::move(new_title_))
 {}
 
-const int32_t chatEventTitleChanged::ID;
+const std::int32_t chatEventTitleChanged::ID;
 
 void chatEventTitleChanged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1509,7 +1557,7 @@ chatEventDescriptionChanged::chatEventDescriptionChanged(std::string const &old_
     , new_description_(std::move(new_description_))
 {}
 
-const int32_t chatEventDescriptionChanged::ID;
+const std::int32_t chatEventDescriptionChanged::ID;
 
 void chatEventDescriptionChanged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1532,7 +1580,7 @@ chatEventUsernameChanged::chatEventUsernameChanged(std::string const &old_userna
     , new_username_(std::move(new_username_))
 {}
 
-const int32_t chatEventUsernameChanged::ID;
+const std::int32_t chatEventUsernameChanged::ID;
 
 void chatEventUsernameChanged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1555,7 +1603,7 @@ chatEventPhotoChanged::chatEventPhotoChanged(object_ptr<chatPhoto> &&old_photo_,
     , new_photo_(std::move(new_photo_))
 {}
 
-const int32_t chatEventPhotoChanged::ID;
+const std::int32_t chatEventPhotoChanged::ID;
 
 void chatEventPhotoChanged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1583,7 +1631,7 @@ chatEventInvitesToggled::chatEventInvitesToggled(bool anyone_can_invite_)
     : anyone_can_invite_(anyone_can_invite_)
 {}
 
-const int32_t chatEventInvitesToggled::ID;
+const std::int32_t chatEventInvitesToggled::ID;
 
 void chatEventInvitesToggled::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1602,7 +1650,7 @@ chatEventSignMessagesToggled::chatEventSignMessagesToggled(bool sign_messages_)
     : sign_messages_(sign_messages_)
 {}
 
-const int32_t chatEventSignMessagesToggled::ID;
+const std::int32_t chatEventSignMessagesToggled::ID;
 
 void chatEventSignMessagesToggled::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1624,7 +1672,7 @@ chatEventStickerSetChanged::chatEventStickerSetChanged(std::int64_t old_sticker_
     , new_sticker_set_id_(new_sticker_set_id_)
 {}
 
-const int32_t chatEventStickerSetChanged::ID;
+const std::int32_t chatEventStickerSetChanged::ID;
 
 void chatEventStickerSetChanged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1645,7 +1693,7 @@ chatEventIsAllHistoryAvailableToggled::chatEventIsAllHistoryAvailableToggled(
     : is_all_history_available_(is_all_history_available_)
 {}
 
-const int32_t chatEventIsAllHistoryAvailableToggled::ID;
+const std::int32_t chatEventIsAllHistoryAvailableToggled::ID;
 
 void chatEventIsAllHistoryAvailableToggled::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -1685,7 +1733,7 @@ chatEventLogFilters::chatEventLogFilters(bool message_edits_, bool message_delet
     , setting_changes_(setting_changes_)
 {}
 
-const int32_t chatEventLogFilters::ID;
+const std::int32_t chatEventLogFilters::ID;
 
 void chatEventLogFilters::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1713,7 +1761,7 @@ chatEvents::chatEvents(std::vector<object_ptr<chatEvent>> &&events_)
     : events_(std::move(events_))
 {}
 
-const int32_t chatEvents::ID;
+const std::int32_t chatEvents::ID;
 
 void chatEvents::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1745,7 +1793,7 @@ chatInviteLink::chatInviteLink(std::string const &invite_link_)
     : invite_link_(std::move(invite_link_))
 {}
 
-const int32_t chatInviteLink::ID;
+const std::int32_t chatInviteLink::ID;
 
 void chatInviteLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1767,8 +1815,8 @@ chatInviteLinkInfo::chatInviteLinkInfo()
 {}
 
 chatInviteLinkInfo::chatInviteLinkInfo(std::int64_t chat_id_, object_ptr<ChatType> &&type_,
-                                       std::string const &title_, object_ptr<chatPhoto> &&photo_, int32_t member_count_,
-                                       std::vector<int32_t> &&member_user_ids_, bool is_public_)
+                                       std::string const &title_, object_ptr<chatPhoto> &&photo_, std::int32_t member_count_,
+                                       std::vector<std::int32_t> &&member_user_ids_, bool is_public_)
     : chat_id_(chat_id_)
     , type_(std::move(type_))
     , title_(std::move(title_))
@@ -1778,7 +1826,7 @@ chatInviteLinkInfo::chatInviteLinkInfo(std::int64_t chat_id_, object_ptr<ChatTyp
     , is_public_(is_public_)
 {}
 
-const int32_t chatInviteLinkInfo::ID;
+const std::int32_t chatInviteLinkInfo::ID;
 
 void chatInviteLinkInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1798,7 +1846,7 @@ void chatInviteLinkInfo::store(TlStorerToString &s, const char *field_name) cons
         }
         s.store_field("member_count", member_count_);
         {
-            const std::vector<int32_t> &v = member_user_ids_;
+            const std::vector<std::int32_t> &v = member_user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("member_user_ids", vector_name.c_str());
@@ -1820,8 +1868,8 @@ chatMember::chatMember()
     , bot_info_()
 {}
 
-chatMember::chatMember(int32_t user_id_, int32_t inviter_user_id_,
-                       int32_t joined_chat_date_, object_ptr<ChatMemberStatus> &&status_,
+chatMember::chatMember(std::int32_t user_id_, std::int32_t inviter_user_id_,
+                       std::int32_t joined_chat_date_, object_ptr<ChatMemberStatus> &&status_,
                        object_ptr<botInfo> &&bot_info_)
     : user_id_(user_id_)
     , inviter_user_id_(inviter_user_id_)
@@ -1830,7 +1878,7 @@ chatMember::chatMember(int32_t user_id_, int32_t inviter_user_id_,
     , bot_info_(std::move(bot_info_))
 {}
 
-const int32_t chatMember::ID;
+const std::int32_t chatMember::ID;
 
 void chatMember::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1861,7 +1909,7 @@ chatMemberStatusCreator::chatMemberStatusCreator(bool is_member_)
     : is_member_(is_member_)
 {}
 
-const int32_t chatMemberStatusCreator::ID;
+const std::int32_t chatMemberStatusCreator::ID;
 
 void chatMemberStatusCreator::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1899,7 +1947,7 @@ chatMemberStatusAdministrator::chatMemberStatusAdministrator(bool can_be_edited_
     , can_promote_members_(can_promote_members_)
 {}
 
-const int32_t chatMemberStatusAdministrator::ID;
+const std::int32_t chatMemberStatusAdministrator::ID;
 
 void chatMemberStatusAdministrator::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1922,7 +1970,7 @@ chatMemberStatusMember::chatMemberStatusMember()
 {
 }
 
-const int32_t chatMemberStatusMember::ID;
+const std::int32_t chatMemberStatusMember::ID;
 
 void chatMemberStatusMember::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1942,7 +1990,7 @@ chatMemberStatusRestricted::chatMemberStatusRestricted()
 {}
 
 chatMemberStatusRestricted::chatMemberStatusRestricted(bool is_member_,
-                                                       int32_t restricted_until_date_, bool can_send_messages_, bool can_send_media_messages_,
+                                                       std::int32_t restricted_until_date_, bool can_send_messages_, bool can_send_media_messages_,
                                                        bool can_send_other_messages_, bool can_add_web_page_previews_)
     : is_member_(is_member_)
     , restricted_until_date_(restricted_until_date_)
@@ -1952,7 +2000,7 @@ chatMemberStatusRestricted::chatMemberStatusRestricted(bool is_member_,
     , can_add_web_page_previews_(can_add_web_page_previews_)
 {}
 
-const int32_t chatMemberStatusRestricted::ID;
+const std::int32_t chatMemberStatusRestricted::ID;
 
 void chatMemberStatusRestricted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1972,7 +2020,7 @@ chatMemberStatusLeft::chatMemberStatusLeft()
 {
 }
 
-const int32_t chatMemberStatusLeft::ID;
+const std::int32_t chatMemberStatusLeft::ID;
 
 void chatMemberStatusLeft::store(TlStorerToString &s, const char *field_name) const
 {
@@ -1986,11 +2034,11 @@ chatMemberStatusBanned::chatMemberStatusBanned()
     : banned_until_date_()
 {}
 
-chatMemberStatusBanned::chatMemberStatusBanned(int32_t banned_until_date_)
+chatMemberStatusBanned::chatMemberStatusBanned(std::int32_t banned_until_date_)
     : banned_until_date_(banned_until_date_)
 {}
 
-const int32_t chatMemberStatusBanned::ID;
+const std::int32_t chatMemberStatusBanned::ID;
 
 void chatMemberStatusBanned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2006,12 +2054,12 @@ chatMembers::chatMembers()
     , members_()
 {}
 
-chatMembers::chatMembers(int32_t total_count_, std::vector<object_ptr<chatMember>> &&members_)
+chatMembers::chatMembers(std::int32_t total_count_, std::vector<object_ptr<chatMember>> &&members_)
     : total_count_(total_count_)
     , members_(std::move(members_))
 {}
 
-const int32_t chatMembers::ID;
+const std::int32_t chatMembers::ID;
 
 void chatMembers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2046,7 +2094,7 @@ chatPhoto::chatPhoto(object_ptr<file> &&small_, object_ptr<file> &&big_)
     , big_(std::move(big_))
 {}
 
-const int32_t chatPhoto::ID;
+const std::int32_t chatPhoto::ID;
 
 void chatPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2070,7 +2118,7 @@ chatReportReasonSpam::chatReportReasonSpam()
 {
 }
 
-const int32_t chatReportReasonSpam::ID;
+const std::int32_t chatReportReasonSpam::ID;
 
 void chatReportReasonSpam::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2084,7 +2132,7 @@ chatReportReasonViolence::chatReportReasonViolence()
 {
 }
 
-const int32_t chatReportReasonViolence::ID;
+const std::int32_t chatReportReasonViolence::ID;
 
 void chatReportReasonViolence::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2098,7 +2146,7 @@ chatReportReasonPornography::chatReportReasonPornography()
 {
 }
 
-const int32_t chatReportReasonPornography::ID;
+const std::int32_t chatReportReasonPornography::ID;
 
 void chatReportReasonPornography::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2116,7 +2164,7 @@ chatReportReasonCustom::chatReportReasonCustom(std::string const &text_)
     : text_(std::move(text_))
 {}
 
-const int32_t chatReportReasonCustom::ID;
+const std::int32_t chatReportReasonCustom::ID;
 
 void chatReportReasonCustom::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2135,7 +2183,7 @@ chatReportSpamState::chatReportSpamState(bool can_report_spam_)
     : can_report_spam_(can_report_spam_)
 {}
 
-const int32_t chatReportSpamState::ID;
+const std::int32_t chatReportSpamState::ID;
 
 void chatReportSpamState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2150,11 +2198,11 @@ chatTypePrivate::chatTypePrivate()
     : user_id_()
 {}
 
-chatTypePrivate::chatTypePrivate(int32_t user_id_)
+chatTypePrivate::chatTypePrivate(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t chatTypePrivate::ID;
+const std::int32_t chatTypePrivate::ID;
 
 void chatTypePrivate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2169,11 +2217,11 @@ chatTypeBasicGroup::chatTypeBasicGroup()
     : basic_group_id_()
 {}
 
-chatTypeBasicGroup::chatTypeBasicGroup(int32_t basic_group_id_)
+chatTypeBasicGroup::chatTypeBasicGroup(std::int32_t basic_group_id_)
     : basic_group_id_(basic_group_id_)
 {}
 
-const int32_t chatTypeBasicGroup::ID;
+const std::int32_t chatTypeBasicGroup::ID;
 
 void chatTypeBasicGroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2189,12 +2237,12 @@ chatTypeSupergroup::chatTypeSupergroup()
     , is_channel_()
 {}
 
-chatTypeSupergroup::chatTypeSupergroup(int32_t supergroup_id_, bool is_channel_)
+chatTypeSupergroup::chatTypeSupergroup(std::int32_t supergroup_id_, bool is_channel_)
     : supergroup_id_(supergroup_id_)
     , is_channel_(is_channel_)
 {}
 
-const int32_t chatTypeSupergroup::ID;
+const std::int32_t chatTypeSupergroup::ID;
 
 void chatTypeSupergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2211,12 +2259,12 @@ chatTypeSecret::chatTypeSecret()
     , user_id_()
 {}
 
-chatTypeSecret::chatTypeSecret(int32_t secret_chat_id_, int32_t user_id_)
+chatTypeSecret::chatTypeSecret(std::int32_t secret_chat_id_, std::int32_t user_id_)
     : secret_chat_id_(secret_chat_id_)
     , user_id_(user_id_)
 {}
 
-const int32_t chatTypeSecret::ID;
+const std::int32_t chatTypeSecret::ID;
 
 void chatTypeSecret::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2236,7 +2284,7 @@ chats::chats(std::vector<std::int64_t> &&chat_ids_)
     : chat_ids_(std::move(chat_ids_))
 {}
 
-const int32_t chats::ID;
+const std::int32_t chats::ID;
 
 void chats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2256,11 +2304,163 @@ void chats::store(TlStorerToString &s, const char *field_name) const
     }
 }
 
+checkChatUsernameResultOk::checkChatUsernameResultOk()
+{
+}
+
+const std::int32_t checkChatUsernameResultOk::ID;
+
+void checkChatUsernameResultOk::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsernameResultOk");
+        s.store_class_end();
+    }
+}
+
+checkChatUsernameResultUsernameInvalid::checkChatUsernameResultUsernameInvalid()
+{
+}
+
+const std::int32_t checkChatUsernameResultUsernameInvalid::ID;
+
+void checkChatUsernameResultUsernameInvalid::store(TlStorerToString &s,
+                                                   const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsernameResultUsernameInvalid");
+        s.store_class_end();
+    }
+}
+
+checkChatUsernameResultUsernameOccupied::checkChatUsernameResultUsernameOccupied()
+{
+}
+
+const std::int32_t checkChatUsernameResultUsernameOccupied::ID;
+
+void checkChatUsernameResultUsernameOccupied::store(TlStorerToString &s,
+                                                    const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsernameResultUsernameOccupied");
+        s.store_class_end();
+    }
+}
+
+checkChatUsernameResultPublicChatsTooMuch::checkChatUsernameResultPublicChatsTooMuch()
+{
+}
+
+const std::int32_t checkChatUsernameResultPublicChatsTooMuch::ID;
+
+void checkChatUsernameResultPublicChatsTooMuch::store(TlStorerToString &s,
+                                                      const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsernameResultPublicChatsTooMuch");
+        s.store_class_end();
+    }
+}
+
+checkChatUsernameResultPublicGroupsUnavailable::checkChatUsernameResultPublicGroupsUnavailable()
+{
+}
+
+const std::int32_t checkChatUsernameResultPublicGroupsUnavailable::ID;
+
+void checkChatUsernameResultPublicGroupsUnavailable::store(TlStorerToString &s,
+                                                           const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsernameResultPublicGroupsUnavailable");
+        s.store_class_end();
+    }
+}
+
+connectedWebsite::connectedWebsite()
+    : id_()
+    , domain_name_()
+    , bot_user_id_()
+    , browser_()
+    , platform_()
+    , log_in_date_()
+    , last_active_date_()
+    , ip_()
+    , location_()
+{}
+
+connectedWebsite::connectedWebsite(std::int64_t id_, std::string const &domain_name_,
+                                   std::int32_t bot_user_id_, std::string const &browser_, std::string const &platform_,
+                                   std::int32_t log_in_date_, std::int32_t last_active_date_, std::string const &ip_,
+                                   std::string const &location_)
+    : id_(id_)
+    , domain_name_(std::move(domain_name_))
+    , bot_user_id_(bot_user_id_)
+    , browser_(std::move(browser_))
+    , platform_(std::move(platform_))
+    , log_in_date_(log_in_date_)
+    , last_active_date_(last_active_date_)
+    , ip_(std::move(ip_))
+    , location_(std::move(location_))
+{}
+
+const std::int32_t connectedWebsite::ID;
+
+void connectedWebsite::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "connectedWebsite");
+        s.store_field("id", id_);
+        s.store_field("domain_name", domain_name_);
+        s.store_field("bot_user_id", bot_user_id_);
+        s.store_field("browser", browser_);
+        s.store_field("platform", platform_);
+        s.store_field("log_in_date", log_in_date_);
+        s.store_field("last_active_date", last_active_date_);
+        s.store_field("ip", ip_);
+        s.store_field("location", location_);
+        s.store_class_end();
+    }
+}
+
+connectedWebsites::connectedWebsites()
+    : websites_()
+{}
+
+connectedWebsites::connectedWebsites(std::vector<object_ptr<connectedWebsite>> &&websites_)
+    : websites_(std::move(websites_))
+{}
+
+const std::int32_t connectedWebsites::ID;
+
+void connectedWebsites::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "connectedWebsites");
+        {
+            const std::vector<object_ptr<connectedWebsite>> &v = websites_;
+            const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
+            const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
+            s.store_class_begin("websites", vector_name.c_str());
+            for (std::uint32_t i = 0; i < multiplicity; i++) {
+                if (v[i] == nullptr) {
+                    s.store_field("", "null");
+                } else {
+                    v[i]->store(s, "");
+                }
+            }
+            s.store_class_end();
+        }
+        s.store_class_end();
+    }
+}
+
 connectionStateWaitingForNetwork::connectionStateWaitingForNetwork()
 {
 }
 
-const int32_t connectionStateWaitingForNetwork::ID;
+const std::int32_t connectionStateWaitingForNetwork::ID;
 
 void connectionStateWaitingForNetwork::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2274,7 +2474,7 @@ connectionStateConnectingToProxy::connectionStateConnectingToProxy()
 {
 }
 
-const int32_t connectionStateConnectingToProxy::ID;
+const std::int32_t connectionStateConnectingToProxy::ID;
 
 void connectionStateConnectingToProxy::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2288,7 +2488,7 @@ connectionStateConnecting::connectionStateConnecting()
 {
 }
 
-const int32_t connectionStateConnecting::ID;
+const std::int32_t connectionStateConnecting::ID;
 
 void connectionStateConnecting::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2302,7 +2502,7 @@ connectionStateUpdating::connectionStateUpdating()
 {
 }
 
-const int32_t connectionStateUpdating::ID;
+const std::int32_t connectionStateUpdating::ID;
 
 void connectionStateUpdating::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2316,7 +2516,7 @@ connectionStateReady::connectionStateReady()
 {
 }
 
-const int32_t connectionStateReady::ID;
+const std::int32_t connectionStateReady::ID;
 
 void connectionStateReady::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2334,14 +2534,14 @@ contact::contact()
 {}
 
 contact::contact(std::string const &phone_number_, std::string const &first_name_,
-                 std::string const &last_name_, int32_t user_id_)
+                 std::string const &last_name_, std::int32_t user_id_)
     : phone_number_(std::move(phone_number_))
     , first_name_(std::move(first_name_))
     , last_name_(std::move(last_name_))
     , user_id_(user_id_)
 {}
 
-const int32_t contact::ID;
+const std::int32_t contact::ID;
 
 void contact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2359,11 +2559,11 @@ count::count()
     : count_()
 {}
 
-count::count(int32_t count_)
+count::count(std::int32_t count_)
     : count_(count_)
 {}
 
-const int32_t count::ID;
+const std::int32_t count::ID;
 
 void count::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2382,7 +2582,7 @@ customRequestResult::customRequestResult(std::string const &result_)
     : result_(std::move(result_))
 {}
 
-const int32_t customRequestResult::ID;
+const std::int32_t customRequestResult::ID;
 
 void customRequestResult::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2401,7 +2601,7 @@ deviceTokenGoogleCloudMessaging::deviceTokenGoogleCloudMessaging(std::string con
     : token_(std::move(token_))
 {}
 
-const int32_t deviceTokenGoogleCloudMessaging::ID;
+const std::int32_t deviceTokenGoogleCloudMessaging::ID;
 
 void deviceTokenGoogleCloudMessaging::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2422,7 +2622,7 @@ deviceTokenApplePush::deviceTokenApplePush(std::string const &device_token_, boo
     , is_app_sandbox_(is_app_sandbox_)
 {}
 
-const int32_t deviceTokenApplePush::ID;
+const std::int32_t deviceTokenApplePush::ID;
 
 void deviceTokenApplePush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2445,7 +2645,7 @@ deviceTokenApplePushVoIP::deviceTokenApplePushVoIP(std::string const &device_tok
     , is_app_sandbox_(is_app_sandbox_)
 {}
 
-const int32_t deviceTokenApplePushVoIP::ID;
+const std::int32_t deviceTokenApplePushVoIP::ID;
 
 void deviceTokenApplePushVoIP::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2465,7 +2665,7 @@ deviceTokenWindowsPush::deviceTokenWindowsPush(std::string const &access_token_)
     : access_token_(std::move(access_token_))
 {}
 
-const int32_t deviceTokenWindowsPush::ID;
+const std::int32_t deviceTokenWindowsPush::ID;
 
 void deviceTokenWindowsPush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2484,7 +2684,7 @@ deviceTokenMicrosoftPush::deviceTokenMicrosoftPush(std::string const &channel_ur
     : channel_uri_(std::move(channel_uri_))
 {}
 
-const int32_t deviceTokenMicrosoftPush::ID;
+const std::int32_t deviceTokenMicrosoftPush::ID;
 
 void deviceTokenMicrosoftPush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2503,7 +2703,7 @@ deviceTokenMicrosoftPushVoIP::deviceTokenMicrosoftPushVoIP(std::string const &ch
     : channel_uri_(std::move(channel_uri_))
 {}
 
-const int32_t deviceTokenMicrosoftPushVoIP::ID;
+const std::int32_t deviceTokenMicrosoftPushVoIP::ID;
 
 void deviceTokenMicrosoftPushVoIP::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2527,7 +2727,7 @@ deviceTokenWebPush::deviceTokenWebPush(std::string const &endpoint_,
     , auth_base64url_(std::move(auth_base64url_))
 {}
 
-const int32_t deviceTokenWebPush::ID;
+const std::int32_t deviceTokenWebPush::ID;
 
 void deviceTokenWebPush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2548,7 +2748,7 @@ deviceTokenSimplePush::deviceTokenSimplePush(std::string const &endpoint_)
     : endpoint_(std::move(endpoint_))
 {}
 
-const int32_t deviceTokenSimplePush::ID;
+const std::int32_t deviceTokenSimplePush::ID;
 
 void deviceTokenSimplePush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2567,7 +2767,7 @@ deviceTokenUbuntuPush::deviceTokenUbuntuPush(std::string const &token_)
     : token_(std::move(token_))
 {}
 
-const int32_t deviceTokenUbuntuPush::ID;
+const std::int32_t deviceTokenUbuntuPush::ID;
 
 void deviceTokenUbuntuPush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2578,20 +2778,20 @@ void deviceTokenUbuntuPush::store(TlStorerToString &s, const char *field_name) c
     }
 }
 
-deviceTokenBlackberryPush::deviceTokenBlackberryPush()
+deviceTokenBlackBerryPush::deviceTokenBlackBerryPush()
     : token_()
 {}
 
-deviceTokenBlackberryPush::deviceTokenBlackberryPush(std::string const &token_)
+deviceTokenBlackBerryPush::deviceTokenBlackBerryPush(std::string const &token_)
     : token_(std::move(token_))
 {}
 
-const int32_t deviceTokenBlackberryPush::ID;
+const std::int32_t deviceTokenBlackBerryPush::ID;
 
-void deviceTokenBlackberryPush::store(TlStorerToString &s, const char *field_name) const
+void deviceTokenBlackBerryPush::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
-        s.store_class_begin(field_name, "deviceTokenBlackberryPush");
+        s.store_class_begin(field_name, "deviceTokenBlackBerryPush");
         s.store_field("token", token_);
         s.store_class_end();
     }
@@ -2605,7 +2805,7 @@ deviceTokenTizenPush::deviceTokenTizenPush(std::string const &reg_id_)
     : reg_id_(std::move(reg_id_))
 {}
 
-const int32_t deviceTokenTizenPush::ID;
+const std::int32_t deviceTokenTizenPush::ID;
 
 void deviceTokenTizenPush::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2631,7 +2831,7 @@ document::document(std::string const &file_name_, std::string const &mime_type_,
     , document_(std::move(document_))
 {}
 
-const int32_t document::ID;
+const std::int32_t document::ID;
 
 void document::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2664,7 +2864,7 @@ draftMessage::draftMessage(std::int64_t reply_to_message_id_,
     , input_message_text_(std::move(input_message_text_))
 {}
 
-const int32_t draftMessage::ID;
+const std::int32_t draftMessage::ID;
 
 void draftMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2685,12 +2885,12 @@ error::error()
     , message_()
 {}
 
-error::error(int32_t code_, std::string const &message_)
+error::error(std::int32_t code_, std::string const &message_)
     : code_(code_)
     , message_(std::move(message_))
 {}
 
-const int32_t error::ID;
+const std::int32_t error::ID;
 
 void error::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2710,7 +2910,7 @@ file::file()
     , remote_()
 {}
 
-file::file(int32_t id_, int32_t size_, int32_t expected_size_,
+file::file(std::int32_t id_, std::int32_t size_, std::int32_t expected_size_,
            object_ptr<localFile> &&local_, object_ptr<remoteFile> &&remote_)
     : id_(id_)
     , size_(size_)
@@ -2719,7 +2919,7 @@ file::file(int32_t id_, int32_t size_, int32_t expected_size_,
     , remote_(std::move(remote_))
 {}
 
-const int32_t file::ID;
+const std::int32_t file::ID;
 
 void file::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2746,7 +2946,7 @@ fileTypeNone::fileTypeNone()
 {
 }
 
-const int32_t fileTypeNone::ID;
+const std::int32_t fileTypeNone::ID;
 
 void fileTypeNone::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2760,7 +2960,7 @@ fileTypeAnimation::fileTypeAnimation()
 {
 }
 
-const int32_t fileTypeAnimation::ID;
+const std::int32_t fileTypeAnimation::ID;
 
 void fileTypeAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2774,7 +2974,7 @@ fileTypeAudio::fileTypeAudio()
 {
 }
 
-const int32_t fileTypeAudio::ID;
+const std::int32_t fileTypeAudio::ID;
 
 void fileTypeAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2788,7 +2988,7 @@ fileTypeDocument::fileTypeDocument()
 {
 }
 
-const int32_t fileTypeDocument::ID;
+const std::int32_t fileTypeDocument::ID;
 
 void fileTypeDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2802,7 +3002,7 @@ fileTypePhoto::fileTypePhoto()
 {
 }
 
-const int32_t fileTypePhoto::ID;
+const std::int32_t fileTypePhoto::ID;
 
 void fileTypePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2816,7 +3016,7 @@ fileTypeProfilePhoto::fileTypeProfilePhoto()
 {
 }
 
-const int32_t fileTypeProfilePhoto::ID;
+const std::int32_t fileTypeProfilePhoto::ID;
 
 void fileTypeProfilePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2830,7 +3030,7 @@ fileTypeSecret::fileTypeSecret()
 {
 }
 
-const int32_t fileTypeSecret::ID;
+const std::int32_t fileTypeSecret::ID;
 
 void fileTypeSecret::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2844,7 +3044,7 @@ fileTypeSticker::fileTypeSticker()
 {
 }
 
-const int32_t fileTypeSticker::ID;
+const std::int32_t fileTypeSticker::ID;
 
 void fileTypeSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2858,7 +3058,7 @@ fileTypeThumbnail::fileTypeThumbnail()
 {
 }
 
-const int32_t fileTypeThumbnail::ID;
+const std::int32_t fileTypeThumbnail::ID;
 
 void fileTypeThumbnail::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2872,7 +3072,7 @@ fileTypeUnknown::fileTypeUnknown()
 {
 }
 
-const int32_t fileTypeUnknown::ID;
+const std::int32_t fileTypeUnknown::ID;
 
 void fileTypeUnknown::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2886,7 +3086,7 @@ fileTypeVideo::fileTypeVideo()
 {
 }
 
-const int32_t fileTypeVideo::ID;
+const std::int32_t fileTypeVideo::ID;
 
 void fileTypeVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2900,7 +3100,7 @@ fileTypeVideoNote::fileTypeVideoNote()
 {
 }
 
-const int32_t fileTypeVideoNote::ID;
+const std::int32_t fileTypeVideoNote::ID;
 
 void fileTypeVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2914,7 +3114,7 @@ fileTypeVoiceNote::fileTypeVoiceNote()
 {
 }
 
-const int32_t fileTypeVoiceNote::ID;
+const std::int32_t fileTypeVoiceNote::ID;
 
 void fileTypeVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2928,7 +3128,7 @@ fileTypeWallpaper::fileTypeWallpaper()
 {
 }
 
-const int32_t fileTypeWallpaper::ID;
+const std::int32_t fileTypeWallpaper::ID;
 
 void fileTypeWallpaper::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2942,7 +3142,7 @@ fileTypeSecretThumbnail::fileTypeSecretThumbnail()
 {
 }
 
-const int32_t fileTypeSecretThumbnail::ID;
+const std::int32_t fileTypeSecretThumbnail::ID;
 
 void fileTypeSecretThumbnail::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2963,7 +3163,7 @@ formattedText::formattedText(std::string const &text_,
     , entities_(std::move(entities_))
 {}
 
-const int32_t formattedText::ID;
+const std::int32_t formattedText::ID;
 
 void formattedText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -2999,7 +3199,7 @@ foundMessages::foundMessages(std::vector<object_ptr<message>> &&messages_,
     , next_from_search_id_(next_from_search_id_)
 {}
 
-const int32_t foundMessages::ID;
+const std::int32_t foundMessages::ID;
 
 void foundMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3046,7 +3246,7 @@ game::game(std::int64_t id_, std::string const &short_name_, std::string const &
     , animation_(std::move(animation_))
 {}
 
-const int32_t game::ID;
+const std::int32_t game::ID;
 
 void game::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3081,13 +3281,13 @@ gameHighScore::gameHighScore()
     , score_()
 {}
 
-gameHighScore::gameHighScore(int32_t position_, int32_t user_id_, int32_t score_)
+gameHighScore::gameHighScore(std::int32_t position_, std::int32_t user_id_, std::int32_t score_)
     : position_(position_)
     , user_id_(user_id_)
     , score_(score_)
 {}
 
-const int32_t gameHighScore::ID;
+const std::int32_t gameHighScore::ID;
 
 void gameHighScore::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3108,7 +3308,7 @@ gameHighScores::gameHighScores(std::vector<object_ptr<gameHighScore>> &&scores_)
     : scores_(std::move(scores_))
 {}
 
-const int32_t gameHighScores::ID;
+const std::int32_t gameHighScores::ID;
 
 void gameHighScores::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3140,7 +3340,7 @@ hashtags::hashtags(std::vector<std::string> &&hashtags_)
     : hashtags_(std::move(hashtags_))
 {}
 
-const int32_t hashtags::ID;
+const std::int32_t hashtags::ID;
 
 void hashtags::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3165,20 +3365,20 @@ importedContacts::importedContacts()
     , importer_count_()
 {}
 
-importedContacts::importedContacts(std::vector<int32_t> &&user_ids_,
-                                   std::vector<int32_t> &&importer_count_)
+importedContacts::importedContacts(std::vector<std::int32_t> &&user_ids_,
+                                   std::vector<std::int32_t> &&importer_count_)
     : user_ids_(std::move(user_ids_))
     , importer_count_(std::move(importer_count_))
 {}
 
-const int32_t importedContacts::ID;
+const std::int32_t importedContacts::ID;
 
 void importedContacts::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "importedContacts");
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -3188,7 +3388,7 @@ void importedContacts::store(TlStorerToString &s, const char *field_name) const
             s.store_class_end();
         }
         {
-            const std::vector<int32_t> &v = importer_count_;
+            const std::vector<std::int32_t> &v = importer_count_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("importer_count", vector_name.c_str());
@@ -3212,7 +3412,7 @@ inlineKeyboardButton::inlineKeyboardButton(std::string const &text_,
     , type_(std::move(type_))
 {}
 
-const int32_t inlineKeyboardButton::ID;
+const std::int32_t inlineKeyboardButton::ID;
 
 void inlineKeyboardButton::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3236,7 +3436,7 @@ inlineKeyboardButtonTypeUrl::inlineKeyboardButtonTypeUrl(std::string const &url_
     : url_(std::move(url_))
 {}
 
-const int32_t inlineKeyboardButtonTypeUrl::ID;
+const std::int32_t inlineKeyboardButtonTypeUrl::ID;
 
 void inlineKeyboardButtonTypeUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3255,7 +3455,7 @@ inlineKeyboardButtonTypeCallback::inlineKeyboardButtonTypeCallback(std::string c
     : data_(std::move(data_))
 {}
 
-const int32_t inlineKeyboardButtonTypeCallback::ID;
+const std::int32_t inlineKeyboardButtonTypeCallback::ID;
 
 void inlineKeyboardButtonTypeCallback::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3270,7 +3470,7 @@ inlineKeyboardButtonTypeCallbackGame::inlineKeyboardButtonTypeCallbackGame()
 {
 }
 
-const int32_t inlineKeyboardButtonTypeCallbackGame::ID;
+const std::int32_t inlineKeyboardButtonTypeCallbackGame::ID;
 
 void inlineKeyboardButtonTypeCallbackGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3291,7 +3491,7 @@ inlineKeyboardButtonTypeSwitchInline::inlineKeyboardButtonTypeSwitchInline(
     , in_current_chat_(in_current_chat_)
 {}
 
-const int32_t inlineKeyboardButtonTypeSwitchInline::ID;
+const std::int32_t inlineKeyboardButtonTypeSwitchInline::ID;
 
 void inlineKeyboardButtonTypeSwitchInline::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3307,7 +3507,7 @@ inlineKeyboardButtonTypeBuy::inlineKeyboardButtonTypeBuy()
 {
 }
 
-const int32_t inlineKeyboardButtonTypeBuy::ID;
+const std::int32_t inlineKeyboardButtonTypeBuy::ID;
 
 void inlineKeyboardButtonTypeBuy::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3337,7 +3537,7 @@ inlineQueryResultArticle::inlineQueryResultArticle(std::string const &id_, std::
     , thumbnail_(std::move(thumbnail_))
 {}
 
-const int32_t inlineQueryResultArticle::ID;
+const std::int32_t inlineQueryResultArticle::ID;
 
 void inlineQueryResultArticle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3370,7 +3570,7 @@ inlineQueryResultContact::inlineQueryResultContact(std::string const &id_,
     , thumbnail_(std::move(thumbnail_))
 {}
 
-const int32_t inlineQueryResultContact::ID;
+const std::int32_t inlineQueryResultContact::ID;
 
 void inlineQueryResultContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3406,7 +3606,7 @@ inlineQueryResultLocation::inlineQueryResultLocation(std::string const &id_,
     , thumbnail_(std::move(thumbnail_))
 {}
 
-const int32_t inlineQueryResultLocation::ID;
+const std::int32_t inlineQueryResultLocation::ID;
 
 void inlineQueryResultLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3441,7 +3641,7 @@ inlineQueryResultVenue::inlineQueryResultVenue(std::string const &id_, object_pt
     , thumbnail_(std::move(thumbnail_))
 {}
 
-const int32_t inlineQueryResultVenue::ID;
+const std::int32_t inlineQueryResultVenue::ID;
 
 void inlineQueryResultVenue::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3472,7 +3672,7 @@ inlineQueryResultGame::inlineQueryResultGame(std::string const &id_, object_ptr<
     , game_(std::move(game_))
 {}
 
-const int32_t inlineQueryResultGame::ID;
+const std::int32_t inlineQueryResultGame::ID;
 
 void inlineQueryResultGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3501,7 +3701,7 @@ inlineQueryResultAnimation::inlineQueryResultAnimation(std::string const &id_,
     , title_(std::move(title_))
 {}
 
-const int32_t inlineQueryResultAnimation::ID;
+const std::int32_t inlineQueryResultAnimation::ID;
 
 void inlineQueryResultAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3528,7 +3728,7 @@ inlineQueryResultAudio::inlineQueryResultAudio(std::string const &id_, object_pt
     , audio_(std::move(audio_))
 {}
 
-const int32_t inlineQueryResultAudio::ID;
+const std::int32_t inlineQueryResultAudio::ID;
 
 void inlineQueryResultAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3559,7 +3759,7 @@ inlineQueryResultDocument::inlineQueryResultDocument(std::string const &id_,
     , description_(std::move(description_))
 {}
 
-const int32_t inlineQueryResultDocument::ID;
+const std::int32_t inlineQueryResultDocument::ID;
 
 void inlineQueryResultDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3592,7 +3792,7 @@ inlineQueryResultPhoto::inlineQueryResultPhoto(std::string const &id_, object_pt
     , description_(std::move(description_))
 {}
 
-const int32_t inlineQueryResultPhoto::ID;
+const std::int32_t inlineQueryResultPhoto::ID;
 
 void inlineQueryResultPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3621,7 +3821,7 @@ inlineQueryResultSticker::inlineQueryResultSticker(std::string const &id_,
     , sticker_(std::move(sticker_))
 {}
 
-const int32_t inlineQueryResultSticker::ID;
+const std::int32_t inlineQueryResultSticker::ID;
 
 void inlineQueryResultSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3652,7 +3852,7 @@ inlineQueryResultVideo::inlineQueryResultVideo(std::string const &id_, object_pt
     , description_(std::move(description_))
 {}
 
-const int32_t inlineQueryResultVideo::ID;
+const std::int32_t inlineQueryResultVideo::ID;
 
 void inlineQueryResultVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3683,7 +3883,7 @@ inlineQueryResultVoiceNote::inlineQueryResultVoiceNote(std::string const &id_,
     , title_(std::move(title_))
 {}
 
-const int32_t inlineQueryResultVoiceNote::ID;
+const std::int32_t inlineQueryResultVoiceNote::ID;
 
 void inlineQueryResultVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3718,7 +3918,7 @@ inlineQueryResults::inlineQueryResults(std::int64_t inline_query_id_,
     , switch_pm_parameter_(std::move(switch_pm_parameter_))
 {}
 
-const int32_t inlineQueryResults::ID;
+const std::int32_t inlineQueryResults::ID;
 
 void inlineQueryResults::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3754,7 +3954,7 @@ inputCredentialsSaved::inputCredentialsSaved(std::string const &saved_credential
     : saved_credentials_id_(std::move(saved_credentials_id_))
 {}
 
-const int32_t inputCredentialsSaved::ID;
+const std::int32_t inputCredentialsSaved::ID;
 
 void inputCredentialsSaved::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3775,7 +3975,7 @@ inputCredentialsNew::inputCredentialsNew(std::string const &data_, bool allow_sa
     , allow_save_(allow_save_)
 {}
 
-const int32_t inputCredentialsNew::ID;
+const std::int32_t inputCredentialsNew::ID;
 
 void inputCredentialsNew::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3795,7 +3995,7 @@ inputCredentialsAndroidPay::inputCredentialsAndroidPay(std::string const &data_)
     : data_(std::move(data_))
 {}
 
-const int32_t inputCredentialsAndroidPay::ID;
+const std::int32_t inputCredentialsAndroidPay::ID;
 
 void inputCredentialsAndroidPay::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3814,7 +4014,7 @@ inputCredentialsApplePay::inputCredentialsApplePay(std::string const &data_)
     : data_(std::move(data_))
 {}
 
-const int32_t inputCredentialsApplePay::ID;
+const std::int32_t inputCredentialsApplePay::ID;
 
 void inputCredentialsApplePay::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3829,11 +4029,11 @@ inputFileId::inputFileId()
     : id_()
 {}
 
-inputFileId::inputFileId(int32_t id_)
+inputFileId::inputFileId(std::int32_t id_)
     : id_(id_)
 {}
 
-const int32_t inputFileId::ID;
+const std::int32_t inputFileId::ID;
 
 void inputFileId::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3852,7 +4052,7 @@ inputFileRemote::inputFileRemote(std::string const &id_)
     : id_(std::move(id_))
 {}
 
-const int32_t inputFileRemote::ID;
+const std::int32_t inputFileRemote::ID;
 
 void inputFileRemote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3871,7 +4071,7 @@ inputFileLocal::inputFileLocal(std::string const &path_)
     : path_(std::move(path_))
 {}
 
-const int32_t inputFileLocal::ID;
+const std::int32_t inputFileLocal::ID;
 
 void inputFileLocal::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3889,13 +4089,13 @@ inputFileGenerated::inputFileGenerated()
 {}
 
 inputFileGenerated::inputFileGenerated(std::string const &original_path_,
-                                       std::string const &conversion_, int32_t expected_size_)
+                                       std::string const &conversion_, std::int32_t expected_size_)
     : original_path_(std::move(original_path_))
     , conversion_(std::move(conversion_))
     , expected_size_(expected_size_)
 {}
 
-const int32_t inputFileGenerated::ID;
+const std::int32_t inputFileGenerated::ID;
 
 void inputFileGenerated::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3922,7 +4122,7 @@ inputInlineQueryResultAnimatedGif::inputInlineQueryResultAnimatedGif()
 
 inputInlineQueryResultAnimatedGif::inputInlineQueryResultAnimatedGif(std::string const &id_,
                                                                      std::string const &title_, std::string const &thumbnail_url_, std::string const &gif_url_,
-                                                                     int32_t gif_duration_, int32_t gif_width_, int32_t gif_height_,
+                                                                     std::int32_t gif_duration_, std::int32_t gif_width_, std::int32_t gif_height_,
                                                                      object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -3935,7 +4135,7 @@ inputInlineQueryResultAnimatedGif::inputInlineQueryResultAnimatedGif(std::string
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultAnimatedGif::ID;
+const std::int32_t inputInlineQueryResultAnimatedGif::ID;
 
 void inputInlineQueryResultAnimatedGif::store(TlStorerToString &s, const char *field_name) const
 {
@@ -3976,7 +4176,7 @@ inputInlineQueryResultAnimatedMpeg4::inputInlineQueryResultAnimatedMpeg4()
 
 inputInlineQueryResultAnimatedMpeg4::inputInlineQueryResultAnimatedMpeg4(std::string const &id_,
                                                                          std::string const &title_, std::string const &thumbnail_url_, std::string const &mpeg4_url_,
-                                                                         int32_t mpeg4_duration_, int32_t mpeg4_width_, int32_t mpeg4_height_,
+                                                                         std::int32_t mpeg4_duration_, std::int32_t mpeg4_width_, std::int32_t mpeg4_height_,
                                                                          object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -3989,7 +4189,7 @@ inputInlineQueryResultAnimatedMpeg4::inputInlineQueryResultAnimatedMpeg4(std::st
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultAnimatedMpeg4::ID;
+const std::int32_t inputInlineQueryResultAnimatedMpeg4::ID;
 
 void inputInlineQueryResultAnimatedMpeg4::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4031,7 +4231,7 @@ inputInlineQueryResultArticle::inputInlineQueryResultArticle()
 
 inputInlineQueryResultArticle::inputInlineQueryResultArticle(std::string const &id_,
                                                              std::string const &url_, bool hide_url_, std::string const &title_, std::string const &description_,
-                                                             std::string const &thumbnail_url_, int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                                             std::string const &thumbnail_url_, std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                                              object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , url_(std::move(url_))
@@ -4045,7 +4245,7 @@ inputInlineQueryResultArticle::inputInlineQueryResultArticle(std::string const &
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultArticle::ID;
+const std::int32_t inputInlineQueryResultArticle::ID;
 
 void inputInlineQueryResultArticle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4085,7 +4285,7 @@ inputInlineQueryResultAudio::inputInlineQueryResultAudio()
 
 inputInlineQueryResultAudio::inputInlineQueryResultAudio(std::string const &id_,
                                                          std::string const &title_, std::string const &performer_, std::string const &audio_url_,
-                                                         int32_t audio_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                         std::int32_t audio_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                          object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -4096,7 +4296,7 @@ inputInlineQueryResultAudio::inputInlineQueryResultAudio(std::string const &id_,
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultAudio::ID;
+const std::int32_t inputInlineQueryResultAudio::ID;
 
 void inputInlineQueryResultAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4132,8 +4332,8 @@ inputInlineQueryResultContact::inputInlineQueryResultContact()
 {}
 
 inputInlineQueryResultContact::inputInlineQueryResultContact(std::string const &id_,
-                                                             object_ptr<contact> &&contact_, std::string const &thumbnail_url_, int32_t thumbnail_width_,
-                                                             int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                             object_ptr<contact> &&contact_, std::string const &thumbnail_url_, std::int32_t thumbnail_width_,
+                                                             std::int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                              object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , contact_(std::move(contact_))
@@ -4144,7 +4344,7 @@ inputInlineQueryResultContact::inputInlineQueryResultContact(std::string const &
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultContact::ID;
+const std::int32_t inputInlineQueryResultContact::ID;
 
 void inputInlineQueryResultContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4188,8 +4388,8 @@ inputInlineQueryResultDocument::inputInlineQueryResultDocument()
 
 inputInlineQueryResultDocument::inputInlineQueryResultDocument(std::string const &id_,
                                                                std::string const &title_, std::string const &description_, std::string const &document_url_,
-                                                               std::string const &mime_type_, std::string const &thumbnail_url_, int32_t thumbnail_width_,
-                                                               int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                               std::string const &mime_type_, std::string const &thumbnail_url_, std::int32_t thumbnail_width_,
+                                                               std::int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                                object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -4203,7 +4403,7 @@ inputInlineQueryResultDocument::inputInlineQueryResultDocument(std::string const
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultDocument::ID;
+const std::int32_t inputInlineQueryResultDocument::ID;
 
 void inputInlineQueryResultDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4244,7 +4444,7 @@ inputInlineQueryResultGame::inputInlineQueryResultGame(std::string const &id_,
     , reply_markup_(std::move(reply_markup_))
 {}
 
-const int32_t inputInlineQueryResultGame::ID;
+const std::int32_t inputInlineQueryResultGame::ID;
 
 void inputInlineQueryResultGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4274,8 +4474,8 @@ inputInlineQueryResultLocation::inputInlineQueryResultLocation()
 {}
 
 inputInlineQueryResultLocation::inputInlineQueryResultLocation(std::string const &id_,
-                                                               object_ptr<location> &&location_, int32_t live_period_, std::string const &title_,
-                                                               std::string const &thumbnail_url_, int32_t thumbnail_width_, int32_t thumbnail_height_,
+                                                               object_ptr<location> &&location_, std::int32_t live_period_, std::string const &title_,
+                                                               std::string const &thumbnail_url_, std::int32_t thumbnail_width_, std::int32_t thumbnail_height_,
                                                                object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , location_(std::move(location_))
@@ -4288,7 +4488,7 @@ inputInlineQueryResultLocation::inputInlineQueryResultLocation(std::string const
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultLocation::ID;
+const std::int32_t inputInlineQueryResultLocation::ID;
 
 void inputInlineQueryResultLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4333,7 +4533,7 @@ inputInlineQueryResultPhoto::inputInlineQueryResultPhoto()
 
 inputInlineQueryResultPhoto::inputInlineQueryResultPhoto(std::string const &id_,
                                                          std::string const &title_, std::string const &description_, std::string const &thumbnail_url_,
-                                                         std::string const &photo_url_, int32_t photo_width_, int32_t photo_height_,
+                                                         std::string const &photo_url_, std::int32_t photo_width_, std::int32_t photo_height_,
                                                          object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -4346,7 +4546,7 @@ inputInlineQueryResultPhoto::inputInlineQueryResultPhoto(std::string const &id_,
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultPhoto::ID;
+const std::int32_t inputInlineQueryResultPhoto::ID;
 
 void inputInlineQueryResultPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4384,8 +4584,8 @@ inputInlineQueryResultSticker::inputInlineQueryResultSticker()
 {}
 
 inputInlineQueryResultSticker::inputInlineQueryResultSticker(std::string const &id_,
-                                                             std::string const &thumbnail_url_, std::string const &sticker_url_, int32_t sticker_width_,
-                                                             int32_t sticker_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                             std::string const &thumbnail_url_, std::string const &sticker_url_, std::int32_t sticker_width_,
+                                                             std::int32_t sticker_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                              object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , thumbnail_url_(std::move(thumbnail_url_))
@@ -4396,7 +4596,7 @@ inputInlineQueryResultSticker::inputInlineQueryResultSticker(std::string const &
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultSticker::ID;
+const std::int32_t inputInlineQueryResultSticker::ID;
 
 void inputInlineQueryResultSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4432,8 +4632,8 @@ inputInlineQueryResultVenue::inputInlineQueryResultVenue()
 {}
 
 inputInlineQueryResultVenue::inputInlineQueryResultVenue(std::string const &id_,
-                                                         object_ptr<venue> &&venue_, std::string const &thumbnail_url_, int32_t thumbnail_width_,
-                                                         int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                         object_ptr<venue> &&venue_, std::string const &thumbnail_url_, std::int32_t thumbnail_width_,
+                                                         std::int32_t thumbnail_height_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                          object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , venue_(std::move(venue_))
@@ -4444,7 +4644,7 @@ inputInlineQueryResultVenue::inputInlineQueryResultVenue(std::string const &id_,
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultVenue::ID;
+const std::int32_t inputInlineQueryResultVenue::ID;
 
 void inputInlineQueryResultVenue::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4489,8 +4689,8 @@ inputInlineQueryResultVideo::inputInlineQueryResultVideo()
 
 inputInlineQueryResultVideo::inputInlineQueryResultVideo(std::string const &id_,
                                                          std::string const &title_, std::string const &description_, std::string const &thumbnail_url_,
-                                                         std::string const &video_url_, std::string const &mime_type_, int32_t video_width_,
-                                                         int32_t video_height_, int32_t video_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
+                                                         std::string const &video_url_, std::string const &mime_type_, std::int32_t video_width_,
+                                                         std::int32_t video_height_, std::int32_t video_duration_, object_ptr<ReplyMarkup> &&reply_markup_,
                                                          object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -4505,7 +4705,7 @@ inputInlineQueryResultVideo::inputInlineQueryResultVideo(std::string const &id_,
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultVideo::ID;
+const std::int32_t inputInlineQueryResultVideo::ID;
 
 void inputInlineQueryResultVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4544,7 +4744,7 @@ inputInlineQueryResultVoiceNote::inputInlineQueryResultVoiceNote()
 {}
 
 inputInlineQueryResultVoiceNote::inputInlineQueryResultVoiceNote(std::string const &id_,
-                                                                 std::string const &title_, std::string const &voice_note_url_, int32_t voice_note_duration_,
+                                                                 std::string const &title_, std::string const &voice_note_url_, std::int32_t voice_note_duration_,
                                                                  object_ptr<ReplyMarkup> &&reply_markup_, object_ptr<InputMessageContent> &&input_message_content_)
     : id_(std::move(id_))
     , title_(std::move(title_))
@@ -4554,7 +4754,7 @@ inputInlineQueryResultVoiceNote::inputInlineQueryResultVoiceNote(std::string con
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t inputInlineQueryResultVoiceNote::ID;
+const std::int32_t inputInlineQueryResultVoiceNote::ID;
 
 void inputInlineQueryResultVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4591,7 +4791,7 @@ inputMessageText::inputMessageText(object_ptr<formattedText> &&text_,
     , clear_draft_(clear_draft_)
 {}
 
-const int32_t inputMessageText::ID;
+const std::int32_t inputMessageText::ID;
 
 void inputMessageText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4618,8 +4818,8 @@ inputMessageAnimation::inputMessageAnimation()
 {}
 
 inputMessageAnimation::inputMessageAnimation(object_ptr<InputFile> &&animation_,
-                                             object_ptr<inputThumbnail> &&thumbnail_, int32_t duration_, int32_t width_,
-                                             int32_t height_, object_ptr<formattedText> &&caption_)
+                                             object_ptr<inputThumbnail> &&thumbnail_, std::int32_t duration_, std::int32_t width_,
+                                             std::int32_t height_, object_ptr<formattedText> &&caption_)
     : animation_(std::move(animation_))
     , thumbnail_(std::move(thumbnail_))
     , duration_(duration_)
@@ -4628,7 +4828,7 @@ inputMessageAnimation::inputMessageAnimation(object_ptr<InputFile> &&animation_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t inputMessageAnimation::ID;
+const std::int32_t inputMessageAnimation::ID;
 
 void inputMessageAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4666,7 +4866,7 @@ inputMessageAudio::inputMessageAudio()
 {}
 
 inputMessageAudio::inputMessageAudio(object_ptr<InputFile> &&audio_,
-                                     object_ptr<inputThumbnail> &&album_cover_thumbnail_, int32_t duration_,
+                                     object_ptr<inputThumbnail> &&album_cover_thumbnail_, std::int32_t duration_,
                                      std::string const &title_, std::string const &performer_, object_ptr<formattedText> &&caption_)
     : audio_(std::move(audio_))
     , album_cover_thumbnail_(std::move(album_cover_thumbnail_))
@@ -4676,7 +4876,7 @@ inputMessageAudio::inputMessageAudio(object_ptr<InputFile> &&audio_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t inputMessageAudio::ID;
+const std::int32_t inputMessageAudio::ID;
 
 void inputMessageAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4717,7 +4917,7 @@ inputMessageDocument::inputMessageDocument(object_ptr<InputFile> &&document_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t inputMessageDocument::ID;
+const std::int32_t inputMessageDocument::ID;
 
 void inputMessageDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4753,8 +4953,8 @@ inputMessagePhoto::inputMessagePhoto()
 {}
 
 inputMessagePhoto::inputMessagePhoto(object_ptr<InputFile> &&photo_,
-                                     object_ptr<inputThumbnail> &&thumbnail_, std::vector<int32_t> &&added_sticker_file_ids_,
-                                     int32_t width_, int32_t height_, object_ptr<formattedText> &&caption_, int32_t ttl_)
+                                     object_ptr<inputThumbnail> &&thumbnail_, std::vector<std::int32_t> &&added_sticker_file_ids_,
+                                     std::int32_t width_, std::int32_t height_, object_ptr<formattedText> &&caption_, std::int32_t ttl_)
     : photo_(std::move(photo_))
     , thumbnail_(std::move(thumbnail_))
     , added_sticker_file_ids_(std::move(added_sticker_file_ids_))
@@ -4764,7 +4964,7 @@ inputMessagePhoto::inputMessagePhoto(object_ptr<InputFile> &&photo_,
     , ttl_(ttl_)
 {}
 
-const int32_t inputMessagePhoto::ID;
+const std::int32_t inputMessagePhoto::ID;
 
 void inputMessagePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4781,7 +4981,7 @@ void inputMessagePhoto::store(TlStorerToString &s, const char *field_name) const
             thumbnail_->store(s, "thumbnail");
         }
         {
-            const std::vector<int32_t> &v = added_sticker_file_ids_;
+            const std::vector<std::int32_t> &v = added_sticker_file_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("added_sticker_file_ids", vector_name.c_str());
@@ -4810,14 +5010,14 @@ inputMessageSticker::inputMessageSticker()
 {}
 
 inputMessageSticker::inputMessageSticker(object_ptr<InputFile> &&sticker_,
-                                         object_ptr<inputThumbnail> &&thumbnail_, int32_t width_, int32_t height_)
+                                         object_ptr<inputThumbnail> &&thumbnail_, std::int32_t width_, std::int32_t height_)
     : sticker_(std::move(sticker_))
     , thumbnail_(std::move(thumbnail_))
     , width_(width_)
     , height_(height_)
 {}
 
-const int32_t inputMessageSticker::ID;
+const std::int32_t inputMessageSticker::ID;
 
 void inputMessageSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4846,25 +5046,27 @@ inputMessageVideo::inputMessageVideo()
     , duration_()
     , width_()
     , height_()
+    , supports_streaming_()
     , caption_()
     , ttl_()
 {}
 
 inputMessageVideo::inputMessageVideo(object_ptr<InputFile> &&video_,
-                                     object_ptr<inputThumbnail> &&thumbnail_, std::vector<int32_t> &&added_sticker_file_ids_,
-                                     int32_t duration_, int32_t width_, int32_t height_,
-                                     object_ptr<formattedText> &&caption_, int32_t ttl_)
+                                     object_ptr<inputThumbnail> &&thumbnail_, std::vector<std::int32_t> &&added_sticker_file_ids_,
+                                     std::int32_t duration_, std::int32_t width_, std::int32_t height_, bool supports_streaming_,
+                                     object_ptr<formattedText> &&caption_, std::int32_t ttl_)
     : video_(std::move(video_))
     , thumbnail_(std::move(thumbnail_))
     , added_sticker_file_ids_(std::move(added_sticker_file_ids_))
     , duration_(duration_)
     , width_(width_)
     , height_(height_)
+    , supports_streaming_(supports_streaming_)
     , caption_(std::move(caption_))
     , ttl_(ttl_)
 {}
 
-const int32_t inputMessageVideo::ID;
+const std::int32_t inputMessageVideo::ID;
 
 void inputMessageVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4881,7 +5083,7 @@ void inputMessageVideo::store(TlStorerToString &s, const char *field_name) const
             thumbnail_->store(s, "thumbnail");
         }
         {
-            const std::vector<int32_t> &v = added_sticker_file_ids_;
+            const std::vector<std::int32_t> &v = added_sticker_file_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("added_sticker_file_ids", vector_name.c_str());
@@ -4893,6 +5095,7 @@ void inputMessageVideo::store(TlStorerToString &s, const char *field_name) const
         s.store_field("duration", duration_);
         s.store_field("width", width_);
         s.store_field("height", height_);
+        s.store_field("supports_streaming", supports_streaming_);
         if (caption_ == nullptr) {
             s.store_field("caption", "null");
         } else {
@@ -4911,14 +5114,14 @@ inputMessageVideoNote::inputMessageVideoNote()
 {}
 
 inputMessageVideoNote::inputMessageVideoNote(object_ptr<InputFile> &&video_note_,
-                                             object_ptr<inputThumbnail> &&thumbnail_, int32_t duration_, int32_t length_)
+                                             object_ptr<inputThumbnail> &&thumbnail_, std::int32_t duration_, std::int32_t length_)
     : video_note_(std::move(video_note_))
     , thumbnail_(std::move(thumbnail_))
     , duration_(duration_)
     , length_(length_)
 {}
 
-const int32_t inputMessageVideoNote::ID;
+const std::int32_t inputMessageVideoNote::ID;
 
 void inputMessageVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4948,14 +5151,14 @@ inputMessageVoiceNote::inputMessageVoiceNote()
 {}
 
 inputMessageVoiceNote::inputMessageVoiceNote(object_ptr<InputFile> &&voice_note_,
-                                             int32_t duration_, std::string const &waveform_, object_ptr<formattedText> &&caption_)
+                                             std::int32_t duration_, std::string const &waveform_, object_ptr<formattedText> &&caption_)
     : voice_note_(std::move(voice_note_))
     , duration_(duration_)
     , waveform_(std::move(waveform_))
     , caption_(std::move(caption_))
 {}
 
-const int32_t inputMessageVoiceNote::ID;
+const std::int32_t inputMessageVoiceNote::ID;
 
 void inputMessageVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -4983,12 +5186,12 @@ inputMessageLocation::inputMessageLocation()
 {}
 
 inputMessageLocation::inputMessageLocation(object_ptr<location> &&location_,
-                                           int32_t live_period_)
+                                           std::int32_t live_period_)
     : location_(std::move(location_))
     , live_period_(live_period_)
 {}
 
-const int32_t inputMessageLocation::ID;
+const std::int32_t inputMessageLocation::ID;
 
 void inputMessageLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5012,7 +5215,7 @@ inputMessageVenue::inputMessageVenue(object_ptr<venue> &&venue_)
     : venue_(std::move(venue_))
 {}
 
-const int32_t inputMessageVenue::ID;
+const std::int32_t inputMessageVenue::ID;
 
 void inputMessageVenue::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5035,7 +5238,7 @@ inputMessageContact::inputMessageContact(object_ptr<contact> &&contact_)
     : contact_(std::move(contact_))
 {}
 
-const int32_t inputMessageContact::ID;
+const std::int32_t inputMessageContact::ID;
 
 void inputMessageContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5055,12 +5258,12 @@ inputMessageGame::inputMessageGame()
     , game_short_name_()
 {}
 
-inputMessageGame::inputMessageGame(int32_t bot_user_id_, std::string const &game_short_name_)
+inputMessageGame::inputMessageGame(std::int32_t bot_user_id_, std::string const &game_short_name_)
     : bot_user_id_(bot_user_id_)
     , game_short_name_(std::move(game_short_name_))
 {}
 
-const int32_t inputMessageGame::ID;
+const std::int32_t inputMessageGame::ID;
 
 void inputMessageGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5087,8 +5290,8 @@ inputMessageInvoice::inputMessageInvoice()
 {}
 
 inputMessageInvoice::inputMessageInvoice(object_ptr<invoice> &&invoice_, std::string const &title_,
-                                         std::string const &description_, std::string const &photo_url_, int32_t photo_size_,
-                                         int32_t photo_width_, int32_t photo_height_, std::string const &payload_,
+                                         std::string const &description_, std::string const &photo_url_, std::int32_t photo_size_,
+                                         std::int32_t photo_width_, std::int32_t photo_height_, std::string const &payload_,
                                          std::string const &provider_token_, std::string const &provider_data_,
                                          std::string const &start_parameter_)
     : invoice_(std::move(invoice_))
@@ -5104,7 +5307,7 @@ inputMessageInvoice::inputMessageInvoice(object_ptr<invoice> &&invoice_, std::st
     , start_parameter_(std::move(start_parameter_))
 {}
 
-const int32_t inputMessageInvoice::ID;
+const std::int32_t inputMessageInvoice::ID;
 
 void inputMessageInvoice::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5142,7 +5345,7 @@ inputMessageForwarded::inputMessageForwarded(std::int64_t from_chat_id_, std::in
     , in_game_share_(in_game_share_)
 {}
 
-const int32_t inputMessageForwarded::ID;
+const std::int32_t inputMessageForwarded::ID;
 
 void inputMessageForwarded::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5168,7 +5371,7 @@ inputSticker::inputSticker(object_ptr<InputFile> &&png_sticker_, std::string con
     , mask_position_(std::move(mask_position_))
 {}
 
-const int32_t inputSticker::ID;
+const std::int32_t inputSticker::ID;
 
 void inputSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5195,14 +5398,14 @@ inputThumbnail::inputThumbnail()
     , height_()
 {}
 
-inputThumbnail::inputThumbnail(object_ptr<InputFile> &&thumbnail_, int32_t width_,
-                               int32_t height_)
+inputThumbnail::inputThumbnail(object_ptr<InputFile> &&thumbnail_, std::int32_t width_,
+                               std::int32_t height_)
     : thumbnail_(std::move(thumbnail_))
     , width_(width_)
     , height_(height_)
 {}
 
-const int32_t inputThumbnail::ID;
+const std::int32_t inputThumbnail::ID;
 
 void inputThumbnail::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5248,7 +5451,7 @@ invoice::invoice(std::string const &currency_,
     , is_flexible_(is_flexible_)
 {}
 
-const int32_t invoice::ID;
+const std::int32_t invoice::ID;
 
 void invoice::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5291,7 +5494,7 @@ keyboardButton::keyboardButton(std::string const &text_, object_ptr<KeyboardButt
     , type_(std::move(type_))
 {}
 
-const int32_t keyboardButton::ID;
+const std::int32_t keyboardButton::ID;
 
 void keyboardButton::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5311,7 +5514,7 @@ keyboardButtonTypeText::keyboardButtonTypeText()
 {
 }
 
-const int32_t keyboardButtonTypeText::ID;
+const std::int32_t keyboardButtonTypeText::ID;
 
 void keyboardButtonTypeText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5325,7 +5528,7 @@ keyboardButtonTypeRequestPhoneNumber::keyboardButtonTypeRequestPhoneNumber()
 {
 }
 
-const int32_t keyboardButtonTypeRequestPhoneNumber::ID;
+const std::int32_t keyboardButtonTypeRequestPhoneNumber::ID;
 
 void keyboardButtonTypeRequestPhoneNumber::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5339,7 +5542,7 @@ keyboardButtonTypeRequestLocation::keyboardButtonTypeRequestLocation()
 {
 }
 
-const int32_t keyboardButtonTypeRequestLocation::ID;
+const std::int32_t keyboardButtonTypeRequestLocation::ID;
 
 void keyboardButtonTypeRequestLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5359,7 +5562,7 @@ labeledPricePart::labeledPricePart(std::string const &label_, std::int64_t amoun
     , amount_(amount_)
 {}
 
-const int32_t labeledPricePart::ID;
+const std::int32_t labeledPricePart::ID;
 
 void labeledPricePart::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5375,7 +5578,7 @@ linkStateNone::linkStateNone()
 {
 }
 
-const int32_t linkStateNone::ID;
+const std::int32_t linkStateNone::ID;
 
 void linkStateNone::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5389,7 +5592,7 @@ linkStateKnowsPhoneNumber::linkStateKnowsPhoneNumber()
 {
 }
 
-const int32_t linkStateKnowsPhoneNumber::ID;
+const std::int32_t linkStateKnowsPhoneNumber::ID;
 
 void linkStateKnowsPhoneNumber::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5403,7 +5606,7 @@ linkStateIsContact::linkStateIsContact()
 {
 }
 
-const int32_t linkStateIsContact::ID;
+const std::int32_t linkStateIsContact::ID;
 
 void linkStateIsContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5424,8 +5627,8 @@ localFile::localFile()
 {}
 
 localFile::localFile(std::string const &path_, bool can_be_downloaded_, bool can_be_deleted_,
-                     bool is_downloading_active_, bool is_downloading_completed_, int32_t downloaded_prefix_size_,
-                     int32_t downloaded_size_)
+                     bool is_downloading_active_, bool is_downloading_completed_, std::int32_t downloaded_prefix_size_,
+                     std::int32_t downloaded_size_)
     : path_(std::move(path_))
     , can_be_downloaded_(can_be_downloaded_)
     , can_be_deleted_(can_be_deleted_)
@@ -5435,7 +5638,7 @@ localFile::localFile(std::string const &path_, bool can_be_downloaded_, bool can
     , downloaded_size_(downloaded_size_)
 {}
 
-const int32_t localFile::ID;
+const std::int32_t localFile::ID;
 
 void localFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5462,7 +5665,7 @@ location::location(double latitude_, double longitude_)
     , longitude_(longitude_)
 {}
 
-const int32_t location::ID;
+const std::int32_t location::ID;
 
 void location::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5478,7 +5681,7 @@ maskPointForehead::maskPointForehead()
 {
 }
 
-const int32_t maskPointForehead::ID;
+const std::int32_t maskPointForehead::ID;
 
 void maskPointForehead::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5492,7 +5695,7 @@ maskPointEyes::maskPointEyes()
 {
 }
 
-const int32_t maskPointEyes::ID;
+const std::int32_t maskPointEyes::ID;
 
 void maskPointEyes::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5506,7 +5709,7 @@ maskPointMouth::maskPointMouth()
 {
 }
 
-const int32_t maskPointMouth::ID;
+const std::int32_t maskPointMouth::ID;
 
 void maskPointMouth::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5520,7 +5723,7 @@ maskPointChin::maskPointChin()
 {
 }
 
-const int32_t maskPointChin::ID;
+const std::int32_t maskPointChin::ID;
 
 void maskPointChin::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5545,7 +5748,7 @@ maskPosition::maskPosition(object_ptr<MaskPoint> &&point_, double x_shift_, doub
     , scale_(scale_)
 {}
 
-const int32_t maskPosition::ID;
+const std::int32_t maskPosition::ID;
 
 void maskPosition::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5589,13 +5792,13 @@ message::message()
     , reply_markup_()
 {}
 
-message::message(std::int64_t id_, int32_t sender_user_id_, std::int64_t chat_id_,
+message::message(std::int64_t id_, std::int32_t sender_user_id_, std::int64_t chat_id_,
                  object_ptr<MessageSendingState> &&sending_state_, bool is_outgoing_, bool can_be_edited_,
                  bool can_be_forwarded_, bool can_be_deleted_only_for_self_, bool can_be_deleted_for_all_users_,
-                 bool is_channel_post_, bool contains_unread_mention_, int32_t date_, int32_t edit_date_,
+                 bool is_channel_post_, bool contains_unread_mention_, std::int32_t date_, std::int32_t edit_date_,
                  object_ptr<MessageForwardInfo> &&forward_info_, std::int64_t reply_to_message_id_,
-                 int32_t ttl_, double ttl_expires_in_, int32_t via_bot_user_id_,
-                 std::string const &author_signature_, int32_t views_, std::int64_t media_album_id_,
+                 std::int32_t ttl_, double ttl_expires_in_, std::int32_t via_bot_user_id_,
+                 std::string const &author_signature_, std::int32_t views_, std::int64_t media_album_id_,
                  object_ptr<MessageContent> &&content_, object_ptr<ReplyMarkup> &&reply_markup_)
     : id_(id_)
     , sender_user_id_(sender_user_id_)
@@ -5622,7 +5825,7 @@ message::message(std::int64_t id_, int32_t sender_user_id_, std::int64_t chat_id
     , reply_markup_(std::move(reply_markup_))
 {}
 
-const int32_t message::ID;
+const std::int32_t message::ID;
 
 void message::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5681,7 +5884,7 @@ messageText::messageText(object_ptr<formattedText> &&text_, object_ptr<webPage> 
     , web_page_(std::move(web_page_))
 {}
 
-const int32_t messageText::ID;
+const std::int32_t messageText::ID;
 
 void messageText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5704,15 +5907,17 @@ void messageText::store(TlStorerToString &s, const char *field_name) const
 messageAnimation::messageAnimation()
     : animation_()
     , caption_()
+    , is_secret_()
 {}
 
 messageAnimation::messageAnimation(object_ptr<animation> &&animation_,
-                                   object_ptr<formattedText> &&caption_)
+                                   object_ptr<formattedText> &&caption_, bool is_secret_)
     : animation_(std::move(animation_))
     , caption_(std::move(caption_))
+    , is_secret_(is_secret_)
 {}
 
-const int32_t messageAnimation::ID;
+const std::int32_t messageAnimation::ID;
 
 void messageAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5728,6 +5933,7 @@ void messageAnimation::store(TlStorerToString &s, const char *field_name) const
         } else {
             caption_->store(s, "caption");
         }
+        s.store_field("is_secret", is_secret_);
         s.store_class_end();
     }
 }
@@ -5742,7 +5948,7 @@ messageAudio::messageAudio(object_ptr<audio> &&audio_, object_ptr<formattedText>
     , caption_(std::move(caption_))
 {}
 
-const int32_t messageAudio::ID;
+const std::int32_t messageAudio::ID;
 
 void messageAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5773,7 +5979,7 @@ messageDocument::messageDocument(object_ptr<document> &&document_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t messageDocument::ID;
+const std::int32_t messageDocument::ID;
 
 void messageDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5796,14 +6002,17 @@ void messageDocument::store(TlStorerToString &s, const char *field_name) const
 messagePhoto::messagePhoto()
     : photo_()
     , caption_()
+    , is_secret_()
 {}
 
-messagePhoto::messagePhoto(object_ptr<photo> &&photo_, object_ptr<formattedText> &&caption_)
+messagePhoto::messagePhoto(object_ptr<photo> &&photo_, object_ptr<formattedText> &&caption_,
+                           bool is_secret_)
     : photo_(std::move(photo_))
     , caption_(std::move(caption_))
+    , is_secret_(is_secret_)
 {}
 
-const int32_t messagePhoto::ID;
+const std::int32_t messagePhoto::ID;
 
 void messagePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5819,6 +6028,7 @@ void messagePhoto::store(TlStorerToString &s, const char *field_name) const
         } else {
             caption_->store(s, "caption");
         }
+        s.store_field("is_secret", is_secret_);
         s.store_class_end();
     }
 }
@@ -5827,7 +6037,7 @@ messageExpiredPhoto::messageExpiredPhoto()
 {
 }
 
-const int32_t messageExpiredPhoto::ID;
+const std::int32_t messageExpiredPhoto::ID;
 
 void messageExpiredPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5845,7 +6055,7 @@ messageSticker::messageSticker(object_ptr<sticker> &&sticker_)
     : sticker_(std::move(sticker_))
 {}
 
-const int32_t messageSticker::ID;
+const std::int32_t messageSticker::ID;
 
 void messageSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5863,14 +6073,17 @@ void messageSticker::store(TlStorerToString &s, const char *field_name) const
 messageVideo::messageVideo()
     : video_()
     , caption_()
+    , is_secret_()
 {}
 
-messageVideo::messageVideo(object_ptr<video> &&video_, object_ptr<formattedText> &&caption_)
+messageVideo::messageVideo(object_ptr<video> &&video_, object_ptr<formattedText> &&caption_,
+                           bool is_secret_)
     : video_(std::move(video_))
     , caption_(std::move(caption_))
+    , is_secret_(is_secret_)
 {}
 
-const int32_t messageVideo::ID;
+const std::int32_t messageVideo::ID;
 
 void messageVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5886,6 +6099,7 @@ void messageVideo::store(TlStorerToString &s, const char *field_name) const
         } else {
             caption_->store(s, "caption");
         }
+        s.store_field("is_secret", is_secret_);
         s.store_class_end();
     }
 }
@@ -5894,7 +6108,7 @@ messageExpiredVideo::messageExpiredVideo()
 {
 }
 
-const int32_t messageExpiredVideo::ID;
+const std::int32_t messageExpiredVideo::ID;
 
 void messageExpiredVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5907,14 +6121,17 @@ void messageExpiredVideo::store(TlStorerToString &s, const char *field_name) con
 messageVideoNote::messageVideoNote()
     : video_note_()
     , is_viewed_()
+    , is_secret_()
 {}
 
-messageVideoNote::messageVideoNote(object_ptr<videoNote> &&video_note_, bool is_viewed_)
+messageVideoNote::messageVideoNote(object_ptr<videoNote> &&video_note_, bool is_viewed_,
+                                   bool is_secret_)
     : video_note_(std::move(video_note_))
     , is_viewed_(is_viewed_)
+    , is_secret_(is_secret_)
 {}
 
-const int32_t messageVideoNote::ID;
+const std::int32_t messageVideoNote::ID;
 
 void messageVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5926,6 +6143,7 @@ void messageVideoNote::store(TlStorerToString &s, const char *field_name) const
             video_note_->store(s, "video_note");
         }
         s.store_field("is_viewed", is_viewed_);
+        s.store_field("is_secret", is_secret_);
         s.store_class_end();
     }
 }
@@ -5943,7 +6161,7 @@ messageVoiceNote::messageVoiceNote(object_ptr<voiceNote> &&voice_note_,
     , is_listened_(is_listened_)
 {}
 
-const int32_t messageVoiceNote::ID;
+const std::int32_t messageVoiceNote::ID;
 
 void messageVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5967,14 +6185,17 @@ void messageVoiceNote::store(TlStorerToString &s, const char *field_name) const
 messageLocation::messageLocation()
     : location_()
     , live_period_()
+    , expires_in_()
 {}
 
-messageLocation::messageLocation(object_ptr<location> &&location_, int32_t live_period_)
+messageLocation::messageLocation(object_ptr<location> &&location_, std::int32_t live_period_,
+                                 std::int32_t expires_in_)
     : location_(std::move(location_))
     , live_period_(live_period_)
+    , expires_in_(expires_in_)
 {}
 
-const int32_t messageLocation::ID;
+const std::int32_t messageLocation::ID;
 
 void messageLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -5986,6 +6207,7 @@ void messageLocation::store(TlStorerToString &s, const char *field_name) const
             location_->store(s, "location");
         }
         s.store_field("live_period", live_period_);
+        s.store_field("expires_in", expires_in_);
         s.store_class_end();
     }
 }
@@ -5998,7 +6220,7 @@ messageVenue::messageVenue(object_ptr<venue> &&venue_)
     : venue_(std::move(venue_))
 {}
 
-const int32_t messageVenue::ID;
+const std::int32_t messageVenue::ID;
 
 void messageVenue::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6021,7 +6243,7 @@ messageContact::messageContact(object_ptr<contact> &&contact_)
     : contact_(std::move(contact_))
 {}
 
-const int32_t messageContact::ID;
+const std::int32_t messageContact::ID;
 
 void messageContact::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6044,7 +6266,7 @@ messageGame::messageGame(object_ptr<game> &&game_)
     : game_(std::move(game_))
 {}
 
-const int32_t messageGame::ID;
+const std::int32_t messageGame::ID;
 
 void messageGame::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6086,7 +6308,7 @@ messageInvoice::messageInvoice(std::string const &title_, std::string const &des
     , receipt_message_id_(receipt_message_id_)
 {}
 
-const int32_t messageInvoice::ID;
+const std::int32_t messageInvoice::ID;
 
 void messageInvoice::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6114,12 +6336,12 @@ messageCall::messageCall()
     , duration_()
 {}
 
-messageCall::messageCall(object_ptr<CallDiscardReason> &&discard_reason_, int32_t duration_)
+messageCall::messageCall(object_ptr<CallDiscardReason> &&discard_reason_, std::int32_t duration_)
     : discard_reason_(std::move(discard_reason_))
     , duration_(duration_)
 {}
 
-const int32_t messageCall::ID;
+const std::int32_t messageCall::ID;
 
 void messageCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6141,12 +6363,12 @@ messageBasicGroupChatCreate::messageBasicGroupChatCreate()
 {}
 
 messageBasicGroupChatCreate::messageBasicGroupChatCreate(std::string const &title_,
-                                                         std::vector<int32_t> &&member_user_ids_)
+                                                         std::vector<std::int32_t> &&member_user_ids_)
     : title_(std::move(title_))
     , member_user_ids_(std::move(member_user_ids_))
 {}
 
-const int32_t messageBasicGroupChatCreate::ID;
+const std::int32_t messageBasicGroupChatCreate::ID;
 
 void messageBasicGroupChatCreate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6154,7 +6376,7 @@ void messageBasicGroupChatCreate::store(TlStorerToString &s, const char *field_n
         s.store_class_begin(field_name, "messageBasicGroupChatCreate");
         s.store_field("title", title_);
         {
-            const std::vector<int32_t> &v = member_user_ids_;
+            const std::vector<std::int32_t> &v = member_user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("member_user_ids", vector_name.c_str());
@@ -6175,7 +6397,7 @@ messageSupergroupChatCreate::messageSupergroupChatCreate(std::string const &titl
     : title_(std::move(title_))
 {}
 
-const int32_t messageSupergroupChatCreate::ID;
+const std::int32_t messageSupergroupChatCreate::ID;
 
 void messageSupergroupChatCreate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6194,7 +6416,7 @@ messageChatChangeTitle::messageChatChangeTitle(std::string const &title_)
     : title_(std::move(title_))
 {}
 
-const int32_t messageChatChangeTitle::ID;
+const std::int32_t messageChatChangeTitle::ID;
 
 void messageChatChangeTitle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6213,7 +6435,7 @@ messageChatChangePhoto::messageChatChangePhoto(object_ptr<photo> &&photo_)
     : photo_(std::move(photo_))
 {}
 
-const int32_t messageChatChangePhoto::ID;
+const std::int32_t messageChatChangePhoto::ID;
 
 void messageChatChangePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6232,7 +6454,7 @@ messageChatDeletePhoto::messageChatDeletePhoto()
 {
 }
 
-const int32_t messageChatDeletePhoto::ID;
+const std::int32_t messageChatDeletePhoto::ID;
 
 void messageChatDeletePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6246,18 +6468,18 @@ messageChatAddMembers::messageChatAddMembers()
     : member_user_ids_()
 {}
 
-messageChatAddMembers::messageChatAddMembers(std::vector<int32_t> &&member_user_ids_)
+messageChatAddMembers::messageChatAddMembers(std::vector<std::int32_t> &&member_user_ids_)
     : member_user_ids_(std::move(member_user_ids_))
 {}
 
-const int32_t messageChatAddMembers::ID;
+const std::int32_t messageChatAddMembers::ID;
 
 void messageChatAddMembers::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "messageChatAddMembers");
         {
-            const std::vector<int32_t> &v = member_user_ids_;
+            const std::vector<std::int32_t> &v = member_user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("member_user_ids", vector_name.c_str());
@@ -6274,7 +6496,7 @@ messageChatJoinByLink::messageChatJoinByLink()
 {
 }
 
-const int32_t messageChatJoinByLink::ID;
+const std::int32_t messageChatJoinByLink::ID;
 
 void messageChatJoinByLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6288,11 +6510,11 @@ messageChatDeleteMember::messageChatDeleteMember()
     : user_id_()
 {}
 
-messageChatDeleteMember::messageChatDeleteMember(int32_t user_id_)
+messageChatDeleteMember::messageChatDeleteMember(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t messageChatDeleteMember::ID;
+const std::int32_t messageChatDeleteMember::ID;
 
 void messageChatDeleteMember::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6307,11 +6529,11 @@ messageChatUpgradeTo::messageChatUpgradeTo()
     : supergroup_id_()
 {}
 
-messageChatUpgradeTo::messageChatUpgradeTo(int32_t supergroup_id_)
+messageChatUpgradeTo::messageChatUpgradeTo(std::int32_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t messageChatUpgradeTo::ID;
+const std::int32_t messageChatUpgradeTo::ID;
 
 void messageChatUpgradeTo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6328,12 +6550,12 @@ messageChatUpgradeFrom::messageChatUpgradeFrom()
 {}
 
 messageChatUpgradeFrom::messageChatUpgradeFrom(std::string const &title_,
-                                               int32_t basic_group_id_)
+                                               std::int32_t basic_group_id_)
     : title_(std::move(title_))
     , basic_group_id_(basic_group_id_)
 {}
 
-const int32_t messageChatUpgradeFrom::ID;
+const std::int32_t messageChatUpgradeFrom::ID;
 
 void messageChatUpgradeFrom::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6353,7 +6575,7 @@ messagePinMessage::messagePinMessage(std::int64_t message_id_)
     : message_id_(message_id_)
 {}
 
-const int32_t messagePinMessage::ID;
+const std::int32_t messagePinMessage::ID;
 
 void messagePinMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6368,7 +6590,7 @@ messageScreenshotTaken::messageScreenshotTaken()
 {
 }
 
-const int32_t messageScreenshotTaken::ID;
+const std::int32_t messageScreenshotTaken::ID;
 
 void messageScreenshotTaken::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6382,11 +6604,11 @@ messageChatSetTtl::messageChatSetTtl()
     : ttl_()
 {}
 
-messageChatSetTtl::messageChatSetTtl(int32_t ttl_)
+messageChatSetTtl::messageChatSetTtl(std::int32_t ttl_)
     : ttl_(ttl_)
 {}
 
-const int32_t messageChatSetTtl::ID;
+const std::int32_t messageChatSetTtl::ID;
 
 void messageChatSetTtl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6405,7 +6627,7 @@ messageCustomServiceAction::messageCustomServiceAction(std::string const &text_)
     : text_(std::move(text_))
 {}
 
-const int32_t messageCustomServiceAction::ID;
+const std::int32_t messageCustomServiceAction::ID;
 
 void messageCustomServiceAction::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6423,13 +6645,13 @@ messageGameScore::messageGameScore()
 {}
 
 messageGameScore::messageGameScore(std::int64_t game_message_id_, std::int64_t game_id_,
-                                   int32_t score_)
+                                   std::int32_t score_)
     : game_message_id_(game_message_id_)
     , game_id_(game_id_)
     , score_(score_)
 {}
 
-const int32_t messageGameScore::ID;
+const std::int32_t messageGameScore::ID;
 
 void messageGameScore::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6455,7 +6677,7 @@ messagePaymentSuccessful::messagePaymentSuccessful(std::int64_t invoice_message_
     , total_amount_(total_amount_)
 {}
 
-const int32_t messagePaymentSuccessful::ID;
+const std::int32_t messagePaymentSuccessful::ID;
 
 void messagePaymentSuccessful::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6493,7 +6715,7 @@ messagePaymentSuccessfulBot::messagePaymentSuccessfulBot(std::int64_t invoice_me
     , provider_payment_charge_id_(std::move(provider_payment_charge_id_))
 {}
 
-const int32_t messagePaymentSuccessfulBot::ID;
+const std::int32_t messagePaymentSuccessfulBot::ID;
 
 void messagePaymentSuccessfulBot::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6519,7 +6741,7 @@ messageContactRegistered::messageContactRegistered()
 {
 }
 
-const int32_t messageContactRegistered::ID;
+const std::int32_t messageContactRegistered::ID;
 
 void messageContactRegistered::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6529,11 +6751,30 @@ void messageContactRegistered::store(TlStorerToString &s, const char *field_name
     }
 }
 
+messageWebsiteConnected::messageWebsiteConnected()
+    : domain_name_()
+{}
+
+messageWebsiteConnected::messageWebsiteConnected(std::string const &domain_name_)
+    : domain_name_(std::move(domain_name_))
+{}
+
+const std::int32_t messageWebsiteConnected::ID;
+
+void messageWebsiteConnected::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "messageWebsiteConnected");
+        s.store_field("domain_name", domain_name_);
+        s.store_class_end();
+    }
+}
+
 messageUnsupported::messageUnsupported()
 {
 }
 
-const int32_t messageUnsupported::ID;
+const std::int32_t messageUnsupported::ID;
 
 void messageUnsupported::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6550,7 +6791,7 @@ messageForwardedFromUser::messageForwardedFromUser()
     , forwarded_from_message_id_()
 {}
 
-messageForwardedFromUser::messageForwardedFromUser(int32_t sender_user_id_, int32_t date_,
+messageForwardedFromUser::messageForwardedFromUser(std::int32_t sender_user_id_, std::int32_t date_,
                                                    std::int64_t forwarded_from_chat_id_, std::int64_t forwarded_from_message_id_)
     : sender_user_id_(sender_user_id_)
     , date_(date_)
@@ -6558,7 +6799,7 @@ messageForwardedFromUser::messageForwardedFromUser(int32_t sender_user_id_, int3
     , forwarded_from_message_id_(forwarded_from_message_id_)
 {}
 
-const int32_t messageForwardedFromUser::ID;
+const std::int32_t messageForwardedFromUser::ID;
 
 void messageForwardedFromUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6582,7 +6823,7 @@ messageForwardedPost::messageForwardedPost()
 {}
 
 messageForwardedPost::messageForwardedPost(std::int64_t chat_id_,
-                                           std::string const &author_signature_, int32_t date_, std::int64_t message_id_,
+                                           std::string const &author_signature_, std::int32_t date_, std::int64_t message_id_,
                                            std::int64_t forwarded_from_chat_id_, std::int64_t forwarded_from_message_id_)
     : chat_id_(chat_id_)
     , author_signature_(std::move(author_signature_))
@@ -6592,7 +6833,7 @@ messageForwardedPost::messageForwardedPost(std::int64_t chat_id_,
     , forwarded_from_message_id_(forwarded_from_message_id_)
 {}
 
-const int32_t messageForwardedPost::ID;
+const std::int32_t messageForwardedPost::ID;
 
 void messageForwardedPost::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6612,7 +6853,7 @@ messageSendingStatePending::messageSendingStatePending()
 {
 }
 
-const int32_t messageSendingStatePending::ID;
+const std::int32_t messageSendingStatePending::ID;
 
 void messageSendingStatePending::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6626,7 +6867,7 @@ messageSendingStateFailed::messageSendingStateFailed()
 {
 }
 
-const int32_t messageSendingStateFailed::ID;
+const std::int32_t messageSendingStateFailed::ID;
 
 void messageSendingStateFailed::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6641,12 +6882,12 @@ messages::messages()
     , messages_()
 {}
 
-messages::messages(int32_t total_count_, std::vector<object_ptr<message>> &&messages_)
+messages::messages(std::int32_t total_count_, std::vector<object_ptr<message>> &&messages_)
     : total_count_(total_count_)
     , messages_(std::move(messages_))
 {}
 
-const int32_t messages::ID;
+const std::int32_t messages::ID;
 
 void messages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6676,13 +6917,13 @@ networkStatistics::networkStatistics()
     , entries_()
 {}
 
-networkStatistics::networkStatistics(int32_t since_date_,
+networkStatistics::networkStatistics(std::int32_t since_date_,
                                      std::vector<object_ptr<NetworkStatisticsEntry>> &&entries_)
     : since_date_(since_date_)
     , entries_(std::move(entries_))
 {}
 
-const int32_t networkStatistics::ID;
+const std::int32_t networkStatistics::ID;
 
 void networkStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6722,7 +6963,7 @@ networkStatisticsEntryFile::networkStatisticsEntryFile(object_ptr<FileType> &&fi
     , received_bytes_(received_bytes_)
 {}
 
-const int32_t networkStatisticsEntryFile::ID;
+const std::int32_t networkStatisticsEntryFile::ID;
 
 void networkStatisticsEntryFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6759,7 +7000,7 @@ networkStatisticsEntryCall::networkStatisticsEntryCall(object_ptr<NetworkType> &
     , duration_(duration_)
 {}
 
-const int32_t networkStatisticsEntryCall::ID;
+const std::int32_t networkStatisticsEntryCall::ID;
 
 void networkStatisticsEntryCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6781,7 +7022,7 @@ networkTypeNone::networkTypeNone()
 {
 }
 
-const int32_t networkTypeNone::ID;
+const std::int32_t networkTypeNone::ID;
 
 void networkTypeNone::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6795,7 +7036,7 @@ networkTypeMobile::networkTypeMobile()
 {
 }
 
-const int32_t networkTypeMobile::ID;
+const std::int32_t networkTypeMobile::ID;
 
 void networkTypeMobile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6809,7 +7050,7 @@ networkTypeMobileRoaming::networkTypeMobileRoaming()
 {
 }
 
-const int32_t networkTypeMobileRoaming::ID;
+const std::int32_t networkTypeMobileRoaming::ID;
 
 void networkTypeMobileRoaming::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6823,7 +7064,7 @@ networkTypeWiFi::networkTypeWiFi()
 {
 }
 
-const int32_t networkTypeWiFi::ID;
+const std::int32_t networkTypeWiFi::ID;
 
 void networkTypeWiFi::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6837,7 +7078,7 @@ networkTypeOther::networkTypeOther()
 {
 }
 
-const int32_t networkTypeOther::ID;
+const std::int32_t networkTypeOther::ID;
 
 void networkTypeOther::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6853,14 +7094,14 @@ notificationSettings::notificationSettings()
     , show_preview_()
 {}
 
-notificationSettings::notificationSettings(int32_t mute_for_, std::string const &sound_,
+notificationSettings::notificationSettings(std::int32_t mute_for_, std::string const &sound_,
                                            bool show_preview_)
     : mute_for_(mute_for_)
     , sound_(std::move(sound_))
     , show_preview_(show_preview_)
 {}
 
-const int32_t notificationSettings::ID;
+const std::int32_t notificationSettings::ID;
 
 void notificationSettings::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6881,7 +7122,7 @@ notificationSettingsScopeChat::notificationSettingsScopeChat(std::int64_t chat_i
     : chat_id_(chat_id_)
 {}
 
-const int32_t notificationSettingsScopeChat::ID;
+const std::int32_t notificationSettingsScopeChat::ID;
 
 void notificationSettingsScopeChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6896,7 +7137,7 @@ notificationSettingsScopePrivateChats::notificationSettingsScopePrivateChats()
 {
 }
 
-const int32_t notificationSettingsScopePrivateChats::ID;
+const std::int32_t notificationSettingsScopePrivateChats::ID;
 
 void notificationSettingsScopePrivateChats::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -6911,7 +7152,7 @@ notificationSettingsScopeBasicGroupChats::notificationSettingsScopeBasicGroupCha
 {
 }
 
-const int32_t notificationSettingsScopeBasicGroupChats::ID;
+const std::int32_t notificationSettingsScopeBasicGroupChats::ID;
 
 void notificationSettingsScopeBasicGroupChats::store(TlStorerToString &s,
                                                      const char *field_name) const
@@ -6926,7 +7167,7 @@ notificationSettingsScopeAllChats::notificationSettingsScopeAllChats()
 {
 }
 
-const int32_t notificationSettingsScopeAllChats::ID;
+const std::int32_t notificationSettingsScopeAllChats::ID;
 
 void notificationSettingsScopeAllChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6940,7 +7181,7 @@ ok::ok()
 {
 }
 
-const int32_t ok::ID;
+const std::int32_t ok::ID;
 
 void ok::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6958,7 +7199,7 @@ optionValueBoolean::optionValueBoolean(bool value_)
     : value_(value_)
 {}
 
-const int32_t optionValueBoolean::ID;
+const std::int32_t optionValueBoolean::ID;
 
 void optionValueBoolean::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6973,7 +7214,7 @@ optionValueEmpty::optionValueEmpty()
 {
 }
 
-const int32_t optionValueEmpty::ID;
+const std::int32_t optionValueEmpty::ID;
 
 void optionValueEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -6987,11 +7228,11 @@ optionValueInteger::optionValueInteger()
     : value_()
 {}
 
-optionValueInteger::optionValueInteger(int32_t value_)
+optionValueInteger::optionValueInteger(std::int32_t value_)
     : value_(value_)
 {}
 
-const int32_t optionValueInteger::ID;
+const std::int32_t optionValueInteger::ID;
 
 void optionValueInteger::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7010,7 +7251,7 @@ optionValueString::optionValueString(std::string const &value_)
     : value_(std::move(value_))
 {}
 
-const int32_t optionValueString::ID;
+const std::int32_t optionValueString::ID;
 
 void optionValueString::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7036,7 +7277,7 @@ orderInfo::orderInfo(std::string const &name_, std::string const &phone_number_,
     , shipping_address_(std::move(shipping_address_))
 {}
 
-const int32_t orderInfo::ID;
+const std::int32_t orderInfo::ID;
 
 void orderInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7062,7 +7303,7 @@ pageBlockTitle::pageBlockTitle(object_ptr<RichText> &&title_)
     : title_(std::move(title_))
 {}
 
-const int32_t pageBlockTitle::ID;
+const std::int32_t pageBlockTitle::ID;
 
 void pageBlockTitle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7085,7 +7326,7 @@ pageBlockSubtitle::pageBlockSubtitle(object_ptr<RichText> &&subtitle_)
     : subtitle_(std::move(subtitle_))
 {}
 
-const int32_t pageBlockSubtitle::ID;
+const std::int32_t pageBlockSubtitle::ID;
 
 void pageBlockSubtitle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7105,12 +7346,12 @@ pageBlockAuthorDate::pageBlockAuthorDate()
     , publish_date_()
 {}
 
-pageBlockAuthorDate::pageBlockAuthorDate(object_ptr<RichText> &&author_, int32_t publish_date_)
+pageBlockAuthorDate::pageBlockAuthorDate(object_ptr<RichText> &&author_, std::int32_t publish_date_)
     : author_(std::move(author_))
     , publish_date_(publish_date_)
 {}
 
-const int32_t pageBlockAuthorDate::ID;
+const std::int32_t pageBlockAuthorDate::ID;
 
 void pageBlockAuthorDate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7134,7 +7375,7 @@ pageBlockHeader::pageBlockHeader(object_ptr<RichText> &&header_)
     : header_(std::move(header_))
 {}
 
-const int32_t pageBlockHeader::ID;
+const std::int32_t pageBlockHeader::ID;
 
 void pageBlockHeader::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7157,7 +7398,7 @@ pageBlockSubheader::pageBlockSubheader(object_ptr<RichText> &&subheader_)
     : subheader_(std::move(subheader_))
 {}
 
-const int32_t pageBlockSubheader::ID;
+const std::int32_t pageBlockSubheader::ID;
 
 void pageBlockSubheader::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7180,7 +7421,7 @@ pageBlockParagraph::pageBlockParagraph(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t pageBlockParagraph::ID;
+const std::int32_t pageBlockParagraph::ID;
 
 void pageBlockParagraph::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7206,7 +7447,7 @@ pageBlockPreformatted::pageBlockPreformatted(object_ptr<RichText> &&text_,
     , language_(std::move(language_))
 {}
 
-const int32_t pageBlockPreformatted::ID;
+const std::int32_t pageBlockPreformatted::ID;
 
 void pageBlockPreformatted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7230,7 +7471,7 @@ pageBlockFooter::pageBlockFooter(object_ptr<RichText> &&footer_)
     : footer_(std::move(footer_))
 {}
 
-const int32_t pageBlockFooter::ID;
+const std::int32_t pageBlockFooter::ID;
 
 void pageBlockFooter::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7249,7 +7490,7 @@ pageBlockDivider::pageBlockDivider()
 {
 }
 
-const int32_t pageBlockDivider::ID;
+const std::int32_t pageBlockDivider::ID;
 
 void pageBlockDivider::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7267,7 +7508,7 @@ pageBlockAnchor::pageBlockAnchor(std::string const &name_)
     : name_(std::move(name_))
 {}
 
-const int32_t pageBlockAnchor::ID;
+const std::int32_t pageBlockAnchor::ID;
 
 void pageBlockAnchor::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7288,7 +7529,7 @@ pageBlockList::pageBlockList(std::vector<object_ptr<RichText>> &&items_, bool is
     , is_ordered_(is_ordered_)
 {}
 
-const int32_t pageBlockList::ID;
+const std::int32_t pageBlockList::ID;
 
 void pageBlockList::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7324,7 +7565,7 @@ pageBlockBlockQuote::pageBlockBlockQuote(object_ptr<RichText> &&text_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockBlockQuote::ID;
+const std::int32_t pageBlockBlockQuote::ID;
 
 void pageBlockBlockQuote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7355,7 +7596,7 @@ pageBlockPullQuote::pageBlockPullQuote(object_ptr<RichText> &&text_,
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockPullQuote::ID;
+const std::int32_t pageBlockPullQuote::ID;
 
 void pageBlockPullQuote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7388,7 +7629,7 @@ pageBlockAnimation::pageBlockAnimation(object_ptr<animation> &&animation_,
     , need_autoplay_(need_autoplay_)
 {}
 
-const int32_t pageBlockAnimation::ID;
+const std::int32_t pageBlockAnimation::ID;
 
 void pageBlockAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7419,7 +7660,7 @@ pageBlockAudio::pageBlockAudio(object_ptr<audio> &&audio_, object_ptr<RichText> 
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockAudio::ID;
+const std::int32_t pageBlockAudio::ID;
 
 void pageBlockAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7449,7 +7690,7 @@ pageBlockPhoto::pageBlockPhoto(object_ptr<photo> &&photo_, object_ptr<RichText> 
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockPhoto::ID;
+const std::int32_t pageBlockPhoto::ID;
 
 void pageBlockPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7484,7 +7725,7 @@ pageBlockVideo::pageBlockVideo(object_ptr<video> &&video_, object_ptr<RichText> 
     , is_looped_(is_looped_)
 {}
 
-const int32_t pageBlockVideo::ID;
+const std::int32_t pageBlockVideo::ID;
 
 void pageBlockVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7514,7 +7755,7 @@ pageBlockCover::pageBlockCover(object_ptr<PageBlock> &&cover_)
     : cover_(std::move(cover_))
 {}
 
-const int32_t pageBlockCover::ID;
+const std::int32_t pageBlockCover::ID;
 
 void pageBlockCover::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7541,7 +7782,7 @@ pageBlockEmbedded::pageBlockEmbedded()
 {}
 
 pageBlockEmbedded::pageBlockEmbedded(std::string const &url_, std::string const &html_,
-                                     object_ptr<photo> &&poster_photo_, int32_t width_, int32_t height_,
+                                     object_ptr<photo> &&poster_photo_, std::int32_t width_, std::int32_t height_,
                                      object_ptr<RichText> &&caption_, bool is_full_width_, bool allow_scrolling_)
     : url_(std::move(url_))
     , html_(std::move(html_))
@@ -7553,7 +7794,7 @@ pageBlockEmbedded::pageBlockEmbedded(std::string const &url_, std::string const 
     , allow_scrolling_(allow_scrolling_)
 {}
 
-const int32_t pageBlockEmbedded::ID;
+const std::int32_t pageBlockEmbedded::ID;
 
 void pageBlockEmbedded::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7589,7 +7830,7 @@ pageBlockEmbeddedPost::pageBlockEmbeddedPost()
 {}
 
 pageBlockEmbeddedPost::pageBlockEmbeddedPost(std::string const &url_, std::string const &author_,
-                                             object_ptr<photo> &&author_photo_, int32_t date_,
+                                             object_ptr<photo> &&author_photo_, std::int32_t date_,
                                              std::vector<object_ptr<PageBlock>> &&page_blocks_, object_ptr<RichText> &&caption_)
     : url_(std::move(url_))
     , author_(std::move(author_))
@@ -7599,7 +7840,7 @@ pageBlockEmbeddedPost::pageBlockEmbeddedPost(std::string const &url_, std::strin
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockEmbeddedPost::ID;
+const std::int32_t pageBlockEmbeddedPost::ID;
 
 void pageBlockEmbeddedPost::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7647,7 +7888,7 @@ pageBlockCollage::pageBlockCollage(std::vector<object_ptr<PageBlock>> &&page_blo
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockCollage::ID;
+const std::int32_t pageBlockCollage::ID;
 
 void pageBlockCollage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7687,7 +7928,7 @@ pageBlockSlideshow::pageBlockSlideshow(std::vector<object_ptr<PageBlock>> &&page
     , caption_(std::move(caption_))
 {}
 
-const int32_t pageBlockSlideshow::ID;
+const std::int32_t pageBlockSlideshow::ID;
 
 void pageBlockSlideshow::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7729,7 +7970,7 @@ pageBlockChatLink::pageBlockChatLink(std::string const &title_, object_ptr<chatP
     , username_(std::move(username_))
 {}
 
-const int32_t pageBlockChatLink::ID;
+const std::int32_t pageBlockChatLink::ID;
 
 void pageBlockChatLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7754,7 +7995,7 @@ passwordRecoveryInfo::passwordRecoveryInfo(std::string const &recovery_email_add
     : recovery_email_address_pattern_(std::move(recovery_email_address_pattern_))
 {}
 
-const int32_t passwordRecoveryInfo::ID;
+const std::int32_t passwordRecoveryInfo::ID;
 
 void passwordRecoveryInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7781,7 +8022,7 @@ passwordState::passwordState(bool has_password_, std::string const &password_hin
                                                       unconfirmed_recovery_email_address_pattern_))
 {}
 
-const int32_t passwordState::ID;
+const std::int32_t passwordState::ID;
 
 void passwordState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7818,7 +8059,7 @@ paymentForm::paymentForm(object_ptr<invoice> &&invoice_, std::string const &url_
     , need_password_(need_password_)
 {}
 
-const int32_t paymentForm::ID;
+const std::int32_t paymentForm::ID;
 
 void paymentForm::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7860,7 +8101,7 @@ paymentReceipt::paymentReceipt()
     , credentials_title_()
 {}
 
-paymentReceipt::paymentReceipt(int32_t date_, int32_t payments_provider_user_id_,
+paymentReceipt::paymentReceipt(std::int32_t date_, std::int32_t payments_provider_user_id_,
                                object_ptr<invoice> &&invoice_, object_ptr<orderInfo> &&order_info_,
                                object_ptr<shippingOption> &&shipping_option_, std::string const &credentials_title_)
     : date_(date_)
@@ -7871,7 +8112,7 @@ paymentReceipt::paymentReceipt(int32_t date_, int32_t payments_provider_user_id_
     , credentials_title_(std::move(credentials_title_))
 {}
 
-const int32_t paymentReceipt::ID;
+const std::int32_t paymentReceipt::ID;
 
 void paymentReceipt::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7909,7 +8150,7 @@ paymentResult::paymentResult(bool success_, std::string const &verification_url_
     , verification_url_(std::move(verification_url_))
 {}
 
-const int32_t paymentResult::ID;
+const std::int32_t paymentResult::ID;
 
 void paymentResult::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7936,7 +8177,7 @@ paymentsProviderStripe::paymentsProviderStripe(std::string const &publishable_ke
     , need_cardholder_name_(need_cardholder_name_)
 {}
 
-const int32_t paymentsProviderStripe::ID;
+const std::int32_t paymentsProviderStripe::ID;
 
 void paymentsProviderStripe::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7962,7 +8203,7 @@ photo::photo(std::int64_t id_, bool has_stickers_, std::vector<object_ptr<photoS
     , sizes_(std::move(sizes_))
 {}
 
-const int32_t photo::ID;
+const std::int32_t photo::ID;
 
 void photo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -7995,15 +8236,15 @@ photoSize::photoSize()
     , height_()
 {}
 
-photoSize::photoSize(std::string const &type_, object_ptr<file> &&photo_, int32_t width_,
-                     int32_t height_)
+photoSize::photoSize(std::string const &type_, object_ptr<file> &&photo_, std::int32_t width_,
+                     std::int32_t height_)
     : type_(std::move(type_))
     , photo_(std::move(photo_))
     , width_(width_)
     , height_(height_)
 {}
 
-const int32_t photoSize::ID;
+const std::int32_t photoSize::ID;
 
 void photoSize::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8033,7 +8274,7 @@ profilePhoto::profilePhoto(std::int64_t id_, object_ptr<file> &&small_, object_p
     , big_(std::move(big_))
 {}
 
-const int32_t profilePhoto::ID;
+const std::int32_t profilePhoto::ID;
 
 void profilePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8058,7 +8299,7 @@ proxyEmpty::proxyEmpty()
 {
 }
 
-const int32_t proxyEmpty::ID;
+const std::int32_t proxyEmpty::ID;
 
 void proxyEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8075,7 +8316,7 @@ proxySocks5::proxySocks5()
     , password_()
 {}
 
-proxySocks5::proxySocks5(std::string const &server_, int32_t port_,
+proxySocks5::proxySocks5(std::string const &server_, std::int32_t port_,
                          std::string const &username_, std::string const &password_)
     : server_(std::move(server_))
     , port_(port_)
@@ -8083,7 +8324,7 @@ proxySocks5::proxySocks5(std::string const &server_, int32_t port_,
     , password_(std::move(password_))
 {}
 
-const int32_t proxySocks5::ID;
+const std::int32_t proxySocks5::ID;
 
 void proxySocks5::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8107,7 +8348,7 @@ publicMessageLink::publicMessageLink(std::string const &link_, std::string const
     , html_(std::move(html_))
 {}
 
-const int32_t publicMessageLink::ID;
+const std::int32_t publicMessageLink::ID;
 
 void publicMessageLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8127,7 +8368,7 @@ recoveryEmailAddress::recoveryEmailAddress(std::string const &recovery_email_add
     : recovery_email_address_(std::move(recovery_email_address_))
 {}
 
-const int32_t recoveryEmailAddress::ID;
+const std::int32_t recoveryEmailAddress::ID;
 
 void recoveryEmailAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8146,14 +8387,14 @@ remoteFile::remoteFile()
 {}
 
 remoteFile::remoteFile(std::string const &id_, bool is_uploading_active_,
-                       bool is_uploading_completed_, int32_t uploaded_size_)
+                       bool is_uploading_completed_, std::int32_t uploaded_size_)
     : id_(std::move(id_))
     , is_uploading_active_(is_uploading_active_)
     , is_uploading_completed_(is_uploading_completed_)
     , uploaded_size_(uploaded_size_)
 {}
 
-const int32_t remoteFile::ID;
+const std::int32_t remoteFile::ID;
 
 void remoteFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8175,7 +8416,7 @@ replyMarkupRemoveKeyboard::replyMarkupRemoveKeyboard(bool is_personal_)
     : is_personal_(is_personal_)
 {}
 
-const int32_t replyMarkupRemoveKeyboard::ID;
+const std::int32_t replyMarkupRemoveKeyboard::ID;
 
 void replyMarkupRemoveKeyboard::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8194,7 +8435,7 @@ replyMarkupForceReply::replyMarkupForceReply(bool is_personal_)
     : is_personal_(is_personal_)
 {}
 
-const int32_t replyMarkupForceReply::ID;
+const std::int32_t replyMarkupForceReply::ID;
 
 void replyMarkupForceReply::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8221,7 +8462,7 @@ replyMarkupShowKeyboard::replyMarkupShowKeyboard(
     , is_personal_(is_personal_)
 {}
 
-const int32_t replyMarkupShowKeyboard::ID;
+const std::int32_t replyMarkupShowKeyboard::ID;
 
 void replyMarkupShowKeyboard::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8266,7 +8507,7 @@ replyMarkupInlineKeyboard::replyMarkupInlineKeyboard(
     : rows_(std::move(rows_))
 {}
 
-const int32_t replyMarkupInlineKeyboard::ID;
+const std::int32_t replyMarkupInlineKeyboard::ID;
 
 void replyMarkupInlineKeyboard::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8307,7 +8548,7 @@ richTextPlain::richTextPlain(std::string const &text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextPlain::ID;
+const std::int32_t richTextPlain::ID;
 
 void richTextPlain::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8326,7 +8567,7 @@ richTextBold::richTextBold(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextBold::ID;
+const std::int32_t richTextBold::ID;
 
 void richTextBold::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8349,7 +8590,7 @@ richTextItalic::richTextItalic(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextItalic::ID;
+const std::int32_t richTextItalic::ID;
 
 void richTextItalic::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8372,7 +8613,7 @@ richTextUnderline::richTextUnderline(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextUnderline::ID;
+const std::int32_t richTextUnderline::ID;
 
 void richTextUnderline::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8395,7 +8636,7 @@ richTextStrikethrough::richTextStrikethrough(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextStrikethrough::ID;
+const std::int32_t richTextStrikethrough::ID;
 
 void richTextStrikethrough::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8418,7 +8659,7 @@ richTextFixed::richTextFixed(object_ptr<RichText> &&text_)
     : text_(std::move(text_))
 {}
 
-const int32_t richTextFixed::ID;
+const std::int32_t richTextFixed::ID;
 
 void richTextFixed::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8443,7 +8684,7 @@ richTextUrl::richTextUrl(object_ptr<RichText> &&text_, std::string const &url_)
     , url_(std::move(url_))
 {}
 
-const int32_t richTextUrl::ID;
+const std::int32_t richTextUrl::ID;
 
 void richTextUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8470,7 +8711,7 @@ richTextEmailAddress::richTextEmailAddress(object_ptr<RichText> &&text_,
     , email_address_(std::move(email_address_))
 {}
 
-const int32_t richTextEmailAddress::ID;
+const std::int32_t richTextEmailAddress::ID;
 
 void richTextEmailAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8494,7 +8735,7 @@ richTexts::richTexts(std::vector<object_ptr<RichText>> &&texts_)
     : texts_(std::move(texts_))
 {}
 
-const int32_t richTexts::ID;
+const std::int32_t richTexts::ID;
 
 void richTexts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8528,7 +8769,7 @@ savedCredentials::savedCredentials(std::string const &id_, std::string const &ti
     , title_(std::move(title_))
 {}
 
-const int32_t savedCredentials::ID;
+const std::int32_t savedCredentials::ID;
 
 void savedCredentials::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8544,7 +8785,7 @@ searchMessagesFilterEmpty::searchMessagesFilterEmpty()
 {
 }
 
-const int32_t searchMessagesFilterEmpty::ID;
+const std::int32_t searchMessagesFilterEmpty::ID;
 
 void searchMessagesFilterEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8558,7 +8799,7 @@ searchMessagesFilterAnimation::searchMessagesFilterAnimation()
 {
 }
 
-const int32_t searchMessagesFilterAnimation::ID;
+const std::int32_t searchMessagesFilterAnimation::ID;
 
 void searchMessagesFilterAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8572,7 +8813,7 @@ searchMessagesFilterAudio::searchMessagesFilterAudio()
 {
 }
 
-const int32_t searchMessagesFilterAudio::ID;
+const std::int32_t searchMessagesFilterAudio::ID;
 
 void searchMessagesFilterAudio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8586,7 +8827,7 @@ searchMessagesFilterDocument::searchMessagesFilterDocument()
 {
 }
 
-const int32_t searchMessagesFilterDocument::ID;
+const std::int32_t searchMessagesFilterDocument::ID;
 
 void searchMessagesFilterDocument::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8600,7 +8841,7 @@ searchMessagesFilterPhoto::searchMessagesFilterPhoto()
 {
 }
 
-const int32_t searchMessagesFilterPhoto::ID;
+const std::int32_t searchMessagesFilterPhoto::ID;
 
 void searchMessagesFilterPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8614,7 +8855,7 @@ searchMessagesFilterVideo::searchMessagesFilterVideo()
 {
 }
 
-const int32_t searchMessagesFilterVideo::ID;
+const std::int32_t searchMessagesFilterVideo::ID;
 
 void searchMessagesFilterVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8628,7 +8869,7 @@ searchMessagesFilterVoiceNote::searchMessagesFilterVoiceNote()
 {
 }
 
-const int32_t searchMessagesFilterVoiceNote::ID;
+const std::int32_t searchMessagesFilterVoiceNote::ID;
 
 void searchMessagesFilterVoiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8642,7 +8883,7 @@ searchMessagesFilterPhotoAndVideo::searchMessagesFilterPhotoAndVideo()
 {
 }
 
-const int32_t searchMessagesFilterPhotoAndVideo::ID;
+const std::int32_t searchMessagesFilterPhotoAndVideo::ID;
 
 void searchMessagesFilterPhotoAndVideo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8656,7 +8897,7 @@ searchMessagesFilterUrl::searchMessagesFilterUrl()
 {
 }
 
-const int32_t searchMessagesFilterUrl::ID;
+const std::int32_t searchMessagesFilterUrl::ID;
 
 void searchMessagesFilterUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8670,7 +8911,7 @@ searchMessagesFilterChatPhoto::searchMessagesFilterChatPhoto()
 {
 }
 
-const int32_t searchMessagesFilterChatPhoto::ID;
+const std::int32_t searchMessagesFilterChatPhoto::ID;
 
 void searchMessagesFilterChatPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8684,7 +8925,7 @@ searchMessagesFilterCall::searchMessagesFilterCall()
 {
 }
 
-const int32_t searchMessagesFilterCall::ID;
+const std::int32_t searchMessagesFilterCall::ID;
 
 void searchMessagesFilterCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8698,7 +8939,7 @@ searchMessagesFilterMissedCall::searchMessagesFilterMissedCall()
 {
 }
 
-const int32_t searchMessagesFilterMissedCall::ID;
+const std::int32_t searchMessagesFilterMissedCall::ID;
 
 void searchMessagesFilterMissedCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8712,7 +8953,7 @@ searchMessagesFilterVideoNote::searchMessagesFilterVideoNote()
 {
 }
 
-const int32_t searchMessagesFilterVideoNote::ID;
+const std::int32_t searchMessagesFilterVideoNote::ID;
 
 void searchMessagesFilterVideoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8726,7 +8967,7 @@ searchMessagesFilterVoiceAndVideoNote::searchMessagesFilterVoiceAndVideoNote()
 {
 }
 
-const int32_t searchMessagesFilterVoiceAndVideoNote::ID;
+const std::int32_t searchMessagesFilterVoiceAndVideoNote::ID;
 
 void searchMessagesFilterVoiceAndVideoNote::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -8741,7 +8982,7 @@ searchMessagesFilterMention::searchMessagesFilterMention()
 {
 }
 
-const int32_t searchMessagesFilterMention::ID;
+const std::int32_t searchMessagesFilterMention::ID;
 
 void searchMessagesFilterMention::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8755,7 +8996,7 @@ searchMessagesFilterUnreadMention::searchMessagesFilterUnreadMention()
 {
 }
 
-const int32_t searchMessagesFilterUnreadMention::ID;
+const std::int32_t searchMessagesFilterUnreadMention::ID;
 
 void searchMessagesFilterUnreadMention::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8775,9 +9016,9 @@ secretChat::secretChat()
     , layer_()
 {}
 
-secretChat::secretChat(int32_t id_, int32_t user_id_,
-                       object_ptr<SecretChatState> &&state_, bool is_outbound_, int32_t ttl_,
-                       std::string const &key_hash_, int32_t layer_)
+secretChat::secretChat(std::int32_t id_, std::int32_t user_id_,
+                       object_ptr<SecretChatState> &&state_, bool is_outbound_, std::int32_t ttl_,
+                       std::string const &key_hash_, std::int32_t layer_)
     : id_(id_)
     , user_id_(user_id_)
     , state_(std::move(state_))
@@ -8787,7 +9028,7 @@ secretChat::secretChat(int32_t id_, int32_t user_id_,
     , layer_(layer_)
 {}
 
-const int32_t secretChat::ID;
+const std::int32_t secretChat::ID;
 
 void secretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8812,7 +9053,7 @@ secretChatStatePending::secretChatStatePending()
 {
 }
 
-const int32_t secretChatStatePending::ID;
+const std::int32_t secretChatStatePending::ID;
 
 void secretChatStatePending::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8826,7 +9067,7 @@ secretChatStateReady::secretChatStateReady()
 {
 }
 
-const int32_t secretChatStateReady::ID;
+const std::int32_t secretChatStateReady::ID;
 
 void secretChatStateReady::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8840,7 +9081,7 @@ secretChatStateClosed::secretChatStateClosed()
 {
 }
 
-const int32_t secretChatStateClosed::ID;
+const std::int32_t secretChatStateClosed::ID;
 
 void secretChatStateClosed::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8867,10 +9108,10 @@ session::session()
     , region_()
 {}
 
-session::session(std::int64_t id_, bool is_current_, int32_t api_id_,
+session::session(std::int64_t id_, bool is_current_, std::int32_t api_id_,
                  std::string const &application_name_, std::string const &application_version_,
                  bool is_official_application_, std::string const &device_model_, std::string const &platform_,
-                 std::string const &system_version_, int32_t log_in_date_, int32_t last_active_date_,
+                 std::string const &system_version_, std::int32_t log_in_date_, std::int32_t last_active_date_,
                  std::string const &ip_, std::string const &country_, std::string const &region_)
     : id_(id_)
     , is_current_(is_current_)
@@ -8888,7 +9129,7 @@ session::session(std::int64_t id_, bool is_current_, int32_t api_id_,
     , region_(std::move(region_))
 {}
 
-const int32_t session::ID;
+const std::int32_t session::ID;
 
 void session::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8920,7 +9161,7 @@ sessions::sessions(std::vector<object_ptr<session>> &&sessions_)
     : sessions_(std::move(sessions_))
 {}
 
-const int32_t sessions::ID;
+const std::int32_t sessions::ID;
 
 void sessions::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8964,7 +9205,7 @@ shippingAddress::shippingAddress(std::string const &country_code_, std::string c
     , postal_code_(std::move(postal_code_))
 {}
 
-const int32_t shippingAddress::ID;
+const std::int32_t shippingAddress::ID;
 
 void shippingAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -8993,7 +9234,7 @@ shippingOption::shippingOption(std::string const &id_, std::string const &title_
     , price_parts_(std::move(price_parts_))
 {}
 
-const int32_t shippingOption::ID;
+const std::int32_t shippingOption::ID;
 
 void shippingOption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9030,7 +9271,7 @@ sticker::sticker()
     , sticker_()
 {}
 
-sticker::sticker(std::int64_t set_id_, int32_t width_, int32_t height_,
+sticker::sticker(std::int64_t set_id_, std::int32_t width_, std::int32_t height_,
                  std::string const &emoji_, bool is_mask_, object_ptr<maskPosition> &&mask_position_,
                  object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&sticker_)
     : set_id_(set_id_)
@@ -9043,7 +9284,7 @@ sticker::sticker(std::int64_t set_id_, int32_t width_, int32_t height_,
     , sticker_(std::move(sticker_))
 {}
 
-const int32_t sticker::ID;
+const std::int32_t sticker::ID;
 
 void sticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9081,7 +9322,7 @@ stickerEmojis::stickerEmojis(std::vector<std::string> &&emojis_)
     : emojis_(std::move(emojis_))
 {}
 
-const int32_t stickerEmojis::ID;
+const std::int32_t stickerEmojis::ID;
 
 void stickerEmojis::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9129,7 +9370,7 @@ stickerSet::stickerSet(std::int64_t id_, std::string const &title_, std::string 
     , emojis_(std::move(emojis_))
 {}
 
-const int32_t stickerSet::ID;
+const std::int32_t stickerSet::ID;
 
 void stickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9190,7 +9431,7 @@ stickerSetInfo::stickerSetInfo()
 
 stickerSetInfo::stickerSetInfo(std::int64_t id_, std::string const &title_,
                                std::string const &name_, bool is_installed_, bool is_archived_, bool is_official_, bool is_masks_,
-                               bool is_viewed_, int32_t size_, std::vector<object_ptr<sticker>> &&covers_)
+                               bool is_viewed_, std::int32_t size_, std::vector<object_ptr<sticker>> &&covers_)
     : id_(id_)
     , title_(std::move(title_))
     , name_(std::move(name_))
@@ -9203,7 +9444,7 @@ stickerSetInfo::stickerSetInfo(std::int64_t id_, std::string const &title_,
     , covers_(std::move(covers_))
 {}
 
-const int32_t stickerSetInfo::ID;
+const std::int32_t stickerSetInfo::ID;
 
 void stickerSetInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9241,12 +9482,12 @@ stickerSets::stickerSets()
     , sets_()
 {}
 
-stickerSets::stickerSets(int32_t total_count_, std::vector<object_ptr<stickerSetInfo>> &&sets_)
+stickerSets::stickerSets(std::int32_t total_count_, std::vector<object_ptr<stickerSetInfo>> &&sets_)
     : total_count_(total_count_)
     , sets_(std::move(sets_))
 {}
 
-const int32_t stickerSets::ID;
+const std::int32_t stickerSets::ID;
 
 void stickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9279,7 +9520,7 @@ stickers::stickers(std::vector<object_ptr<sticker>> &&stickers_)
     : stickers_(std::move(stickers_))
 {}
 
-const int32_t stickers::ID;
+const std::int32_t stickers::ID;
 
 void stickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9309,14 +9550,14 @@ storageStatistics::storageStatistics()
     , by_chat_()
 {}
 
-storageStatistics::storageStatistics(std::int64_t size_, int32_t count_,
+storageStatistics::storageStatistics(std::int64_t size_, std::int32_t count_,
                                      std::vector<object_ptr<storageStatisticsByChat>> &&by_chat_)
     : size_(size_)
     , count_(count_)
     , by_chat_(std::move(by_chat_))
 {}
 
-const int32_t storageStatistics::ID;
+const std::int32_t storageStatistics::ID;
 
 void storageStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9350,14 +9591,14 @@ storageStatisticsByChat::storageStatisticsByChat()
 {}
 
 storageStatisticsByChat::storageStatisticsByChat(std::int64_t chat_id_, std::int64_t size_,
-                                                 int32_t count_, std::vector<object_ptr<storageStatisticsByFileType>> &&by_file_type_)
+                                                 std::int32_t count_, std::vector<object_ptr<storageStatisticsByFileType>> &&by_file_type_)
     : chat_id_(chat_id_)
     , size_(size_)
     , count_(count_)
     , by_file_type_(std::move(by_file_type_))
 {}
 
-const int32_t storageStatisticsByChat::ID;
+const std::int32_t storageStatisticsByChat::ID;
 
 void storageStatisticsByChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9391,13 +9632,13 @@ storageStatisticsByFileType::storageStatisticsByFileType()
 {}
 
 storageStatisticsByFileType::storageStatisticsByFileType(object_ptr<FileType> &&file_type_,
-                                                         std::int64_t size_, int32_t count_)
+                                                         std::int64_t size_, std::int32_t count_)
     : file_type_(std::move(file_type_))
     , size_(size_)
     , count_(count_)
 {}
 
-const int32_t storageStatisticsByFileType::ID;
+const std::int32_t storageStatisticsByFileType::ID;
 
 void storageStatisticsByFileType::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9420,14 +9661,14 @@ storageStatisticsFast::storageStatisticsFast()
     , database_size_()
 {}
 
-storageStatisticsFast::storageStatisticsFast(std::int64_t files_size_, int32_t file_count_,
+storageStatisticsFast::storageStatisticsFast(std::int64_t files_size_, std::int32_t file_count_,
                                              std::int64_t database_size_)
     : files_size_(files_size_)
     , file_count_(file_count_)
     , database_size_(database_size_)
 {}
 
-const int32_t storageStatisticsFast::ID;
+const std::int32_t storageStatisticsFast::ID;
 
 void storageStatisticsFast::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9453,8 +9694,8 @@ supergroup::supergroup()
     , restriction_reason_()
 {}
 
-supergroup::supergroup(int32_t id_, std::string const &username_, int32_t date_,
-                       object_ptr<ChatMemberStatus> &&status_, int32_t member_count_, bool anyone_can_invite_,
+supergroup::supergroup(std::int32_t id_, std::string const &username_, std::int32_t date_,
+                       object_ptr<ChatMemberStatus> &&status_, std::int32_t member_count_, bool anyone_can_invite_,
                        bool sign_messages_, bool is_channel_, bool is_verified_, std::string const &restriction_reason_)
     : id_(id_)
     , username_(std::move(username_))
@@ -9468,7 +9709,7 @@ supergroup::supergroup(int32_t id_, std::string const &username_, int32_t date_,
     , restriction_reason_(std::move(restriction_reason_))
 {}
 
-const int32_t supergroup::ID;
+const std::int32_t supergroup::ID;
 
 void supergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9509,11 +9750,11 @@ supergroupFullInfo::supergroupFullInfo()
     , upgraded_from_max_message_id_()
 {}
 
-supergroupFullInfo::supergroupFullInfo(std::string const &description_, int32_t member_count_,
-                                       int32_t administrator_count_, int32_t restricted_count_, int32_t banned_count_,
+supergroupFullInfo::supergroupFullInfo(std::string const &description_, std::int32_t member_count_,
+                                       std::int32_t administrator_count_, std::int32_t restricted_count_, std::int32_t banned_count_,
                                        bool can_get_members_, bool can_set_username_, bool can_set_sticker_set_,
                                        bool is_all_history_available_, std::int64_t sticker_set_id_, std::string const &invite_link_,
-                                       std::int64_t pinned_message_id_, int32_t upgraded_from_basic_group_id_,
+                                       std::int64_t pinned_message_id_, std::int32_t upgraded_from_basic_group_id_,
                                        std::int64_t upgraded_from_max_message_id_)
     : description_(std::move(description_))
     , member_count_(member_count_)
@@ -9531,7 +9772,7 @@ supergroupFullInfo::supergroupFullInfo(std::string const &description_, int32_t 
     , upgraded_from_max_message_id_(upgraded_from_max_message_id_)
 {}
 
-const int32_t supergroupFullInfo::ID;
+const std::int32_t supergroupFullInfo::ID;
 
 void supergroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9559,7 +9800,7 @@ supergroupMembersFilterRecent::supergroupMembersFilterRecent()
 {
 }
 
-const int32_t supergroupMembersFilterRecent::ID;
+const std::int32_t supergroupMembersFilterRecent::ID;
 
 void supergroupMembersFilterRecent::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9573,7 +9814,7 @@ supergroupMembersFilterAdministrators::supergroupMembersFilterAdministrators()
 {
 }
 
-const int32_t supergroupMembersFilterAdministrators::ID;
+const std::int32_t supergroupMembersFilterAdministrators::ID;
 
 void supergroupMembersFilterAdministrators::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -9592,7 +9833,7 @@ supergroupMembersFilterSearch::supergroupMembersFilterSearch(std::string const &
     : query_(std::move(query_))
 {}
 
-const int32_t supergroupMembersFilterSearch::ID;
+const std::int32_t supergroupMembersFilterSearch::ID;
 
 void supergroupMembersFilterSearch::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9611,7 +9852,7 @@ supergroupMembersFilterRestricted::supergroupMembersFilterRestricted(std::string
     : query_(std::move(query_))
 {}
 
-const int32_t supergroupMembersFilterRestricted::ID;
+const std::int32_t supergroupMembersFilterRestricted::ID;
 
 void supergroupMembersFilterRestricted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9630,7 +9871,7 @@ supergroupMembersFilterBanned::supergroupMembersFilterBanned(std::string const &
     : query_(std::move(query_))
 {}
 
-const int32_t supergroupMembersFilterBanned::ID;
+const std::int32_t supergroupMembersFilterBanned::ID;
 
 void supergroupMembersFilterBanned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9645,7 +9886,7 @@ supergroupMembersFilterBots::supergroupMembersFilterBots()
 {
 }
 
-const int32_t supergroupMembersFilterBots::ID;
+const std::int32_t supergroupMembersFilterBots::ID;
 
 void supergroupMembersFilterBots::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9665,7 +9906,7 @@ tMeUrl::tMeUrl(std::string const &url_, object_ptr<TMeUrlType> &&type_)
     , type_(std::move(type_))
 {}
 
-const int32_t tMeUrl::ID;
+const std::int32_t tMeUrl::ID;
 
 void tMeUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9685,11 +9926,11 @@ tMeUrlTypeUser::tMeUrlTypeUser()
     : user_id_()
 {}
 
-tMeUrlTypeUser::tMeUrlTypeUser(int32_t user_id_)
+tMeUrlTypeUser::tMeUrlTypeUser(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t tMeUrlTypeUser::ID;
+const std::int32_t tMeUrlTypeUser::ID;
 
 void tMeUrlTypeUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9708,7 +9949,7 @@ tMeUrlTypeSupergroup::tMeUrlTypeSupergroup(std::int64_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t tMeUrlTypeSupergroup::ID;
+const std::int32_t tMeUrlTypeSupergroup::ID;
 
 void tMeUrlTypeSupergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9727,7 +9968,7 @@ tMeUrlTypeChatInvite::tMeUrlTypeChatInvite(object_ptr<chatInviteLinkInfo> &&info
     : info_(std::move(info_))
 {}
 
-const int32_t tMeUrlTypeChatInvite::ID;
+const std::int32_t tMeUrlTypeChatInvite::ID;
 
 void tMeUrlTypeChatInvite::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9750,7 +9991,7 @@ tMeUrlTypeStickerSet::tMeUrlTypeStickerSet(std::int64_t sticker_set_id_)
     : sticker_set_id_(sticker_set_id_)
 {}
 
-const int32_t tMeUrlTypeStickerSet::ID;
+const std::int32_t tMeUrlTypeStickerSet::ID;
 
 void tMeUrlTypeStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9769,7 +10010,7 @@ tMeUrls::tMeUrls(std::vector<object_ptr<tMeUrl>> &&urls_)
     : urls_(std::move(urls_))
 {}
 
-const int32_t tMeUrls::ID;
+const std::int32_t tMeUrls::ID;
 
 void tMeUrls::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9813,7 +10054,7 @@ tdlibParameters::tdlibParameters()
 
 tdlibParameters::tdlibParameters(bool use_test_dc_, std::string const &database_directory_,
                                  std::string const &files_directory_, bool use_file_database_, bool use_chat_info_database_,
-                                 bool use_message_database_, bool use_secret_chats_, int32_t api_id_,
+                                 bool use_message_database_, bool use_secret_chats_, std::int32_t api_id_,
                                  std::string const &api_hash_, std::string const &system_language_code_,
                                  std::string const &device_model_, std::string const &system_version_,
                                  std::string const &application_version_, bool enable_storage_optimizer_, bool ignore_file_names_)
@@ -9834,7 +10075,7 @@ tdlibParameters::tdlibParameters(bool use_test_dc_, std::string const &database_
     , ignore_file_names_(ignore_file_names_)
 {}
 
-const int32_t tdlibParameters::ID;
+const std::int32_t tdlibParameters::ID;
 
 void tdlibParameters::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9864,12 +10105,12 @@ temporaryPasswordState::temporaryPasswordState()
     , valid_for_()
 {}
 
-temporaryPasswordState::temporaryPasswordState(bool has_password_, int32_t valid_for_)
+temporaryPasswordState::temporaryPasswordState(bool has_password_, std::int32_t valid_for_)
     : has_password_(has_password_)
     , valid_for_(valid_for_)
 {}
 
-const int32_t temporaryPasswordState::ID;
+const std::int32_t temporaryPasswordState::ID;
 
 void temporaryPasswordState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9889,7 +10130,7 @@ testBytes::testBytes(std::string const &value_)
     : value_(std::move(value_))
 {}
 
-const int32_t testBytes::ID;
+const std::int32_t testBytes::ID;
 
 void testBytes::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9904,11 +10145,11 @@ testInt::testInt()
     : value_()
 {}
 
-testInt::testInt(int32_t value_)
+testInt::testInt(std::int32_t value_)
     : value_(value_)
 {}
 
-const int32_t testInt::ID;
+const std::int32_t testInt::ID;
 
 void testInt::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9927,7 +10168,7 @@ testString::testString(std::string const &value_)
     : value_(std::move(value_))
 {}
 
-const int32_t testString::ID;
+const std::int32_t testString::ID;
 
 void testString::store(TlStorerToString &s, const char *field_name) const
 {
@@ -9942,18 +10183,18 @@ testVectorInt::testVectorInt()
     : value_()
 {}
 
-testVectorInt::testVectorInt(std::vector<int32_t> &&value_)
+testVectorInt::testVectorInt(std::vector<std::int32_t> &&value_)
     : value_(std::move(value_))
 {}
 
-const int32_t testVectorInt::ID;
+const std::int32_t testVectorInt::ID;
 
 void testVectorInt::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "testVectorInt");
         {
-            const std::vector<int32_t> &v = value_;
+            const std::vector<std::int32_t> &v = value_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("value", vector_name.c_str());
@@ -9974,7 +10215,7 @@ testVectorIntObject::testVectorIntObject(std::vector<object_ptr<testInt>> &&valu
     : value_(std::move(value_))
 {}
 
-const int32_t testVectorIntObject::ID;
+const std::int32_t testVectorIntObject::ID;
 
 void testVectorIntObject::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10006,7 +10247,7 @@ testVectorString::testVectorString(std::vector<std::string> &&value_)
     : value_(std::move(value_))
 {}
 
-const int32_t testVectorString::ID;
+const std::int32_t testVectorString::ID;
 
 void testVectorString::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10034,7 +10275,7 @@ testVectorStringObject::testVectorStringObject(std::vector<object_ptr<testString
     : value_(std::move(value_))
 {}
 
-const int32_t testVectorStringObject::ID;
+const std::int32_t testVectorStringObject::ID;
 
 void testVectorStringObject::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10066,7 +10307,7 @@ text::text(std::string const &text_)
     : text_(std::move(text_))
 {}
 
-const int32_t text::ID;
+const std::int32_t text::ID;
 
 void text::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10085,7 +10326,7 @@ textEntities::textEntities(std::vector<object_ptr<textEntity>> &&entities_)
     : entities_(std::move(entities_))
 {}
 
-const int32_t textEntities::ID;
+const std::int32_t textEntities::ID;
 
 void textEntities::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10115,14 +10356,14 @@ textEntity::textEntity()
     , type_()
 {}
 
-textEntity::textEntity(int32_t offset_, int32_t length_,
+textEntity::textEntity(std::int32_t offset_, std::int32_t length_,
                        object_ptr<TextEntityType> &&type_)
     : offset_(offset_)
     , length_(length_)
     , type_(std::move(type_))
 {}
 
-const int32_t textEntity::ID;
+const std::int32_t textEntity::ID;
 
 void textEntity::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10143,7 +10384,7 @@ textEntityTypeMention::textEntityTypeMention()
 {
 }
 
-const int32_t textEntityTypeMention::ID;
+const std::int32_t textEntityTypeMention::ID;
 
 void textEntityTypeMention::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10157,7 +10398,7 @@ textEntityTypeHashtag::textEntityTypeHashtag()
 {
 }
 
-const int32_t textEntityTypeHashtag::ID;
+const std::int32_t textEntityTypeHashtag::ID;
 
 void textEntityTypeHashtag::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10167,11 +10408,25 @@ void textEntityTypeHashtag::store(TlStorerToString &s, const char *field_name) c
     }
 }
 
+textEntityTypeCashtag::textEntityTypeCashtag()
+{
+}
+
+const std::int32_t textEntityTypeCashtag::ID;
+
+void textEntityTypeCashtag::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "textEntityTypeCashtag");
+        s.store_class_end();
+    }
+}
+
 textEntityTypeBotCommand::textEntityTypeBotCommand()
 {
 }
 
-const int32_t textEntityTypeBotCommand::ID;
+const std::int32_t textEntityTypeBotCommand::ID;
 
 void textEntityTypeBotCommand::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10185,7 +10440,7 @@ textEntityTypeUrl::textEntityTypeUrl()
 {
 }
 
-const int32_t textEntityTypeUrl::ID;
+const std::int32_t textEntityTypeUrl::ID;
 
 void textEntityTypeUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10199,7 +10454,7 @@ textEntityTypeEmailAddress::textEntityTypeEmailAddress()
 {
 }
 
-const int32_t textEntityTypeEmailAddress::ID;
+const std::int32_t textEntityTypeEmailAddress::ID;
 
 void textEntityTypeEmailAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10213,7 +10468,7 @@ textEntityTypeBold::textEntityTypeBold()
 {
 }
 
-const int32_t textEntityTypeBold::ID;
+const std::int32_t textEntityTypeBold::ID;
 
 void textEntityTypeBold::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10227,7 +10482,7 @@ textEntityTypeItalic::textEntityTypeItalic()
 {
 }
 
-const int32_t textEntityTypeItalic::ID;
+const std::int32_t textEntityTypeItalic::ID;
 
 void textEntityTypeItalic::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10241,7 +10496,7 @@ textEntityTypeCode::textEntityTypeCode()
 {
 }
 
-const int32_t textEntityTypeCode::ID;
+const std::int32_t textEntityTypeCode::ID;
 
 void textEntityTypeCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10255,7 +10510,7 @@ textEntityTypePre::textEntityTypePre()
 {
 }
 
-const int32_t textEntityTypePre::ID;
+const std::int32_t textEntityTypePre::ID;
 
 void textEntityTypePre::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10273,7 +10528,7 @@ textEntityTypePreCode::textEntityTypePreCode(std::string const &language_)
     : language_(std::move(language_))
 {}
 
-const int32_t textEntityTypePreCode::ID;
+const std::int32_t textEntityTypePreCode::ID;
 
 void textEntityTypePreCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10292,7 +10547,7 @@ textEntityTypeTextUrl::textEntityTypeTextUrl(std::string const &url_)
     : url_(std::move(url_))
 {}
 
-const int32_t textEntityTypeTextUrl::ID;
+const std::int32_t textEntityTypeTextUrl::ID;
 
 void textEntityTypeTextUrl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10307,11 +10562,11 @@ textEntityTypeMentionName::textEntityTypeMentionName()
     : user_id_()
 {}
 
-textEntityTypeMentionName::textEntityTypeMentionName(int32_t user_id_)
+textEntityTypeMentionName::textEntityTypeMentionName(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t textEntityTypeMentionName::ID;
+const std::int32_t textEntityTypeMentionName::ID;
 
 void textEntityTypeMentionName::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10322,11 +10577,25 @@ void textEntityTypeMentionName::store(TlStorerToString &s, const char *field_nam
     }
 }
 
+textEntityTypePhoneNumber::textEntityTypePhoneNumber()
+{
+}
+
+const std::int32_t textEntityTypePhoneNumber::ID;
+
+void textEntityTypePhoneNumber::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "textEntityTypePhoneNumber");
+        s.store_class_end();
+    }
+}
+
 textParseModeMarkdown::textParseModeMarkdown()
 {
 }
 
-const int32_t textParseModeMarkdown::ID;
+const std::int32_t textParseModeMarkdown::ID;
 
 void textParseModeMarkdown::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10340,7 +10609,7 @@ textParseModeHTML::textParseModeHTML()
 {
 }
 
-const int32_t textParseModeHTML::ID;
+const std::int32_t textParseModeHTML::ID;
 
 void textParseModeHTML::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10354,7 +10623,7 @@ topChatCategoryUsers::topChatCategoryUsers()
 {
 }
 
-const int32_t topChatCategoryUsers::ID;
+const std::int32_t topChatCategoryUsers::ID;
 
 void topChatCategoryUsers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10368,7 +10637,7 @@ topChatCategoryBots::topChatCategoryBots()
 {
 }
 
-const int32_t topChatCategoryBots::ID;
+const std::int32_t topChatCategoryBots::ID;
 
 void topChatCategoryBots::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10382,7 +10651,7 @@ topChatCategoryGroups::topChatCategoryGroups()
 {
 }
 
-const int32_t topChatCategoryGroups::ID;
+const std::int32_t topChatCategoryGroups::ID;
 
 void topChatCategoryGroups::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10396,7 +10665,7 @@ topChatCategoryChannels::topChatCategoryChannels()
 {
 }
 
-const int32_t topChatCategoryChannels::ID;
+const std::int32_t topChatCategoryChannels::ID;
 
 void topChatCategoryChannels::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10410,7 +10679,7 @@ topChatCategoryInlineBots::topChatCategoryInlineBots()
 {
 }
 
-const int32_t topChatCategoryInlineBots::ID;
+const std::int32_t topChatCategoryInlineBots::ID;
 
 void topChatCategoryInlineBots::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10424,7 +10693,7 @@ topChatCategoryCalls::topChatCategoryCalls()
 {
 }
 
-const int32_t topChatCategoryCalls::ID;
+const std::int32_t topChatCategoryCalls::ID;
 
 void topChatCategoryCalls::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10443,7 +10712,7 @@ updateAuthorizationState::updateAuthorizationState(object_ptr<AuthorizationState
     : authorization_state_(std::move(authorization_state_))
 {}
 
-const int32_t updateAuthorizationState::ID;
+const std::int32_t updateAuthorizationState::ID;
 
 void updateAuthorizationState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10471,7 +10740,7 @@ updateNewMessage::updateNewMessage(object_ptr<message> &&message_, bool disable_
     , contains_mention_(contains_mention_)
 {}
 
-const int32_t updateNewMessage::ID;
+const std::int32_t updateNewMessage::ID;
 
 void updateNewMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10499,7 +10768,7 @@ updateMessageSendAcknowledged::updateMessageSendAcknowledged(std::int64_t chat_i
     , message_id_(message_id_)
 {}
 
-const int32_t updateMessageSendAcknowledged::ID;
+const std::int32_t updateMessageSendAcknowledged::ID;
 
 void updateMessageSendAcknowledged::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10522,7 +10791,7 @@ updateMessageSendSucceeded::updateMessageSendSucceeded(object_ptr<message> &&mes
     , old_message_id_(old_message_id_)
 {}
 
-const int32_t updateMessageSendSucceeded::ID;
+const std::int32_t updateMessageSendSucceeded::ID;
 
 void updateMessageSendSucceeded::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10546,14 +10815,14 @@ updateMessageSendFailed::updateMessageSendFailed()
 {}
 
 updateMessageSendFailed::updateMessageSendFailed(object_ptr<message> &&message_,
-                                                 std::int64_t old_message_id_, int32_t error_code_, std::string const &error_message_)
+                                                 std::int64_t old_message_id_, std::int32_t error_code_, std::string const &error_message_)
     : message_(std::move(message_))
     , old_message_id_(old_message_id_)
     , error_code_(error_code_)
     , error_message_(std::move(error_message_))
 {}
 
-const int32_t updateMessageSendFailed::ID;
+const std::int32_t updateMessageSendFailed::ID;
 
 void updateMessageSendFailed::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10584,7 +10853,7 @@ updateMessageContent::updateMessageContent(std::int64_t chat_id_, std::int64_t m
     , new_content_(std::move(new_content_))
 {}
 
-const int32_t updateMessageContent::ID;
+const std::int32_t updateMessageContent::ID;
 
 void updateMessageContent::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10609,14 +10878,14 @@ updateMessageEdited::updateMessageEdited()
 {}
 
 updateMessageEdited::updateMessageEdited(std::int64_t chat_id_, std::int64_t message_id_,
-                                         int32_t edit_date_, object_ptr<ReplyMarkup> &&reply_markup_)
+                                         std::int32_t edit_date_, object_ptr<ReplyMarkup> &&reply_markup_)
     : chat_id_(chat_id_)
     , message_id_(message_id_)
     , edit_date_(edit_date_)
     , reply_markup_(std::move(reply_markup_))
 {}
 
-const int32_t updateMessageEdited::ID;
+const std::int32_t updateMessageEdited::ID;
 
 void updateMessageEdited::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10641,13 +10910,13 @@ updateMessageViews::updateMessageViews()
 {}
 
 updateMessageViews::updateMessageViews(std::int64_t chat_id_, std::int64_t message_id_,
-                                       int32_t views_)
+                                       std::int32_t views_)
     : chat_id_(chat_id_)
     , message_id_(message_id_)
     , views_(views_)
 {}
 
-const int32_t updateMessageViews::ID;
+const std::int32_t updateMessageViews::ID;
 
 void updateMessageViews::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10671,7 +10940,7 @@ updateMessageContentOpened::updateMessageContentOpened(std::int64_t chat_id_,
     , message_id_(message_id_)
 {}
 
-const int32_t updateMessageContentOpened::ID;
+const std::int32_t updateMessageContentOpened::ID;
 
 void updateMessageContentOpened::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10690,13 +10959,13 @@ updateMessageMentionRead::updateMessageMentionRead()
 {}
 
 updateMessageMentionRead::updateMessageMentionRead(std::int64_t chat_id_, std::int64_t message_id_,
-                                                   int32_t unread_mention_count_)
+                                                   std::int32_t unread_mention_count_)
     : chat_id_(chat_id_)
     , message_id_(message_id_)
     , unread_mention_count_(unread_mention_count_)
 {}
 
-const int32_t updateMessageMentionRead::ID;
+const std::int32_t updateMessageMentionRead::ID;
 
 void updateMessageMentionRead::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10717,7 +10986,7 @@ updateNewChat::updateNewChat(object_ptr<chat> &&chat_)
     : chat_(std::move(chat_))
 {}
 
-const int32_t updateNewChat::ID;
+const std::int32_t updateNewChat::ID;
 
 void updateNewChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10742,7 +11011,7 @@ updateChatTitle::updateChatTitle(std::int64_t chat_id_, std::string const &title
     , title_(std::move(title_))
 {}
 
-const int32_t updateChatTitle::ID;
+const std::int32_t updateChatTitle::ID;
 
 void updateChatTitle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10764,7 +11033,7 @@ updateChatPhoto::updateChatPhoto(std::int64_t chat_id_, object_ptr<chatPhoto> &&
     , photo_(std::move(photo_))
 {}
 
-const int32_t updateChatPhoto::ID;
+const std::int32_t updateChatPhoto::ID;
 
 void updateChatPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10793,7 +11062,7 @@ updateChatLastMessage::updateChatLastMessage(std::int64_t chat_id_,
     , order_(order_)
 {}
 
-const int32_t updateChatLastMessage::ID;
+const std::int32_t updateChatLastMessage::ID;
 
 void updateChatLastMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10820,7 +11089,7 @@ updateChatOrder::updateChatOrder(std::int64_t chat_id_, std::int64_t order_)
     , order_(order_)
 {}
 
-const int32_t updateChatOrder::ID;
+const std::int32_t updateChatOrder::ID;
 
 void updateChatOrder::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10844,7 +11113,7 @@ updateChatIsPinned::updateChatIsPinned(std::int64_t chat_id_, bool is_pinned_, s
     , order_(order_)
 {}
 
-const int32_t updateChatIsPinned::ID;
+const std::int32_t updateChatIsPinned::ID;
 
 void updateChatIsPinned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10864,13 +11133,13 @@ updateChatReadInbox::updateChatReadInbox()
 {}
 
 updateChatReadInbox::updateChatReadInbox(std::int64_t chat_id_,
-                                         std::int64_t last_read_inbox_message_id_, int32_t unread_count_)
+                                         std::int64_t last_read_inbox_message_id_, std::int32_t unread_count_)
     : chat_id_(chat_id_)
     , last_read_inbox_message_id_(last_read_inbox_message_id_)
     , unread_count_(unread_count_)
 {}
 
-const int32_t updateChatReadInbox::ID;
+const std::int32_t updateChatReadInbox::ID;
 
 void updateChatReadInbox::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10894,7 +11163,7 @@ updateChatReadOutbox::updateChatReadOutbox(std::int64_t chat_id_,
     , last_read_outbox_message_id_(last_read_outbox_message_id_)
 {}
 
-const int32_t updateChatReadOutbox::ID;
+const std::int32_t updateChatReadOutbox::ID;
 
 void updateChatReadOutbox::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10912,12 +11181,12 @@ updateChatUnreadMentionCount::updateChatUnreadMentionCount()
 {}
 
 updateChatUnreadMentionCount::updateChatUnreadMentionCount(std::int64_t chat_id_,
-                                                           int32_t unread_mention_count_)
+                                                           std::int32_t unread_mention_count_)
     : chat_id_(chat_id_)
     , unread_mention_count_(unread_mention_count_)
 {}
 
-const int32_t updateChatUnreadMentionCount::ID;
+const std::int32_t updateChatUnreadMentionCount::ID;
 
 void updateChatUnreadMentionCount::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10940,7 +11209,7 @@ updateNotificationSettings::updateNotificationSettings(object_ptr<NotificationSe
     , notification_settings_(std::move(notification_settings_))
 {}
 
-const int32_t updateNotificationSettings::ID;
+const std::int32_t updateNotificationSettings::ID;
 
 void updateNotificationSettings::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10971,7 +11240,7 @@ updateChatReplyMarkup::updateChatReplyMarkup(std::int64_t chat_id_,
     , reply_markup_message_id_(reply_markup_message_id_)
 {}
 
-const int32_t updateChatReplyMarkup::ID;
+const std::int32_t updateChatReplyMarkup::ID;
 
 void updateChatReplyMarkup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -10996,7 +11265,7 @@ updateChatDraftMessage::updateChatDraftMessage(std::int64_t chat_id_,
     , order_(order_)
 {}
 
-const int32_t updateChatDraftMessage::ID;
+const std::int32_t updateChatDraftMessage::ID;
 
 void updateChatDraftMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11028,7 +11297,7 @@ updateDeleteMessages::updateDeleteMessages(std::int64_t chat_id_,
     , from_cache_(from_cache_)
 {}
 
-const int32_t updateDeleteMessages::ID;
+const std::int32_t updateDeleteMessages::ID;
 
 void updateDeleteMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11057,14 +11326,14 @@ updateUserChatAction::updateUserChatAction()
     , action_()
 {}
 
-updateUserChatAction::updateUserChatAction(std::int64_t chat_id_, int32_t user_id_,
+updateUserChatAction::updateUserChatAction(std::int64_t chat_id_, std::int32_t user_id_,
                                            object_ptr<ChatAction> &&action_)
     : chat_id_(chat_id_)
     , user_id_(user_id_)
     , action_(std::move(action_))
 {}
 
-const int32_t updateUserChatAction::ID;
+const std::int32_t updateUserChatAction::ID;
 
 void updateUserChatAction::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11086,12 +11355,12 @@ updateUserStatus::updateUserStatus()
     , status_()
 {}
 
-updateUserStatus::updateUserStatus(int32_t user_id_, object_ptr<UserStatus> &&status_)
+updateUserStatus::updateUserStatus(std::int32_t user_id_, object_ptr<UserStatus> &&status_)
     : user_id_(user_id_)
     , status_(std::move(status_))
 {}
 
-const int32_t updateUserStatus::ID;
+const std::int32_t updateUserStatus::ID;
 
 void updateUserStatus::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11115,7 +11384,7 @@ updateUser::updateUser(object_ptr<user> &&user_)
     : user_(std::move(user_))
 {}
 
-const int32_t updateUser::ID;
+const std::int32_t updateUser::ID;
 
 void updateUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11138,7 +11407,7 @@ updateBasicGroup::updateBasicGroup(object_ptr<basicGroup> &&basic_group_)
     : basic_group_(std::move(basic_group_))
 {}
 
-const int32_t updateBasicGroup::ID;
+const std::int32_t updateBasicGroup::ID;
 
 void updateBasicGroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11161,7 +11430,7 @@ updateSupergroup::updateSupergroup(object_ptr<supergroup> &&supergroup_)
     : supergroup_(std::move(supergroup_))
 {}
 
-const int32_t updateSupergroup::ID;
+const std::int32_t updateSupergroup::ID;
 
 void updateSupergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11184,7 +11453,7 @@ updateSecretChat::updateSecretChat(object_ptr<secretChat> &&secret_chat_)
     : secret_chat_(std::move(secret_chat_))
 {}
 
-const int32_t updateSecretChat::ID;
+const std::int32_t updateSecretChat::ID;
 
 void updateSecretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11204,13 +11473,13 @@ updateUserFullInfo::updateUserFullInfo()
     , user_full_info_()
 {}
 
-updateUserFullInfo::updateUserFullInfo(int32_t user_id_,
+updateUserFullInfo::updateUserFullInfo(std::int32_t user_id_,
                                        object_ptr<userFullInfo> &&user_full_info_)
     : user_id_(user_id_)
     , user_full_info_(std::move(user_full_info_))
 {}
 
-const int32_t updateUserFullInfo::ID;
+const std::int32_t updateUserFullInfo::ID;
 
 void updateUserFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11231,13 +11500,13 @@ updateBasicGroupFullInfo::updateBasicGroupFullInfo()
     , basic_group_full_info_()
 {}
 
-updateBasicGroupFullInfo::updateBasicGroupFullInfo(int32_t basic_group_id_,
+updateBasicGroupFullInfo::updateBasicGroupFullInfo(std::int32_t basic_group_id_,
                                                    object_ptr<basicGroupFullInfo> &&basic_group_full_info_)
     : basic_group_id_(basic_group_id_)
     , basic_group_full_info_(std::move(basic_group_full_info_))
 {}
 
-const int32_t updateBasicGroupFullInfo::ID;
+const std::int32_t updateBasicGroupFullInfo::ID;
 
 void updateBasicGroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11258,13 +11527,13 @@ updateSupergroupFullInfo::updateSupergroupFullInfo()
     , supergroup_full_info_()
 {}
 
-updateSupergroupFullInfo::updateSupergroupFullInfo(int32_t supergroup_id_,
+updateSupergroupFullInfo::updateSupergroupFullInfo(std::int32_t supergroup_id_,
                                                    object_ptr<supergroupFullInfo> &&supergroup_full_info_)
     : supergroup_id_(supergroup_id_)
     , supergroup_full_info_(std::move(supergroup_full_info_))
 {}
 
-const int32_t updateSupergroupFullInfo::ID;
+const std::int32_t updateSupergroupFullInfo::ID;
 
 void updateSupergroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11291,7 +11560,7 @@ updateServiceNotification::updateServiceNotification(std::string const &type_,
     , content_(std::move(content_))
 {}
 
-const int32_t updateServiceNotification::ID;
+const std::int32_t updateServiceNotification::ID;
 
 void updateServiceNotification::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11315,7 +11584,7 @@ updateFile::updateFile(object_ptr<file> &&file_)
     : file_(std::move(file_))
 {}
 
-const int32_t updateFile::ID;
+const std::int32_t updateFile::ID;
 
 void updateFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11346,7 +11615,7 @@ updateFileGenerationStart::updateFileGenerationStart(std::int64_t generation_id_
     , conversion_(std::move(conversion_))
 {}
 
-const int32_t updateFileGenerationStart::ID;
+const std::int32_t updateFileGenerationStart::ID;
 
 void updateFileGenerationStart::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11368,7 +11637,7 @@ updateFileGenerationStop::updateFileGenerationStop(std::int64_t generation_id_)
     : generation_id_(generation_id_)
 {}
 
-const int32_t updateFileGenerationStop::ID;
+const std::int32_t updateFileGenerationStop::ID;
 
 void updateFileGenerationStop::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11387,7 +11656,7 @@ updateCall::updateCall(object_ptr<call> &&call_)
     : call_(std::move(call_))
 {}
 
-const int32_t updateCall::ID;
+const std::int32_t updateCall::ID;
 
 void updateCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11413,7 +11682,7 @@ updateUserPrivacySettingRules::updateUserPrivacySettingRules(object_ptr<UserPriv
     , rules_(std::move(rules_))
 {}
 
-const int32_t updateUserPrivacySettingRules::ID;
+const std::int32_t updateUserPrivacySettingRules::ID;
 
 void updateUserPrivacySettingRules::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11433,6 +11702,29 @@ void updateUserPrivacySettingRules::store(TlStorerToString &s, const char *field
     }
 }
 
+updateUnreadMessageCount::updateUnreadMessageCount()
+    : unread_count_()
+    , unread_unmuted_count_()
+{}
+
+updateUnreadMessageCount::updateUnreadMessageCount(std::int32_t unread_count_,
+                                                   std::int32_t unread_unmuted_count_)
+    : unread_count_(unread_count_)
+    , unread_unmuted_count_(unread_unmuted_count_)
+{}
+
+const std::int32_t updateUnreadMessageCount::ID;
+
+void updateUnreadMessageCount::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "updateUnreadMessageCount");
+        s.store_field("unread_count", unread_count_);
+        s.store_field("unread_unmuted_count", unread_unmuted_count_);
+        s.store_class_end();
+    }
+}
+
 updateOption::updateOption()
     : name_()
     , value_()
@@ -11443,7 +11735,7 @@ updateOption::updateOption(std::string const &name_, object_ptr<OptionValue> &&v
     , value_(std::move(value_))
 {}
 
-const int32_t updateOption::ID;
+const std::int32_t updateOption::ID;
 
 void updateOption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11470,7 +11762,7 @@ updateInstalledStickerSets::updateInstalledStickerSets(bool is_masks_,
     , sticker_set_ids_(std::move(sticker_set_ids_))
 {}
 
-const int32_t updateInstalledStickerSets::ID;
+const std::int32_t updateInstalledStickerSets::ID;
 
 void updateInstalledStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11499,7 +11791,7 @@ updateTrendingStickerSets::updateTrendingStickerSets(object_ptr<stickerSets> &&s
     : sticker_sets_(std::move(sticker_sets_))
 {}
 
-const int32_t updateTrendingStickerSets::ID;
+const std::int32_t updateTrendingStickerSets::ID;
 
 void updateTrendingStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11520,12 +11812,12 @@ updateRecentStickers::updateRecentStickers()
 {}
 
 updateRecentStickers::updateRecentStickers(bool is_attached_,
-                                           std::vector<int32_t> &&sticker_ids_)
+                                           std::vector<std::int32_t> &&sticker_ids_)
     : is_attached_(is_attached_)
     , sticker_ids_(std::move(sticker_ids_))
 {}
 
-const int32_t updateRecentStickers::ID;
+const std::int32_t updateRecentStickers::ID;
 
 void updateRecentStickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11533,7 +11825,7 @@ void updateRecentStickers::store(TlStorerToString &s, const char *field_name) co
         s.store_class_begin(field_name, "updateRecentStickers");
         s.store_field("is_attached", is_attached_);
         {
-            const std::vector<int32_t> &v = sticker_ids_;
+            const std::vector<std::int32_t> &v = sticker_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("sticker_ids", vector_name.c_str());
@@ -11550,18 +11842,18 @@ updateFavoriteStickers::updateFavoriteStickers()
     : sticker_ids_()
 {}
 
-updateFavoriteStickers::updateFavoriteStickers(std::vector<int32_t> &&sticker_ids_)
+updateFavoriteStickers::updateFavoriteStickers(std::vector<std::int32_t> &&sticker_ids_)
     : sticker_ids_(std::move(sticker_ids_))
 {}
 
-const int32_t updateFavoriteStickers::ID;
+const std::int32_t updateFavoriteStickers::ID;
 
 void updateFavoriteStickers::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "updateFavoriteStickers");
         {
-            const std::vector<int32_t> &v = sticker_ids_;
+            const std::vector<std::int32_t> &v = sticker_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("sticker_ids", vector_name.c_str());
@@ -11578,18 +11870,18 @@ updateSavedAnimations::updateSavedAnimations()
     : animation_ids_()
 {}
 
-updateSavedAnimations::updateSavedAnimations(std::vector<int32_t> &&animation_ids_)
+updateSavedAnimations::updateSavedAnimations(std::vector<std::int32_t> &&animation_ids_)
     : animation_ids_(std::move(animation_ids_))
 {}
 
-const int32_t updateSavedAnimations::ID;
+const std::int32_t updateSavedAnimations::ID;
 
 void updateSavedAnimations::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "updateSavedAnimations");
         {
-            const std::vector<int32_t> &v = animation_ids_;
+            const std::vector<std::int32_t> &v = animation_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("animation_ids", vector_name.c_str());
@@ -11610,7 +11902,7 @@ updateConnectionState::updateConnectionState(object_ptr<ConnectionState> &&state
     : state_(std::move(state_))
 {}
 
-const int32_t updateConnectionState::ID;
+const std::int32_t updateConnectionState::ID;
 
 void updateConnectionState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11633,7 +11925,7 @@ updateNewInlineQuery::updateNewInlineQuery()
     , offset_()
 {}
 
-updateNewInlineQuery::updateNewInlineQuery(std::int64_t id_, int32_t sender_user_id_,
+updateNewInlineQuery::updateNewInlineQuery(std::int64_t id_, std::int32_t sender_user_id_,
                                            object_ptr<location> &&user_location_, std::string const &query_, std::string const &offset_)
     : id_(id_)
     , sender_user_id_(sender_user_id_)
@@ -11642,7 +11934,7 @@ updateNewInlineQuery::updateNewInlineQuery(std::int64_t id_, int32_t sender_user
     , offset_(std::move(offset_))
 {}
 
-const int32_t updateNewInlineQuery::ID;
+const std::int32_t updateNewInlineQuery::ID;
 
 void updateNewInlineQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11669,7 +11961,7 @@ updateNewChosenInlineResult::updateNewChosenInlineResult()
     , inline_message_id_()
 {}
 
-updateNewChosenInlineResult::updateNewChosenInlineResult(int32_t sender_user_id_,
+updateNewChosenInlineResult::updateNewChosenInlineResult(std::int32_t sender_user_id_,
                                                          object_ptr<location> &&user_location_, std::string const &query_, std::string const &result_id_,
                                                          std::string const &inline_message_id_)
     : sender_user_id_(sender_user_id_)
@@ -11679,7 +11971,7 @@ updateNewChosenInlineResult::updateNewChosenInlineResult(int32_t sender_user_id_
     , inline_message_id_(std::move(inline_message_id_))
 {}
 
-const int32_t updateNewChosenInlineResult::ID;
+const std::int32_t updateNewChosenInlineResult::ID;
 
 void updateNewChosenInlineResult::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11707,7 +11999,7 @@ updateNewCallbackQuery::updateNewCallbackQuery()
     , payload_()
 {}
 
-updateNewCallbackQuery::updateNewCallbackQuery(std::int64_t id_, int32_t sender_user_id_,
+updateNewCallbackQuery::updateNewCallbackQuery(std::int64_t id_, std::int32_t sender_user_id_,
                                                std::int64_t chat_id_, std::int64_t message_id_, std::int64_t chat_instance_,
                                                object_ptr<CallbackQueryPayload> &&payload_)
     : id_(id_)
@@ -11718,7 +12010,7 @@ updateNewCallbackQuery::updateNewCallbackQuery(std::int64_t id_, int32_t sender_
     , payload_(std::move(payload_))
 {}
 
-const int32_t updateNewCallbackQuery::ID;
+const std::int32_t updateNewCallbackQuery::ID;
 
 void updateNewCallbackQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11747,7 +12039,7 @@ updateNewInlineCallbackQuery::updateNewInlineCallbackQuery()
 {}
 
 updateNewInlineCallbackQuery::updateNewInlineCallbackQuery(std::int64_t id_,
-                                                           int32_t sender_user_id_, std::string const &inline_message_id_, std::int64_t chat_instance_,
+                                                           std::int32_t sender_user_id_, std::string const &inline_message_id_, std::int64_t chat_instance_,
                                                            object_ptr<CallbackQueryPayload> &&payload_)
     : id_(id_)
     , sender_user_id_(sender_user_id_)
@@ -11756,7 +12048,7 @@ updateNewInlineCallbackQuery::updateNewInlineCallbackQuery(std::int64_t id_,
     , payload_(std::move(payload_))
 {}
 
-const int32_t updateNewInlineCallbackQuery::ID;
+const std::int32_t updateNewInlineCallbackQuery::ID;
 
 void updateNewInlineCallbackQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11782,7 +12074,7 @@ updateNewShippingQuery::updateNewShippingQuery()
     , shipping_address_()
 {}
 
-updateNewShippingQuery::updateNewShippingQuery(std::int64_t id_, int32_t sender_user_id_,
+updateNewShippingQuery::updateNewShippingQuery(std::int64_t id_, std::int32_t sender_user_id_,
                                                std::string const &invoice_payload_, object_ptr<shippingAddress> &&shipping_address_)
     : id_(id_)
     , sender_user_id_(sender_user_id_)
@@ -11790,7 +12082,7 @@ updateNewShippingQuery::updateNewShippingQuery(std::int64_t id_, int32_t sender_
     , shipping_address_(std::move(shipping_address_))
 {}
 
-const int32_t updateNewShippingQuery::ID;
+const std::int32_t updateNewShippingQuery::ID;
 
 void updateNewShippingQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11818,7 +12110,7 @@ updateNewPreCheckoutQuery::updateNewPreCheckoutQuery()
     , order_info_()
 {}
 
-updateNewPreCheckoutQuery::updateNewPreCheckoutQuery(std::int64_t id_, int32_t sender_user_id_,
+updateNewPreCheckoutQuery::updateNewPreCheckoutQuery(std::int64_t id_, std::int32_t sender_user_id_,
                                                      std::string const &currency_, std::int64_t total_amount_, std::string const &invoice_payload_,
                                                      std::string const &shipping_option_id_, object_ptr<orderInfo> &&order_info_)
     : id_(id_)
@@ -11830,7 +12122,7 @@ updateNewPreCheckoutQuery::updateNewPreCheckoutQuery(std::int64_t id_, int32_t s
     , order_info_(std::move(order_info_))
 {}
 
-const int32_t updateNewPreCheckoutQuery::ID;
+const std::int32_t updateNewPreCheckoutQuery::ID;
 
 void updateNewPreCheckoutQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11859,7 +12151,7 @@ updateNewCustomEvent::updateNewCustomEvent(std::string const &event_)
     : event_(std::move(event_))
 {}
 
-const int32_t updateNewCustomEvent::ID;
+const std::int32_t updateNewCustomEvent::ID;
 
 void updateNewCustomEvent::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11877,13 +12169,13 @@ updateNewCustomQuery::updateNewCustomQuery()
 {}
 
 updateNewCustomQuery::updateNewCustomQuery(std::int64_t id_, std::string const &data_,
-                                           int32_t timeout_)
+                                           std::int32_t timeout_)
     : id_(id_)
     , data_(std::move(data_))
     , timeout_(timeout_)
 {}
 
-const int32_t updateNewCustomQuery::ID;
+const std::int32_t updateNewCustomQuery::ID;
 
 void updateNewCustomQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11913,7 +12205,7 @@ user::user()
     , language_code_()
 {}
 
-user::user(int32_t id_, std::string const &first_name_, std::string const &last_name_,
+user::user(std::int32_t id_, std::string const &first_name_, std::string const &last_name_,
            std::string const &username_, std::string const &phone_number_, object_ptr<UserStatus> &&status_,
            object_ptr<profilePhoto> &&profile_photo_, object_ptr<LinkState> &&outgoing_link_,
            object_ptr<LinkState> &&incoming_link_, bool is_verified_, std::string const &restriction_reason_,
@@ -11934,7 +12226,7 @@ user::user(int32_t id_, std::string const &first_name_, std::string const &last_
     , language_code_(std::move(language_code_))
 {}
 
-const int32_t user::ID;
+const std::int32_t user::ID;
 
 void user::store(TlStorerToString &s, const char *field_name) const
 {
@@ -11989,7 +12281,7 @@ userFullInfo::userFullInfo()
 {}
 
 userFullInfo::userFullInfo(bool is_blocked_, bool can_be_called_, bool has_private_calls_,
-                           std::string const &bio_, std::string const &share_text_, int32_t group_in_common_count_,
+                           std::string const &bio_, std::string const &share_text_, std::int32_t group_in_common_count_,
                            object_ptr<botInfo> &&bot_info_)
     : is_blocked_(is_blocked_)
     , can_be_called_(can_be_called_)
@@ -12000,7 +12292,7 @@ userFullInfo::userFullInfo(bool is_blocked_, bool can_be_called_, bool has_priva
     , bot_info_(std::move(bot_info_))
 {}
 
-const int32_t userFullInfo::ID;
+const std::int32_t userFullInfo::ID;
 
 void userFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12025,7 +12317,7 @@ userPrivacySettingShowStatus::userPrivacySettingShowStatus()
 {
 }
 
-const int32_t userPrivacySettingShowStatus::ID;
+const std::int32_t userPrivacySettingShowStatus::ID;
 
 void userPrivacySettingShowStatus::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12039,7 +12331,7 @@ userPrivacySettingAllowChatInvites::userPrivacySettingAllowChatInvites()
 {
 }
 
-const int32_t userPrivacySettingAllowChatInvites::ID;
+const std::int32_t userPrivacySettingAllowChatInvites::ID;
 
 void userPrivacySettingAllowChatInvites::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12053,7 +12345,7 @@ userPrivacySettingAllowCalls::userPrivacySettingAllowCalls()
 {
 }
 
-const int32_t userPrivacySettingAllowCalls::ID;
+const std::int32_t userPrivacySettingAllowCalls::ID;
 
 void userPrivacySettingAllowCalls::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12067,7 +12359,7 @@ userPrivacySettingRuleAllowAll::userPrivacySettingRuleAllowAll()
 {
 }
 
-const int32_t userPrivacySettingRuleAllowAll::ID;
+const std::int32_t userPrivacySettingRuleAllowAll::ID;
 
 void userPrivacySettingRuleAllowAll::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12081,7 +12373,7 @@ userPrivacySettingRuleAllowContacts::userPrivacySettingRuleAllowContacts()
 {
 }
 
-const int32_t userPrivacySettingRuleAllowContacts::ID;
+const std::int32_t userPrivacySettingRuleAllowContacts::ID;
 
 void userPrivacySettingRuleAllowContacts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12095,19 +12387,19 @@ userPrivacySettingRuleAllowUsers::userPrivacySettingRuleAllowUsers()
     : user_ids_()
 {}
 
-userPrivacySettingRuleAllowUsers::userPrivacySettingRuleAllowUsers(std::vector<int32_t>
+userPrivacySettingRuleAllowUsers::userPrivacySettingRuleAllowUsers(std::vector<std::int32_t>
                                                                    &&user_ids_)
     : user_ids_(std::move(user_ids_))
 {}
 
-const int32_t userPrivacySettingRuleAllowUsers::ID;
+const std::int32_t userPrivacySettingRuleAllowUsers::ID;
 
 void userPrivacySettingRuleAllowUsers::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "userPrivacySettingRuleAllowUsers");
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -12124,7 +12416,7 @@ userPrivacySettingRuleRestrictAll::userPrivacySettingRuleRestrictAll()
 {
 }
 
-const int32_t userPrivacySettingRuleRestrictAll::ID;
+const std::int32_t userPrivacySettingRuleRestrictAll::ID;
 
 void userPrivacySettingRuleRestrictAll::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12138,7 +12430,7 @@ userPrivacySettingRuleRestrictContacts::userPrivacySettingRuleRestrictContacts()
 {
 }
 
-const int32_t userPrivacySettingRuleRestrictContacts::ID;
+const std::int32_t userPrivacySettingRuleRestrictContacts::ID;
 
 void userPrivacySettingRuleRestrictContacts::store(TlStorerToString &s,
                                                    const char *field_name) const
@@ -12154,18 +12446,18 @@ userPrivacySettingRuleRestrictUsers::userPrivacySettingRuleRestrictUsers()
 {}
 
 userPrivacySettingRuleRestrictUsers::userPrivacySettingRuleRestrictUsers(
-    std::vector<int32_t> &&user_ids_)
+    std::vector<std::int32_t> &&user_ids_)
     : user_ids_(std::move(user_ids_))
 {}
 
-const int32_t userPrivacySettingRuleRestrictUsers::ID;
+const std::int32_t userPrivacySettingRuleRestrictUsers::ID;
 
 void userPrivacySettingRuleRestrictUsers::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "userPrivacySettingRuleRestrictUsers");
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -12187,7 +12479,7 @@ userPrivacySettingRules::userPrivacySettingRules(std::vector<object_ptr<UserPriv
     : rules_(std::move(rules_))
 {}
 
-const int32_t userPrivacySettingRules::ID;
+const std::int32_t userPrivacySettingRules::ID;
 
 void userPrivacySettingRules::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12216,13 +12508,13 @@ userProfilePhotos::userProfilePhotos()
     , photos_()
 {}
 
-userProfilePhotos::userProfilePhotos(int32_t total_count_,
+userProfilePhotos::userProfilePhotos(std::int32_t total_count_,
                                      std::vector<object_ptr<photo>> &&photos_)
     : total_count_(total_count_)
     , photos_(std::move(photos_))
 {}
 
-const int32_t userProfilePhotos::ID;
+const std::int32_t userProfilePhotos::ID;
 
 void userProfilePhotos::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12251,7 +12543,7 @@ userStatusEmpty::userStatusEmpty()
 {
 }
 
-const int32_t userStatusEmpty::ID;
+const std::int32_t userStatusEmpty::ID;
 
 void userStatusEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12265,11 +12557,11 @@ userStatusOnline::userStatusOnline()
     : expires_()
 {}
 
-userStatusOnline::userStatusOnline(int32_t expires_)
+userStatusOnline::userStatusOnline(std::int32_t expires_)
     : expires_(expires_)
 {}
 
-const int32_t userStatusOnline::ID;
+const std::int32_t userStatusOnline::ID;
 
 void userStatusOnline::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12284,11 +12576,11 @@ userStatusOffline::userStatusOffline()
     : was_online_()
 {}
 
-userStatusOffline::userStatusOffline(int32_t was_online_)
+userStatusOffline::userStatusOffline(std::int32_t was_online_)
     : was_online_(was_online_)
 {}
 
-const int32_t userStatusOffline::ID;
+const std::int32_t userStatusOffline::ID;
 
 void userStatusOffline::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12303,7 +12595,7 @@ userStatusRecently::userStatusRecently()
 {
 }
 
-const int32_t userStatusRecently::ID;
+const std::int32_t userStatusRecently::ID;
 
 void userStatusRecently::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12317,7 +12609,7 @@ userStatusLastWeek::userStatusLastWeek()
 {
 }
 
-const int32_t userStatusLastWeek::ID;
+const std::int32_t userStatusLastWeek::ID;
 
 void userStatusLastWeek::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12331,7 +12623,7 @@ userStatusLastMonth::userStatusLastMonth()
 {
 }
 
-const int32_t userStatusLastMonth::ID;
+const std::int32_t userStatusLastMonth::ID;
 
 void userStatusLastMonth::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12345,7 +12637,7 @@ userTypeRegular::userTypeRegular()
 {
 }
 
-const int32_t userTypeRegular::ID;
+const std::int32_t userTypeRegular::ID;
 
 void userTypeRegular::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12359,7 +12651,7 @@ userTypeDeleted::userTypeDeleted()
 {
 }
 
-const int32_t userTypeDeleted::ID;
+const std::int32_t userTypeDeleted::ID;
 
 void userTypeDeleted::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12386,7 +12678,7 @@ userTypeBot::userTypeBot(bool can_join_groups_, bool can_read_all_group_messages
     , need_location_(need_location_)
 {}
 
-const int32_t userTypeBot::ID;
+const std::int32_t userTypeBot::ID;
 
 void userTypeBot::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12405,7 +12697,7 @@ userTypeUnknown::userTypeUnknown()
 {
 }
 
-const int32_t userTypeUnknown::ID;
+const std::int32_t userTypeUnknown::ID;
 
 void userTypeUnknown::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12420,12 +12712,12 @@ users::users()
     , user_ids_()
 {}
 
-users::users(int32_t total_count_, std::vector<int32_t> &&user_ids_)
+users::users(std::int32_t total_count_, std::vector<std::int32_t> &&user_ids_)
     : total_count_(total_count_)
     , user_ids_(std::move(user_ids_))
 {}
 
-const int32_t users::ID;
+const std::int32_t users::ID;
 
 void users::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12433,7 +12725,7 @@ void users::store(TlStorerToString &s, const char *field_name) const
         s.store_class_begin(field_name, "users");
         s.store_field("total_count", total_count_);
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -12457,7 +12749,7 @@ validatedOrderInfo::validatedOrderInfo(std::string const &order_info_id_,
     , shipping_options_(std::move(shipping_options_))
 {}
 
-const int32_t validatedOrderInfo::ID;
+const std::int32_t validatedOrderInfo::ID;
 
 void validatedOrderInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12499,7 +12791,7 @@ venue::venue(object_ptr<location> &&location_, std::string const &title_,
     , id_(std::move(id_))
 {}
 
-const int32_t venue::ID;
+const std::int32_t venue::ID;
 
 void venue::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12525,24 +12817,26 @@ video::video()
     , file_name_()
     , mime_type_()
     , has_stickers_()
+    , supports_streaming_()
     , thumbnail_()
     , video_()
 {}
 
-video::video(int32_t duration_, int32_t width_, int32_t height_,
+video::video(std::int32_t duration_, std::int32_t width_, std::int32_t height_,
              std::string const &file_name_, std::string const &mime_type_, bool has_stickers_,
-             object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&video_)
+             bool supports_streaming_, object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&video_)
     : duration_(duration_)
     , width_(width_)
     , height_(height_)
     , file_name_(std::move(file_name_))
     , mime_type_(std::move(mime_type_))
     , has_stickers_(has_stickers_)
+    , supports_streaming_(supports_streaming_)
     , thumbnail_(std::move(thumbnail_))
     , video_(std::move(video_))
 {}
 
-const int32_t video::ID;
+const std::int32_t video::ID;
 
 void video::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12554,6 +12848,7 @@ void video::store(TlStorerToString &s, const char *field_name) const
         s.store_field("file_name", file_name_);
         s.store_field("mime_type", mime_type_);
         s.store_field("has_stickers", has_stickers_);
+        s.store_field("supports_streaming", supports_streaming_);
         if (thumbnail_ == nullptr) {
             s.store_field("thumbnail", "null");
         } else {
@@ -12575,7 +12870,7 @@ videoNote::videoNote()
     , video_()
 {}
 
-videoNote::videoNote(int32_t duration_, int32_t length_,
+videoNote::videoNote(std::int32_t duration_, std::int32_t length_,
                      object_ptr<photoSize> &&thumbnail_, object_ptr<file> &&video_)
     : duration_(duration_)
     , length_(length_)
@@ -12583,7 +12878,7 @@ videoNote::videoNote(int32_t duration_, int32_t length_,
     , video_(std::move(video_))
 {}
 
-const int32_t videoNote::ID;
+const std::int32_t videoNote::ID;
 
 void videoNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12612,7 +12907,7 @@ voiceNote::voiceNote()
     , voice_()
 {}
 
-voiceNote::voiceNote(int32_t duration_, std::string const &waveform_,
+voiceNote::voiceNote(std::int32_t duration_, std::string const &waveform_,
                      std::string const &mime_type_, object_ptr<file> &&voice_)
     : duration_(duration_)
     , waveform_(std::move(waveform_))
@@ -12620,7 +12915,7 @@ voiceNote::voiceNote(int32_t duration_, std::string const &waveform_,
     , voice_(std::move(voice_))
 {}
 
-const int32_t voiceNote::ID;
+const std::int32_t voiceNote::ID;
 
 void voiceNote::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12644,14 +12939,14 @@ wallpaper::wallpaper()
     , color_()
 {}
 
-wallpaper::wallpaper(int32_t id_, std::vector<object_ptr<photoSize>> &&sizes_,
-                     int32_t color_)
+wallpaper::wallpaper(std::int32_t id_, std::vector<object_ptr<photoSize>> &&sizes_,
+                     std::int32_t color_)
     : id_(id_)
     , sizes_(std::move(sizes_))
     , color_(color_)
 {}
 
-const int32_t wallpaper::ID;
+const std::int32_t wallpaper::ID;
 
 void wallpaper::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12685,7 +12980,7 @@ wallpapers::wallpapers(std::vector<object_ptr<wallpaper>> &&wallpapers_)
     : wallpapers_(std::move(wallpapers_))
 {}
 
-const int32_t wallpapers::ID;
+const std::int32_t wallpapers::ID;
 
 void wallpapers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12736,7 +13031,7 @@ webPage::webPage()
 webPage::webPage(std::string const &url_, std::string const &display_url_, std::string const &type_,
                  std::string const &site_name_, std::string const &title_, std::string const &description_,
                  object_ptr<photo> &&photo_, std::string const &embed_url_, std::string const &embed_type_,
-                 int32_t embed_width_, int32_t embed_height_, int32_t duration_,
+                 std::int32_t embed_width_, std::int32_t embed_height_, std::int32_t duration_,
                  std::string const &author_, object_ptr<animation> &&animation_, object_ptr<audio> &&audio_,
                  object_ptr<document> &&document_, object_ptr<sticker> &&sticker_, object_ptr<video> &&video_,
                  object_ptr<videoNote> &&video_note_, object_ptr<voiceNote> &&voice_note_, bool has_instant_view_)
@@ -12763,7 +13058,7 @@ webPage::webPage(std::string const &url_, std::string const &display_url_, std::
     , has_instant_view_(has_instant_view_)
 {}
 
-const int32_t webPage::ID;
+const std::int32_t webPage::ID;
 
 void webPage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12837,7 +13132,7 @@ webPageInstantView::webPageInstantView(std::vector<object_ptr<PageBlock>> &&page
     , is_full_(is_full_)
 {}
 
-const int32_t webPageInstantView::ID;
+const std::int32_t webPageInstantView::ID;
 
 void webPageInstantView::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12867,12 +13162,12 @@ acceptCall::acceptCall()
     , protocol_()
 {}
 
-acceptCall::acceptCall(int32_t call_id_, object_ptr<callProtocol> &&protocol_)
+acceptCall::acceptCall(std::int32_t call_id_, object_ptr<callProtocol> &&protocol_)
     : call_id_(call_id_)
     , protocol_(std::move(protocol_))
 {}
 
-const int32_t acceptCall::ID;
+const std::int32_t acceptCall::ID;
 
 void acceptCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12894,14 +13189,14 @@ addChatMember::addChatMember()
     , forward_limit_()
 {}
 
-addChatMember::addChatMember(std::int64_t chat_id_, int32_t user_id_,
-                             int32_t forward_limit_)
+addChatMember::addChatMember(std::int64_t chat_id_, std::int32_t user_id_,
+                             std::int32_t forward_limit_)
     : chat_id_(chat_id_)
     , user_id_(user_id_)
     , forward_limit_(forward_limit_)
 {}
 
-const int32_t addChatMember::ID;
+const std::int32_t addChatMember::ID;
 
 void addChatMember::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12919,12 +13214,12 @@ addChatMembers::addChatMembers()
     , user_ids_()
 {}
 
-addChatMembers::addChatMembers(std::int64_t chat_id_, std::vector<int32_t> &&user_ids_)
+addChatMembers::addChatMembers(std::int64_t chat_id_, std::vector<std::int32_t> &&user_ids_)
     : chat_id_(chat_id_)
     , user_ids_(std::move(user_ids_))
 {}
 
-const int32_t addChatMembers::ID;
+const std::int32_t addChatMembers::ID;
 
 void addChatMembers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12932,7 +13227,7 @@ void addChatMembers::store(TlStorerToString &s, const char *field_name) const
         s.store_class_begin(field_name, "addChatMembers");
         s.store_field("chat_id", chat_id_);
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -12953,7 +13248,7 @@ addFavoriteSticker::addFavoriteSticker(object_ptr<InputFile> &&sticker_)
     : sticker_(std::move(sticker_))
 {}
 
-const int32_t addFavoriteSticker::ID;
+const std::int32_t addFavoriteSticker::ID;
 
 void addFavoriteSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -12976,7 +13271,7 @@ addNetworkStatistics::addNetworkStatistics(object_ptr<NetworkStatisticsEntry> &&
     : entry_(std::move(entry_))
 {}
 
-const int32_t addNetworkStatistics::ID;
+const std::int32_t addNetworkStatistics::ID;
 
 void addNetworkStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13001,7 +13296,7 @@ addRecentSticker::addRecentSticker(bool is_attached_, object_ptr<InputFile> &&st
     , sticker_(std::move(sticker_))
 {}
 
-const int32_t addRecentSticker::ID;
+const std::int32_t addRecentSticker::ID;
 
 void addRecentSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13025,7 +13320,7 @@ addRecentlyFoundChat::addRecentlyFoundChat(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t addRecentlyFoundChat::ID;
+const std::int32_t addRecentlyFoundChat::ID;
 
 void addRecentlyFoundChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13044,7 +13339,7 @@ addSavedAnimation::addSavedAnimation(object_ptr<InputFile> &&animation_)
     : animation_(std::move(animation_))
 {}
 
-const int32_t addSavedAnimation::ID;
+const std::int32_t addSavedAnimation::ID;
 
 void addSavedAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13065,14 +13360,14 @@ addStickerToSet::addStickerToSet()
     , sticker_()
 {}
 
-addStickerToSet::addStickerToSet(int32_t user_id_, std::string const &name_,
+addStickerToSet::addStickerToSet(std::int32_t user_id_, std::string const &name_,
                                  object_ptr<inputSticker> &&sticker_)
     : user_id_(user_id_)
     , name_(std::move(name_))
     , sticker_(std::move(sticker_))
 {}
 
-const int32_t addStickerToSet::ID;
+const std::int32_t addStickerToSet::ID;
 
 void addStickerToSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13098,7 +13393,7 @@ answerCallbackQuery::answerCallbackQuery()
 {}
 
 answerCallbackQuery::answerCallbackQuery(std::int64_t callback_query_id_, std::string const &text_,
-                                         bool show_alert_, std::string const &url_, int32_t cache_time_)
+                                         bool show_alert_, std::string const &url_, std::int32_t cache_time_)
     : callback_query_id_(callback_query_id_)
     , text_(std::move(text_))
     , show_alert_(show_alert_)
@@ -13106,7 +13401,7 @@ answerCallbackQuery::answerCallbackQuery(std::int64_t callback_query_id_, std::s
     , cache_time_(cache_time_)
 {}
 
-const int32_t answerCallbackQuery::ID;
+const std::int32_t answerCallbackQuery::ID;
 
 void answerCallbackQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13131,7 +13426,7 @@ answerCustomQuery::answerCustomQuery(std::int64_t custom_query_id_, std::string 
     , data_(std::move(data_))
 {}
 
-const int32_t answerCustomQuery::ID;
+const std::int32_t answerCustomQuery::ID;
 
 void answerCustomQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13154,7 +13449,7 @@ answerInlineQuery::answerInlineQuery()
 {}
 
 answerInlineQuery::answerInlineQuery(std::int64_t inline_query_id_, bool is_personal_,
-                                     std::vector<object_ptr<InputInlineQueryResult>> &&results_, int32_t cache_time_,
+                                     std::vector<object_ptr<InputInlineQueryResult>> &&results_, std::int32_t cache_time_,
                                      std::string const &next_offset_, std::string const &switch_pm_text_,
                                      std::string const &switch_pm_parameter_)
     : inline_query_id_(inline_query_id_)
@@ -13166,7 +13461,7 @@ answerInlineQuery::answerInlineQuery(std::int64_t inline_query_id_, bool is_pers
     , switch_pm_parameter_(std::move(switch_pm_parameter_))
 {}
 
-const int32_t answerInlineQuery::ID;
+const std::int32_t answerInlineQuery::ID;
 
 void answerInlineQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13207,7 +13502,7 @@ answerPreCheckoutQuery::answerPreCheckoutQuery(std::int64_t pre_checkout_query_i
     , error_message_(std::move(error_message_))
 {}
 
-const int32_t answerPreCheckoutQuery::ID;
+const std::int32_t answerPreCheckoutQuery::ID;
 
 void answerPreCheckoutQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13232,7 +13527,7 @@ answerShippingQuery::answerShippingQuery(std::int64_t shipping_query_id_,
     , error_message_(std::move(error_message_))
 {}
 
-const int32_t answerShippingQuery::ID;
+const std::int32_t answerShippingQuery::ID;
 
 void answerShippingQuery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13262,11 +13557,11 @@ blockUser::blockUser()
     : user_id_()
 {}
 
-blockUser::blockUser(int32_t user_id_)
+blockUser::blockUser(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t blockUser::ID;
+const std::int32_t blockUser::ID;
 
 void blockUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13282,12 +13577,12 @@ cancelDownloadFile::cancelDownloadFile()
     , only_if_pending_()
 {}
 
-cancelDownloadFile::cancelDownloadFile(int32_t file_id_, bool only_if_pending_)
+cancelDownloadFile::cancelDownloadFile(std::int32_t file_id_, bool only_if_pending_)
     : file_id_(file_id_)
     , only_if_pending_(only_if_pending_)
 {}
 
-const int32_t cancelDownloadFile::ID;
+const std::int32_t cancelDownloadFile::ID;
 
 void cancelDownloadFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13303,11 +13598,11 @@ cancelUploadFile::cancelUploadFile()
     : file_id_()
 {}
 
-cancelUploadFile::cancelUploadFile(int32_t file_id_)
+cancelUploadFile::cancelUploadFile(std::int32_t file_id_)
     : file_id_(file_id_)
 {}
 
-const int32_t cancelUploadFile::ID;
+const std::int32_t cancelUploadFile::ID;
 
 void cancelUploadFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13328,7 +13623,7 @@ changeChatReportSpamState::changeChatReportSpamState(std::int64_t chat_id_, bool
     , is_spam_chat_(is_spam_chat_)
 {}
 
-const int32_t changeChatReportSpamState::ID;
+const std::int32_t changeChatReportSpamState::ID;
 
 void changeChatReportSpamState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13348,7 +13643,7 @@ changeImportedContacts::changeImportedContacts(std::vector<object_ptr<contact>> 
     : contacts_(std::move(contacts_))
 {}
 
-const int32_t changeImportedContacts::ID;
+const std::int32_t changeImportedContacts::ID;
 
 void changeImportedContacts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13385,7 +13680,7 @@ changePhoneNumber::changePhoneNumber(std::string const &phone_number_, bool allo
     , is_current_phone_number_(is_current_phone_number_)
 {}
 
-const int32_t changePhoneNumber::ID;
+const std::int32_t changePhoneNumber::ID;
 
 void changePhoneNumber::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13410,7 +13705,7 @@ changeStickerSet::changeStickerSet(std::int64_t set_id_, bool is_installed_, boo
     , is_archived_(is_archived_)
 {}
 
-const int32_t changeStickerSet::ID;
+const std::int32_t changeStickerSet::ID;
 
 void changeStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13431,7 +13726,7 @@ checkAuthenticationBotToken::checkAuthenticationBotToken(std::string const &toke
     : token_(std::move(token_))
 {}
 
-const int32_t checkAuthenticationBotToken::ID;
+const std::int32_t checkAuthenticationBotToken::ID;
 
 void checkAuthenticationBotToken::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13455,7 +13750,7 @@ checkAuthenticationCode::checkAuthenticationCode(std::string const &code_,
     , last_name_(std::move(last_name_))
 {}
 
-const int32_t checkAuthenticationCode::ID;
+const std::int32_t checkAuthenticationCode::ID;
 
 void checkAuthenticationCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13476,7 +13771,7 @@ checkAuthenticationPassword::checkAuthenticationPassword(std::string const &pass
     : password_(std::move(password_))
 {}
 
-const int32_t checkAuthenticationPassword::ID;
+const std::int32_t checkAuthenticationPassword::ID;
 
 void checkAuthenticationPassword::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13495,7 +13790,7 @@ checkChangePhoneNumberCode::checkChangePhoneNumberCode(std::string const &code_)
     : code_(std::move(code_))
 {}
 
-const int32_t checkChangePhoneNumberCode::ID;
+const std::int32_t checkChangePhoneNumberCode::ID;
 
 void checkChangePhoneNumberCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13514,13 +13809,35 @@ checkChatInviteLink::checkChatInviteLink(std::string const &invite_link_)
     : invite_link_(std::move(invite_link_))
 {}
 
-const int32_t checkChatInviteLink::ID;
+const std::int32_t checkChatInviteLink::ID;
 
 void checkChatInviteLink::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "checkChatInviteLink");
         s.store_field("invite_link", invite_link_);
+        s.store_class_end();
+    }
+}
+
+checkChatUsername::checkChatUsername()
+    : chat_id_()
+    , username_()
+{}
+
+checkChatUsername::checkChatUsername(std::int64_t chat_id_, std::string const &username_)
+    : chat_id_(chat_id_)
+    , username_(std::move(username_))
+{}
+
+const std::int32_t checkChatUsername::ID;
+
+void checkChatUsername::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "checkChatUsername");
+        s.store_field("chat_id", chat_id_);
+        s.store_field("username", username_);
         s.store_class_end();
     }
 }
@@ -13533,7 +13850,7 @@ checkDatabaseEncryptionKey::checkDatabaseEncryptionKey(std::string const &encryp
     : encryption_key_(std::move(encryption_key_))
 {}
 
-const int32_t checkDatabaseEncryptionKey::ID;
+const std::int32_t checkDatabaseEncryptionKey::ID;
 
 void checkDatabaseEncryptionKey::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13548,7 +13865,7 @@ clearImportedContacts::clearImportedContacts()
 {
 }
 
-const int32_t clearImportedContacts::ID;
+const std::int32_t clearImportedContacts::ID;
 
 void clearImportedContacts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13566,7 +13883,7 @@ clearRecentStickers::clearRecentStickers(bool is_attached_)
     : is_attached_(is_attached_)
 {}
 
-const int32_t clearRecentStickers::ID;
+const std::int32_t clearRecentStickers::ID;
 
 void clearRecentStickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13581,7 +13898,7 @@ clearRecentlyFoundChats::clearRecentlyFoundChats()
 {
 }
 
-const int32_t clearRecentlyFoundChats::ID;
+const std::int32_t clearRecentlyFoundChats::ID;
 
 void clearRecentlyFoundChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13595,7 +13912,7 @@ close::close()
 {
 }
 
-const int32_t close::ID;
+const std::int32_t close::ID;
 
 void close::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13613,7 +13930,7 @@ closeChat::closeChat(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t closeChat::ID;
+const std::int32_t closeChat::ID;
 
 void closeChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13628,11 +13945,11 @@ closeSecretChat::closeSecretChat()
     : secret_chat_id_()
 {}
 
-closeSecretChat::closeSecretChat(int32_t secret_chat_id_)
+closeSecretChat::closeSecretChat(std::int32_t secret_chat_id_)
     : secret_chat_id_(secret_chat_id_)
 {}
 
-const int32_t closeSecretChat::ID;
+const std::int32_t closeSecretChat::ID;
 
 void closeSecretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13648,12 +13965,12 @@ createBasicGroupChat::createBasicGroupChat()
     , force_()
 {}
 
-createBasicGroupChat::createBasicGroupChat(int32_t basic_group_id_, bool force_)
+createBasicGroupChat::createBasicGroupChat(std::int32_t basic_group_id_, bool force_)
     : basic_group_id_(basic_group_id_)
     , force_(force_)
 {}
 
-const int32_t createBasicGroupChat::ID;
+const std::int32_t createBasicGroupChat::ID;
 
 void createBasicGroupChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13670,12 +13987,12 @@ createCall::createCall()
     , protocol_()
 {}
 
-createCall::createCall(int32_t user_id_, object_ptr<callProtocol> &&protocol_)
+createCall::createCall(std::int32_t user_id_, object_ptr<callProtocol> &&protocol_)
     : user_id_(user_id_)
     , protocol_(std::move(protocol_))
 {}
 
-const int32_t createCall::ID;
+const std::int32_t createCall::ID;
 
 void createCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13696,20 +14013,20 @@ createNewBasicGroupChat::createNewBasicGroupChat()
     , title_()
 {}
 
-createNewBasicGroupChat::createNewBasicGroupChat(std::vector<int32_t> &&user_ids_,
+createNewBasicGroupChat::createNewBasicGroupChat(std::vector<std::int32_t> &&user_ids_,
                                                  std::string const &title_)
     : user_ids_(std::move(user_ids_))
     , title_(std::move(title_))
 {}
 
-const int32_t createNewBasicGroupChat::ID;
+const std::int32_t createNewBasicGroupChat::ID;
 
 void createNewBasicGroupChat::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "createNewBasicGroupChat");
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -13727,11 +14044,11 @@ createNewSecretChat::createNewSecretChat()
     : user_id_()
 {}
 
-createNewSecretChat::createNewSecretChat(int32_t user_id_)
+createNewSecretChat::createNewSecretChat(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t createNewSecretChat::ID;
+const std::int32_t createNewSecretChat::ID;
 
 void createNewSecretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13750,7 +14067,7 @@ createNewStickerSet::createNewStickerSet()
     , stickers_()
 {}
 
-createNewStickerSet::createNewStickerSet(int32_t user_id_, std::string const &title_,
+createNewStickerSet::createNewStickerSet(std::int32_t user_id_, std::string const &title_,
                                          std::string const &name_, bool is_masks_, std::vector<object_ptr<inputSticker>> &&stickers_)
     : user_id_(user_id_)
     , title_(std::move(title_))
@@ -13759,7 +14076,7 @@ createNewStickerSet::createNewStickerSet(int32_t user_id_, std::string const &ti
     , stickers_(std::move(stickers_))
 {}
 
-const int32_t createNewStickerSet::ID;
+const std::int32_t createNewStickerSet::ID;
 
 void createNewStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13800,7 +14117,7 @@ createNewSupergroupChat::createNewSupergroupChat(std::string const &title_, bool
     , description_(std::move(description_))
 {}
 
-const int32_t createNewSupergroupChat::ID;
+const std::int32_t createNewSupergroupChat::ID;
 
 void createNewSupergroupChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13818,12 +14135,12 @@ createPrivateChat::createPrivateChat()
     , force_()
 {}
 
-createPrivateChat::createPrivateChat(int32_t user_id_, bool force_)
+createPrivateChat::createPrivateChat(std::int32_t user_id_, bool force_)
     : user_id_(user_id_)
     , force_(force_)
 {}
 
-const int32_t createPrivateChat::ID;
+const std::int32_t createPrivateChat::ID;
 
 void createPrivateChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13839,11 +14156,11 @@ createSecretChat::createSecretChat()
     : secret_chat_id_()
 {}
 
-createSecretChat::createSecretChat(int32_t secret_chat_id_)
+createSecretChat::createSecretChat(std::int32_t secret_chat_id_)
     : secret_chat_id_(secret_chat_id_)
 {}
 
-const int32_t createSecretChat::ID;
+const std::int32_t createSecretChat::ID;
 
 void createSecretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13859,12 +14176,12 @@ createSupergroupChat::createSupergroupChat()
     , force_()
 {}
 
-createSupergroupChat::createSupergroupChat(int32_t supergroup_id_, bool force_)
+createSupergroupChat::createSupergroupChat(std::int32_t supergroup_id_, bool force_)
     : supergroup_id_(supergroup_id_)
     , force_(force_)
 {}
 
-const int32_t createSupergroupChat::ID;
+const std::int32_t createSupergroupChat::ID;
 
 void createSupergroupChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13882,12 +14199,12 @@ createTemporaryPassword::createTemporaryPassword()
 {}
 
 createTemporaryPassword::createTemporaryPassword(std::string const &password_,
-                                                 int32_t valid_for_)
+                                                 std::int32_t valid_for_)
     : password_(std::move(password_))
     , valid_for_(valid_for_)
 {}
 
-const int32_t createTemporaryPassword::ID;
+const std::int32_t createTemporaryPassword::ID;
 
 void createTemporaryPassword::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13907,7 +14224,7 @@ deleteAccount::deleteAccount(std::string const &reason_)
     : reason_(std::move(reason_))
 {}
 
-const int32_t deleteAccount::ID;
+const std::int32_t deleteAccount::ID;
 
 void deleteAccount::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13928,7 +14245,7 @@ deleteChatHistory::deleteChatHistory(std::int64_t chat_id_, bool remove_from_cha
     , remove_from_chat_list_(remove_from_chat_list_)
 {}
 
-const int32_t deleteChatHistory::ID;
+const std::int32_t deleteChatHistory::ID;
 
 void deleteChatHistory::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13945,12 +14262,12 @@ deleteChatMessagesFromUser::deleteChatMessagesFromUser()
     , user_id_()
 {}
 
-deleteChatMessagesFromUser::deleteChatMessagesFromUser(std::int64_t chat_id_, int32_t user_id_)
+deleteChatMessagesFromUser::deleteChatMessagesFromUser(std::int64_t chat_id_, std::int32_t user_id_)
     : chat_id_(chat_id_)
     , user_id_(user_id_)
 {}
 
-const int32_t deleteChatMessagesFromUser::ID;
+const std::int32_t deleteChatMessagesFromUser::ID;
 
 void deleteChatMessagesFromUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13972,7 +14289,7 @@ deleteChatReplyMarkup::deleteChatReplyMarkup(std::int64_t chat_id_, std::int64_t
     , message_id_(message_id_)
 {}
 
-const int32_t deleteChatReplyMarkup::ID;
+const std::int32_t deleteChatReplyMarkup::ID;
 
 void deleteChatReplyMarkup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -13988,11 +14305,11 @@ deleteFile::deleteFile()
     : file_id_()
 {}
 
-deleteFile::deleteFile(int32_t file_id_)
+deleteFile::deleteFile(std::int32_t file_id_)
     : file_id_(file_id_)
 {}
 
-const int32_t deleteFile::ID;
+const std::int32_t deleteFile::ID;
 
 void deleteFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14016,7 +14333,7 @@ deleteMessages::deleteMessages(std::int64_t chat_id_, std::vector<std::int64_t> 
     , revoke_(revoke_)
 {}
 
-const int32_t deleteMessages::ID;
+const std::int32_t deleteMessages::ID;
 
 void deleteMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14046,7 +14363,7 @@ deleteProfilePhoto::deleteProfilePhoto(std::int64_t profile_photo_id_)
     : profile_photo_id_(profile_photo_id_)
 {}
 
-const int32_t deleteProfilePhoto::ID;
+const std::int32_t deleteProfilePhoto::ID;
 
 void deleteProfilePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14061,7 +14378,7 @@ deleteSavedCredentials::deleteSavedCredentials()
 {
 }
 
-const int32_t deleteSavedCredentials::ID;
+const std::int32_t deleteSavedCredentials::ID;
 
 void deleteSavedCredentials::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14075,7 +14392,7 @@ deleteSavedOrderInfo::deleteSavedOrderInfo()
 {
 }
 
-const int32_t deleteSavedOrderInfo::ID;
+const std::int32_t deleteSavedOrderInfo::ID;
 
 void deleteSavedOrderInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14089,11 +14406,11 @@ deleteSupergroup::deleteSupergroup()
     : supergroup_id_()
 {}
 
-deleteSupergroup::deleteSupergroup(int32_t supergroup_id_)
+deleteSupergroup::deleteSupergroup(std::int32_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t deleteSupergroup::ID;
+const std::int32_t deleteSupergroup::ID;
 
 void deleteSupergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14108,7 +14425,7 @@ destroy::destroy()
 {
 }
 
-const int32_t destroy::ID;
+const std::int32_t destroy::ID;
 
 void destroy::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14125,7 +14442,7 @@ discardCall::discardCall()
     , connection_id_()
 {}
 
-discardCall::discardCall(int32_t call_id_, bool is_disconnected_, int32_t duration_,
+discardCall::discardCall(std::int32_t call_id_, bool is_disconnected_, std::int32_t duration_,
                          std::int64_t connection_id_)
     : call_id_(call_id_)
     , is_disconnected_(is_disconnected_)
@@ -14133,7 +14450,7 @@ discardCall::discardCall(int32_t call_id_, bool is_disconnected_, int32_t durati
     , connection_id_(connection_id_)
 {}
 
-const int32_t discardCall::ID;
+const std::int32_t discardCall::ID;
 
 void discardCall::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14147,17 +14464,50 @@ void discardCall::store(TlStorerToString &s, const char *field_name) const
     }
 }
 
+disconnectAllWebsites::disconnectAllWebsites()
+{
+}
+
+const std::int32_t disconnectAllWebsites::ID;
+
+void disconnectAllWebsites::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "disconnectAllWebsites");
+        s.store_class_end();
+    }
+}
+
+disconnectWebsite::disconnectWebsite()
+    : website_id_()
+{}
+
+disconnectWebsite::disconnectWebsite(std::int64_t website_id_)
+    : website_id_(website_id_)
+{}
+
+const std::int32_t disconnectWebsite::ID;
+
+void disconnectWebsite::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "disconnectWebsite");
+        s.store_field("website_id", website_id_);
+        s.store_class_end();
+    }
+}
+
 downloadFile::downloadFile()
     : file_id_()
     , priority_()
 {}
 
-downloadFile::downloadFile(int32_t file_id_, int32_t priority_)
+downloadFile::downloadFile(std::int32_t file_id_, std::int32_t priority_)
     : file_id_(file_id_)
     , priority_(priority_)
 {}
 
-const int32_t downloadFile::ID;
+const std::int32_t downloadFile::ID;
 
 void downloadFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14182,7 +14532,7 @@ editInlineMessageCaption::editInlineMessageCaption(std::string const &inline_mes
     , caption_(std::move(caption_))
 {}
 
-const int32_t editInlineMessageCaption::ID;
+const std::int32_t editInlineMessageCaption::ID;
 
 void editInlineMessageCaption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14216,7 +14566,7 @@ editInlineMessageLiveLocation::editInlineMessageLiveLocation(std::string const &
     , location_(std::move(location_))
 {}
 
-const int32_t editInlineMessageLiveLocation::ID;
+const std::int32_t editInlineMessageLiveLocation::ID;
 
 void editInlineMessageLiveLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14248,7 +14598,7 @@ editInlineMessageReplyMarkup::editInlineMessageReplyMarkup(std::string const &in
     , reply_markup_(std::move(reply_markup_))
 {}
 
-const int32_t editInlineMessageReplyMarkup::ID;
+const std::int32_t editInlineMessageReplyMarkup::ID;
 
 void editInlineMessageReplyMarkup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14277,7 +14627,7 @@ editInlineMessageText::editInlineMessageText(std::string const &inline_message_i
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t editInlineMessageText::ID;
+const std::int32_t editInlineMessageText::ID;
 
 void editInlineMessageText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14313,7 +14663,7 @@ editMessageCaption::editMessageCaption(std::int64_t chat_id_, std::int64_t messa
     , caption_(std::move(caption_))
 {}
 
-const int32_t editMessageCaption::ID;
+const std::int32_t editMessageCaption::ID;
 
 void editMessageCaption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14350,7 +14700,7 @@ editMessageLiveLocation::editMessageLiveLocation(std::int64_t chat_id_, std::int
     , location_(std::move(location_))
 {}
 
-const int32_t editMessageLiveLocation::ID;
+const std::int32_t editMessageLiveLocation::ID;
 
 void editMessageLiveLocation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14385,7 +14735,7 @@ editMessageReplyMarkup::editMessageReplyMarkup(std::int64_t chat_id_, std::int64
     , reply_markup_(std::move(reply_markup_))
 {}
 
-const int32_t editMessageReplyMarkup::ID;
+const std::int32_t editMessageReplyMarkup::ID;
 
 void editMessageReplyMarkup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14417,7 +14767,7 @@ editMessageText::editMessageText(std::int64_t chat_id_, std::int64_t message_id_
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t editMessageText::ID;
+const std::int32_t editMessageText::ID;
 
 void editMessageText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14449,7 +14799,7 @@ finishFileGeneration::finishFileGeneration(std::int64_t generation_id_, object_p
     , error_(std::move(error_))
 {}
 
-const int32_t finishFileGeneration::ID;
+const std::int32_t finishFileGeneration::ID;
 
 void finishFileGeneration::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14485,7 +14835,7 @@ forwardMessages::forwardMessages(std::int64_t chat_id_, std::int64_t from_chat_i
     , as_album_(as_album_)
 {}
 
-const int32_t forwardMessages::ID;
+const std::int32_t forwardMessages::ID;
 
 void forwardMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14518,7 +14868,7 @@ generateChatInviteLink::generateChatInviteLink(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t generateChatInviteLink::ID;
+const std::int32_t generateChatInviteLink::ID;
 
 void generateChatInviteLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14533,7 +14883,7 @@ getAccountTtl::getAccountTtl()
 {
 }
 
-const int32_t getAccountTtl::ID;
+const std::int32_t getAccountTtl::ID;
 
 void getAccountTtl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14547,7 +14897,7 @@ getActiveLiveLocationMessages::getActiveLiveLocationMessages()
 {
 }
 
-const int32_t getActiveLiveLocationMessages::ID;
+const std::int32_t getActiveLiveLocationMessages::ID;
 
 void getActiveLiveLocationMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14561,7 +14911,7 @@ getActiveSessions::getActiveSessions()
 {
 }
 
-const int32_t getActiveSessions::ID;
+const std::int32_t getActiveSessions::ID;
 
 void getActiveSessions::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14578,13 +14928,13 @@ getArchivedStickerSets::getArchivedStickerSets()
 {}
 
 getArchivedStickerSets::getArchivedStickerSets(bool is_masks_, std::int64_t offset_sticker_set_id_,
-                                               int32_t limit_)
+                                               std::int32_t limit_)
     : is_masks_(is_masks_)
     , offset_sticker_set_id_(offset_sticker_set_id_)
     , limit_(limit_)
 {}
 
-const int32_t getArchivedStickerSets::ID;
+const std::int32_t getArchivedStickerSets::ID;
 
 void getArchivedStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14601,11 +14951,11 @@ getAttachedStickerSets::getAttachedStickerSets()
     : file_id_()
 {}
 
-getAttachedStickerSets::getAttachedStickerSets(int32_t file_id_)
+getAttachedStickerSets::getAttachedStickerSets(std::int32_t file_id_)
     : file_id_(file_id_)
 {}
 
-const int32_t getAttachedStickerSets::ID;
+const std::int32_t getAttachedStickerSets::ID;
 
 void getAttachedStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14620,7 +14970,7 @@ getAuthorizationState::getAuthorizationState()
 {
 }
 
-const int32_t getAuthorizationState::ID;
+const std::int32_t getAuthorizationState::ID;
 
 void getAuthorizationState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14634,11 +14984,11 @@ getBasicGroup::getBasicGroup()
     : basic_group_id_()
 {}
 
-getBasicGroup::getBasicGroup(int32_t basic_group_id_)
+getBasicGroup::getBasicGroup(std::int32_t basic_group_id_)
     : basic_group_id_(basic_group_id_)
 {}
 
-const int32_t getBasicGroup::ID;
+const std::int32_t getBasicGroup::ID;
 
 void getBasicGroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14653,11 +15003,11 @@ getBasicGroupFullInfo::getBasicGroupFullInfo()
     : basic_group_id_()
 {}
 
-getBasicGroupFullInfo::getBasicGroupFullInfo(int32_t basic_group_id_)
+getBasicGroupFullInfo::getBasicGroupFullInfo(std::int32_t basic_group_id_)
     : basic_group_id_(basic_group_id_)
 {}
 
-const int32_t getBasicGroupFullInfo::ID;
+const std::int32_t getBasicGroupFullInfo::ID;
 
 void getBasicGroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14673,12 +15023,12 @@ getBlockedUsers::getBlockedUsers()
     , limit_()
 {}
 
-getBlockedUsers::getBlockedUsers(int32_t offset_, int32_t limit_)
+getBlockedUsers::getBlockedUsers(std::int32_t offset_, std::int32_t limit_)
     : offset_(offset_)
     , limit_(limit_)
 {}
 
-const int32_t getBlockedUsers::ID;
+const std::int32_t getBlockedUsers::ID;
 
 void getBlockedUsers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14703,7 +15053,7 @@ getCallbackQueryAnswer::getCallbackQueryAnswer(std::int64_t chat_id_, std::int64
     , payload_(std::move(payload_))
 {}
 
-const int32_t getCallbackQueryAnswer::ID;
+const std::int32_t getCallbackQueryAnswer::ID;
 
 void getCallbackQueryAnswer::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14728,7 +15078,7 @@ getChat::getChat(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t getChat::ID;
+const std::int32_t getChat::ID;
 
 void getChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14747,7 +15097,7 @@ getChatAdministrators::getChatAdministrators(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t getChatAdministrators::ID;
+const std::int32_t getChatAdministrators::ID;
 
 void getChatAdministrators::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14768,8 +15118,8 @@ getChatEventLog::getChatEventLog()
 {}
 
 getChatEventLog::getChatEventLog(std::int64_t chat_id_, std::string const &query_,
-                                 std::int64_t from_event_id_, int32_t limit_, object_ptr<chatEventLogFilters> &&filters_,
-                                 std::vector<int32_t> &&user_ids_)
+                                 std::int64_t from_event_id_, std::int32_t limit_, object_ptr<chatEventLogFilters> &&filters_,
+                                 std::vector<std::int32_t> &&user_ids_)
     : chat_id_(chat_id_)
     , query_(std::move(query_))
     , from_event_id_(from_event_id_)
@@ -14778,7 +15128,7 @@ getChatEventLog::getChatEventLog(std::int64_t chat_id_, std::string const &query
     , user_ids_(std::move(user_ids_))
 {}
 
-const int32_t getChatEventLog::ID;
+const std::int32_t getChatEventLog::ID;
 
 void getChatEventLog::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14794,7 +15144,7 @@ void getChatEventLog::store(TlStorerToString &s, const char *field_name) const
             filters_->store(s, "filters");
         }
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -14816,7 +15166,7 @@ getChatHistory::getChatHistory()
 {}
 
 getChatHistory::getChatHistory(std::int64_t chat_id_, std::int64_t from_message_id_,
-                               int32_t offset_, int32_t limit_, bool only_local_)
+                               std::int32_t offset_, std::int32_t limit_, bool only_local_)
     : chat_id_(chat_id_)
     , from_message_id_(from_message_id_)
     , offset_(offset_)
@@ -14824,7 +15174,7 @@ getChatHistory::getChatHistory(std::int64_t chat_id_, std::int64_t from_message_
     , only_local_(only_local_)
 {}
 
-const int32_t getChatHistory::ID;
+const std::int32_t getChatHistory::ID;
 
 void getChatHistory::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14844,12 +15194,12 @@ getChatMember::getChatMember()
     , user_id_()
 {}
 
-getChatMember::getChatMember(std::int64_t chat_id_, int32_t user_id_)
+getChatMember::getChatMember(std::int64_t chat_id_, std::int32_t user_id_)
     : chat_id_(chat_id_)
     , user_id_(user_id_)
 {}
 
-const int32_t getChatMember::ID;
+const std::int32_t getChatMember::ID;
 
 void getChatMember::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14866,12 +15216,12 @@ getChatMessageByDate::getChatMessageByDate()
     , date_()
 {}
 
-getChatMessageByDate::getChatMessageByDate(std::int64_t chat_id_, int32_t date_)
+getChatMessageByDate::getChatMessageByDate(std::int64_t chat_id_, std::int32_t date_)
     : chat_id_(chat_id_)
     , date_(date_)
 {}
 
-const int32_t getChatMessageByDate::ID;
+const std::int32_t getChatMessageByDate::ID;
 
 void getChatMessageByDate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14879,6 +15229,25 @@ void getChatMessageByDate::store(TlStorerToString &s, const char *field_name) co
         s.store_class_begin(field_name, "getChatMessageByDate");
         s.store_field("chat_id", chat_id_);
         s.store_field("date", date_);
+        s.store_class_end();
+    }
+}
+
+getChatPinnedMessage::getChatPinnedMessage()
+    : chat_id_()
+{}
+
+getChatPinnedMessage::getChatPinnedMessage(std::int64_t chat_id_)
+    : chat_id_(chat_id_)
+{}
+
+const std::int32_t getChatPinnedMessage::ID;
+
+void getChatPinnedMessage::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "getChatPinnedMessage");
+        s.store_field("chat_id", chat_id_);
         s.store_class_end();
     }
 }
@@ -14891,7 +15260,7 @@ getChatReportSpamState::getChatReportSpamState(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t getChatReportSpamState::ID;
+const std::int32_t getChatReportSpamState::ID;
 
 void getChatReportSpamState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14908,13 +15277,13 @@ getChats::getChats()
     , limit_()
 {}
 
-getChats::getChats(std::int64_t offset_order_, std::int64_t offset_chat_id_, int32_t limit_)
+getChats::getChats(std::int64_t offset_order_, std::int64_t offset_chat_id_, std::int32_t limit_)
     : offset_order_(offset_order_)
     , offset_chat_id_(offset_chat_id_)
     , limit_(limit_)
 {}
 
-const int32_t getChats::ID;
+const std::int32_t getChats::ID;
 
 void getChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14927,11 +15296,39 @@ void getChats::store(TlStorerToString &s, const char *field_name) const
     }
 }
 
+getConnectedWebsites::getConnectedWebsites()
+{
+}
+
+const std::int32_t getConnectedWebsites::ID;
+
+void getConnectedWebsites::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "getConnectedWebsites");
+        s.store_class_end();
+    }
+}
+
+getCountryCode::getCountryCode()
+{
+}
+
+const std::int32_t getCountryCode::ID;
+
+void getCountryCode::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "getCountryCode");
+        s.store_class_end();
+    }
+}
+
 getCreatedPublicChats::getCreatedPublicChats()
 {
 }
 
-const int32_t getCreatedPublicChats::ID;
+const std::int32_t getCreatedPublicChats::ID;
 
 void getCreatedPublicChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14945,7 +15342,7 @@ getFavoriteStickers::getFavoriteStickers()
 {
 }
 
-const int32_t getFavoriteStickers::ID;
+const std::int32_t getFavoriteStickers::ID;
 
 void getFavoriteStickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14959,11 +15356,11 @@ getFile::getFile()
     : file_id_()
 {}
 
-getFile::getFile(int32_t file_id_)
+getFile::getFile(std::int32_t file_id_)
     : file_id_(file_id_)
 {}
 
-const int32_t getFile::ID;
+const std::int32_t getFile::ID;
 
 void getFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -14982,7 +15379,7 @@ getFileExtension::getFileExtension(std::string const &mime_type_)
     : mime_type_(std::move(mime_type_))
 {}
 
-const int32_t getFileExtension::ID;
+const std::int32_t getFileExtension::ID;
 
 void getFileExtension::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15001,7 +15398,7 @@ getFileMimeType::getFileMimeType(std::string const &file_name_)
     : file_name_(std::move(file_name_))
 {}
 
-const int32_t getFileMimeType::ID;
+const std::int32_t getFileMimeType::ID;
 
 void getFileMimeType::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15019,13 +15416,13 @@ getGameHighScores::getGameHighScores()
 {}
 
 getGameHighScores::getGameHighScores(std::int64_t chat_id_, std::int64_t message_id_,
-                                     int32_t user_id_)
+                                     std::int32_t user_id_)
     : chat_id_(chat_id_)
     , message_id_(message_id_)
     , user_id_(user_id_)
 {}
 
-const int32_t getGameHighScores::ID;
+const std::int32_t getGameHighScores::ID;
 
 void getGameHighScores::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15044,14 +15441,14 @@ getGroupsInCommon::getGroupsInCommon()
     , limit_()
 {}
 
-getGroupsInCommon::getGroupsInCommon(int32_t user_id_, std::int64_t offset_chat_id_,
-                                     int32_t limit_)
+getGroupsInCommon::getGroupsInCommon(std::int32_t user_id_, std::int64_t offset_chat_id_,
+                                     std::int32_t limit_)
     : user_id_(user_id_)
     , offset_chat_id_(offset_chat_id_)
     , limit_(limit_)
 {}
 
-const int32_t getGroupsInCommon::ID;
+const std::int32_t getGroupsInCommon::ID;
 
 void getGroupsInCommon::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15068,7 +15465,7 @@ getImportedContactCount::getImportedContactCount()
 {
 }
 
-const int32_t getImportedContactCount::ID;
+const std::int32_t getImportedContactCount::ID;
 
 void getImportedContactCount::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15084,12 +15481,12 @@ getInlineGameHighScores::getInlineGameHighScores()
 {}
 
 getInlineGameHighScores::getInlineGameHighScores(std::string const &inline_message_id_,
-                                                 int32_t user_id_)
+                                                 std::int32_t user_id_)
     : inline_message_id_(std::move(inline_message_id_))
     , user_id_(user_id_)
 {}
 
-const int32_t getInlineGameHighScores::ID;
+const std::int32_t getInlineGameHighScores::ID;
 
 void getInlineGameHighScores::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15109,7 +15506,7 @@ getInlineQueryResults::getInlineQueryResults()
     , offset_()
 {}
 
-getInlineQueryResults::getInlineQueryResults(int32_t bot_user_id_, std::int64_t chat_id_,
+getInlineQueryResults::getInlineQueryResults(std::int32_t bot_user_id_, std::int64_t chat_id_,
                                              object_ptr<location> &&user_location_, std::string const &query_, std::string const &offset_)
     : bot_user_id_(bot_user_id_)
     , chat_id_(chat_id_)
@@ -15118,7 +15515,7 @@ getInlineQueryResults::getInlineQueryResults(int32_t bot_user_id_, std::int64_t 
     , offset_(std::move(offset_))
 {}
 
-const int32_t getInlineQueryResults::ID;
+const std::int32_t getInlineQueryResults::ID;
 
 void getInlineQueryResults::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15145,7 +15542,7 @@ getInstalledStickerSets::getInstalledStickerSets(bool is_masks_)
     : is_masks_(is_masks_)
 {}
 
-const int32_t getInstalledStickerSets::ID;
+const std::int32_t getInstalledStickerSets::ID;
 
 void getInstalledStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15160,7 +15557,7 @@ getInviteText::getInviteText()
 {
 }
 
-const int32_t getInviteText::ID;
+const std::int32_t getInviteText::ID;
 
 void getInviteText::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15174,7 +15571,7 @@ getMe::getMe()
 {
 }
 
-const int32_t getMe::ID;
+const std::int32_t getMe::ID;
 
 void getMe::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15194,7 +15591,7 @@ getMessage::getMessage(std::int64_t chat_id_, std::int64_t message_id_)
     , message_id_(message_id_)
 {}
 
-const int32_t getMessage::ID;
+const std::int32_t getMessage::ID;
 
 void getMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15216,7 +15613,7 @@ getMessages::getMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&mess
     , message_ids_(std::move(message_ids_))
 {}
 
-const int32_t getMessages::ID;
+const std::int32_t getMessages::ID;
 
 void getMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15245,7 +15642,7 @@ getNetworkStatistics::getNetworkStatistics(bool only_current_)
     : only_current_(only_current_)
 {}
 
-const int32_t getNetworkStatistics::ID;
+const std::int32_t getNetworkStatistics::ID;
 
 void getNetworkStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15264,7 +15661,7 @@ getNotificationSettings::getNotificationSettings(object_ptr<NotificationSettings
     : scope_(std::move(scope_))
 {}
 
-const int32_t getNotificationSettings::ID;
+const std::int32_t getNotificationSettings::ID;
 
 void getNotificationSettings::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15287,7 +15684,7 @@ getOption::getOption(std::string const &name_)
     : name_(std::move(name_))
 {}
 
-const int32_t getOption::ID;
+const std::int32_t getOption::ID;
 
 void getOption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15302,7 +15699,7 @@ getPasswordState::getPasswordState()
 {
 }
 
-const int32_t getPasswordState::ID;
+const std::int32_t getPasswordState::ID;
 
 void getPasswordState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15322,7 +15719,7 @@ getPaymentForm::getPaymentForm(std::int64_t chat_id_, std::int64_t message_id_)
     , message_id_(message_id_)
 {}
 
-const int32_t getPaymentForm::ID;
+const std::int32_t getPaymentForm::ID;
 
 void getPaymentForm::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15344,7 +15741,7 @@ getPaymentReceipt::getPaymentReceipt(std::int64_t chat_id_, std::int64_t message
     , message_id_(message_id_)
 {}
 
-const int32_t getPaymentReceipt::ID;
+const std::int32_t getPaymentReceipt::ID;
 
 void getPaymentReceipt::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15360,7 +15757,7 @@ getProxy::getProxy()
 {
 }
 
-const int32_t getProxy::ID;
+const std::int32_t getProxy::ID;
 
 void getProxy::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15383,7 +15780,7 @@ getPublicMessageLink::getPublicMessageLink(std::int64_t chat_id_, std::int64_t m
     , for_album_(for_album_)
 {}
 
-const int32_t getPublicMessageLink::ID;
+const std::int32_t getPublicMessageLink::ID;
 
 void getPublicMessageLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15400,7 +15797,7 @@ getRecentInlineBots::getRecentInlineBots()
 {
 }
 
-const int32_t getRecentInlineBots::ID;
+const std::int32_t getRecentInlineBots::ID;
 
 void getRecentInlineBots::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15418,7 +15815,7 @@ getRecentStickers::getRecentStickers(bool is_attached_)
     : is_attached_(is_attached_)
 {}
 
-const int32_t getRecentStickers::ID;
+const std::int32_t getRecentStickers::ID;
 
 void getRecentStickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15437,7 +15834,7 @@ getRecentlyVisitedTMeUrls::getRecentlyVisitedTMeUrls(std::string const &referrer
     : referrer_(std::move(referrer_))
 {}
 
-const int32_t getRecentlyVisitedTMeUrls::ID;
+const std::int32_t getRecentlyVisitedTMeUrls::ID;
 
 void getRecentlyVisitedTMeUrls::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15456,7 +15853,7 @@ getRecoveryEmailAddress::getRecoveryEmailAddress(std::string const &password_)
     : password_(std::move(password_))
 {}
 
-const int32_t getRecoveryEmailAddress::ID;
+const std::int32_t getRecoveryEmailAddress::ID;
 
 void getRecoveryEmailAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15477,7 +15874,7 @@ getRemoteFile::getRemoteFile(std::string const &remote_file_id_, object_ptr<File
     , file_type_(std::move(file_type_))
 {}
 
-const int32_t getRemoteFile::ID;
+const std::int32_t getRemoteFile::ID;
 
 void getRemoteFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15493,11 +15890,33 @@ void getRemoteFile::store(TlStorerToString &s, const char *field_name) const
     }
 }
 
+getRepliedMessage::getRepliedMessage()
+    : chat_id_()
+    , message_id_()
+{}
+
+getRepliedMessage::getRepliedMessage(std::int64_t chat_id_, std::int64_t message_id_)
+    : chat_id_(chat_id_)
+    , message_id_(message_id_)
+{}
+
+const std::int32_t getRepliedMessage::ID;
+
+void getRepliedMessage::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "getRepliedMessage");
+        s.store_field("chat_id", chat_id_);
+        s.store_field("message_id", message_id_);
+        s.store_class_end();
+    }
+}
+
 getSavedAnimations::getSavedAnimations()
 {
 }
 
-const int32_t getSavedAnimations::ID;
+const std::int32_t getSavedAnimations::ID;
 
 void getSavedAnimations::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15511,7 +15930,7 @@ getSavedOrderInfo::getSavedOrderInfo()
 {
 }
 
-const int32_t getSavedOrderInfo::ID;
+const std::int32_t getSavedOrderInfo::ID;
 
 void getSavedOrderInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15525,11 +15944,11 @@ getSecretChat::getSecretChat()
     : secret_chat_id_()
 {}
 
-getSecretChat::getSecretChat(int32_t secret_chat_id_)
+getSecretChat::getSecretChat(std::int32_t secret_chat_id_)
     : secret_chat_id_(secret_chat_id_)
 {}
 
-const int32_t getSecretChat::ID;
+const std::int32_t getSecretChat::ID;
 
 void getSecretChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15548,7 +15967,7 @@ getStickerEmojis::getStickerEmojis(object_ptr<InputFile> &&sticker_)
     : sticker_(std::move(sticker_))
 {}
 
-const int32_t getStickerEmojis::ID;
+const std::int32_t getStickerEmojis::ID;
 
 void getStickerEmojis::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15571,7 +15990,7 @@ getStickerSet::getStickerSet(std::int64_t set_id_)
     : set_id_(set_id_)
 {}
 
-const int32_t getStickerSet::ID;
+const std::int32_t getStickerSet::ID;
 
 void getStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15587,12 +16006,12 @@ getStickers::getStickers()
     , limit_()
 {}
 
-getStickers::getStickers(std::string const &emoji_, int32_t limit_)
+getStickers::getStickers(std::string const &emoji_, std::int32_t limit_)
     : emoji_(std::move(emoji_))
     , limit_(limit_)
 {}
 
-const int32_t getStickers::ID;
+const std::int32_t getStickers::ID;
 
 void getStickers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15608,11 +16027,11 @@ getStorageStatistics::getStorageStatistics()
     : chat_limit_()
 {}
 
-getStorageStatistics::getStorageStatistics(int32_t chat_limit_)
+getStorageStatistics::getStorageStatistics(std::int32_t chat_limit_)
     : chat_limit_(chat_limit_)
 {}
 
-const int32_t getStorageStatistics::ID;
+const std::int32_t getStorageStatistics::ID;
 
 void getStorageStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15627,7 +16046,7 @@ getStorageStatisticsFast::getStorageStatisticsFast()
 {
 }
 
-const int32_t getStorageStatisticsFast::ID;
+const std::int32_t getStorageStatisticsFast::ID;
 
 void getStorageStatisticsFast::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15641,11 +16060,11 @@ getSupergroup::getSupergroup()
     : supergroup_id_()
 {}
 
-getSupergroup::getSupergroup(int32_t supergroup_id_)
+getSupergroup::getSupergroup(std::int32_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t getSupergroup::ID;
+const std::int32_t getSupergroup::ID;
 
 void getSupergroup::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15660,11 +16079,11 @@ getSupergroupFullInfo::getSupergroupFullInfo()
     : supergroup_id_()
 {}
 
-getSupergroupFullInfo::getSupergroupFullInfo(int32_t supergroup_id_)
+getSupergroupFullInfo::getSupergroupFullInfo(std::int32_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t getSupergroupFullInfo::ID;
+const std::int32_t getSupergroupFullInfo::ID;
 
 void getSupergroupFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15682,15 +16101,15 @@ getSupergroupMembers::getSupergroupMembers()
     , limit_()
 {}
 
-getSupergroupMembers::getSupergroupMembers(int32_t supergroup_id_,
-                                           object_ptr<SupergroupMembersFilter> &&filter_, int32_t offset_, int32_t limit_)
+getSupergroupMembers::getSupergroupMembers(std::int32_t supergroup_id_,
+                                           object_ptr<SupergroupMembersFilter> &&filter_, std::int32_t offset_, std::int32_t limit_)
     : supergroup_id_(supergroup_id_)
     , filter_(std::move(filter_))
     , offset_(offset_)
     , limit_(limit_)
 {}
 
-const int32_t getSupergroupMembers::ID;
+const std::int32_t getSupergroupMembers::ID;
 
 void getSupergroupMembers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15712,7 +16131,7 @@ getSupportUser::getSupportUser()
 {
 }
 
-const int32_t getSupportUser::ID;
+const std::int32_t getSupportUser::ID;
 
 void getSupportUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15726,7 +16145,7 @@ getTemporaryPasswordState::getTemporaryPasswordState()
 {
 }
 
-const int32_t getTemporaryPasswordState::ID;
+const std::int32_t getTemporaryPasswordState::ID;
 
 void getTemporaryPasswordState::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15740,7 +16159,7 @@ getTermsOfService::getTermsOfService()
 {
 }
 
-const int32_t getTermsOfService::ID;
+const std::int32_t getTermsOfService::ID;
 
 void getTermsOfService::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15758,7 +16177,7 @@ getTextEntities::getTextEntities(std::string const &text_)
     : text_(std::move(text_))
 {}
 
-const int32_t getTextEntities::ID;
+const std::int32_t getTextEntities::ID;
 
 void getTextEntities::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15774,12 +16193,12 @@ getTopChats::getTopChats()
     , limit_()
 {}
 
-getTopChats::getTopChats(object_ptr<TopChatCategory> &&category_, int32_t limit_)
+getTopChats::getTopChats(object_ptr<TopChatCategory> &&category_, std::int32_t limit_)
     : category_(std::move(category_))
     , limit_(limit_)
 {}
 
-const int32_t getTopChats::ID;
+const std::int32_t getTopChats::ID;
 
 void getTopChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15799,7 +16218,7 @@ getTrendingStickerSets::getTrendingStickerSets()
 {
 }
 
-const int32_t getTrendingStickerSets::ID;
+const std::int32_t getTrendingStickerSets::ID;
 
 void getTrendingStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15813,11 +16232,11 @@ getUser::getUser()
     : user_id_()
 {}
 
-getUser::getUser(int32_t user_id_)
+getUser::getUser(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t getUser::ID;
+const std::int32_t getUser::ID;
 
 void getUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15832,11 +16251,11 @@ getUserFullInfo::getUserFullInfo()
     : user_id_()
 {}
 
-getUserFullInfo::getUserFullInfo(int32_t user_id_)
+getUserFullInfo::getUserFullInfo(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t getUserFullInfo::ID;
+const std::int32_t getUserFullInfo::ID;
 
 void getUserFullInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15855,7 +16274,7 @@ getUserPrivacySettingRules::getUserPrivacySettingRules(object_ptr<UserPrivacySet
     : setting_(std::move(setting_))
 {}
 
-const int32_t getUserPrivacySettingRules::ID;
+const std::int32_t getUserPrivacySettingRules::ID;
 
 void getUserPrivacySettingRules::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15876,14 +16295,14 @@ getUserProfilePhotos::getUserProfilePhotos()
     , limit_()
 {}
 
-getUserProfilePhotos::getUserProfilePhotos(int32_t user_id_, int32_t offset_,
-                                           int32_t limit_)
+getUserProfilePhotos::getUserProfilePhotos(std::int32_t user_id_, std::int32_t offset_,
+                                           std::int32_t limit_)
     : user_id_(user_id_)
     , offset_(offset_)
     , limit_(limit_)
 {}
 
-const int32_t getUserProfilePhotos::ID;
+const std::int32_t getUserProfilePhotos::ID;
 
 void getUserProfilePhotos::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15900,7 +16319,7 @@ getWallpapers::getWallpapers()
 {
 }
 
-const int32_t getWallpapers::ID;
+const std::int32_t getWallpapers::ID;
 
 void getWallpapers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15920,7 +16339,7 @@ getWebPageInstantView::getWebPageInstantView(std::string const &url_, bool force
     , force_full_(force_full_)
 {}
 
-const int32_t getWebPageInstantView::ID;
+const std::int32_t getWebPageInstantView::ID;
 
 void getWebPageInstantView::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15933,20 +16352,24 @@ void getWebPageInstantView::store(TlStorerToString &s, const char *field_name) c
 }
 
 getWebPagePreview::getWebPagePreview()
-    : message_text_()
+    : text_()
 {}
 
-getWebPagePreview::getWebPagePreview(std::string const &message_text_)
-    : message_text_(std::move(message_text_))
+getWebPagePreview::getWebPagePreview(object_ptr<formattedText> &&text_)
+    : text_(std::move(text_))
 {}
 
-const int32_t getWebPagePreview::ID;
+const std::int32_t getWebPagePreview::ID;
 
 void getWebPagePreview::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "getWebPagePreview");
-        s.store_field("message_text", message_text_);
+        if (text_ == nullptr) {
+            s.store_field("text", "null");
+        } else {
+            text_->store(s, "text");
+        }
         s.store_class_end();
     }
 }
@@ -15959,7 +16382,7 @@ importContacts::importContacts(std::vector<object_ptr<contact>> &&contacts_)
     : contacts_(std::move(contacts_))
 {}
 
-const int32_t importContacts::ID;
+const std::int32_t importContacts::ID;
 
 void importContacts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -15991,7 +16414,7 @@ joinChatByInviteLink::joinChatByInviteLink(std::string const &invite_link_)
     : invite_link_(std::move(invite_link_))
 {}
 
-const int32_t joinChatByInviteLink::ID;
+const std::int32_t joinChatByInviteLink::ID;
 
 void joinChatByInviteLink::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16006,7 +16429,7 @@ logOut::logOut()
 {
 }
 
-const int32_t logOut::ID;
+const std::int32_t logOut::ID;
 
 void logOut::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16024,7 +16447,7 @@ openChat::openChat(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t openChat::ID;
+const std::int32_t openChat::ID;
 
 void openChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16045,7 +16468,7 @@ openMessageContent::openMessageContent(std::int64_t chat_id_, std::int64_t messa
     , message_id_(message_id_)
 {}
 
-const int32_t openMessageContent::ID;
+const std::int32_t openMessageContent::ID;
 
 void openMessageContent::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16068,10 +16491,10 @@ optimizeStorage::optimizeStorage()
     , chat_limit_()
 {}
 
-optimizeStorage::optimizeStorage(std::int64_t size_, int32_t ttl_, int32_t count_,
-                                 int32_t immunity_delay_, std::vector<object_ptr<FileType>> &&file_types_,
+optimizeStorage::optimizeStorage(std::int64_t size_, std::int32_t ttl_, std::int32_t count_,
+                                 std::int32_t immunity_delay_, std::vector<object_ptr<FileType>> &&file_types_,
                                  std::vector<std::int64_t> &&chat_ids_, std::vector<std::int64_t> &&exclude_chat_ids_,
-                                 int32_t chat_limit_)
+                                 std::int32_t chat_limit_)
     : size_(size_)
     , ttl_(ttl_)
     , count_(count_)
@@ -16082,7 +16505,7 @@ optimizeStorage::optimizeStorage(std::int64_t size_, int32_t ttl_, int32_t count
     , chat_limit_(chat_limit_)
 {}
 
-const int32_t optimizeStorage::ID;
+const std::int32_t optimizeStorage::ID;
 
 void optimizeStorage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16142,7 +16565,7 @@ parseTextEntities::parseTextEntities(std::string const &text_,
     , parse_mode_(std::move(parse_mode_))
 {}
 
-const int32_t parseTextEntities::ID;
+const std::int32_t parseTextEntities::ID;
 
 void parseTextEntities::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16164,14 +16587,14 @@ pinSupergroupMessage::pinSupergroupMessage()
     , disable_notification_()
 {}
 
-pinSupergroupMessage::pinSupergroupMessage(int32_t supergroup_id_, std::int64_t message_id_,
+pinSupergroupMessage::pinSupergroupMessage(std::int32_t supergroup_id_, std::int64_t message_id_,
                                            bool disable_notification_)
     : supergroup_id_(supergroup_id_)
     , message_id_(message_id_)
     , disable_notification_(disable_notification_)
 {}
 
-const int32_t pinSupergroupMessage::ID;
+const std::int32_t pinSupergroupMessage::ID;
 
 void pinSupergroupMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16194,7 +16617,7 @@ processDcUpdate::processDcUpdate(std::string const &dc_, std::string const &addr
     , addr_(std::move(addr_))
 {}
 
-const int32_t processDcUpdate::ID;
+const std::int32_t processDcUpdate::ID;
 
 void processDcUpdate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16214,7 +16637,7 @@ readAllChatMentions::readAllChatMentions(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t readAllChatMentions::ID;
+const std::int32_t readAllChatMentions::ID;
 
 void readAllChatMentions::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16233,7 +16656,7 @@ recoverAuthenticationPassword::recoverAuthenticationPassword(std::string const &
     : recovery_code_(std::move(recovery_code_))
 {}
 
-const int32_t recoverAuthenticationPassword::ID;
+const std::int32_t recoverAuthenticationPassword::ID;
 
 void recoverAuthenticationPassword::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16252,7 +16675,7 @@ recoverPassword::recoverPassword(std::string const &recovery_code_)
     : recovery_code_(std::move(recovery_code_))
 {}
 
-const int32_t recoverPassword::ID;
+const std::int32_t recoverPassword::ID;
 
 void recoverPassword::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16269,12 +16692,12 @@ registerDevice::registerDevice()
 {}
 
 registerDevice::registerDevice(object_ptr<DeviceToken> &&device_token_,
-                               std::vector<int32_t> &&other_user_ids_)
+                               std::vector<std::int32_t> &&other_user_ids_)
     : device_token_(std::move(device_token_))
     , other_user_ids_(std::move(other_user_ids_))
 {}
 
-const int32_t registerDevice::ID;
+const std::int32_t registerDevice::ID;
 
 void registerDevice::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16286,7 +16709,7 @@ void registerDevice::store(TlStorerToString &s, const char *field_name) const
             device_token_->store(s, "device_token");
         }
         {
-            const std::vector<int32_t> &v = other_user_ids_;
+            const std::vector<std::int32_t> &v = other_user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("other_user_ids", vector_name.c_str());
@@ -16303,18 +16726,18 @@ removeContacts::removeContacts()
     : user_ids_()
 {}
 
-removeContacts::removeContacts(std::vector<int32_t> &&user_ids_)
+removeContacts::removeContacts(std::vector<std::int32_t> &&user_ids_)
     : user_ids_(std::move(user_ids_))
 {}
 
-const int32_t removeContacts::ID;
+const std::int32_t removeContacts::ID;
 
 void removeContacts::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "removeContacts");
         {
-            const std::vector<int32_t> &v = user_ids_;
+            const std::vector<std::int32_t> &v = user_ids_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("user_ids", vector_name.c_str());
@@ -16335,7 +16758,7 @@ removeFavoriteSticker::removeFavoriteSticker(object_ptr<InputFile> &&sticker_)
     : sticker_(std::move(sticker_))
 {}
 
-const int32_t removeFavoriteSticker::ID;
+const std::int32_t removeFavoriteSticker::ID;
 
 void removeFavoriteSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16358,7 +16781,7 @@ removeRecentHashtag::removeRecentHashtag(std::string const &hashtag_)
     : hashtag_(std::move(hashtag_))
 {}
 
-const int32_t removeRecentHashtag::ID;
+const std::int32_t removeRecentHashtag::ID;
 
 void removeRecentHashtag::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16379,7 +16802,7 @@ removeRecentSticker::removeRecentSticker(bool is_attached_, object_ptr<InputFile
     , sticker_(std::move(sticker_))
 {}
 
-const int32_t removeRecentSticker::ID;
+const std::int32_t removeRecentSticker::ID;
 
 void removeRecentSticker::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16403,7 +16826,7 @@ removeRecentlyFoundChat::removeRecentlyFoundChat(std::int64_t chat_id_)
     : chat_id_(chat_id_)
 {}
 
-const int32_t removeRecentlyFoundChat::ID;
+const std::int32_t removeRecentlyFoundChat::ID;
 
 void removeRecentlyFoundChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16422,7 +16845,7 @@ removeSavedAnimation::removeSavedAnimation(object_ptr<InputFile> &&animation_)
     : animation_(std::move(animation_))
 {}
 
-const int32_t removeSavedAnimation::ID;
+const std::int32_t removeSavedAnimation::ID;
 
 void removeSavedAnimation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16445,7 +16868,7 @@ removeStickerFromSet::removeStickerFromSet(object_ptr<InputFile> &&sticker_)
     : sticker_(std::move(sticker_))
 {}
 
-const int32_t removeStickerFromSet::ID;
+const std::int32_t removeStickerFromSet::ID;
 
 void removeStickerFromSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16470,7 +16893,7 @@ removeTopChat::removeTopChat(object_ptr<TopChatCategory> &&category_, std::int64
     , chat_id_(chat_id_)
 {}
 
-const int32_t removeTopChat::ID;
+const std::int32_t removeTopChat::ID;
 
 void removeTopChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16497,7 +16920,7 @@ reorderInstalledStickerSets::reorderInstalledStickerSets(bool is_masks_,
     , sticker_set_ids_(std::move(sticker_set_ids_))
 {}
 
-const int32_t reorderInstalledStickerSets::ID;
+const std::int32_t reorderInstalledStickerSets::ID;
 
 void reorderInstalledStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16521,14 +16944,17 @@ void reorderInstalledStickerSets::store(TlStorerToString &s, const char *field_n
 reportChat::reportChat()
     : chat_id_()
     , reason_()
+    , message_ids_()
 {}
 
-reportChat::reportChat(std::int64_t chat_id_, object_ptr<ChatReportReason> &&reason_)
+reportChat::reportChat(std::int64_t chat_id_, object_ptr<ChatReportReason> &&reason_,
+                       std::vector<std::int64_t> &&message_ids_)
     : chat_id_(chat_id_)
     , reason_(std::move(reason_))
+    , message_ids_(std::move(message_ids_))
 {}
 
-const int32_t reportChat::ID;
+const std::int32_t reportChat::ID;
 
 void reportChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16540,6 +16966,16 @@ void reportChat::store(TlStorerToString &s, const char *field_name) const
         } else {
             reason_->store(s, "reason");
         }
+        {
+            const std::vector<std::int64_t> &v = message_ids_;
+            const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
+            const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
+            s.store_class_begin("message_ids", vector_name.c_str());
+            for (std::uint32_t i = 0; i < multiplicity; i++) {
+                s.store_field("", v[i]);
+            }
+            s.store_class_end();
+        }
         s.store_class_end();
     }
 }
@@ -16550,14 +16986,14 @@ reportSupergroupSpam::reportSupergroupSpam()
     , message_ids_()
 {}
 
-reportSupergroupSpam::reportSupergroupSpam(int32_t supergroup_id_, int32_t user_id_,
+reportSupergroupSpam::reportSupergroupSpam(std::int32_t supergroup_id_, std::int32_t user_id_,
                                            std::vector<std::int64_t> &&message_ids_)
     : supergroup_id_(supergroup_id_)
     , user_id_(user_id_)
     , message_ids_(std::move(message_ids_))
 {}
 
-const int32_t reportSupergroupSpam::ID;
+const std::int32_t reportSupergroupSpam::ID;
 
 void reportSupergroupSpam::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16583,7 +17019,7 @@ requestAuthenticationPasswordRecovery::requestAuthenticationPasswordRecovery()
 {
 }
 
-const int32_t requestAuthenticationPasswordRecovery::ID;
+const std::int32_t requestAuthenticationPasswordRecovery::ID;
 
 void requestAuthenticationPasswordRecovery::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -16598,7 +17034,7 @@ requestPasswordRecovery::requestPasswordRecovery()
 {
 }
 
-const int32_t requestPasswordRecovery::ID;
+const std::int32_t requestPasswordRecovery::ID;
 
 void requestPasswordRecovery::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16612,7 +17048,7 @@ resendAuthenticationCode::resendAuthenticationCode()
 {
 }
 
-const int32_t resendAuthenticationCode::ID;
+const std::int32_t resendAuthenticationCode::ID;
 
 void resendAuthenticationCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16626,7 +17062,7 @@ resendChangePhoneNumberCode::resendChangePhoneNumberCode()
 {
 }
 
-const int32_t resendChangePhoneNumberCode::ID;
+const std::int32_t resendChangePhoneNumberCode::ID;
 
 void resendChangePhoneNumberCode::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16640,7 +17076,7 @@ resetAllNotificationSettings::resetAllNotificationSettings()
 {
 }
 
-const int32_t resetAllNotificationSettings::ID;
+const std::int32_t resetAllNotificationSettings::ID;
 
 void resetAllNotificationSettings::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16654,7 +17090,7 @@ resetNetworkStatistics::resetNetworkStatistics()
 {
 }
 
-const int32_t resetNetworkStatistics::ID;
+const std::int32_t resetNetworkStatistics::ID;
 
 void resetNetworkStatistics::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16670,14 +17106,14 @@ searchCallMessages::searchCallMessages()
     , only_missed_()
 {}
 
-searchCallMessages::searchCallMessages(std::int64_t from_message_id_, int32_t limit_,
+searchCallMessages::searchCallMessages(std::int64_t from_message_id_, std::int32_t limit_,
                                        bool only_missed_)
     : from_message_id_(from_message_id_)
     , limit_(limit_)
     , only_missed_(only_missed_)
 {}
 
-const int32_t searchCallMessages::ID;
+const std::int32_t searchCallMessages::ID;
 
 void searchCallMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16697,13 +17133,13 @@ searchChatMembers::searchChatMembers()
 {}
 
 searchChatMembers::searchChatMembers(std::int64_t chat_id_, std::string const &query_,
-                                     int32_t limit_)
+                                     std::int32_t limit_)
     : chat_id_(chat_id_)
     , query_(std::move(query_))
     , limit_(limit_)
 {}
 
-const int32_t searchChatMembers::ID;
+const std::int32_t searchChatMembers::ID;
 
 void searchChatMembers::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16727,8 +17163,8 @@ searchChatMessages::searchChatMessages()
 {}
 
 searchChatMessages::searchChatMessages(std::int64_t chat_id_, std::string const &query_,
-                                       int32_t sender_user_id_, std::int64_t from_message_id_, int32_t offset_,
-                                       int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_)
+                                       std::int32_t sender_user_id_, std::int64_t from_message_id_, std::int32_t offset_,
+                                       std::int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_)
     : chat_id_(chat_id_)
     , query_(std::move(query_))
     , sender_user_id_(sender_user_id_)
@@ -16738,7 +17174,7 @@ searchChatMessages::searchChatMessages(std::int64_t chat_id_, std::string const 
     , filter_(std::move(filter_))
 {}
 
-const int32_t searchChatMessages::ID;
+const std::int32_t searchChatMessages::ID;
 
 void searchChatMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16765,12 +17201,12 @@ searchChatRecentLocationMessages::searchChatRecentLocationMessages()
 {}
 
 searchChatRecentLocationMessages::searchChatRecentLocationMessages(std::int64_t chat_id_,
-                                                                   int32_t limit_)
+                                                                   std::int32_t limit_)
     : chat_id_(chat_id_)
     , limit_(limit_)
 {}
 
-const int32_t searchChatRecentLocationMessages::ID;
+const std::int32_t searchChatRecentLocationMessages::ID;
 
 void searchChatRecentLocationMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16787,12 +17223,12 @@ searchChats::searchChats()
     , limit_()
 {}
 
-searchChats::searchChats(std::string const &query_, int32_t limit_)
+searchChats::searchChats(std::string const &query_, std::int32_t limit_)
     : query_(std::move(query_))
     , limit_(limit_)
 {}
 
-const int32_t searchChats::ID;
+const std::int32_t searchChats::ID;
 
 void searchChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16809,12 +17245,12 @@ searchChatsOnServer::searchChatsOnServer()
     , limit_()
 {}
 
-searchChatsOnServer::searchChatsOnServer(std::string const &query_, int32_t limit_)
+searchChatsOnServer::searchChatsOnServer(std::string const &query_, std::int32_t limit_)
     : query_(std::move(query_))
     , limit_(limit_)
 {}
 
-const int32_t searchChatsOnServer::ID;
+const std::int32_t searchChatsOnServer::ID;
 
 void searchChatsOnServer::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16831,12 +17267,12 @@ searchContacts::searchContacts()
     , limit_()
 {}
 
-searchContacts::searchContacts(std::string const &query_, int32_t limit_)
+searchContacts::searchContacts(std::string const &query_, std::int32_t limit_)
     : query_(std::move(query_))
     , limit_(limit_)
 {}
 
-const int32_t searchContacts::ID;
+const std::int32_t searchContacts::ID;
 
 void searchContacts::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16853,18 +17289,44 @@ searchHashtags::searchHashtags()
     , limit_()
 {}
 
-searchHashtags::searchHashtags(std::string const &prefix_, int32_t limit_)
+searchHashtags::searchHashtags(std::string const &prefix_, std::int32_t limit_)
     : prefix_(std::move(prefix_))
     , limit_(limit_)
 {}
 
-const int32_t searchHashtags::ID;
+const std::int32_t searchHashtags::ID;
 
 void searchHashtags::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "searchHashtags");
         s.store_field("prefix", prefix_);
+        s.store_field("limit", limit_);
+        s.store_class_end();
+    }
+}
+
+searchInstalledStickerSets::searchInstalledStickerSets()
+    : is_masks_()
+    , query_()
+    , limit_()
+{}
+
+searchInstalledStickerSets::searchInstalledStickerSets(bool is_masks_, std::string const &query_,
+                                                       std::int32_t limit_)
+    : is_masks_(is_masks_)
+    , query_(std::move(query_))
+    , limit_(limit_)
+{}
+
+const std::int32_t searchInstalledStickerSets::ID;
+
+void searchInstalledStickerSets::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "searchInstalledStickerSets");
+        s.store_field("is_masks", is_masks_);
+        s.store_field("query", query_);
         s.store_field("limit", limit_);
         s.store_class_end();
     }
@@ -16878,8 +17340,8 @@ searchMessages::searchMessages()
     , limit_()
 {}
 
-searchMessages::searchMessages(std::string const &query_, int32_t offset_date_,
-                               std::int64_t offset_chat_id_, std::int64_t offset_message_id_, int32_t limit_)
+searchMessages::searchMessages(std::string const &query_, std::int32_t offset_date_,
+                               std::int64_t offset_chat_id_, std::int64_t offset_message_id_, std::int32_t limit_)
     : query_(std::move(query_))
     , offset_date_(offset_date_)
     , offset_chat_id_(offset_chat_id_)
@@ -16887,7 +17349,7 @@ searchMessages::searchMessages(std::string const &query_, int32_t offset_date_,
     , limit_(limit_)
 {}
 
-const int32_t searchMessages::ID;
+const std::int32_t searchMessages::ID;
 
 void searchMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16910,7 +17372,7 @@ searchPublicChat::searchPublicChat(std::string const &username_)
     : username_(std::move(username_))
 {}
 
-const int32_t searchPublicChat::ID;
+const std::int32_t searchPublicChat::ID;
 
 void searchPublicChat::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16929,7 +17391,7 @@ searchPublicChats::searchPublicChats(std::string const &query_)
     : query_(std::move(query_))
 {}
 
-const int32_t searchPublicChats::ID;
+const std::int32_t searchPublicChats::ID;
 
 void searchPublicChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16949,7 +17411,7 @@ searchSecretMessages::searchSecretMessages()
 {}
 
 searchSecretMessages::searchSecretMessages(std::int64_t chat_id_, std::string const &query_,
-                                           std::int64_t from_search_id_, int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_)
+                                           std::int64_t from_search_id_, std::int32_t limit_, object_ptr<SearchMessagesFilter> &&filter_)
     : chat_id_(chat_id_)
     , query_(std::move(query_))
     , from_search_id_(from_search_id_)
@@ -16957,7 +17419,7 @@ searchSecretMessages::searchSecretMessages(std::int64_t chat_id_, std::string co
     , filter_(std::move(filter_))
 {}
 
-const int32_t searchSecretMessages::ID;
+const std::int32_t searchSecretMessages::ID;
 
 void searchSecretMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16984,7 +17446,7 @@ searchStickerSet::searchStickerSet(std::string const &name_)
     : name_(std::move(name_))
 {}
 
-const int32_t searchStickerSet::ID;
+const std::int32_t searchStickerSet::ID;
 
 void searchStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -16995,20 +17457,61 @@ void searchStickerSet::store(TlStorerToString &s, const char *field_name) const
     }
 }
 
+searchStickerSets::searchStickerSets()
+    : query_()
+{}
+
+searchStickerSets::searchStickerSets(std::string const &query_)
+    : query_(std::move(query_))
+{}
+
+const std::int32_t searchStickerSets::ID;
+
+void searchStickerSets::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "searchStickerSets");
+        s.store_field("query", query_);
+        s.store_class_end();
+    }
+}
+
+searchStickers::searchStickers()
+    : emoji_()
+    , limit_()
+{}
+
+searchStickers::searchStickers(std::string const &emoji_, std::int32_t limit_)
+    : emoji_(std::move(emoji_))
+    , limit_(limit_)
+{}
+
+const std::int32_t searchStickers::ID;
+
+void searchStickers::store(TlStorerToString &s, const char *field_name) const
+{
+    if (!LOG_IS_STRIPPED(ERROR)) {
+        s.store_class_begin(field_name, "searchStickers");
+        s.store_field("emoji", emoji_);
+        s.store_field("limit", limit_);
+        s.store_class_end();
+    }
+}
+
 sendBotStartMessage::sendBotStartMessage()
     : bot_user_id_()
     , chat_id_()
     , parameter_()
 {}
 
-sendBotStartMessage::sendBotStartMessage(int32_t bot_user_id_, std::int64_t chat_id_,
+sendBotStartMessage::sendBotStartMessage(std::int32_t bot_user_id_, std::int64_t chat_id_,
                                          std::string const &parameter_)
     : bot_user_id_(bot_user_id_)
     , chat_id_(chat_id_)
     , parameter_(std::move(parameter_))
 {}
 
-const int32_t sendBotStartMessage::ID;
+const std::int32_t sendBotStartMessage::ID;
 
 void sendBotStartMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17026,13 +17529,13 @@ sendCallDebugInformation::sendCallDebugInformation()
     , debug_information_()
 {}
 
-sendCallDebugInformation::sendCallDebugInformation(int32_t call_id_,
+sendCallDebugInformation::sendCallDebugInformation(std::int32_t call_id_,
                                                    std::string const &debug_information_)
     : call_id_(call_id_)
     , debug_information_(std::move(debug_information_))
 {}
 
-const int32_t sendCallDebugInformation::ID;
+const std::int32_t sendCallDebugInformation::ID;
 
 void sendCallDebugInformation::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17050,14 +17553,14 @@ sendCallRating::sendCallRating()
     , comment_()
 {}
 
-sendCallRating::sendCallRating(int32_t call_id_, int32_t rating_,
+sendCallRating::sendCallRating(std::int32_t call_id_, std::int32_t rating_,
                                std::string const &comment_)
     : call_id_(call_id_)
     , rating_(rating_)
     , comment_(std::move(comment_))
 {}
 
-const int32_t sendCallRating::ID;
+const std::int32_t sendCallRating::ID;
 
 void sendCallRating::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17080,7 +17583,7 @@ sendChatAction::sendChatAction(std::int64_t chat_id_, object_ptr<ChatAction> &&a
     , action_(std::move(action_))
 {}
 
-const int32_t sendChatAction::ID;
+const std::int32_t sendChatAction::ID;
 
 void sendChatAction::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17104,7 +17607,7 @@ sendChatScreenshotTakenNotification::sendChatScreenshotTakenNotification(std::in
     : chat_id_(chat_id_)
 {}
 
-const int32_t sendChatScreenshotTakenNotification::ID;
+const std::int32_t sendChatScreenshotTakenNotification::ID;
 
 void sendChatScreenshotTakenNotification::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17120,12 +17623,12 @@ sendChatSetTtlMessage::sendChatSetTtlMessage()
     , ttl_()
 {}
 
-sendChatSetTtlMessage::sendChatSetTtlMessage(std::int64_t chat_id_, int32_t ttl_)
+sendChatSetTtlMessage::sendChatSetTtlMessage(std::int64_t chat_id_, std::int32_t ttl_)
     : chat_id_(chat_id_)
     , ttl_(ttl_)
 {}
 
-const int32_t sendChatSetTtlMessage::ID;
+const std::int32_t sendChatSetTtlMessage::ID;
 
 void sendChatSetTtlMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17147,7 +17650,7 @@ sendCustomRequest::sendCustomRequest(std::string const &method_, std::string con
     , parameters_(std::move(parameters_))
 {}
 
-const int32_t sendCustomRequest::ID;
+const std::int32_t sendCustomRequest::ID;
 
 void sendCustomRequest::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17179,7 +17682,7 @@ sendInlineQueryResultMessage::sendInlineQueryResultMessage(std::int64_t chat_id_
     , result_id_(std::move(result_id_))
 {}
 
-const int32_t sendInlineQueryResultMessage::ID;
+const std::int32_t sendInlineQueryResultMessage::ID;
 
 void sendInlineQueryResultMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17215,7 +17718,7 @@ sendMessage::sendMessage(std::int64_t chat_id_, std::int64_t reply_to_message_id
     , input_message_content_(std::move(input_message_content_))
 {}
 
-const int32_t sendMessage::ID;
+const std::int32_t sendMessage::ID;
 
 void sendMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17257,7 +17760,7 @@ sendMessageAlbum::sendMessageAlbum(std::int64_t chat_id_, std::int64_t reply_to_
     , input_message_contents_(std::move(input_message_contents_))
 {}
 
-const int32_t sendMessageAlbum::ID;
+const std::int32_t sendMessageAlbum::ID;
 
 void sendMessageAlbum::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17303,7 +17806,7 @@ sendPaymentForm::sendPaymentForm(std::int64_t chat_id_, std::int64_t message_id_
     , credentials_(std::move(credentials_))
 {}
 
-const int32_t sendPaymentForm::ID;
+const std::int32_t sendPaymentForm::ID;
 
 void sendPaymentForm::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17330,7 +17833,7 @@ setAccountTtl::setAccountTtl(object_ptr<accountTtl> &&ttl_)
     : ttl_(std::move(ttl_))
 {}
 
-const int32_t setAccountTtl::ID;
+const std::int32_t setAccountTtl::ID;
 
 void setAccountTtl::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17353,7 +17856,7 @@ setAlarm::setAlarm(double seconds_)
     : seconds_(seconds_)
 {}
 
-const int32_t setAlarm::ID;
+const std::int32_t setAlarm::ID;
 
 void setAlarm::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17377,7 +17880,7 @@ setAuthenticationPhoneNumber::setAuthenticationPhoneNumber(std::string const &ph
     , is_current_phone_number_(is_current_phone_number_)
 {}
 
-const int32_t setAuthenticationPhoneNumber::ID;
+const std::int32_t setAuthenticationPhoneNumber::ID;
 
 void setAuthenticationPhoneNumber::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17398,7 +17901,7 @@ setBio::setBio(std::string const &bio_)
     : bio_(std::move(bio_))
 {}
 
-const int32_t setBio::ID;
+const std::int32_t setBio::ID;
 
 void setBio::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17414,13 +17917,13 @@ setBotUpdatesStatus::setBotUpdatesStatus()
     , error_message_()
 {}
 
-setBotUpdatesStatus::setBotUpdatesStatus(int32_t pending_update_count_,
+setBotUpdatesStatus::setBotUpdatesStatus(std::int32_t pending_update_count_,
                                          std::string const &error_message_)
     : pending_update_count_(pending_update_count_)
     , error_message_(std::move(error_message_))
 {}
 
-const int32_t setBotUpdatesStatus::ID;
+const std::int32_t setBotUpdatesStatus::ID;
 
 void setBotUpdatesStatus::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17442,7 +17945,7 @@ setChatClientData::setChatClientData(std::int64_t chat_id_, std::string const &c
     , client_data_(std::move(client_data_))
 {}
 
-const int32_t setChatClientData::ID;
+const std::int32_t setChatClientData::ID;
 
 void setChatClientData::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17465,7 +17968,7 @@ setChatDraftMessage::setChatDraftMessage(std::int64_t chat_id_,
     , draft_message_(std::move(draft_message_))
 {}
 
-const int32_t setChatDraftMessage::ID;
+const std::int32_t setChatDraftMessage::ID;
 
 void setChatDraftMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17487,14 +17990,14 @@ setChatMemberStatus::setChatMemberStatus()
     , status_()
 {}
 
-setChatMemberStatus::setChatMemberStatus(std::int64_t chat_id_, int32_t user_id_,
+setChatMemberStatus::setChatMemberStatus(std::int64_t chat_id_, std::int32_t user_id_,
                                          object_ptr<ChatMemberStatus> &&status_)
     : chat_id_(chat_id_)
     , user_id_(user_id_)
     , status_(std::move(status_))
 {}
 
-const int32_t setChatMemberStatus::ID;
+const std::int32_t setChatMemberStatus::ID;
 
 void setChatMemberStatus::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17521,7 +18024,7 @@ setChatPhoto::setChatPhoto(std::int64_t chat_id_, object_ptr<InputFile> &&photo_
     , photo_(std::move(photo_))
 {}
 
-const int32_t setChatPhoto::ID;
+const std::int32_t setChatPhoto::ID;
 
 void setChatPhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17547,7 +18050,7 @@ setChatTitle::setChatTitle(std::int64_t chat_id_, std::string const &title_)
     , title_(std::move(title_))
 {}
 
-const int32_t setChatTitle::ID;
+const std::int32_t setChatTitle::ID;
 
 void setChatTitle::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17567,7 +18070,7 @@ setDatabaseEncryptionKey::setDatabaseEncryptionKey(std::string const &new_encryp
     : new_encryption_key_(std::move(new_encryption_key_))
 {}
 
-const int32_t setDatabaseEncryptionKey::ID;
+const std::int32_t setDatabaseEncryptionKey::ID;
 
 void setDatabaseEncryptionKey::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17585,13 +18088,13 @@ setFileGenerationProgress::setFileGenerationProgress()
 {}
 
 setFileGenerationProgress::setFileGenerationProgress(std::int64_t generation_id_,
-                                                     int32_t expected_size_, int32_t local_prefix_size_)
+                                                     std::int32_t expected_size_, std::int32_t local_prefix_size_)
     : generation_id_(generation_id_)
     , expected_size_(expected_size_)
     , local_prefix_size_(local_prefix_size_)
 {}
 
-const int32_t setFileGenerationProgress::ID;
+const std::int32_t setFileGenerationProgress::ID;
 
 void setFileGenerationProgress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17614,7 +18117,7 @@ setGameScore::setGameScore()
 {}
 
 setGameScore::setGameScore(std::int64_t chat_id_, std::int64_t message_id_, bool edit_message_,
-                           int32_t user_id_, int32_t score_, bool force_)
+                           std::int32_t user_id_, std::int32_t score_, bool force_)
     : chat_id_(chat_id_)
     , message_id_(message_id_)
     , edit_message_(edit_message_)
@@ -17623,7 +18126,7 @@ setGameScore::setGameScore(std::int64_t chat_id_, std::int64_t message_id_, bool
     , force_(force_)
 {}
 
-const int32_t setGameScore::ID;
+const std::int32_t setGameScore::ID;
 
 void setGameScore::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17648,7 +18151,7 @@ setInlineGameScore::setInlineGameScore()
 {}
 
 setInlineGameScore::setInlineGameScore(std::string const &inline_message_id_, bool edit_message_,
-                                       int32_t user_id_, int32_t score_, bool force_)
+                                       std::int32_t user_id_, std::int32_t score_, bool force_)
     : inline_message_id_(std::move(inline_message_id_))
     , edit_message_(edit_message_)
     , user_id_(user_id_)
@@ -17656,7 +18159,7 @@ setInlineGameScore::setInlineGameScore(std::string const &inline_message_id_, bo
     , force_(force_)
 {}
 
-const int32_t setInlineGameScore::ID;
+const std::int32_t setInlineGameScore::ID;
 
 void setInlineGameScore::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17681,7 +18184,7 @@ setName::setName(std::string const &first_name_, std::string const &last_name_)
     , last_name_(std::move(last_name_))
 {}
 
-const int32_t setName::ID;
+const std::int32_t setName::ID;
 
 void setName::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17701,7 +18204,7 @@ setNetworkType::setNetworkType(object_ptr<NetworkType> &&type_)
     : type_(std::move(type_))
 {}
 
-const int32_t setNetworkType::ID;
+const std::int32_t setNetworkType::ID;
 
 void setNetworkType::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17727,7 +18230,7 @@ setNotificationSettings::setNotificationSettings(object_ptr<NotificationSettings
     , notification_settings_(std::move(notification_settings_))
 {}
 
-const int32_t setNotificationSettings::ID;
+const std::int32_t setNotificationSettings::ID;
 
 void setNotificationSettings::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17757,7 +18260,7 @@ setOption::setOption(std::string const &name_, object_ptr<OptionValue> &&value_)
     , value_(std::move(value_))
 {}
 
-const int32_t setOption::ID;
+const std::int32_t setOption::ID;
 
 void setOption::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17791,7 +18294,7 @@ setPassword::setPassword(std::string const &old_password_, std::string const &ne
     , new_recovery_email_address_(std::move(new_recovery_email_address_))
 {}
 
-const int32_t setPassword::ID;
+const std::int32_t setPassword::ID;
 
 void setPassword::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17814,7 +18317,7 @@ setPinnedChats::setPinnedChats(std::vector<std::int64_t> &&chat_ids_)
     : chat_ids_(std::move(chat_ids_))
 {}
 
-const int32_t setPinnedChats::ID;
+const std::int32_t setPinnedChats::ID;
 
 void setPinnedChats::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17842,7 +18345,7 @@ setProfilePhoto::setProfilePhoto(object_ptr<InputFile> &&photo_)
     : photo_(std::move(photo_))
 {}
 
-const int32_t setProfilePhoto::ID;
+const std::int32_t setProfilePhoto::ID;
 
 void setProfilePhoto::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17865,7 +18368,7 @@ setProxy::setProxy(object_ptr<Proxy> &&proxy_)
     : proxy_(std::move(proxy_))
 {}
 
-const int32_t setProxy::ID;
+const std::int32_t setProxy::ID;
 
 void setProxy::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17891,7 +18394,7 @@ setRecoveryEmailAddress::setRecoveryEmailAddress(std::string const &password_,
     , new_recovery_email_address_(std::move(new_recovery_email_address_))
 {}
 
-const int32_t setRecoveryEmailAddress::ID;
+const std::int32_t setRecoveryEmailAddress::ID;
 
 void setRecoveryEmailAddress::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17909,12 +18412,12 @@ setStickerPositionInSet::setStickerPositionInSet()
 {}
 
 setStickerPositionInSet::setStickerPositionInSet(object_ptr<InputFile> &&sticker_,
-                                                 int32_t position_)
+                                                 std::int32_t position_)
     : sticker_(std::move(sticker_))
     , position_(position_)
 {}
 
-const int32_t setStickerPositionInSet::ID;
+const std::int32_t setStickerPositionInSet::ID;
 
 void setStickerPositionInSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17935,13 +18438,13 @@ setSupergroupDescription::setSupergroupDescription()
     , description_()
 {}
 
-setSupergroupDescription::setSupergroupDescription(int32_t supergroup_id_,
+setSupergroupDescription::setSupergroupDescription(std::int32_t supergroup_id_,
                                                    std::string const &description_)
     : supergroup_id_(supergroup_id_)
     , description_(std::move(description_))
 {}
 
-const int32_t setSupergroupDescription::ID;
+const std::int32_t setSupergroupDescription::ID;
 
 void setSupergroupDescription::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17958,13 +18461,13 @@ setSupergroupStickerSet::setSupergroupStickerSet()
     , sticker_set_id_()
 {}
 
-setSupergroupStickerSet::setSupergroupStickerSet(int32_t supergroup_id_,
+setSupergroupStickerSet::setSupergroupStickerSet(std::int32_t supergroup_id_,
                                                  std::int64_t sticker_set_id_)
     : supergroup_id_(supergroup_id_)
     , sticker_set_id_(sticker_set_id_)
 {}
 
-const int32_t setSupergroupStickerSet::ID;
+const std::int32_t setSupergroupStickerSet::ID;
 
 void setSupergroupStickerSet::store(TlStorerToString &s, const char *field_name) const
 {
@@ -17981,13 +18484,13 @@ setSupergroupUsername::setSupergroupUsername()
     , username_()
 {}
 
-setSupergroupUsername::setSupergroupUsername(int32_t supergroup_id_,
+setSupergroupUsername::setSupergroupUsername(std::int32_t supergroup_id_,
                                              std::string const &username_)
     : supergroup_id_(supergroup_id_)
     , username_(std::move(username_))
 {}
 
-const int32_t setSupergroupUsername::ID;
+const std::int32_t setSupergroupUsername::ID;
 
 void setSupergroupUsername::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18007,7 +18510,7 @@ setTdlibParameters::setTdlibParameters(object_ptr<tdlibParameters> &&parameters_
     : parameters_(std::move(parameters_))
 {}
 
-const int32_t setTdlibParameters::ID;
+const std::int32_t setTdlibParameters::ID;
 
 void setTdlibParameters::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18033,7 +18536,7 @@ setUserPrivacySettingRules::setUserPrivacySettingRules(object_ptr<UserPrivacySet
     , rules_(std::move(rules_))
 {}
 
-const int32_t setUserPrivacySettingRules::ID;
+const std::int32_t setUserPrivacySettingRules::ID;
 
 void setUserPrivacySettingRules::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18061,7 +18564,7 @@ setUsername::setUsername(std::string const &username_)
     : username_(std::move(username_))
 {}
 
-const int32_t setUsername::ID;
+const std::int32_t setUsername::ID;
 
 void setUsername::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18076,7 +18579,7 @@ terminateAllOtherSessions::terminateAllOtherSessions()
 {
 }
 
-const int32_t terminateAllOtherSessions::ID;
+const std::int32_t terminateAllOtherSessions::ID;
 
 void terminateAllOtherSessions::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18094,7 +18597,7 @@ terminateSession::terminateSession(std::int64_t session_id_)
     : session_id_(session_id_)
 {}
 
-const int32_t terminateSession::ID;
+const std::int32_t terminateSession::ID;
 
 void terminateSession::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18113,7 +18616,7 @@ testCallBytes::testCallBytes(std::string const &x_)
     : x_(std::move(x_))
 {}
 
-const int32_t testCallBytes::ID;
+const std::int32_t testCallBytes::ID;
 
 void testCallBytes::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18128,7 +18631,7 @@ testCallEmpty::testCallEmpty()
 {
 }
 
-const int32_t testCallEmpty::ID;
+const std::int32_t testCallEmpty::ID;
 
 void testCallEmpty::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18146,7 +18649,7 @@ testCallString::testCallString(std::string const &x_)
     : x_(std::move(x_))
 {}
 
-const int32_t testCallString::ID;
+const std::int32_t testCallString::ID;
 
 void testCallString::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18161,18 +18664,18 @@ testCallVectorInt::testCallVectorInt()
     : x_()
 {}
 
-testCallVectorInt::testCallVectorInt(std::vector<int32_t> &&x_)
+testCallVectorInt::testCallVectorInt(std::vector<std::int32_t> &&x_)
     : x_(std::move(x_))
 {}
 
-const int32_t testCallVectorInt::ID;
+const std::int32_t testCallVectorInt::ID;
 
 void testCallVectorInt::store(TlStorerToString &s, const char *field_name) const
 {
     if (!LOG_IS_STRIPPED(ERROR)) {
         s.store_class_begin(field_name, "testCallVectorInt");
         {
-            const std::vector<int32_t> &v = x_;
+            const std::vector<std::int32_t> &v = x_;
             const std::uint32_t multiplicity = static_cast<std::uint32_t>(v.size());
             const auto vector_name = "vector[" + std::to_string(multiplicity) + "]";
             s.store_class_begin("x", vector_name.c_str());
@@ -18193,7 +18696,7 @@ testCallVectorIntObject::testCallVectorIntObject(std::vector<object_ptr<testInt>
     : x_(std::move(x_))
 {}
 
-const int32_t testCallVectorIntObject::ID;
+const std::int32_t testCallVectorIntObject::ID;
 
 void testCallVectorIntObject::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18225,7 +18728,7 @@ testCallVectorString::testCallVectorString(std::vector<std::string> &&x_)
     : x_(std::move(x_))
 {}
 
-const int32_t testCallVectorString::ID;
+const std::int32_t testCallVectorString::ID;
 
 void testCallVectorString::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18253,7 +18756,7 @@ testCallVectorStringObject::testCallVectorStringObject(std::vector<object_ptr<te
     : x_(std::move(x_))
 {}
 
-const int32_t testCallVectorStringObject::ID;
+const std::int32_t testCallVectorStringObject::ID;
 
 void testCallVectorStringObject::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18281,7 +18784,7 @@ testGetDifference::testGetDifference()
 {
 }
 
-const int32_t testGetDifference::ID;
+const std::int32_t testGetDifference::ID;
 
 void testGetDifference::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18295,7 +18798,7 @@ testNetwork::testNetwork()
 {
 }
 
-const int32_t testNetwork::ID;
+const std::int32_t testNetwork::ID;
 
 void testNetwork::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18309,11 +18812,11 @@ testSquareInt::testSquareInt()
     : x_()
 {}
 
-testSquareInt::testSquareInt(int32_t x_)
+testSquareInt::testSquareInt(std::int32_t x_)
     : x_(x_)
 {}
 
-const int32_t testSquareInt::ID;
+const std::int32_t testSquareInt::ID;
 
 void testSquareInt::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18328,7 +18831,7 @@ testUseError::testUseError()
 {
 }
 
-const int32_t testUseError::ID;
+const std::int32_t testUseError::ID;
 
 void testUseError::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18342,7 +18845,7 @@ testUseUpdate::testUseUpdate()
 {
 }
 
-const int32_t testUseUpdate::ID;
+const std::int32_t testUseUpdate::ID;
 
 void testUseUpdate::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18357,13 +18860,13 @@ toggleBasicGroupAdministrators::toggleBasicGroupAdministrators()
     , everyone_is_administrator_()
 {}
 
-toggleBasicGroupAdministrators::toggleBasicGroupAdministrators(int32_t basic_group_id_,
+toggleBasicGroupAdministrators::toggleBasicGroupAdministrators(std::int32_t basic_group_id_,
                                                                bool everyone_is_administrator_)
     : basic_group_id_(basic_group_id_)
     , everyone_is_administrator_(everyone_is_administrator_)
 {}
 
-const int32_t toggleBasicGroupAdministrators::ID;
+const std::int32_t toggleBasicGroupAdministrators::ID;
 
 void toggleBasicGroupAdministrators::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18385,7 +18888,7 @@ toggleChatIsPinned::toggleChatIsPinned(std::int64_t chat_id_, bool is_pinned_)
     , is_pinned_(is_pinned_)
 {}
 
-const int32_t toggleChatIsPinned::ID;
+const std::int32_t toggleChatIsPinned::ID;
 
 void toggleChatIsPinned::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18402,13 +18905,13 @@ toggleSupergroupInvites::toggleSupergroupInvites()
     , anyone_can_invite_()
 {}
 
-toggleSupergroupInvites::toggleSupergroupInvites(int32_t supergroup_id_,
+toggleSupergroupInvites::toggleSupergroupInvites(std::int32_t supergroup_id_,
                                                  bool anyone_can_invite_)
     : supergroup_id_(supergroup_id_)
     , anyone_can_invite_(anyone_can_invite_)
 {}
 
-const int32_t toggleSupergroupInvites::ID;
+const std::int32_t toggleSupergroupInvites::ID;
 
 void toggleSupergroupInvites::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18426,12 +18929,12 @@ toggleSupergroupIsAllHistoryAvailable::toggleSupergroupIsAllHistoryAvailable()
 {}
 
 toggleSupergroupIsAllHistoryAvailable::toggleSupergroupIsAllHistoryAvailable(
-    int32_t supergroup_id_, bool is_all_history_available_)
+    std::int32_t supergroup_id_, bool is_all_history_available_)
     : supergroup_id_(supergroup_id_)
     , is_all_history_available_(is_all_history_available_)
 {}
 
-const int32_t toggleSupergroupIsAllHistoryAvailable::ID;
+const std::int32_t toggleSupergroupIsAllHistoryAvailable::ID;
 
 void toggleSupergroupIsAllHistoryAvailable::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -18449,13 +18952,13 @@ toggleSupergroupSignMessages::toggleSupergroupSignMessages()
     , sign_messages_()
 {}
 
-toggleSupergroupSignMessages::toggleSupergroupSignMessages(int32_t supergroup_id_,
+toggleSupergroupSignMessages::toggleSupergroupSignMessages(std::int32_t supergroup_id_,
                                                            bool sign_messages_)
     : supergroup_id_(supergroup_id_)
     , sign_messages_(sign_messages_)
 {}
 
-const int32_t toggleSupergroupSignMessages::ID;
+const std::int32_t toggleSupergroupSignMessages::ID;
 
 void toggleSupergroupSignMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18471,11 +18974,11 @@ unblockUser::unblockUser()
     : user_id_()
 {}
 
-unblockUser::unblockUser(int32_t user_id_)
+unblockUser::unblockUser(std::int32_t user_id_)
     : user_id_(user_id_)
 {}
 
-const int32_t unblockUser::ID;
+const std::int32_t unblockUser::ID;
 
 void unblockUser::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18490,11 +18993,11 @@ unpinSupergroupMessage::unpinSupergroupMessage()
     : supergroup_id_()
 {}
 
-unpinSupergroupMessage::unpinSupergroupMessage(int32_t supergroup_id_)
+unpinSupergroupMessage::unpinSupergroupMessage(std::int32_t supergroup_id_)
     : supergroup_id_(supergroup_id_)
 {}
 
-const int32_t unpinSupergroupMessage::ID;
+const std::int32_t unpinSupergroupMessage::ID;
 
 void unpinSupergroupMessage::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18513,7 +19016,7 @@ upgradeBasicGroupChatToSupergroupChat::upgradeBasicGroupChatToSupergroupChat(std
     : chat_id_(chat_id_)
 {}
 
-const int32_t upgradeBasicGroupChatToSupergroupChat::ID;
+const std::int32_t upgradeBasicGroupChatToSupergroupChat::ID;
 
 void upgradeBasicGroupChatToSupergroupChat::store(TlStorerToString &s,
                                                   const char *field_name) const
@@ -18532,13 +19035,13 @@ uploadFile::uploadFile()
 {}
 
 uploadFile::uploadFile(object_ptr<InputFile> &&file_, object_ptr<FileType> &&file_type_,
-                       int32_t priority_)
+                       std::int32_t priority_)
     : file_(std::move(file_))
     , file_type_(std::move(file_type_))
     , priority_(priority_)
 {}
 
-const int32_t uploadFile::ID;
+const std::int32_t uploadFile::ID;
 
 void uploadFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18564,12 +19067,12 @@ uploadStickerFile::uploadStickerFile()
     , png_sticker_()
 {}
 
-uploadStickerFile::uploadStickerFile(int32_t user_id_, object_ptr<InputFile> &&png_sticker_)
+uploadStickerFile::uploadStickerFile(std::int32_t user_id_, object_ptr<InputFile> &&png_sticker_)
     : user_id_(user_id_)
     , png_sticker_(std::move(png_sticker_))
 {}
 
-const int32_t uploadStickerFile::ID;
+const std::int32_t uploadStickerFile::ID;
 
 void uploadStickerFile::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18600,7 +19103,7 @@ validateOrderInfo::validateOrderInfo(std::int64_t chat_id_, std::int64_t message
     , allow_save_(allow_save_)
 {}
 
-const int32_t validateOrderInfo::ID;
+const std::int32_t validateOrderInfo::ID;
 
 void validateOrderInfo::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18631,7 +19134,7 @@ viewMessages::viewMessages(std::int64_t chat_id_, std::vector<std::int64_t> &&me
     , force_read_(force_read_)
 {}
 
-const int32_t viewMessages::ID;
+const std::int32_t viewMessages::ID;
 
 void viewMessages::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18661,7 +19164,7 @@ viewTrendingStickerSets::viewTrendingStickerSets(std::vector<std::int64_t> &&sti
     : sticker_set_ids_(std::move(sticker_set_ids_))
 {}
 
-const int32_t viewTrendingStickerSets::ID;
+const std::int32_t viewTrendingStickerSets::ID;
 
 void viewTrendingStickerSets::store(TlStorerToString &s, const char *field_name) const
 {
@@ -18680,4 +19183,4 @@ void viewTrendingStickerSets::store(TlStorerToString &s, const char *field_name)
         s.store_class_end();
     }
 }
-}  // namespace tdlib
+}  // namespace tdlibQt

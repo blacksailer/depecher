@@ -5,7 +5,9 @@ import "../../../js/utils.js" as Utils
 Dialog {
     id:signInDialog
     property string fullPhoneNumber: ""
+    property bool signBtnPressed: false
     property int authError: 0
+    canAccept: signBtnPressed
     Connections {
         target: c_telegramWrapper
         onConnectionStateChanged:{
@@ -92,17 +94,16 @@ Dialog {
                                                                    : tfcode.text.length > 0 && tfName.text.length > 0
                                                                      && tfSurName.text.length > 0
             onClicked: {
+                signBtnPressed = true;
                 btnsignin.enabled = false;
-                if (telegramAuthenticationHandler.isUserRegistered)
-                {
-                    btnsignin.text = qsTr("Sending request...");
-                    c_telegramWrapper.setCode(tfcode.text)
-                }
-                else
-                {
-                    c_telegramWrapper.setCodeIfNewUser(tfcode.text,tfSurName.text,tfName.text)
-                }
                 btnsignin.text = qsTr("Sending request...");
+
+                if (telegramAuthenticationHandler.isUserRegistered)
+                    c_telegramWrapper.setCode(tfcode.text)
+                else
+                    c_telegramWrapper.setCodeIfNewUser(tfcode.text,tfSurName.text,tfName.text)
+
+                signInDialog.accept()
 
             }
         }

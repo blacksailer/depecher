@@ -85,7 +85,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //        break;
     if (typeField == "updateAuthorizationState") {
         QString authState = doc.object()["authorization_state"].toObject()["@type"].toString();
-        bool isUserRegistered = true;
         auto authorizationState = Enums::AuthorizationState::AuthorizationStateWaitTdlibParameters;
         if (authState == "authorizationStateWaitEncryptionKey")
             authorizationState = Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey;
@@ -409,8 +408,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-        typeMessageText->text_->text_ = "Animation";
-        return typeMessageText;
+        return parseMessageAnimation(messageContentObject);
     }
     if (messageContentObject["@type"].toString() == "messageAudio") {
         typeMessageText->text_->text_ = "Audio";
@@ -486,7 +484,7 @@ QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonO
     resultMessageContent->animation_  = parseAnimation(messageAnimationObject["animation"].toObject());
     resultMessageContent->caption_  = parseFormattedTextContent(
                                           messageAnimationObject["caption"].toObject());
-//    resultMessageContent->is_secret_ = messageAnimationObject["is_secret"].toBool();
+    resultMessageContent->is_secret_ = messageAnimationObject["is_secret"].toBool();
     return resultMessageContent;
 }
 QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
