@@ -20,7 +20,6 @@ void ParseObject::parseResponse(const QByteArray &json)
         qDebug() << err.errorString();
         return;
     }
-    //    jsonWriter.writeJson(doc);
     QString typeField = doc.object()["@type"].toString();
 #ifdef QT_DEBUG
     qDebug() << json;
@@ -169,16 +168,20 @@ void ParseObject::parseResponse(const QByteArray &json)
         emit updateConnectionState(connectionState);
     }
     if (typeField == "updateNewChat") {
-        qint64 chat_id = getInt64(doc.object()["chat"].toObject()["id"]);
         auto chatObject = doc.object()["chat"].toObject();
+        qint64 chat_id = getInt64(chatObject["id"]);
         chat_title_[chat_id] = chatObject["title"].toString();
+        emit updateNewChat(chatObject);
+
     }
     if (typeField == "updateUser") {
-        int user_id = doc.object()["user"].toObject()["id"].toInt();
         auto userObject = doc.object()["user"].toObject();
+        int user_id = userObject["id"].toInt();
+
         QString firstName = userObject["first_name"].toString();
         QString lastName = userObject["last_name"].toString();
         users_[user_id] = firstName + " " + lastName;
+        emit updateNewUser(userObject);
     }
     if (typeField == "updateFile") {
         emit updateFile(doc.object());
@@ -204,35 +207,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateNewMessage") {
         auto rootNewMessage = doc.object();
         emit newMessageFromUpdate(rootNewMessage);
-        if (rootNewMessage["disable_notification"].toBool() != true) {
-            auto messageObject = rootNewMessage["message"].toObject();
-
-            auto notificationTimestamp = qint64(messageObject["date"].toInt());
-            QString notificationSummary;
-            QString notificationBody;
-            qint64 chatId = getInt64(messageObject["chat_id"]);
-            auto chatIt = chat_title_.find(chatId);
-            if (chatIt == chat_title_.end())
-                notificationSummary = "unknown chat";
-            else
-                notificationSummary = chatIt->second;
-
-            auto userIt = users_.find(messageObject["sender_user_id"].toInt());
-
-            if (userIt == users_.end())
-                notificationBody = "unknown user:";
-            else
-                notificationBody = userIt.value() + ":";
-
-
-            if (messageObject["content"].toObject()["@type"] == "messageText")
-                notificationBody.append(" " +
-                                        messageObject["content"].toObject()["text"].toObject()["text"].toString());
-            NotificationManager::instance()->notifySummary(notificationTimestamp, notificationSummary,
-                                                           notificationBody,
-                                                           chatId);
-        }
-
     }
     if (typeField == "chats") {
         QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
@@ -357,6 +331,8 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
         return resultMessageForwardedPost;
 
     }
+    return QSharedPointer<messageForwardedFromUser>
+           (new messageForwardedFromUser);
 }
 
 QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
@@ -723,6 +699,128 @@ QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObj
     }
 
     return resultChatAction;
+}
+
+QSharedPointer<chat> ParseObject::parseChat(const QJsonObject &chatObject)
+{
+    if (chatObject["@type"].toString() != "chat")
+        return QSharedPointer<chat>(new chat);
+    QSharedPointer<chat> chatItem = QSharedPointer<chat>(new chat);
+    chatItem->client_data_ = chatObject["client_data"].toString().toStdString();
+    chatItem->id_ =  getInt64(chatObject["id"]);
+    chatItem->is_pinned_ = chatObject["is_pinned"].toBool();
+    chatItem->last_read_inbox_message_id_ =  getInt64(
+                                                 chatObject["last_read_inbox_message_id"]);
+    chatItem->last_read_outbox_message_id_ =  getInt64(
+                                                  chatObject["last_read_outbox_message_id"]);
+    chatItem->order_ =  chatObject["order"].toString().toLongLong();
+    chatItem->reply_markup_message_id_ = getInt64(chatObject["reply_markup_message_id"]);
+    chatItem->title_ = chatObject["title"].toString().toStdString();
+    chatItem->unread_count_ = chatObject["unread_count"].toInt();
+    chatItem->unread_mention_count_ = chatObject["unread_mention_count"].toInt();
+    chatItem->last_message_ = parseMessage(chatObject["last_message"].toObject());
+    chatItem->type_ = parseType(chatObject["type"].toObject());
+    chatItem->photo_ = parseChatPhoto(chatObject["photo"].toObject());
+    chatItem->notification_settings_ = parseNotificationSettings(
+                                           chatObject["notification_settings"].toObject());
+
+#warning TODO draftMessage
+    chatItem->draft_message_ = QSharedPointer<draftMessage>(nullptr);
+    return chatItem;
+
+
+}
+
+QSharedPointer<user> ParseObject::parseUser(const QJsonObject &userObject)
+{
+    if (userObject["@type"].toString() != "user")
+        return QSharedPointer<user>(new user);
+
+    QSharedPointer<user> resultUser =  QSharedPointer<user>(new user);
+    resultUser->id_ = getInt64(userObject["id"]);
+    resultUser->first_name_ = userObject["first_name"].toString().toStdString();
+    resultUser->have_access_ = userObject["have_access"].toBool();
+    resultUser->incoming_link_ = parseLinkState(userObject["incoming_link"].toObject());
+    resultUser->outgoing_link_ = parseLinkState(userObject["outgoing_link"].toObject());
+    resultUser->is_verified_ = userObject["is_verified"].toBool();
+    resultUser->language_code_ = userObject["language_code"].toString().toStdString();
+    resultUser->last_name_ = userObject["last_name"].toString().toStdString();
+    resultUser->username_ = userObject["username"].toString().toStdString();
+    resultUser->type_ = parseUserType(userObject["type"].toObject());
+    resultUser->status_ = parseUserStatus(userObject["status"].toObject());
+    resultUser->restriction_reason_ = userObject["restriction_reason"].toString().toStdString();
+    resultUser->profile_photo_ = parseProfilePhoto(userObject["profilePhoto"].toObject());
+    resultUser->phone_number_ = userObject["phone_number"].toString().toStdString();
+
+    return resultUser;
+}
+
+QSharedPointer<profilePhoto> ParseObject::parseProfilePhoto(const QJsonObject &profilePhotoObject)
+{
+    if (profilePhotoObject["@type"].toString() != "profilePhoto")
+        return QSharedPointer<profilePhoto>(new profilePhoto);
+
+    auto resultPhoto = QSharedPointer<profilePhoto>(new profilePhoto);
+    resultPhoto->id_ = getInt64(profilePhotoObject["id"]);
+    resultPhoto->small_ = parseFile(profilePhotoObject["small"].toObject());
+    resultPhoto->big_ = parseFile(profilePhotoObject["big"].toObject());
+
+    return resultPhoto;
+}
+
+QSharedPointer<UserStatus> ParseObject::parseUserStatus(const QJsonObject &userStatusObject)
+{
+    if (userStatusObject["@type"] == "userStatusRecently")
+        return QSharedPointer<UserStatus>(new userStatusRecently);
+    if (userStatusObject["@type"] == "userStatusOnline") {
+        QSharedPointer<userStatusOnline> statusObject = QSharedPointer<userStatusOnline>
+                                                        (new userStatusOnline);
+        statusObject->expires_ = userStatusObject["expires"].toInt();
+        return statusObject;
+    }
+    if (userStatusObject["@type"] == "userStatusOffline") {
+        QSharedPointer<userStatusOffline> statusObject = QSharedPointer<userStatusOffline>
+                                                         (new userStatusOffline);
+        statusObject->was_online_ = userStatusObject["was_online"].toInt();
+        return statusObject;
+    }
+    if (userStatusObject["@type"] == "userStatusLastMonth")
+        return QSharedPointer<UserStatus>(new userStatusLastMonth);
+    if (userStatusObject["@type"] == "userStatusLastWeek")
+        return QSharedPointer<UserStatus>(new userStatusLastWeek);
+
+    return QSharedPointer<UserStatus>(new userStatusEmpty);
+}
+
+QSharedPointer<UserType> ParseObject::parseUserType(const QJsonObject &userTypeObject)
+{
+    if (userTypeObject["@type"] == "userTypeRegular")
+        return QSharedPointer<UserType>(new userTypeRegular);
+    if (userTypeObject["@type"] == "userTypeDeleted")
+        return QSharedPointer<UserType>(new userTypeDeleted);
+    if (userTypeObject["@type"] == "userTypeBot") {
+        QSharedPointer<userTypeBot> resultTypeBot = QSharedPointer<userTypeBot>(new userTypeBot);
+        resultTypeBot->can_join_groups_ = userTypeObject["can_join_groups"].toBool();
+        resultTypeBot->can_read_all_group_messages_ =
+            userTypeObject["can_read_all_group_messages"].toBool();
+        resultTypeBot->inline_query_placeholder_ =
+            userTypeObject["inline_query_placeholder"].toString().toStdString();
+        resultTypeBot->is_inline_ = userTypeObject["is_inline"].toBool();
+        resultTypeBot->need_location_ = userTypeObject["need_location"].toBool();
+        return resultTypeBot;
+    }
+
+    return QSharedPointer<UserType>(new userTypeUnknown);
+}
+
+QSharedPointer<LinkState> ParseObject::parseLinkState(const QJsonObject &linkStateObject)
+{
+    if (linkStateObject["@type"].toString() == "linkStateKnowsPhoneNumber")
+        return QSharedPointer<LinkState>(new linkStateKnowsPhoneNumber);
+    if (linkStateObject["@type"].toString() == "linkStateIsContact")
+        return QSharedPointer<LinkState>(new linkStateIsContact);
+
+    return QSharedPointer<LinkState>(new linkStateNone);
 }
 
 

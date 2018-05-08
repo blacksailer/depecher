@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql
+QT += sql dbus
 
 CONFIG += sailfishapp
 CONFIG += c++11
@@ -29,6 +29,15 @@ INSTALLS += webp
 
 DEPENDPATH += $$OUT_PWD/../tdlibjson_wrapper
 INCLUDEPATH = $$PWD/../tdlibjson_wrapper
+
+notificationcategories.files=$$PWD/notificationcategories/*.conf
+notificationcategories.path=/usr/share/lipstick/notificationcategories
+
+events.files=$$PWD/events/*.ini
+events.path=/usr/share/ngfd/events.d
+
+INSTALLS += notificationcategories events
+
 
 CONFIG (debug, debug|release) {
         OBJECTS_DIR = build/debug
@@ -68,7 +77,12 @@ DISTFILES += \
     rpm/depecher.yaml \
     rpm/depecher.spec \
     rpm/depecher.changes.in \
-    ../README.md
+    ../README.md \
+    events/depecher_im_fg.ini \
+    events/depecher_im_exists.ini \
+    events/depecher_im.ini \
+    notificationcategories/x-depecher.im.conf \
+    notificationcategories/x-depecher.im.fg.conf
 
 HEADERS += \
     src/FileWorker.hpp

@@ -13,10 +13,10 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    My Sailfish OS Application
-Version:    0.1
-Release:    2
+Version:    0.2
+Release:    1
 Group:      Applications/Communications
-License:    LGPL 2.1
+License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  depecher.yaml
@@ -57,7 +57,10 @@ rm -rf %{buildroot}
 # << install pre
 %qmake5_install
 
+%post
 # >> install post
+systemctl-user restart mce.service
+systemctl-user restart ngfd.service
 # << install post
 
 desktop-file-install --delete-original       \
@@ -70,6 +73,8 @@ desktop-file-install --delete-original       \
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/lipstick/notificationcategories/*.conf
+%{_datadir}/ngfd/events.d/*.ini
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
 # >> files

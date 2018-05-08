@@ -151,14 +151,6 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
         return QVariant();
     case LAST_MESSAGE:
         if (chats[rowIndex]->last_message_.data() != nullptr) {
-            bool is_channel = false;
-            //Check if channel
-            if (chats[rowIndex]->type_->get_id() == chatTypeSupergroup::ID) {
-                chatTypeSupergroup *superGroupMetaInfo   = static_cast<chatTypeSupergroup *>
-                                                           (chats[rowIndex]->type_.data());
-                is_channel = superGroupMetaInfo->is_channel_;
-            }
-
             //Return content
             if (chats[rowIndex]->last_message_->content_.data() != nullptr) {
                 if (chats[rowIndex]->last_message_->content_->get_id() == messageText::ID) {
@@ -258,26 +250,7 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
 {
     fetchPending = false;
 
-    QSharedPointer<chat> chatItem = QSharedPointer<chat>(new chat);
-    chatItem->client_data_ = chatObject["client_data"].toString().toStdString();
-    chatItem->id_ =  ParseObject::getInt64(chatObject["id"]);
-    chatItem->is_pinned_ = chatObject["is_pinned"].toBool();
-    chatItem->last_read_inbox_message_id_ =  ParseObject::getInt64(
-                                                 chatObject["last_read_inbox_message_id"]);
-    chatItem->last_read_outbox_message_id_ =  ParseObject::getInt64(
-                                                  chatObject["last_read_outbox_message_id"]);
-    chatItem->order_ =  chatObject["order"].toString().toLongLong();
-    chatItem->reply_markup_message_id_ = ParseObject::getInt64(chatObject["reply_markup_message_id"]);
-    chatItem->title_ = chatObject["title"].toString().toStdString();
-    chatItem->unread_count_ = chatObject["unread_count"].toInt();
-    chatItem->unread_mention_count_ = chatObject["unread_mention_count"].toInt();
-    chatItem->last_message_ = ParseObject::parseMessage(chatObject["last_message"].toObject());
-    chatItem->type_ = ParseObject::parseType(chatObject["type"].toObject());
-    chatItem->photo_ = ParseObject::parseChatPhoto(chatObject["photo"].toObject());
-    chatItem->notification_settings_ = ParseObject::parseNotificationSettings(
-                                           chatObject["notification_settings"].toObject());
-
-    chatItem->draft_message_ = QSharedPointer<draftMessage>(nullptr);
+    QSharedPointer<chat> chatItem = ParseObject::parseChat(chatObject);
     if (chatItem->last_message_->get_id() == messagePhoto::ID) {
         auto photoItemPtr = static_cast<messagePhoto *>(chatItem->last_message_->content_.data());
         if (photoItemPtr->photo_->sizes_.size() > 0) {

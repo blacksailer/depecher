@@ -1,6 +1,6 @@
 Name: depecher
 Summary: My Sailfish OS Application
-Version: 0.1
+Version: 0.2
 Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
@@ -43,6 +43,8 @@ Files:
   - '%{_datadir}/%{name}'
   - '%{_datadir}/applications/%{name}.desktop'
   - '%{_datadir}/icons/hicolor/*/apps/%{name}.png'
+  - '%{_datadir}/lipstick/notificationcategories/*.conf'
+  - '%{_datadir}/ngfd/events.d/*.ini'
   - '%exclude %{_libdir}/cmake/*'
   - '%exclude %{_libdir}/debug/*'
 # For more information about yaml and what's supported in Sailfish OS

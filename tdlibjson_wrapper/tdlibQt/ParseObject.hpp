@@ -52,6 +52,14 @@ public:
     static QSharedPointer<chatPhoto> parseChatPhoto(const QJsonObject &chatPhotoObject);
     static QSharedPointer<file> parseFile(const QJsonObject &fileObject);
     static QSharedPointer<updateUserChatAction> parseChatAction(const QJsonObject &chatActionObject);
+    static QSharedPointer<chat> parseChat(const QJsonObject &chatObject);
+    static QSharedPointer<user> parseUser(const QJsonObject &userObject);
+    static QSharedPointer<profilePhoto> parseProfilePhoto(const QJsonObject &profilePhotoObject);
+
+    static QSharedPointer<UserStatus> parseUserStatus(const QJsonObject &userStatusObject);
+    static QSharedPointer<UserType> parseUserType(const QJsonObject &userTypeObject);
+
+    static QSharedPointer<LinkState> parseLinkState(const QJsonObject &linkStateObject);
     enum class UpdateState {
         updateAuthorizationState,
         updateBasicGroup,
@@ -117,6 +125,9 @@ signals:
     void updateConnectionState(Enums::ConnectionState &connectionState);
 
     void newAuthorizationState(const QSharedPointer<AuthorizationState> &authorizationState);
+
+    void updateNewChat(const QJsonObject &updateNewChatObject);
+    void updateNewUser(const QJsonObject &updateNewUserObject);
 
     void updateNewMessage(const QVariantMap &msg);
     void updateFile(const QJsonObject &fileObject);

@@ -73,7 +73,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::setConnectionState);
     connect(parseObject, &ParseObject::getChat,
             this, &TdlibJsonWrapper::getChat);
-
+    connect(parseObject, &ParseObject::updateNewChat,
+            this, &TdlibJsonWrapper::updateNewChat);
+    connect(parseObject, &ParseObject::updateNewUser,
+            this, &TdlibJsonWrapper::updateNewUser);
     connect(parseObject, &ParseObject::newChatReceived,
             this, &TdlibJsonWrapper::newChatGenerated);
     connect(parseObject, &ParseObject::updateFile,

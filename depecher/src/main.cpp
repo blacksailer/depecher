@@ -17,7 +17,8 @@
 #include "tdlibQt/include/AuthenticationHandler.hpp"
 #include "tdlibQt/items/ProxyDAO.hpp"
 #include "tdlibQt/items/AboutMeDAO.hpp"
-
+#include "tdlibQt/NotificationManager.hpp"
+#include "tdlibQt/models/singletons/UsersModel.hpp"
 int main(int argc, char *argv[])
 {
     QGuiApplication *app = SailfishApp::application(argc, argv);
@@ -26,8 +27,11 @@ int main(int argc, char *argv[])
 
     auto view = SailfishApp::createView();
     auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
+    auto NotificationManager = tdlibQt::NotificationManager::instance();
+    auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
     tdlib->setEncryptionKey();
+
     qmlRegisterUncreatableType<tdlibQt::Enums>("tdlibQtEnums", 1, 0, "TdlibState",
                                                "Error class uncreatable");
     qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");

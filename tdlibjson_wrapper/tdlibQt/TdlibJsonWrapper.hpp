@@ -65,6 +65,9 @@ public:
     }
 
 signals:
+    void updateNewChat(const QJsonObject &updateNewChatObject);
+    void updateNewUser(const QJsonObject &updateNewUserObject);
+
 
     void isCredentialsEmptyChanged(bool isCredentialsEmpty);
     void authorizationStateChanged(tdlibQt::Enums::AuthorizationState authorizationState);

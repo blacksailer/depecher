@@ -209,8 +209,9 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     return roles;
 }
 
-void MessagingModel::fetchMore(const QModelIndex &parent)
+void MessagingModel::fetchMore(const QModelIndex & /*parent*/)
 {
+
     qint64 lastMessageOutboxId = 0;
     if (currentMessage().length() > 0)
         lastMessageOutboxId = m_currentMessage.toLongLong();
