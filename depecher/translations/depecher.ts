@@ -224,5 +224,38 @@ proxy server in settings via PulleyMenu</source>
         <source>Sending request...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enter your password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recover password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email is sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter recovery code. 
+ Remember! After that 2FA authorization will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recovery code</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

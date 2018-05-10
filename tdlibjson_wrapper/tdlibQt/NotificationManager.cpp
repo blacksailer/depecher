@@ -14,9 +14,10 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
     //План Б. Получать список уведомлений по updateChatReadInbox и notifications
     connect(m_client, &TdlibJsonWrapper::connectionStateChanged,
     [this](Enums::ConnectionState connectionState) {
+        if (m_connectionState == connectionState)
+            return;
         m_connectionState = connectionState;
-        if (m_connectionState == Enums::ConnectionState::ConnectionStateReady)
-            publishNotifications();
+        publishNotifications();
     });
     connect(m_client, &TdlibJsonWrapper::newMessageFromUpdate,
             this, &NotificationManager::gotNewMessage);
@@ -133,61 +134,57 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
 void NotificationManager::notifySummary(const qint64 timestamp, const QString &summary,
                                         const QString &body, const qint64 chatId,  const qint64 unreadCount)
 {
-    if (currentViewableChatId != chatId || qApp->applicationState() != Qt::ApplicationActive) {
-        QSharedPointer<Notification> notificationPtr = QSharedPointer<Notification>(new Notification);
+    QSharedPointer<Notification> notificationPtr = QSharedPointer<Notification>(new Notification);
 
-        notificationPtr->setCategory("x-depecher.im");
-        notificationPtr->setExpireTimeout(m_expireTimeout);
-        notificationPtr->setItemCount(unreadCount);
-        if (m_chatIdsPublished.contains(chatId)) {
-            notificationPtr->setItemCount(m_chatIdsPublished[chatId]->itemCount() + 1);
-            notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
-        }
-        notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
-                                                                     1000 /* timestamp have secs , not msecs*/));
-        notificationPtr->setSummary(summary);
-        notificationPtr->setBody(body);
-
-        //Too lazy to create another map. saving message id in hint value
-        notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-                                                                    QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-                                                                    "getId"));
-        connect(notificationPtr.data(), &Notification::closed, [this]() {
-            auto ptr = QSharedPointer<Notification>((Notification *)sender());
-            m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
-        });
-        m_chatIdsPublished[chatId] = notificationPtr;
-        publishNotifications();
+    notificationPtr->setCategory("x-depecher.im");
+    notificationPtr->setExpireTimeout(m_expireTimeout);
+    notificationPtr->setItemCount(unreadCount);
+    if (m_chatIdsPublished.contains(chatId)) {
+        notificationPtr->setItemCount(m_chatIdsPublished[chatId]->itemCount() + 1);
+        notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
     }
+    notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
+                                                                 1000 /* timestamp have secs , not msecs*/));
+    notificationPtr->setSummary(summary);
+    notificationPtr->setBody(body);
+
+    //Too lazy to create another map. saving message id in hint value
+    notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
+                                                                QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
+                                                                "getId"));
+    connect(notificationPtr.data(), &Notification::closed, [this]() {
+        auto ptr = QSharedPointer<Notification>((Notification *)sender());
+        m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
+    });
+    m_chatIdsPublished[chatId] = notificationPtr;
+    publishNotifications();
 }
 
 void NotificationManager::notifyPreview(const qint64 timestamp, const QString &summary,
                                         const QString &body, const qint64 chatId, const qint64 unreadCount)
 {
-    if (currentViewableChatId != chatId || qApp->applicationState() != Qt::ApplicationActive) {
 
-        QSharedPointer<Notification> notificationPtr = QSharedPointer<Notification>(new Notification);
-        notificationPtr->setCategory("x-depecher.im.fg");
-        notificationPtr->setExpireTimeout(m_expireTimeout);
-        notificationPtr->setItemCount(unreadCount);
-        if (m_chatIdsPublished.contains(chatId)) {
-            notificationPtr->setItemCount(m_chatIdsPublished[chatId]->itemCount() + 1);
-            notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
-        }
-        notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
-                                                                     1000 /* timestamp have secs , not msecs*/));
-        notificationPtr->setPreviewSummary(summary);
-        notificationPtr->setPreviewBody(body);
-        //Too lazy to create another map. saving message id in hint value
-        notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-                                                                    QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-                                                                    "getId"));
-        connect(notificationPtr.data(), &Notification::closed, [this]() {
-            auto ptr = QSharedPointer<Notification>((Notification *)sender());
-            m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr));
-        });
-        m_chatIdsPublished[chatId] = notificationPtr;
-        publishNotifications();
+    QSharedPointer<Notification> notificationPtr = QSharedPointer<Notification>(new Notification);
+    notificationPtr->setCategory("x-depecher.im.fg");
+    notificationPtr->setExpireTimeout(m_expireTimeout);
+    notificationPtr->setItemCount(unreadCount);
+    if (m_chatIdsPublished.contains(chatId)) {
+        notificationPtr->setItemCount(m_chatIdsPublished[chatId]->itemCount() + 1);
+        notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
     }
+    notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
+                                                                 1000 /* timestamp have secs , not msecs*/));
+    notificationPtr->setPreviewSummary(summary);
+    notificationPtr->setPreviewBody(body);
+    //Too lazy to create another map. saving message id in hint value
+    notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
+                                                                QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
+                                                                "getId"));
+    connect(notificationPtr.data(), &Notification::closed, [this]() {
+        auto ptr = QSharedPointer<Notification>((Notification *)sender());
+        m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr));
+    });
+    m_chatIdsPublished[chatId] = notificationPtr;
+    publishNotifications();
 }
 }// tdlibQt

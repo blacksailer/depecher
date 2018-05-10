@@ -10,6 +10,12 @@ tdlibQt::AuthenticationHandler::AuthenticationHandler(QObject *parent) :
             this, &AuthenticationHandler::setAuthorizationState);
     connect(m_client, &TdlibJsonWrapper::authorizationStateChanged,
             this, &AuthenticationHandler::setCurrentAuthorizationState);
+
+    connect(m_client, &TdlibJsonWrapper::errorReceived,
+            this, &AuthenticationHandler::setError);
+    connect(m_client, &TdlibJsonWrapper::okReceived,
+            this, &AuthenticationHandler::setOk);
+
     m_authorizationState = QSharedPointer<AuthorizationState>(nullptr);
 
 }
@@ -24,6 +30,47 @@ QString tdlibQt::AuthenticationHandler::getType() const
     return getCurrentCodeType();
 }
 
+bool tdlibQt::AuthenticationHandler::getIsUserRegistered() const
+{
+    return isUserRegistered();
+}
+
+QString tdlibQt::AuthenticationHandler::getHint() const
+{
+    if (m_authorizationState.data()) {
+
+        if (m_authorizationState->get_id() == authorizationStateWaitPassword::ID) {
+            auto waitCode = static_cast<authorizationStateWaitPassword *>(m_authorizationState.data());
+            return QString::fromStdString(waitCode->password_hint_);
+        }
+    }
+    return "";
+}
+
+QString tdlibQt::AuthenticationHandler::emailPattern() const
+{
+    if (m_authorizationState.data()) {
+
+        if (m_authorizationState->get_id() == authorizationStateWaitPassword::ID) {
+            auto waitCode = static_cast<authorizationStateWaitPassword *>(m_authorizationState.data());
+            return QString::fromStdString(waitCode->recovery_email_address_pattern_);
+        }
+    }
+    return "";
+}
+
+bool tdlibQt::AuthenticationHandler::hasRecoveryEmail() const
+{
+    if (m_authorizationState.data()) {
+
+        if (m_authorizationState->get_id() == authorizationStateWaitPassword::ID) {
+            auto waitCode = static_cast<authorizationStateWaitPassword *>(m_authorizationState.data());
+            return waitCode->has_recovery_email_address_;
+        }
+    }
+    return false;
+}
+
 void tdlibQt::AuthenticationHandler::setCurrentAuthorizationState(tdlibQt::Enums::AuthorizationState
                                                                   currentAuthorizationState)
 {
@@ -34,10 +81,26 @@ void tdlibQt::AuthenticationHandler::setCurrentAuthorizationState(tdlibQt::Enums
     emit authorizationStateChanged(currentAuthorizationState);
 }
 
+void tdlibQt::AuthenticationHandler::recoverPassword()
+{
+    m_client->requestAuthenticationPasswordRecovery();
+}
+
+void tdlibQt::AuthenticationHandler::sendRecoveryCode(const QString &code)
+{
+    m_client->recoverAuthenticationPassword(code);
+}
+
+
 void tdlibQt::AuthenticationHandler::setEncryptionKey(const QString &passwd)
 {
     m_client->setEncryptionKey(passwd);
 
+}
+
+void tdlibQt::AuthenticationHandler::checkPassword(const QString &password)
+{
+    m_client->checkPassword(password);
 }
 
 bool tdlibQt::AuthenticationHandler::isUserRegistered() const
@@ -78,4 +141,16 @@ void tdlibQt::AuthenticationHandler::setAuthorizationState(const
     m_authorizationState = authorizationState;
     emit getTypeChanged(getCurrentCodeType());
     emit isUserRegisteredChanged(isUserRegistered());
+}
+
+void tdlibQt::AuthenticationHandler::setError(const QJsonObject &errorObject)
+{
+    m_error = errorObject.toVariantMap();
+    emit errorChanged(m_error);
+}
+
+void tdlibQt::AuthenticationHandler::setOk(const QJsonObject &okObject)
+{
+    m_ok = okObject.toVariantMap();
+    emit okChanged(m_ok);
 }

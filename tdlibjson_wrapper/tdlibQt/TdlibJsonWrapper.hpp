@@ -1,3 +1,4 @@
+
 #ifndef TDLIBJSONWRAPPER_HPP
 #define TDLIBJSONWRAPPER_HPP
 
@@ -64,6 +65,7 @@ public:
         return m_totalUnreadCount;
     }
 
+    void checkPassword(const QString &password);
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateNewUser(const QJsonObject &updateNewUserObject);
@@ -89,6 +91,8 @@ signals:
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void meReceived(const QJsonObject &meObject);
+    void errorReceived(const QJsonObject &errorObject);
+    void okReceived(const QJsonObject &okObject);
 
     void totalUnreadCountChanged(int totalUnreadCount);
 
@@ -103,7 +107,7 @@ public slots:
 
     void setEncryptionKey(const QString &key = "");
     void setPhoneNumber(const QString &phone);
-    void setCode(const QString &code); /*TODO check for numbers only*/
+    void checkCode(const QString &code); /*TODO check for numbers only*/
     void setCodeIfNewUser(const QString &code, const QString &firstName,
                           const QString &lastName); /*TODO check for numbers only and escape characters*/
     void getChats(const qint64 offset_chat_id = 0,
@@ -119,6 +123,9 @@ public slots:
     void setAuthorizationState(tdlibQt::Enums::AuthorizationState &authorizationState);
     void setConnectionState(tdlibQt::Enums::ConnectionState &connState);
     void getMe();
+    void requestAuthenticationPasswordRecovery();
+    void recoverAuthenticationPassword(const QString &recoveryCode);
+
     void setTotalUnreadCount(int totalUnreadCount)
     {
         if (m_totalUnreadCount == totalUnreadCount)

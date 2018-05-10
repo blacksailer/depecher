@@ -146,6 +146,8 @@ signals:
     void newMessageFromUpdate(const QJsonObject &messageItem);
     void updateTotalCount(int totalCount);
     void proxyReceived(const QJsonObject &proxyObject);
+    void errorReceived(const QJsonObject &errorObject);
+    void okReceived(const QJsonObject &okObject);
 
 public slots:
     void parseResponse(const QByteArray &json);

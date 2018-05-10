@@ -23,10 +23,11 @@ MessagingModel::MessagingModel() :
 
     connect(this, &MessagingModel::firstIdChanged, [this]() {
         if (messages.first()->id_ == lastMessage().toLongLong()) {
+            if (!isUpdateConnected)
+                connect(tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
+                        this, &MessagingModel::addMessageFromUpdate);
             isUpdateConnected = true;
             setAtYEnd(isUpdateConnected);
-            connect(tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
-                    this, &MessagingModel::addMessageFromUpdate);
         }
     });
 

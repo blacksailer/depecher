@@ -82,6 +82,13 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateUserPrivacySettingRules":
     //    case "updateUserStatus":
     //        break;
+    if (typeField == "error") {
+        emit errorReceived(doc.object());
+    }
+    if (typeField == "ok") {
+        emit okReceived(doc.object());
+    }
+
     if (typeField == "updateAuthorizationState") {
         QString authState = doc.object()["authorization_state"].toObject()["@type"].toString();
         auto authorizationState = Enums::AuthorizationState::AuthorizationStateWaitTdlibParameters;

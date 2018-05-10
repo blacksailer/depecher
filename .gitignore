@@ -1,4 +1,5 @@
 json/*
+tdlibjson_wrapper/.vscode
 tdlibjson_wrapper/api_secret.pri
 json.tar
 *.mdj

@@ -16,7 +16,7 @@ class NotificationManager : public QObject
     TdlibJsonWrapper *m_client;
     static const int m_expireTimeout = 60 * 60 * 1000;
     QMap<qint64, QSharedPointer<Notification>> m_chatIdsPublished;
-    Enums::ConnectionState m_connectionState;
+    Enums::ConnectionState m_connectionState = Enums::ConnectionState::ConnectionStateConnecting;
     explicit NotificationManager(QObject *parent = 0);
     void publishNotifications();
 public:

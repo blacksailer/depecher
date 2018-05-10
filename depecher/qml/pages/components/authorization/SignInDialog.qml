@@ -1,111 +1,203 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramAuthentication 1.0
+import tdlibQtEnums 1.0
+import ".."
 import "../../../js/utils.js" as Utils
 Dialog {
     id:signInDialog
     property string fullPhoneNumber: ""
-    property bool signBtnPressed: false
+    property bool canLogin: false
     property int authError: 0
-    canAccept: signBtnPressed
-    Connections {
-        target: c_telegramWrapper
-        onConnectionStateChanged:{
-           var connectionStatus = Utils.setState(connectionState)
-        }
-    }
-    onAcceptPendingChanged: {
-        if (acceptPending) {
-            pageStack.replaceAbove(null,Qt.resolvedUrl("../../DialogsPage.qml"));
-        }
-    }
-    TelegramAuthenticationHandler{
-        id:telegramAuthenticationHandler
-    }
-    Column
-    {
-        id: signin
-        spacing: Theme.paddingMedium
-        x:Theme.horizontalPageMargin
-        width: parent.width-2*x
-
-        PageHeader { width: parent.width; height: Theme.paddingLarge }
-
-        Image
-        {
-            id: imgwaiting
-            source: "image://theme/icon-l-timer"
-            anchors.horizontalCenter: parent.horizontalCenter
+    canAccept: canLogin
+    SilicaFlickable{
+        anchors.fill: parent
+        NotificationPanel{
+            id: notificationPanel
+            page: signInDialog
         }
 
-
-        Label
-        {
-            id: lblinfo
-            text: qsTr("Wait for the message via " + telegramAuthenticationHandler.getType + " containing the activation code and press " + btnsignin.text)
-            font.pixelSize: Theme.fontSizeSmall
-            anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-        }
-
-        Label
-        {
-            id: txterrormsg
-            font { bold: true; underline: true; pixelSize: Theme.fontSizeSmall }
-            color: Theme.secondaryHighlightColor
-            anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.Wrap
-        }
-
-        TextField
-        {
-            id: tfcode
-            anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
-            placeholderText: qsTr("Code")
-            inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly
-        }
-        Column {
-            id:tfRowName
-            width:parent.width
-            visible: !telegramAuthenticationHandler.isUserRegistered
-            TextField
-            {
-                id: tfName
-                width:parent.width
-                placeholderText: qsTr("First Name")
+        TelegramAuthenticationHandler{
+            id:telegramAuthenticationHandler
+            property bool forgotPassword: false
+            onAuthorizationStateChanged: {
+                console.log(currentAuthorizationState)
+                if(currentAuthorizationState === TdlibState.AuthorizationStateWaitPassword)
+                    signInDialog.state = "password"
+                if(currentAuthorizationState === TdlibState.AuthorizationStateWaitCode)
+                    signInDialog.state = "code"
+                if(currentAuthorizationState === TdlibState.AuthorizationStateReady)
+                {
+                    canLogin=true
+                    signInDialog.accept()
+                }
             }
-            TextField
-            {
-                id: tfSurName
-                width:parent.width
-                placeholderText: qsTr("Surname")
+            onErrorChanged: {
+                notificationPanel.showTextWithTimer(qsTr("Error"),"code:" + error["code"] +"\n" + error["message"])
+            }
+
+        }
+
+        PullDownMenu {
+            id:pulleyMenuRecovery
+            visible: false
+
+            MenuItem{
+                text:qsTr("Recover password")
+                enabled: telegramAuthenticationHandler.hasRecoveryEmail
+                onClicked: {
+                    telegramAuthenticationHandler.recoverPassword()
+                    telegramAuthenticationHandler.forgotPassword = true
+                    notificationPanel.showTextWithTimer(qsTr("Email is sent"),"recovery code sent to "+telegramAuthenticationHandler.emailPattern)
+
+                }
+            }
+
+            MenuItem {
+                text:qsTr("Show hint")
+                onClicked: hintLabel.visible = true
             }
         }
 
+        states:[
+            State {
+                name: "password"
+                PropertyChanges {
+                    target: keyColumn
+                    visible:true
+                }
+                PropertyChanges {
+                    target: pulleyMenuRecovery
+                    visible:true
+                }
+            },
+            State {
+                name: "code"
+                PropertyChanges {
+                    target: signin
+                    visible:true
+                }
 
-        Button
+            }
+        ]
+        Column
         {
-            id: btnsignin
-            anchors { horizontalCenter: parent.horizontalCenter }
-            text: telegramAuthenticationHandler.isUserRegistered ? qsTr("Sign In") : qsTr("Sign up")
-            enabled: telegramAuthenticationHandler.isUserRegistered ? tfcode.text.length > 0
-                                                                   : tfcode.text.length > 0 && tfName.text.length > 0
-                                                                     && tfSurName.text.length > 0
-            onClicked: {
-                signBtnPressed = true;
-                btnsignin.enabled = false;
-                btnsignin.text = qsTr("Sending request...");
+            id:keyColumn
+            spacing: Theme.paddingMedium
+            x:Theme.horizontalPageMargin
+            topPadding:(signInDialog.height - imglock.height - lblInfoPass.height - tfPassword.height - hintLabel.height - btnpassword.height - 4 * spacing)/2
+            width: parent.width-2*x
+            visible: false
+            PageHeader { width: parent.width; height: Theme.paddingLarge }
+            Image {
+                id: imglock
+                source: "image://theme/icon-m-device-lock"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Label {
+                id: lblInfoPass
+                text: telegramAuthenticationHandler.forgotPassword ? qsTr("Enter recovery code. \n Remember! After that 2FA authorization will be disabled") : qsTr("Enter your password")
+                font.pixelSize: Theme.fontSizeSmall
+                anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+            }
+            PasswordField {
+                id: tfPassword
+                anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
+                placeholderText: telegramAuthenticationHandler.forgotPassword ? qsTr("Recovery code") : qsTr("Password")
+                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText
+            }
+            Label {
+                id:hintLabel
+                visible: false
+                text:telegramAuthenticationHandler.getHint
+                font.pixelSize: Theme.fontSizeSmall
+                anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+            }
+            Button {
+                id: btnpassword
+                anchors { horizontalCenter: parent.horizontalCenter }
+                text: qsTr("Sign In")
+                enabled: tfPassword.text.length > 0
+                onClicked: {
+                    if(telegramAuthenticationHandler.forgotPassword)
+                        telegramAuthenticationHandler.sendRecoveryCode(tfPassword.text)
+                    else
+                        telegramAuthenticationHandler.checkPassword(tfPassword.text)
+                }
+            }
+        }
+        Column
+        {
+            id: signin
+            spacing: Theme.paddingMedium
+            x:Theme.horizontalPageMargin
+            width: parent.width-2*x
+            topPadding:(signInDialog.height - imgwaiting.height - lblinfo.height - tfcode.height - tfRowName.height - btnsignin.height - 4 * spacing)/2
+            visible: false
+            PageHeader { width: parent.width; height: Theme.paddingLarge }
 
-                if (telegramAuthenticationHandler.isUserRegistered)
-                    c_telegramWrapper.setCode(tfcode.text)
-                else
-                    c_telegramWrapper.setCodeIfNewUser(tfcode.text,tfSurName.text,tfName.text)
+            Image {
+                id: imgwaiting
+                source: "image://theme/icon-l-timer"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
 
-                signInDialog.accept()
+            Label {
+                id: lblinfo
+                text: qsTr("Wait for the message via " + telegramAuthenticationHandler.getType + " containing the activation code and press " + btnsignin.text)
+                font.pixelSize: Theme.fontSizeSmall
+                anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WordWrap
+            }
 
+            TextField  {
+                id: tfcode
+                anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
+                placeholderText: qsTr("Code")
+                inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly
+            }
+            Column {
+                id:tfRowName
+                width:parent.width
+                visible: !telegramAuthenticationHandler.isUserRegistered
+                TextField
+                {
+                    id: tfName
+                    width:parent.width
+                    placeholderText: qsTr("First Name")
+                }
+                TextField
+                {
+                    id: tfSurName
+                    width:parent.width
+                    placeholderText: qsTr("Surname")
+                }
+            }
+
+
+            Button  {
+                id: btnsignin
+                anchors { horizontalCenter: parent.horizontalCenter }
+                text: telegramAuthenticationHandler.isUserRegistered ? qsTr("Sign In") : qsTr("Sign up")
+                enabled: telegramAuthenticationHandler.isUserRegistered ? tfcode.text.length > 0
+                                                                        : tfcode.text.length > 0 && tfName.text.length > 0
+                                                                          && tfSurName.text.length > 0
+                onClicked: {
+                    btnsignin.enabled = false;
+                    btnsignin.text = qsTr("Sending request...");
+
+                    if (telegramAuthenticationHandler.isUserRegistered)
+                        console.log(c_telegramWrapper.checkCode(tfcode.text))
+                    else
+                        c_telegramWrapper.setCodeIfNewUser(tfcode.text,tfSurName.text,tfName.text)
+                }
             }
         }
     }
 }
+

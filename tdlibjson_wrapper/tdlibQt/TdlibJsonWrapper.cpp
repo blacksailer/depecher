@@ -105,6 +105,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::proxyReceived);
     connect(parseObject, &ParseObject::meReceived,
             this, &TdlibJsonWrapper::meReceived);
+    connect(parseObject, &ParseObject::errorReceived,
+            this, &TdlibJsonWrapper::errorReceived);
+    connect(parseObject, &ParseObject::okReceived,
+            this, &TdlibJsonWrapper::okReceived);
     listenThread->start();
     parseThread->start();
 
@@ -146,6 +150,22 @@ void TdlibJsonWrapper::getMe()
 {
     QString getMe = "{\"@type\":\"getMe\",\"@extra\":\"getMe\"}";
     td_json_client_send(client, getMe.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::requestAuthenticationPasswordRecovery()
+{
+    QString requestAuthenticationPasswordRecovery =
+        "{\"@type\":\"requestAuthenticationPasswordRecovery\"}";
+    td_json_client_send(client, requestAuthenticationPasswordRecovery.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::recoverAuthenticationPassword(const QString &recoveryCode)
+{
+    QString recoverAuthenticationPassword =
+        "{\"@type\":\"recoverAuthenticationPassword\","
+        "\"recovery_code\":\"" + recoveryCode + "\","
+        "\"@extra\":\"auth\"}";
+    td_json_client_send(client, recoverAuthenticationPassword.toStdString().c_str());
 }
 
 
@@ -195,16 +215,26 @@ void TdlibJsonWrapper::setPhoneNumber(const QString &phone)
 
 }
 
-void TdlibJsonWrapper::setCode(const QString &code)
+void TdlibJsonWrapper::checkCode(const QString &code)
 {
     std::string setAuthenticationCode =
         "{\"@type\":\"checkAuthenticationCode\","
-        "\"code\":\"" + code.toStdString() + "\"}";
+        "\"code\":\"" + code.toStdString() + "\","
+        "\"@extra\":\"checkCode\"}";
 
     td_json_client_send(client, setAuthenticationCode.c_str());
 
 }
 
+void TdlibJsonWrapper::checkPassword(const QString &password)
+{
+    std::string setAuthenticationPassword =
+        "{\"@type\":\"checkAuthenticationPassword\","
+        "\"password\":\"" + password.toStdString() + "\","
+        "\"@extra\":\"checkPassword\"}";
+
+    td_json_client_send(client, setAuthenticationPassword.c_str());
+}
 void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
                                         const QString &lastName)
 {
