@@ -3,6 +3,8 @@ import Sailfish.Silica 1.0
 import TelegramItems 1.0
 import "../js/utils.js" as Utils
 import Nemo.Notifications 1.0
+import org.nemomobile.notifications 1.0
+
 Page {
     id:root
     property bool isProxyConfiguring: false
