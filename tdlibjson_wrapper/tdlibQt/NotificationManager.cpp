@@ -32,7 +32,7 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
                 if (m_chatIdsPublished.contains(chat_id))
                     m_chatIdsPublished[chat_id]->setItemCount(unread_count);
                 else {
-                    notifySummary(0, UsersModel::instance()->getChatTitle(chat_id),
+                    notifySummary(QDateTime::currentMSecsSinceEpoch(), UsersModel::instance()->getChatTitle(chat_id),
                                   QString::number(unread_count) + " " + tr("new messages"), chat_id,
                                   unread_count);
                 }

@@ -47,15 +47,43 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Фото</source>
+        <source>Photo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Отменить</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Прикрепить</source>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to Home folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send a document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files to send</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -118,13 +146,16 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>MessageItem</name>
+    <message>
+        <source>new messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessagingPage</name>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>new messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

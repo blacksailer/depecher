@@ -32,7 +32,6 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
             this, &tdlibQt::ChatsModel::updateMentionRead);
     connect(&chatActionTimer, &QTimer::timeout, this, &tdlibQt::ChatsModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
-
 }
 void ChatsModel::changeChatOrder(qint64 chatId, qint64 order)
 {
@@ -161,9 +160,12 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
                     }
                 }
                 if (chats[rowIndex]->last_message_->content_->get_id() == messagePhoto::ID)
-                    return "Photo";
+                    return tr("Photo");
+                if (chats[rowIndex]->last_message_->content_->get_id() == messageDocument::ID)
+                    return tr("Document");
+
                 if (chats[rowIndex]->last_message_->content_->get_id() == messageSticker::ID)
-                    return "Sticker";
+                    return tr("Sticker");
 
                 return QVariant();
             }

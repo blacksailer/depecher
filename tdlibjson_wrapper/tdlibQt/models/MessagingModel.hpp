@@ -20,6 +20,7 @@ class MessagingModel : public QAbstractListModel
 
     QList<QSharedPointer<message>> messages;
     QMap<int, int> messagePhotoQueue;
+    QMap<qint64, QVector<int>> avatarPhotoQueue;
     QVector<qint64> messageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QTimer chatActionTimer;
@@ -29,6 +30,7 @@ class MessagingModel : public QAbstractListModel
     enum MessageRole {
         ID,
         SENDER_USER_ID,
+        SENDER_PHOTO,
         AUTHOR,
         ACTION,
         CHAT_ID,
@@ -51,30 +53,29 @@ class MessagingModel : public QAbstractListModel
         VIEWS,
         MEDIA_ALBUM_ID,
         CONTENT,
-        PHOTO_CAPTION,
+        FILE_CAPTION,
+        PHOTO_ASPECT,
+        DOCUMENT_NAME,
         REPLY_MARKUP,
+        FILE_IS_DOWNLOADING,
+        FILE_IS_UPLOADING,
+        FILE_DOWNLOADING_COMPLETED,
+        FILE_UPLOADING_COMPLETED,
+        FILE_DOWNLOADED_SIZE,
+        FILE_UPLOADED_SIZE,
         MESSAGE_TYPE //Custom
     };
-    enum MessageType {
-        TEXT,
-        PHOTO,
-        STICKER,
-        SYSTEM_NEW_MESSAGE,
-        UNDEFINED
-    };
+
+
     void appendMessage(const QJsonObject &messageObject);
+    QVariant dataContent(const int rowIndex) const;
+    QVariant dataFileMeta(const int rowIndex, int role) const;
 private slots:
     void chatActionCleanUp();
     void getFile(const int fileId, const int priority, const int indexItem);
+    void getAvatar(const qint64 fileId, const int priority, const int indexItem);
+    void processFile(const QJsonObject &fileObject);
     void updateChatReadInbox(const QJsonObject &outboxObject);
-public slots:
-    void appendMessages(const QJsonObject &messagesObject);
-    void prependMessage(const QJsonObject &messageObject);
-    void addMessageFromUpdate(const QJsonObject &messageUpdateObject);
-    void updateFile(const QJsonObject &fileObject);
-    //If total count from getChatHistory == zero, then end of chat.
-    void updateTotalCount(int totalCount);
-    void updateChatAction(const QJsonObject &chatActionObject);
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex &parent) const;
@@ -85,56 +86,41 @@ public:
 
     MessagingModel();
     ~MessagingModel();
+private slots:
+    void appendMessages(const QJsonObject &messagesObject);
+    void prependMessage(const QJsonObject &messageObject);
+    void addMessageFromUpdate(const QJsonObject &messageUpdateObject);
+    void updateFile(const QJsonObject &fileObject);
+    //If total count from getChatHistory == zero, then end of chat.
+    void updateTotalCount(int totalCount);
+    void updateChatAction(const QJsonObject &chatActionObject);
+    void viewMessages(const QVariantList &ids);
+    void setAction(const QString &action);
+
 public slots:
+
     void setUserName(QString userName);
     void setPeerId(QString peerId);
     void sendTextMessage(const QString &text, const QString &reply_id);
-    void viewMessages(const QVariantList &ids);
+    void sendPhotoMessage(const QString &filepath, const QString &reply_id,
+                          const QString &caption = "");
+    void sendDocumentMessage(const QString &filepath, const QString &reply_id,
+                             const QString &caption = "");
+
+    void downloadDocument(const int rowIndex);
+    void cancelDownload(const int rowIndex);
+    void cancelUpload(const int rowIndex);
     void getNewMessages();
-
-    void setChatType(tdlibQt::Enums::ChatType chatType)
-    {
-        if (m_chatType == chatType)
-            return;
-
-        m_chatType = chatType;
-        emit chatTypeChanged(chatType);
-    }
-
-    void setAction(QString action)
-    {
-        if (m_action == action)
-            return;
-
-        m_action = action;
-        emit actionChanged(action);
-    }
-
-    void setCurrentMessage(QString currentMessage)
-    {
-        if (m_currentMessage == currentMessage)
-            return;
-
-        m_currentMessage = currentMessage;
-        emit currentMessageChanged(currentMessage);
-    }
-
-    void setLastMessage(QString lastMessage)
-    {
-        if (m_lastMessage == lastMessage)
-            return;
-
-        m_lastMessage = lastMessage;
-        emit lastMessageChanged(lastMessage);
-    }
-
+    void setChatType(const tdlibQt::Enums::ChatType chatType);
+    void setCurrentMessage(const QString &currentMessage);
+    void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
 
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);
     void downloadFileStart(int file_id_, int priority_, int indexItem) const;
-
+    void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
     void firstIdChanged();
 
     void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
@@ -167,26 +153,24 @@ private:
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
-    tdlibQt::Enums::ChatType chatType() const
-    {
-        return m_chatType;
-    }
-    QString action() const
-    {
-        return m_action;
-    }
-    QString currentMessage() const
-    {
-        return m_currentMessage;
-    }
-    QString lastMessage() const
-    {
-        return m_lastMessage;
-    }
-    bool atYEnd() const
-    {
-        return m_atYEnd;
-    }
+    tdlibQt::Enums::ChatType chatType() const;
+    QString action() const;
+    QString currentMessage() const;
+    QString lastMessage() const;
+    bool atYEnd() const;
+    enum MessageType {
+        TEXT,
+        PHOTO,
+        STICKER,
+        DOCUMENT,
+        ANIMATION,
+        SYSTEM_NEW_MESSAGE,
+        UNDEFINED
+    };
+    Q_ENUM(MessageType)
+
 };
 } //namespace tdlibQt
+Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)
+
 #endif // MESSAGINGMODEL_HPP

@@ -1,6 +1,6 @@
 #include "TdlibJsonWrapper.hpp"
 #include "include/AppApiInfo.hpp"
-
+#include <iostream>
 #include <QThread>
 #include "ListenObject.hpp"
 #include "ParseObject.hpp"
@@ -109,6 +109,12 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::errorReceived);
     connect(parseObject, &ParseObject::okReceived,
             this, &TdlibJsonWrapper::okReceived);
+
+    connect(parseObject, &ParseObject::fileReceived,
+            this, &TdlibJsonWrapper::fileReceived);
+    connect(parseObject, &ParseObject::messageReceived,
+            this, &TdlibJsonWrapper::messageReceived);
+
     listenThread->start();
     parseThread->start();
 
@@ -166,6 +172,26 @@ void TdlibJsonWrapper::recoverAuthenticationPassword(const QString &recoveryCode
         "\"recovery_code\":\"" + recoveryCode + "\","
         "\"@extra\":\"auth\"}";
     td_json_client_send(client, recoverAuthenticationPassword.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::cancelDownloadFile(int fileId, bool only_if_pending)
+{
+    QString Pending = only_if_pending ? "true" : "false";
+
+    QString cancelDownloadFile =
+        "{\"@type\":\"cancelDownloadFile\","
+        "\"file_id\":" + QString::number(fileId) + ","
+        "\"only_if_pending\":" + Pending + "}";
+    td_json_client_send(client, cancelDownloadFile.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::cancelUploadFile(int fileId)
+{
+    QString cancelUploadFile =
+        "{\"@type\":\"cancelUploadFile\","
+        "\"file_id\":" + QString::number(fileId)  + "}";
+    qDebug() << cancelUploadFile;
+    td_json_client_send(client, cancelUploadFile.toStdString().c_str());
 }
 
 
@@ -275,14 +301,15 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
     if (priority < 1)
         priority = 1;
     QString getFile = "{\"@type\":\"downloadFile\","
-                      "\"file_id\":\"" + QString::number(fileId) + "\","
+                      "\"file_id\":" + QString::number(fileId) + ","
                       "\"priority\":" + QString::number(priority) +
                       "}";
     if (extra != "") {
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}" );
     }
-    td_json_client_send(client, getFile.toStdString().c_str());
+    qDebug() << getFile << getFile.toUtf8();
+    td_json_client_send(client, getFile.toUtf8().constData());
 }
 
 void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
@@ -311,7 +338,7 @@ void TdlibJsonWrapper::logOut()
     td_json_client_send(client, logOut.c_str());
 }
 
-void TdlibJsonWrapper::sendTextMessage(const QString &json)
+void TdlibJsonWrapper::sendMessage(const QString &json)
 {
     QString jsonStr = json;
     //Bug in TDLib

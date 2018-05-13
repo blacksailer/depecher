@@ -93,6 +93,8 @@ signals:
     void meReceived(const QJsonObject &meObject);
     void errorReceived(const QJsonObject &errorObject);
     void okReceived(const QJsonObject &okObject);
+    void fileReceived(const QJsonObject &fileObject);
+    void messageReceived(const QJsonObject &messageObject);
 
     void totalUnreadCountChanged(int totalUnreadCount);
 
@@ -117,7 +119,7 @@ public slots:
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,
                         bool only_local = false, const QString &extra = "");
     void logOut();
-    void sendTextMessage(const QString &json);
+    void sendMessage(const QString &json);
     void viewMessages(const QString &chat_id, const QVariantList &messageIds, bool force_read);
     void setIsCredentialsEmpty(bool isCredentialsEmpty);
     void setAuthorizationState(tdlibQt::Enums::AuthorizationState &authorizationState);
@@ -125,7 +127,8 @@ public slots:
     void getMe();
     void requestAuthenticationPasswordRecovery();
     void recoverAuthenticationPassword(const QString &recoveryCode);
-
+    void cancelDownloadFile(int fileId, bool only_if_pending = false);
+    void cancelUploadFile(int fileId);
     void setTotalUnreadCount(int totalUnreadCount)
     {
         if (m_totalUnreadCount == totalUnreadCount)

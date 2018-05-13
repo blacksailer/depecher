@@ -190,6 +190,11 @@ void ParseObject::parseResponse(const QByteArray &json)
         users_[user_id] = firstName + " " + lastName;
         emit updateNewUser(userObject);
     }
+    if (typeField == "message")
+        emit messageReceived(doc.object());
+
+    if (typeField == "file")
+        emit fileReceived(doc.object());
     if (typeField == "updateFile") {
         emit updateFile(doc.object());
     }
@@ -306,9 +311,41 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
     resultMessage->reply_markup_ = QSharedPointer<ReplyMarkup>(nullptr);
     resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>
                                    (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
-    resultMessage->sending_state_ = QSharedPointer<MessageSendingState>(nullptr);
+    resultMessage->sending_state_ = parseMessageSendingState(messageObject["sending_state"].toObject());
 
     return resultMessage;
+}
+QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const QJsonObject
+                                                                          &messageSendingStateObject)
+{
+    if (messageSendingStateObject["@type"].toString() == "messageSendingStatePending")
+        return QSharedPointer<MessageSendingState>(new messageSendingStatePending);
+
+    return QSharedPointer<MessageSendingState>(new messageSendingStateFailed);
+
+}
+
+QSharedPointer<messageDocument> ParseObject::parseMessageDocument(const QJsonObject
+                                                                  &messageDocumentObject)
+{
+    if (messageDocumentObject["@type"].toString() != "messageDocument")
+        return QSharedPointer<messageDocument>(new messageDocument);
+    auto resultDocument = QSharedPointer<messageDocument>(new messageDocument);
+    resultDocument->caption_ = parseFormattedTextContent(messageDocumentObject["caption"].toObject());
+    resultDocument->document_ = parseDocument(messageDocumentObject["document"].toObject());
+    return resultDocument;
+}
+
+QSharedPointer<document> ParseObject::parseDocument(const QJsonObject &documentObject)
+{
+    if (documentObject["@type"].toString() != "document")
+        return QSharedPointer<document>(new document);
+    auto resultDocument = QSharedPointer<document>(new document);
+    resultDocument->document_ = parseFile(documentObject["document"].toObject());
+    resultDocument->file_name_ = documentObject["file_name"].toString().toStdString();
+    resultDocument->mime_type_ = documentObject["mime_type"].toString().toStdString();
+    resultDocument->thumbnail_ = parsePhotoSize(documentObject["thumbnail"].toObject());
+    return resultDocument;
 }
 
 QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObject &forwardObject)
@@ -402,8 +439,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return typeMessageText;
     }
     if (messageContentObject["@type"].toString() == "messageDocument") {
-        typeMessageText->text_->text_ = "Document";
-        return typeMessageText;
+        return parseMessageDocument(messageContentObject);
     }
     if (messageContentObject["@type"].toString() == "messageVideo") {
         typeMessageText->text_->text_ = "Video";
@@ -756,7 +792,7 @@ QSharedPointer<user> ParseObject::parseUser(const QJsonObject &userObject)
     resultUser->type_ = parseUserType(userObject["type"].toObject());
     resultUser->status_ = parseUserStatus(userObject["status"].toObject());
     resultUser->restriction_reason_ = userObject["restriction_reason"].toString().toStdString();
-    resultUser->profile_photo_ = parseProfilePhoto(userObject["profilePhoto"].toObject());
+    resultUser->profile_photo_ = parseProfilePhoto(userObject["profile_photo"].toObject());
     resultUser->phone_number_ = userObject["phone_number"].toString().toStdString();
 
     return resultUser;

@@ -20,6 +20,10 @@ public:
 
     int getChatMuteFor(const quint64 chatId);
     QString getChatTitle(const quint64 chatId);
+    QSharedPointer<profilePhoto> getUserPhoto(const quint64 userId);
+    QString getUserFullName(const quint64 userId);
+    void setSmallAvatar(quint64 id, QSharedPointer<file> small);
+
 public slots:
     void getUpdateNewChat(const QJsonObject &updateNewChatObject);
     void getUpdateNewUser(const QJsonObject &updateNewUserObject);

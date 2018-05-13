@@ -33,6 +33,9 @@ public:
         }
     }
     static QSharedPointer<message> parseMessage(const QJsonObject &messageObject);
+    static QSharedPointer<messageDocument> parseMessageDocument(const QJsonObject
+                                                                &messageDocumentObject);
+    static QSharedPointer<document> parseDocument(const QJsonObject &documentObject);
     static QSharedPointer<ChatType> parseType(const QJsonObject &typeObject);
 
     static QSharedPointer<MessageContent> parseMessageContent(const QJsonObject &messageContentObject);
@@ -120,6 +123,8 @@ public:
                                                                   &messageAnimationObject);
     static QSharedPointer<animation> parseAnimation(const QJsonObject &animationObject);
     static QSharedPointer<MessageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
+    static QSharedPointer<MessageSendingState> parseMessageSendingState(const QJsonObject
+                                                                        &messageSendingStateObject);
 signals:
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
     void updateConnectionState(Enums::ConnectionState &connectionState);
@@ -148,6 +153,8 @@ signals:
     void proxyReceived(const QJsonObject &proxyObject);
     void errorReceived(const QJsonObject &errorObject);
     void okReceived(const QJsonObject &okObject);
+    void fileReceived(const QJsonObject &fileObject);
+    void messageReceived(const QJsonObject &messageObject);
 
 public slots:
     void parseResponse(const QByteArray &json);

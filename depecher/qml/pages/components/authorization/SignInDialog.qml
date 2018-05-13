@@ -8,8 +8,8 @@ Dialog {
     id:signInDialog
     property string fullPhoneNumber: ""
     property bool canLogin: false
-    property int authError: 0
     canAccept: canLogin
+    acceptDestinationReplaceTarget:  Qt.resolvedUrl("../../DialogsPage.qml");
     SilicaFlickable{
         anchors.fill: parent
         NotificationPanel{
@@ -17,7 +17,7 @@ Dialog {
             page: signInDialog
         }
 
-        TelegramAuthenticationHandler{
+        TelegramAuthenticationHandler {
             id:telegramAuthenticationHandler
             property bool forgotPassword: false
             onAuthorizationStateChanged: {
@@ -62,6 +62,7 @@ Dialog {
         states:[
             State {
                 name: "password"
+                when: telegramAuthenticationHandler.currentAuthorizationState === 4
                 PropertyChanges {
                     target: keyColumn
                     visible:true
@@ -73,6 +74,7 @@ Dialog {
             },
             State {
                 name: "code"
+                when: telegramAuthenticationHandler.currentAuthorizationState === 3
                 PropertyChanges {
                     target: signin
                     visible:true

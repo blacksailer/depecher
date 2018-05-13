@@ -35,9 +35,9 @@ ListItem {
                     spacing: Theme.paddingSmall
                     Image {
                         id: iconGroup
-                        source: type == TdlibState.Channel ? "image://theme/icon-m-media-radio?"+ (pressed
-                                                                                                   ? Theme.highlightColor
-                                                                                                   : Theme.primaryColor) :
+                        source: type == TdlibState.Channel ? "image://theme/icon-m-media-radio?" + (pressed
+                                                                                                    ? Theme.highlightColor
+                                                                                                    : Theme.primaryColor) :
                                                              type == TdlibState.Supergroup || type == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
                                                                                                                                                                    ? Theme.highlightColor
                                                                                                                                                                    : Theme.primaryColor) :
@@ -63,9 +63,10 @@ ListItem {
                         }
                         Image {
                             id: iconMute
-                            source: mute_for > 0  ? "image://theme/icon-m-speaker-mute?"+ (pressed
-                                                                                           ? Theme.secondaryHighlightColor
-                                                                                           : "gray") :
+                            source: mute_for > 0  ? "image://theme/icon-m-speaker-mute?"
+                                                    + (pressed
+                                                       ? Theme.secondaryHighlightColor
+                                                       : "gray") :
                                                     ""
                             visible: mute_for > 0
                             height: Theme.fontSizeSmall

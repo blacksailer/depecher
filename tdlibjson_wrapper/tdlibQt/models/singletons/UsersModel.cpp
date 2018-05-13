@@ -28,6 +28,23 @@ QString UsersModel::getChatTitle(const quint64 chatId)
     return QString::fromStdString(m_chats[chatId]->title_);
 }
 
+QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const quint64 userId)
+{
+    if (!m_users.contains(userId))
+        return QSharedPointer<profilePhoto>(nullptr);
+
+    return m_users[userId]->profile_photo_;
+}
+
+QString UsersModel::getUserFullName(const quint64 userId)
+{
+    if (!m_users.contains(userId))
+        return "Uknown user";
+
+    return QString::fromStdString(m_users[userId]->first_name_) + " " + QString::fromStdString(
+               m_users[userId]->last_name_);
+}
+
 int UsersModel::getChatMuteFor(const quint64 chatId)
 {
     if (!m_chats.contains(chatId))
@@ -51,9 +68,21 @@ void UsersModel::getUpdateNewUser(const QJsonObject &updateNewUserObject)
     auto userItem = ParseObject::parseUser(updateNewUserObject);
     if (userItem->id_ != 0) {
         m_users[userItem->id_] = userItem;
-        qDebug() << QString::fromStdString(userItem->first_name_) <<
-                 QString::fromStdString( userItem->last_name_) <<
-                 QString::fromStdString( userItem->username_)  << m_users.size();
+        if (userItem->profile_photo_.data()) {
+            if (userItem->profile_photo_->small_.data())
+                qDebug() << QString::fromStdString(userItem->first_name_) <<
+                         QString::fromStdString( userItem->last_name_) <<
+                         userItem->profile_photo_->id_
+                         << QString::fromStdString( userItem->username_)  << m_users.size() ;
+        }
     }
+}
+
+void UsersModel::setSmallAvatar(quint64 id, QSharedPointer<file> small)
+{
+    if (!m_users.contains(id))
+        return;
+
+    m_users[id]->profile_photo_->small_ = small;
 }
 } //tdlibQt

@@ -23,5 +23,6 @@
         <file>qml/assets/icons/paypal.svg</file>
         <file>qml/assets/icons/rocket.svg</file>
         <file>qml/pages/components/NotificationPanel.qml</file>
+        <file>qml/pages/items/MessageItem.qml</file>
     </qresource>
 </RCC>

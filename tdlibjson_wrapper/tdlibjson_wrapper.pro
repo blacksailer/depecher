@@ -33,7 +33,9 @@ HEADERS += \
     tdlibQt/include/AuthenticationHandler.hpp \
     tdlibQt/items/ProxyDAO.hpp \
     tdlibQt/items/AboutMeDAO.hpp \
-    tdlibQt/models/singletons/UsersModel.hpp
+    tdlibQt/models/singletons/UsersModel.hpp \
+    tdlibQt/models/singletons/FileManager.hpp \
+    tdlibQt/models/StickerModel.hpp
 
 SOURCES += \
     tdlibQt/TdlibJsonWrapper.cpp \
@@ -49,7 +51,9 @@ SOURCES += \
     tdlibQt/include/AuthenticationHandler.cpp \
     tdlibQt/items/ProxyDAO.cpp \
     tdlibQt/items/AboutMeDAO.cpp \
-    tdlibQt/models/singletons/UsersModel.cpp
+    tdlibQt/models/singletons/UsersModel.cpp \
+    tdlibQt/models/singletons/FileManager.cpp \
+    tdlibQt/models/StickerModel.cpp
 
 info_file.input = $$PWD/tdlibQt/include/AppApiInfo.hpp.in
 info_file.output = $$PWD/tdlibQt/include/AppApiInfo.hpp

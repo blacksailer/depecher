@@ -31,6 +31,14 @@ public:
         Supergroup,
         Channel
     };
+
+    enum class FileType {
+        Photo,
+        Video,
+        Document,
+        Animation
+    };
+    Q_ENUM(FileType)
     Q_ENUM(AuthorizationState)
     Q_ENUM(ConnectionState)
     Q_ENUM(ChatType)
