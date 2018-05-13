@@ -114,7 +114,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::fileReceived);
     connect(parseObject, &ParseObject::messageReceived,
             this, &TdlibJsonWrapper::messageReceived);
-
+    connect(parseObject, &ParseObject::updateMessageSendSucceeded,
+            this, &TdlibJsonWrapper::updateMessageSendSucceeded);
     listenThread->start();
     parseThread->start();
 
@@ -348,7 +349,7 @@ void TdlibJsonWrapper::sendMessage(const QString &json)
 }
 
 void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &messageIds,
-                                    bool force_read)
+                                    const bool force_read)
 {
     QString ids = "";
     for (auto id : messageIds)
@@ -364,6 +365,23 @@ void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &
     td_json_client_send(client, viewMessageStr.toStdString().c_str());
 
 
+}
+
+void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64> message_ids,
+                                      const bool revoke)
+{
+    QString ids = "";
+    for (auto id : message_ids)
+        ids.append(QString::number(id) + ",");
+
+    ids = ids.remove(ids.length() - 1, 1);
+
+    QString revokeStr = revoke ? "true" : "false";
+    QString deleteMessagesStr = "{\"@type\":\"deleteMessages\","
+                                "\"chat_id\":\"" + QString::number(chat_id) + "\","
+                                "\"revoke\":" + revokeStr + ","
+                                "\"message_ids\":[" + ids + "]}";
+    td_json_client_send(client, deleteMessagesStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)

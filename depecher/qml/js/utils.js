@@ -1,17 +1,17 @@
 function setState(state) {
     switch(state){
     case 0:
-        return "Waiting for network"
+        return qsTr("Waiting for network")
               case 1:
-                  return "Connecting"
+                  return qsTr("Connecting")
               case 2:
-                  return "Connecting to proxy"
+                  return qsTr("Connecting to proxy")
               case 3:
-                  return "Updating..."
+                  return qsTr("Updating...")
               case 4:
-                  return "Ready"
+                  return qsTr("Ready")
             default:
-                return "Uknown"
+                return qsTr("Uknown")
               }
 
 }

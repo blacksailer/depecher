@@ -24,5 +24,6 @@
         <file>qml/assets/icons/rocket.svg</file>
         <file>qml/pages/components/NotificationPanel.qml</file>
         <file>qml/pages/items/MessageItem.qml</file>
+        <file>qml/assets/icons/check.svg</file>
     </qresource>
 </RCC>

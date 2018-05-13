@@ -150,7 +150,7 @@ Dialog {
 
             Label {
                 id: lblinfo
-                text: qsTr("Wait for the message via " + telegramAuthenticationHandler.getType + " containing the activation code and press " + btnsignin.text)
+                text: qsTr("Wait for the message via %1 containing the activation code and press %2" ).arg( telegramAuthenticationHandler.getType,telegramAuthenticationHandler.isUserRegistered ? qsTr("Sign In") : qsTr("Sign up"))
                 font.pixelSize: Theme.fontSizeSmall
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
                 horizontalAlignment: Text.AlignHCenter

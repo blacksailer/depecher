@@ -210,6 +210,12 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateChatUnreadMentionCount") {
         emit updateChatMention(doc.object());
     }
+    if (typeField == "updateMessageSendSucceeded") {
+        emit updateMessageSendSucceeded(doc.object());
+    }
+    if (typeField == "updateMessageSendFailed") {
+        emit updateMessageSendFailed(doc.object());
+    }
     if (typeField == "updateChatLastMessage") {
         emit updateChatLastMessage(doc.object());
     }
@@ -320,9 +326,9 @@ QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const 
 {
     if (messageSendingStateObject["@type"].toString() == "messageSendingStatePending")
         return QSharedPointer<MessageSendingState>(new messageSendingStatePending);
-
-    return QSharedPointer<MessageSendingState>(new messageSendingStateFailed);
-
+    if (messageSendingStateObject["@type"].toString() == "messageSendingStateFailed")
+        return QSharedPointer<MessageSendingState>(new messageSendingStateFailed);
+    return QSharedPointer<MessageSendingState>(nullptr);
 }
 
 QSharedPointer<messageDocument> ParseObject::parseMessageDocument(const QJsonObject
@@ -428,7 +434,10 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-        return parseMessageAnimation(messageContentObject);
+//        return parseMessageAnimation(messageContentObject);
+        typeMessageText->text_->text_ = "Animation";
+        return typeMessageText;
+
     }
     if (messageContentObject["@type"].toString() == "messageAudio") {
         typeMessageText->text_->text_ = "Audio";

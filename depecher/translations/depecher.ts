@@ -162,6 +162,18 @@ proxy server in settings via PulleyMenu</source>
         <source>get newer</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Delete Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PicturePage</name>
@@ -286,6 +298,37 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Recovery code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait for the message via %1 containing the activation code and press %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>utils</name>
+    <message>
+        <source>Waiting for network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

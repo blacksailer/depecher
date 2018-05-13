@@ -15,7 +15,9 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(QString action READ action WRITE setAction NOTIFY actionChanged)
     Q_PROPERTY(QString currentMessage READ currentMessage WRITE setCurrentMessage NOTIFY
                currentMessageChanged)
+
     Q_PROPERTY(QString lastMessage READ lastMessage WRITE setLastMessage NOTIFY lastMessageChanged)
+    Q_PROPERTY(double lastOutboxId READ lastOutboxId WRITE setLastOutboxId NOTIFY lastOutboxIdChanged)
     Q_PROPERTY(bool atYEnd READ atYEnd WRITE setAtYEnd NOTIFY atYEndChanged)
 
     QList<QSharedPointer<message>> messages;
@@ -75,7 +77,9 @@ private slots:
     void getFile(const int fileId, const int priority, const int indexItem);
     void getAvatar(const qint64 fileId, const int priority, const int indexItem);
     void processFile(const QJsonObject &fileObject);
-    void updateChatReadInbox(const QJsonObject &outboxObject);
+    void updateChatReadInbox(const QJsonObject &inboxObject);
+    void updateChatReadOutbox(const QJsonObject &outboxObject);
+
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex &parent) const;
@@ -96,7 +100,7 @@ private slots:
     void updateChatAction(const QJsonObject &chatActionObject);
     void viewMessages(const QVariantList &ids);
     void setAction(const QString &action);
-
+    void updateMessageSend(const QJsonObject &updateMessageSendObject);
 public slots:
 
     void setUserName(QString userName);
@@ -110,17 +114,30 @@ public slots:
     void downloadDocument(const int rowIndex);
     void cancelDownload(const int rowIndex);
     void cancelUpload(const int rowIndex);
+    void deleteMessages(QList<int> rowIndices, const bool revoke = false);
+    void deleteMessage(const int rowIndex, const bool revoke = false);
+
     void getNewMessages();
     void setChatType(const tdlibQt::Enums::ChatType chatType);
     void setCurrentMessage(const QString &currentMessage);
     void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
 
+    void setLastOutboxId(double lastOutboxId)
+    {
+        if (m_lastOutboxId == lastOutboxId)
+            return;
+
+        m_lastOutboxId = lastOutboxId;
+        emit lastOutboxIdChanged(lastOutboxId);
+    }
+
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);
     void downloadFileStart(int file_id_, int priority_, int indexItem) const;
     void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
+    void errorReceived(int error_code, const QString &error_message);
     void firstIdChanged();
 
     void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
@@ -132,6 +149,8 @@ signals:
     void lastMessageChanged(QString lastMessage);
 
     void atYEndChanged(bool atYEnd);
+
+    void lastOutboxIdChanged(double lastOutboxId);
 
 private:
     bool fetchPending = false;
@@ -150,6 +169,8 @@ private:
 
     bool m_atYEnd = 0;
 
+    qint64 m_lastOutboxId;
+
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
@@ -167,10 +188,22 @@ public:
         SYSTEM_NEW_MESSAGE,
         UNDEFINED
     };
-    Q_ENUM(MessageType)
+    enum MessageState {
+        Sending_Failed,
+        Sending_Pending,
+        Sending_Not_Read,
+        Sending_Read
+    };
 
+    Q_ENUM(MessageType)
+    Q_ENUM(MessageState)
+    double lastOutboxId() const
+    {
+        return m_lastOutboxId;
+    }
 };
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)
+Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageState)
 
 #endif // MESSAGINGMODEL_HPP

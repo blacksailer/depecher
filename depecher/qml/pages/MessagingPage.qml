@@ -2,7 +2,9 @@ import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
+import org.nemomobile.notifications 1.0
 import "items"
+
 Page {
     id: page
     allowedOrientations: Orientation.All
@@ -10,8 +12,16 @@ Page {
     property alias chatId: messagingModel.peerId
     property alias chatType: messagingModel.chatType
     property alias lastMessageId: messagingModel.lastMessage
-    property alias lastReadMessage: messagingModel.currentMessage
+    property alias lastOutboxId: messagingModel.lastOutboxId
 
+    property alias lastReadMessage: messagingModel.currentMessage
+Component.onCompleted: console.log(lastOutboxId)
+    Notification {
+        id:notificationError
+        appName: "Depecher"
+        icon:"image://theme/icon-lock-warning"
+        expireTimeout:1
+    }
     MessagingModel{
         id:messagingModel
         onChatTypeChanged: {
@@ -20,6 +30,10 @@ Page {
                 writer.sendAreaHeight = 0
                 writer.bottomArea.visible = false
             }
+        }
+        onErrorReceived: {
+            notificationError.previewBody(error_code +"-" +error_message)
+        notificationError.publish()
         }
     }
     Component.onDestruction: {
@@ -51,11 +65,30 @@ Page {
         Column{
             width:page.width
             height:parent.height-writer.sendAreaHeight
-            PageHeader {
+            PageHeader{
                 id:nameplate
-                title:  messagingModel.userName
-                description: messagingModel.action
+
+                title: messagingModel.userName
+                height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height +  actionLabel.height  + Theme.paddingMedium)
+
+                Label {
+                    id:actionLabel
+                    width: parent.width - parent.leftMargin - parent.rightMargin
+                    anchors {
+                        top: parent._titleItem.bottom
+                        right: parent.right
+                        rightMargin: parent.rightMargin
+                    }
+                    text:messagingModel.action
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.highlightColor
+                    opacity: 0.8
+                    horizontalAlignment: Text.AlignRight
+                    truncationMode: TruncationMode.Fade
+                }
             }
+
+
             SilicaListView {
                 id:messageList
                 width:parent.width
@@ -97,6 +130,16 @@ Page {
                     }
                 }
                 delegate: MessageItem {
+                    id:myDelegate
+                    RemorseItem {
+                        id:remorseDelete
+                    }
+//                    ListView.onAdd: AddAnimation {
+//                        target: myDelegate
+//                    }
+                    ListView.onRemove: RemoveAnimation {
+                        target: myDelegate
+                    }
                     menu: ContextMenu {
                         MenuItem {
                             text: qsTr("Copy Text")
@@ -104,9 +147,31 @@ Page {
                                 Clipboard.text = content
                             }
                         }
+                        MenuItem {
+                            text: qsTr("Delete Message")
+                            visible: can_be_deleted_only_for_yourself
+                            onClicked: {
+                                showRemorseDelete()
+                            }
+                        }
+                        MenuItem {
+                            text: qsTr("Delete for everyone")
+                            visible: can_be_deleted_for_all_users
+                            onClicked: {
+                                showRemorseDeleteToAll()
+                            }
+                        }
+                    }
+                    function showRemorseDeleteToAll() {
+                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index,true) } )
+                    }
+                    function showRemorseDelete() {
+                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
                 }
             }
         }
     }
+
 }
+

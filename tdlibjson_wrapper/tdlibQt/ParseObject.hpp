@@ -144,6 +144,8 @@ signals:
     void updateChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
+    void updateMessageSendSucceeded(const QJsonObject &updateMessageSendSucceededObject);
+    void updateMessageSendFailed(const QJsonObject &updateMessageSendFailedObject);
     void chatIds(const QVariantList &ids);
     void getChat(const qint64 id);
     void newChatReceived(const QJsonObject &chatItem);

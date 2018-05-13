@@ -87,6 +87,8 @@ signals:
     void updateChatReadInbox(const QJsonObject &chatReadInbox);
     void updateChatReadOutbox(const QJsonObject &chatReadOutbox);
     void updateMessageSendSucceeded(const QJsonObject &updateMessageSendObject);
+    void updateMessageSendFailed(const QJsonObject &updateMessageSendObject);
+
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
@@ -120,7 +122,10 @@ public slots:
                         bool only_local = false, const QString &extra = "");
     void logOut();
     void sendMessage(const QString &json);
-    void viewMessages(const QString &chat_id, const QVariantList &messageIds, bool force_read);
+    void viewMessages(const QString &chat_id, const QVariantList &messageIds, const bool force_read);
+    void deleteMessages(const qint64 chat_id, const QVector<qint64> message_ids,
+                        const bool revoke = false);
+
     void setIsCredentialsEmpty(bool isCredentialsEmpty);
     void setAuthorizationState(tdlibQt::Enums::AuthorizationState &authorizationState);
     void setConnectionState(tdlibQt::Enums::ConnectionState &connState);

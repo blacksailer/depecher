@@ -37,10 +37,19 @@ Page {
                 }
             }
             delegate: ChatItem {
+                id:chatDelegate
+                ListView.onAdd: AddAnimation {
+                    target: chatDelegate
+                }
+                ListView.onRemove: RemoveAnimation {
+                    target: chatDelegate
+                }
+
                 onClicked:{
                     c_telegramWrapper.openChat(id)
                     pageStack.push("MessagingPage.qml",{userName:title,chatId:id,chatType:type,
-                                       lastReadMessage:last_message_inbox_id,lastMessageId:last_message_id})
+                                       lastReadMessage:last_message_inbox_id,
+                                       lastOutboxId:last_message_outbox_id,lastMessageId:last_message_id})
                 }
             }
         }
