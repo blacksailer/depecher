@@ -39,7 +39,7 @@ QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const quint64 userId)
 QString UsersModel::getUserFullName(const quint64 userId)
 {
     if (!m_users.contains(userId))
-        return "Uknown user";
+        return tr("Uknown user");
 
     return QString::fromStdString(m_users[userId]->first_name_) + " " + QString::fromStdString(
                m_users[userId]->last_name_);
@@ -58,7 +58,6 @@ void UsersModel::getUpdateNewChat(const QJsonObject &updateNewChatObject)
     auto chatItem = ParseObject::parseChat(updateNewChatObject);
     if (chatItem->id_ != 0) {
         m_chats[chatItem->id_] = chatItem;
-        qDebug() << QString::fromStdString(chatItem->title_) << m_chats.size();
     }
 
 }
@@ -68,13 +67,6 @@ void UsersModel::getUpdateNewUser(const QJsonObject &updateNewUserObject)
     auto userItem = ParseObject::parseUser(updateNewUserObject);
     if (userItem->id_ != 0) {
         m_users[userItem->id_] = userItem;
-        if (userItem->profile_photo_.data()) {
-            if (userItem->profile_photo_->small_.data())
-                qDebug() << QString::fromStdString(userItem->first_name_) <<
-                         QString::fromStdString( userItem->last_name_) <<
-                         userItem->profile_photo_->id_
-                         << QString::fromStdString( userItem->username_)  << m_users.size() ;
-        }
     }
 }
 

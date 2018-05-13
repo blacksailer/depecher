@@ -324,9 +324,6 @@ void MessagingModel::getAvatar(const qint64 fileId, const int priority, const in
     if (!avatarPhotoQueue[fileId].contains(indexItem))
         avatarPhotoQueue[fileId].append(indexItem);
 
-    qDebug() << avatarPhotoQueue[fileId] << fileId << indexItem;
-    for (int i : avatarPhotoQueue[fileId])
-        qDebug() << i;
 
 }
 
@@ -419,7 +416,6 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
             int sizesCount = messagePhotoPtr->photo_->sizes_.size();
             fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
         }
-        qDebug() << is_downloading << is_uploading << messages.size() - 1 << "!!!!!!!!!!!!!";
 
         if (fileId > 0)
             messagePhotoQueue[fileId] = messages.size() - 1;
@@ -806,7 +802,6 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
 
-    qDebug() << jsonString;
     tdlibJson->sendMessage(jsonString);
 }
 
@@ -835,7 +830,6 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
 
-    qDebug() << jsonString;
     tdlibJson->sendMessage(jsonString);
 }
 
