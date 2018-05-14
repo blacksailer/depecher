@@ -3,15 +3,15 @@
 <TS version="2.1">
 <context>
     <name></name>
-    <message id="Поделиться">
-        <source>Share link</source>
-        <extracomment>List header for link sharing method list</extracomment>
-        <translation>Link teilen</translation>
-    </message>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
         <translation type="unfinished"></translation>
+    </message>
+    <message id="Share">
+        <source>Share link</source>
+        <extracomment>List header for link sharing method list</extracomment>
+        <translation type="unfinished">Link teilen</translation>
     </message>
 </context>
 <context>
@@ -41,17 +41,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Joining chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
 
 Features:
-- View messages
+- Send/View/Delete messages
 - View photos
 - View stickers
-- Send messages
+- Uploading/Downloading photos/docs
 - Receive notifications
+- 2FA authorization enabled
 
 No daemon yet.
-No two-factor auth yet.
+
 
 Thanks to:
 - @kaffeine
@@ -64,10 +73,6 @@ Thanks to:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Joining chat</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -154,7 +159,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>Achtung: Sollte Telegramm in Ihrem Land blockiert ist, können sie in den Einstellungen einen Proxyserver einrichten!</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -164,16 +169,17 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unread messages</source>
-        <translation>Ungelesene Nachrichten</translation>
+        <source>Unread 
+ messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-            </message>
+        <translation type="unfinished">Einstellungen</translation>
+    </message>
     <message>
         <source>Reset dialogs</source>
         <translation>Dialoge zurücksetzen</translation>
@@ -200,8 +206,8 @@ proxy server in settings via PulleyMenu</source>
         <translation>Text kopieren</translation>
     </message>
     <message>
-    <source>get newer</source>
-    <translation>Lade neue Nachrichten</translation>
+        <source>get newer</source>
+        <translation>Lade neue Nachrichten</translation>
     </message>
     <message>
         <source>Delete Message</source>
@@ -213,10 +219,6 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>See me?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -291,7 +293,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verbindungsstatus:</translation>
     </message>
     <message>
         <source>About program</source>
@@ -334,7 +336,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Passwort</translation>
     </message>
     <message>
         <source>Error</source>

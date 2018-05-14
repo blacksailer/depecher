@@ -15,7 +15,7 @@ Page {
     property alias lastOutboxId: messagingModel.lastOutboxId
 
     property alias lastReadMessage: messagingModel.currentMessage
-Component.onCompleted: console.log(lastOutboxId)
+
     Notification {
         id:notificationError
         appName: "Depecher"
@@ -72,18 +72,8 @@ Component.onCompleted: console.log(lastOutboxId)
         Column{
             width:page.width
             height:parent.height-writer.sendAreaHeight
-            SilicaFlickable {
-                id:nameplate
-                width:parent.height
-                height: nameplateHeader.height
-                PullDownMenu {
-                    MenuItem {
-                        text: qsTr("See me?")
-                    }
-                }
-
             PageHeader{
-                id:nameplateHeader
+                id:nameplate
                 title: messagingModel.userName
                 height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height +  actionLabel.height  + Theme.paddingMedium)
 
@@ -103,7 +93,7 @@ Component.onCompleted: console.log(lastOutboxId)
                     truncationMode: TruncationMode.Fade
                 }
             }
-            }
+
 
 
             SilicaListView {
@@ -123,7 +113,6 @@ Component.onCompleted: console.log(lastOutboxId)
                     easing.type: Easing.InOutQuad
                     running: false
                     onRunningChanged: {
-                        console.log(running)
                         if(!running)
                             messagingModel.getNewMessages()
                     }

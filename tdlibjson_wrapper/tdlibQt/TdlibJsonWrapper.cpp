@@ -21,7 +21,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
                               + QLocale::languageToString(QLocale::system().language()) + "\","
                               "\"device_model\":\"" + QSysInfo::prettyProductName() + "\","
                               "\"system_version\":\"" + QSysInfo::productVersion() + "\","
-                              "\"application_version\":\"0.1\","
+                              "\"application_version\":\"0.2\","
                               "\"use_message_database\":true,"
                               "\"use_secret_chats\":false,"
                               "\"enable_storage_optimizer\":true"

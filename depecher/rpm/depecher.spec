@@ -81,6 +81,7 @@ desktop-file-install --delete-original       \
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/lipstick/notificationcategories/*.conf
 %{_datadir}/ngfd/events.d/*.ini
+%{_datadir}/%{name}/translations
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
 # >> files

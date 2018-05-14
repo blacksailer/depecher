@@ -2,7 +2,7 @@ import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramItems 1.0
 import "../js/utils.js" as Utils
-import Nemo.Notifications 1.0
+import org.nemomobile.notifications 1.0
 import "items"
 import tdlibQtEnums 1.0
 Page {
@@ -42,6 +42,8 @@ Page {
                     x: Theme.horizontalPageMargin
                     topPadding:  Theme.paddingMedium
                     spacing: Theme.paddingLarge
+                    visible:isLogoutVisible
+
                     Row{
                         width: parent.width
                         CircleImage {

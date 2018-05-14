@@ -106,7 +106,6 @@ Drawer{
             }
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
-            onFocusChanged: console.log(focus)
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
             width:parent.width - sendButton.width - skrepkaWizard.width
         }
@@ -129,7 +128,6 @@ Drawer{
         target: attachLoader.item
         onSendUrlItems:
         {
-            console.log(items.length,items[0].type,items[0].url)
             sendFiles(items)
         }
     }

@@ -3,15 +3,15 @@
 <TS version="2.1" language="sv">
 <context>
     <name></name>
-    <message id="Поделиться">
-        <source>Share link</source>
-        <extracomment>List header for link sharing method list</extracomment>
-        <translation>Dela länk</translation>
-    </message>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
         <translation>Inga delningskonton tillgängliga. Du kan lägga till konton i Inställningar.</translation>
+    </message>
+    <message id="Share">
+        <source>Share link</source>
+        <extracomment>List header for link sharing method list</extracomment>
+        <translation type="unfinished">Dela länk</translation>
     </message>
 </context>
 <context>
@@ -27,6 +27,53 @@
     <message>
         <source>Sources</source>
         <translation>Källkod</translation>
+    </message>
+    <message>
+        <source>Error %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Groups in Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Joining chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
+
+Features:
+- Send/View/Delete messages
+- View photos
+- View stickers
+- Uploading/Downloading photos/docs
+- Receive notifications
+- 2FA authorization enabled
+
+No daemon yet.
+
+
+Thanks to:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
+This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -47,16 +94,44 @@
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Фото</source>
-        <translation>Bilder</translation>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Отменить</source>
-        <translation>Avbryt</translation>
+        <source>Photo</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Прикрепить</source>
-        <translation>Bifoga</translation>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to Home folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send a document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Files to send</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -84,7 +159,7 @@
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>OBS! Om Telegram blockeras i ditt land, måste du först konfigurera en proxyserver i inställningarna, via toppmenyn.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -103,12 +178,12 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>DialogsPage</name>
     <message>
-        <source>Menu</source>
-        <translation>Meny</translation>
-    </message>
-    <message>
         <source>Reset dialogs</source>
         <translation>Återställ dialoger</translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Inställningar</translation>
     </message>
 </context>
 <context>
@@ -119,18 +194,33 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>MessageItem</name>
+    <message>
+        <source>new messages</source>
+        <translation type="unfinished">Nya meddelanden</translation>
+    </message>
+</context>
+<context>
     <name>MessagingPage</name>
     <message>
         <source>Copy Text</source>
         <translation>Kopiera text</translation>
     </message>
     <message>
-        <source>new messages</source>
-        <translation>Nya meddelanden</translation>
-    </message>
-    <message>
         <source>get newer</source>
         <translation>Hämta nya</translation>
+    </message>
+    <message>
+        <source>Delete Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -138,6 +228,14 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Save to gallery</source>
         <translation>Spara i galleriet</translation>
+    </message>
+    <message>
+        <source>Image saved to gallery!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share function will be here soon</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -195,8 +293,16 @@ proxy server in settings via PulleyMenu</source>
         <translation>Adress. Lämnas tom för att inaktivera proxy</translation>
     </message>
     <message>
-        <source>About</source>
-        <translation>Om</translation>
+        <source>Connection status: </source>
+        <translation type="unfinished">Anslutningsstatus: </translation>
+    </message>
+    <message>
+        <source>About program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits and stuff</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -224,6 +330,78 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Sending request...</source>
         <translation>Skickar begäran...</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recover password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email is sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>recovery code sent to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter recovery code. 
+ Remember! After that 2FA authorization will be disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter your password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recovery code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Lösenord</translation>
+    </message>
+    <message>
+        <source>Password hint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait for the message via %1 containing the activation code and press %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>utils</name>
+    <message>
+        <source>Waiting for network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uknown</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

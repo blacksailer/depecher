@@ -42,14 +42,15 @@ Page {
                 text:qsTr("Depecher - Another Telegram client for Sailfish OS based on tdlib.
 
 Features:
-- View messages
+- Send/View/Delete messages
 - View photos
 - View stickers
-- Send messages
+- Uploading/Downloading photos/docs
 - Receive notifications
+- 2FA authorization enabled
 
 No daemon yet.
-No two-factor auth yet.
+
 
 Thanks to:
 - @kaffeine

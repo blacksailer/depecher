@@ -29,7 +29,7 @@ SilicaFlickable {
         header: PageHeader {
             //: List header for link sharing method list
             //% "Share link"
-            title: qsTrId("Поделиться")
+            title: qsTrId("Share")
         }
 
         delegate:BackgroundItem{

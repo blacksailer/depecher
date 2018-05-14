@@ -38,6 +38,10 @@ events.path=/usr/share/ngfd/events.d
 
 INSTALLS += notificationcategories events
 
+i18n.path = /usr/share/depecher/translations
+i18n.files =     translations/*.qm
+
+INSTALLS += i18n
 
 CONFIG (debug, debug|release) {
         OBJECTS_DIR = build/debug
@@ -66,7 +70,10 @@ CONFIG += sailfishapp_i18n
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/depecher-de.ts
+
+# automatic generation of the translation .qm files from .ts files
+system(lrelease $$PWD/translations/*.ts)
+TRANSLATIONS += translations/*.ts
 
 RESOURCES += \
     resource.qrc

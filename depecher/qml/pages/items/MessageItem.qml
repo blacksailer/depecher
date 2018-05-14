@@ -238,7 +238,6 @@ ListItem {
                             enabled: downloadIcon.visible
                             anchors.fill: parent
                             onClicked: {
-                                console.log("CANCEL!!!!!!!!")
                                 if(progress.visible)
                                     if(file_is_downloading)
                                         messagingModel.cancelDownload(index)

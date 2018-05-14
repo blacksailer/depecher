@@ -7,8 +7,21 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Mon May 07 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-1
+* Sun May 14 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-1
 - Notification sound configured
+- Zoom Photos Added
+- Photos saving by request now to ~/Pictures/Depecher
+- Photo, Doc Uploading Added
+- Photo, Doc Downloading Added
+- Database  to .local moved
+- Sandwich menu eliminated, moved to PullDownMenu
+- TextArea focus returning after sending text
+- 2FA authorization Added
+- Avatars in groups and supergroups Added
+- Duplicated message bug Fixed
+- App icon changed
+- Deleting message Added
+- Message status Added
 
 * Mon Apr 23 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.1-2
 - Avatar getMe issue fixed

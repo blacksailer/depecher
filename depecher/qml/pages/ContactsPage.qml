@@ -23,7 +23,6 @@ Page {
             }
 
             onClicked:{
-            console.log(peerId)
                 c_telegramWrapper.chatId=peerId
                 //peerType 0 - is User
                     c_telegramWrapper.requestHistory(c_telegramWrapper.chatId,0, 20,0);

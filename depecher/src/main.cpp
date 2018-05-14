@@ -25,6 +25,16 @@ int main(int argc, char *argv[])
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                                                           qApp->applicationName()));
 
+    QTranslator translator;
+
+    QString locale = QLocale::system().name();
+    //locale="de"; // for testing purposes only
+    if (!translator.load("depecher-" + locale, SailfishApp::pathTo("translations").toLocalFile())) {
+        qDebug() << "Couldn't load translation for locale " + locale + " from " +
+                 SailfishApp::pathTo("translations").toLocalFile();
+    }
+    app->installTranslator(&translator);
+
     auto view = SailfishApp::createView();
     auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
 

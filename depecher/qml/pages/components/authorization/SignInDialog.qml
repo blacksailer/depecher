@@ -21,7 +21,6 @@ Dialog {
             id:telegramAuthenticationHandler
             property bool forgotPassword: false
             onAuthorizationStateChanged: {
-                console.log(currentAuthorizationState)
                 if(currentAuthorizationState === TdlibState.AuthorizationStateWaitPassword)
                     signInDialog.state = "password"
                 if(currentAuthorizationState === TdlibState.AuthorizationStateWaitCode)
@@ -29,7 +28,7 @@ Dialog {
                 if(currentAuthorizationState === TdlibState.AuthorizationStateReady)
                 {
                     canLogin=true
-                    pageStack.replaceAbove(Qt.resolvedUrl("../../DialogsPage.qml"))
+                    pageStack.replaceAbove(null,Qt.resolvedUrl("../../DialogsPage.qml"))
                 }
             }
             onErrorChanged: {
@@ -195,7 +194,7 @@ Dialog {
                     btnsignin.text = qsTr("Sending request...");
 
                     if (telegramAuthenticationHandler.isUserRegistered)
-                        console.log(c_telegramWrapper.checkCode(tfcode.text))
+                        c_telegramWrapper.checkCode(tfcode.text)
                     else
                         c_telegramWrapper.setCodeIfNewUser(tfcode.text,tfSurName.text,tfName.text)
                 }

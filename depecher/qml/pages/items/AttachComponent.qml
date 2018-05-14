@@ -162,7 +162,6 @@ Item {
                 height: width
                 onClicked:
                 {
-                    console.log(selectedItems.length)
                     if(!selectedContainsAndRemove(index,files.currentIndex))
                     {
                         selectedCircle.color = Theme.secondaryHighlightColor;
@@ -249,7 +248,6 @@ Item {
                     Label {
                         font.pixelSize: Theme.fontSizeTiny
                         color: Theme.secondaryColor
-                        font.bold: true
                         text: subtitle
                     }
                 }
@@ -291,7 +289,6 @@ Item {
 
     function selectedContainsAndRemove(idx, type)
     {
-        console.log(selectedItems.length)
         for(var i=0;i<selectedItems.length;i++)
         {   if(selectedItems[i].id===idx && selectedItems[i].type===type)
             {
