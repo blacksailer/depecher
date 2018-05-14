@@ -6,7 +6,7 @@
     <message id="Поделиться">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Link teilen</translation>
     </message>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
@@ -18,15 +18,15 @@
     <name>AboutPage</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Über</translation>
     </message>
     <message>
         <source>Donations</source>
-        <translation type="unfinished"></translation>
+        <translation>Spenden</translation>
     </message>
     <message>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Quellcode</translation>
     </message>
     <message>
         <source>Groups in Telegram</source>
@@ -75,15 +75,15 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AreYouSureDialog</name>
     <message>
         <source>Is phone correct?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ist die Telefonnummer korrekt?</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungsstatus:</translation>
     </message>
     <message>
         <source>To continue connection to Telegram is needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Um fortzufahren, benötigen sie eine Verbindung zu den Telegram Servern.</translation>
     </message>
 </context>
 <context>
@@ -133,28 +133,28 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben sie ihre Telefonnummer ein und drücken sie &apos;Weiter&apos;</translation>
     </message>
     <message>
         <source>Country Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Ländervorwahl</translation>
     </message>
     <message>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Telefonnummer</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Welcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Willkommen</translation>
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung: Sollte Telegramm in Ihrem Land blockiert ist, können sie in den Einstellungen einen Proxyserver einrichten!</translation>
     </message>
 </context>
 <context>
@@ -164,27 +164,26 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translation type="unfinished"></translation>
+        <source>Unread messages</source>
+        <translation>Ungelesene Nachrichten</translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
-        <source>Reset dialogs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Settings</source>
         <translation type="unfinished"></translation>
+            </message>
+    <message>
+        <source>Reset dialogs</source>
+        <translation>Dialoge zurücksetzen</translation>
     </message>
 </context>
 <context>
     <name>MenuComponent</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 <context>
@@ -198,11 +197,11 @@ proxy server in settings via PulleyMenu</source>
     <name>MessagingPage</name>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Text kopieren</translation>
     </message>
     <message>
-        <source>get newer</source>
-        <translation type="unfinished"></translation>
+    <source>get newer</source>
+    <translation>Lade neue Nachrichten</translation>
     </message>
     <message>
         <source>Delete Message</source>
@@ -225,7 +224,7 @@ proxy server in settings via PulleyMenu</source>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
-        <translation type="unfinished"></translation>
+        <translation>In Galerie speichern</translation>
     </message>
     <message>
         <source>Image saved to gallery!</source>
@@ -240,7 +239,7 @@ proxy server in settings via PulleyMenu</source>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Socks5 proxy</source>
@@ -248,11 +247,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Adresse</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished"></translation>
+        <translation>Server-Port</translation>
     </message>
     <message>
         <source>port</source>
@@ -260,35 +259,35 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeines</translation>
     </message>
     <message>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Abmelden</translation>
     </message>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy ist bereit</translation>
     </message>
     <message>
         <source>Set proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy einstellen</translation>
     </message>
     <message>
         <source>Address. Set empty to disable proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Leere Adresse zum Deaktivieren des Proxys setzen</translation>
     </message>
     <message>
         <source>Connection status: </source>
@@ -311,19 +310,19 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorname</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachname</translation>
     </message>
     <message>
         <source>Sign In</source>
-        <translation type="unfinished"></translation>
+        <translation>Anmelden</translation>
     </message>
     <message>
         <source>Sign up</source>
-        <translation type="unfinished"></translation>
+        <translation>Registrieren</translation>
     </message>
     <message>
         <source>Sending request...</source>
