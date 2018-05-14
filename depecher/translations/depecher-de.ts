@@ -30,11 +30,11 @@
     </message>
     <message>
         <source>Groups in Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>Telegram Gruppen</translation>
     </message>
     <message>
         <source>English speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Englischsprachige Gemeinschaft</translation>
     </message>
     <message>
         <source>Error %1</source>
@@ -42,11 +42,11 @@
     </message>
     <message>
         <source>Joining chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat beitreten</translation>
     </message>
     <message>
         <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Achten Sie darauf, dass Sie sich nach dem Anklicken dem Chat beitreten. Das Verlassen von Chats jedoch derzeit nicht unterstützt wird.</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
@@ -95,23 +95,23 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachComponent</name>
     <message>
         <source>Photo</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Senden</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Home</source>
@@ -119,19 +119,19 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zum Home-Ordner</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumente</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument versenden</translation>
     </message>
     <message>
         <source>Files to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu sendende Dateien</translation>
     </message>
 </context>
 <context>
@@ -159,7 +159,8 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung: Wenn das Telegramm in Ihrem Land blockiert ist, stellen sie als erstes
+einen Proxy-Server in den Einstellungen ein.</translation>
     </message>
 </context>
 <context>
@@ -169,16 +170,17 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unread 
+        <source>Unread
  messages</source>
-        <translation type="unfinished"></translation>
+    <translation>Ungelesene
+ Nachrichten</translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Reset dialogs</source>
@@ -196,7 +198,7 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>new messages</source>
-        <translation type="unfinished"></translation>
+        <translation>neue Nachrichten</translation>
     </message>
 </context>
 <context>
@@ -211,15 +213,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht löschen</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche...</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Für alle Löschen</translation>
     </message>
 </context>
 <context>
@@ -230,11 +232,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild wurde in der Galerie gespeichert!</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
-        <translation type="unfinished"></translation>
+        <translation>Share-Funktion wird demnächst hier sein.</translation>
     </message>
 </context>
 <context>
@@ -293,11 +295,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Verbindungsstatus:</translation>
+        <translation>Verbindungsstatus:</translation>
     </message>
     <message>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Über das Programm</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
@@ -328,75 +330,76 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Sending request...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Anfrage....</translation>
     </message>
     <message>
         <source>Enter your password</source>
-        <translation type="unfinished"></translation>
+        <translation>Geben Sie Ihr Passwort ein</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Passwort</translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Recover password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort wiederherstellen</translation>
     </message>
     <message>
         <source>Email is sent</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mail wird gesendet</translation>
     </message>
     <message>
         <source>Show hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinweis anzeigen</translation>
     </message>
     <message>
-        <source>Enter recovery code. 
+        <source>Enter recovery code.
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode eingeben.
+ Denken Sie daran! Danach wird die 2FA-Autorisierung deaktiviert.</translation>
     </message>
     <message>
         <source>Recovery code</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode</translation>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten Sie auf die Meldung über %1 mit dem Aktivierungscode und drücken Sie %2.</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode gesendet an %1</translation>
     </message>
     <message>
         <source>Password hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Passworthinweis</translation>
     </message>
 </context>
 <context>
     <name>utils</name>
     <message>
         <source>Waiting for network</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten auf Netzwerk</translation>
     </message>
     <message>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinde</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinde mit Proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisiere...</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit</translation>
     </message>
     <message>
         <source>Uknown</source>
