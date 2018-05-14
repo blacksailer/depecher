@@ -74,17 +74,7 @@ void NotificationManager::getUpdateChatOutbox(const QJsonObject &chatReadOutbox)
     qint64 chat_id = ParseObject::getInt64(chatReadOutbox["chat_id"]);
     qint64 last_message_id = ParseObject::getInt64(chatReadOutbox["last_read_outbox_message_id"]);
     if (m_chatIdsPublished.contains(chat_id)) {
-        int i = 0;
-        for (; i < m_chatIdsPublished[chat_id]->remoteActions().size(); i++) {
-            QVariantMap item = m_chatIdsPublished[chat_id]->remoteActions().at(i).toMap();
-            if (item["name"].toString() == "telegram_message_id")
-                break;
-        }
-
-        if (m_chatIdsPublished[chat_id]->remoteActions().at(
-                    i).toMap()["displayName"].toString().toLongLong() <
-                last_message_id)
-            removeNotification(chat_id);
+        removeNotification(chat_id);
     }
 }
 

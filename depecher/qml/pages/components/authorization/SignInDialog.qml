@@ -58,6 +58,10 @@ Dialog {
                 onClicked: hintLabel.visible = true
             }
         }
+        PageHeader {
+        title: state == "code" ? qsTr("Enter code") : qsTr("Enter password")
+        description: qsTr("Authentication state") +" - "+setAuthState(telegramAuthenticationHandler.currentAuthorizationState)
+        }
 
         states:[
             State {
@@ -67,6 +71,11 @@ Dialog {
                     target: keyColumn
                     visible:true
                 }
+                PropertyChanges {
+                    target: signin
+                    visible:false
+                }
+
                 PropertyChanges {
                     target: pulleyMenuRecovery
                     visible:true
@@ -90,7 +99,6 @@ Dialog {
             topPadding:(signInDialog.height - imglock.height - lblInfoPass.height - tfPassword.height - hintLabel.height - btnpassword.height - 4 * spacing)/2
             width: parent.width-2*x
             visible: false
-            PageHeader { width: parent.width; height: Theme.paddingLarge }
             Image {
                 id: imglock
                 source: "image://theme/icon-m-device-lock"
@@ -139,9 +147,7 @@ Dialog {
             x:Theme.horizontalPageMargin
             width: parent.width-2*x
             topPadding:(signInDialog.height - imgwaiting.height - lblinfo.height - tfcode.height - tfRowName.height - btnsignin.height - 4 * spacing)/2
-            visible: false
-            PageHeader { width: parent.width; height: Theme.paddingLarge }
-
+            visible: true
             Image {
                 id: imgwaiting
                 source: "image://theme/icon-l-timer"

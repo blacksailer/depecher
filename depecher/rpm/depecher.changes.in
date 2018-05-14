@@ -7,6 +7,10 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Mon May 15 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-2
+- Notification error fixed (onupdateOutbox)
+- sign in column fixed
+
 * Sun May 14 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-1
 - Notification sound configured
 - Zoom Photos Added
