@@ -6,7 +6,7 @@ import "../items"
 SilicaListView{
     anchors.fill: parent
     model:menuModel
-    header: Column{
+    header: Column {
         width:parent.width
         Item{
             //topPadding
@@ -99,9 +99,7 @@ SilicaListView{
             }
         }
         onClicked:{
-
             pageStack.push(menuPage)
-
         }
     }
     ListModel{

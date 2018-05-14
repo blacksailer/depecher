@@ -11,6 +11,7 @@ class UsersModel : public QObject
     Q_OBJECT
     TdlibJsonWrapper *m_client;
     QMap<qint64, QSharedPointer<chat>> m_chats;
+    QMap<qint64, QSharedPointer<supergroup>> m_supergroups;
     QMap<qint64, QSharedPointer<user>> m_users;
     UsersModel(QObject *parent = 0);
 public:
@@ -23,10 +24,12 @@ public:
     QSharedPointer<profilePhoto> getUserPhoto(const quint64 userId);
     QString getUserFullName(const quint64 userId);
     void setSmallAvatar(quint64 id, QSharedPointer<file> small);
-
+    QSharedPointer<ChatMemberStatus> getGroupStatus(qint64 group_id);
 public slots:
     void getUpdateNewChat(const QJsonObject &updateNewChatObject);
     void getUpdateNewUser(const QJsonObject &updateNewUserObject);
+    void getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupObject);
+
 };
 } //tdlibQt
 

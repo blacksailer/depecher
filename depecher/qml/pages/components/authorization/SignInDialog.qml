@@ -9,7 +9,7 @@ Dialog {
     property string fullPhoneNumber: ""
     property bool canLogin: false
     canAccept: canLogin
-    acceptDestinationReplaceTarget:  Qt.resolvedUrl("../../DialogsPage.qml");
+
     SilicaFlickable{
         anchors.fill: parent
         NotificationPanel{
@@ -29,7 +29,7 @@ Dialog {
                 if(currentAuthorizationState === TdlibState.AuthorizationStateReady)
                 {
                     canLogin=true
-                    signInDialog.accept()
+                    pageStack.replaceAbove(Qt.resolvedUrl("../../DialogsPage.qml"))
                 }
             }
             onErrorChanged: {
@@ -46,9 +46,10 @@ Dialog {
                 text:qsTr("Recover password")
                 enabled: telegramAuthenticationHandler.hasRecoveryEmail
                 onClicked: {
+                    hintLabel.visible = false
                     telegramAuthenticationHandler.recoverPassword()
                     telegramAuthenticationHandler.forgotPassword = true
-                    notificationPanel.showTextWithTimer(qsTr("Email is sent"),"recovery code sent to "+telegramAuthenticationHandler.emailPattern)
+                    notificationPanel.showTextWithTimer(qsTr("Email is sent"),qsTr("recovery code sent to %1").arg(telegramAuthenticationHandler.emailPattern))
 
                 }
             }
@@ -113,7 +114,7 @@ Dialog {
             Label {
                 id:hintLabel
                 visible: false
-                text:telegramAuthenticationHandler.getHint
+                text:qsTr("Password hint")+ " - " + telegramAuthenticationHandler.getHint
                 font.pixelSize: Theme.fontSizeSmall
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
                 horizontalAlignment: Text.AlignHCenter
@@ -150,7 +151,7 @@ Dialog {
 
             Label {
                 id: lblinfo
-                text: qsTr("Wait for the message via %1 containing the activation code and press %2" ).arg( telegramAuthenticationHandler.getType,telegramAuthenticationHandler.isUserRegistered ? qsTr("Sign In") : qsTr("Sign up"))
+                text: qsTr("Wait for the message via %1 containing the activation code and press %2" ).arg(telegramAuthenticationHandler.getType).arg(telegramAuthenticationHandler.isUserRegistered ? qsTr("Sign In") : qsTr("Sign up"))
                 font.pixelSize: Theme.fontSizeSmall
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
                 horizontalAlignment: Text.AlignHCenter

@@ -28,6 +28,48 @@
         <source>Sources</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Groups in Telegram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English speaking community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
+
+Features:
+- View messages
+- View photos
+- View stickers
+- Send messages
+- Receive notifications
+
+No daemon yet.
+No two-factor auth yet.
+
+Thanks to:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
+This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Joining chat</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -130,11 +172,11 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>DialogsPage</name>
     <message>
-        <source>Menu</source>
+        <source>Reset dialogs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reset dialogs</source>
+        <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -174,11 +216,23 @@ proxy server in settings via PulleyMenu</source>
         <source>Delete for everyone</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>See me?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image saved to gallery!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Share function will be here soon</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -237,7 +291,15 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About</source>
+        <source>Connection status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits and stuff</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -302,6 +364,14 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>recovery code sent to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password hint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -260,7 +260,7 @@ void MessagingModel::fetchMore(const QModelIndex & /*parent*/)
 
     qint64 lastMessageOutboxId = 0;
     if (currentMessage().length() > 0)
-        lastMessageOutboxId = m_lastMessage.toLongLong();
+        lastMessageOutboxId = m_currentMessage.toLongLong();
 
     fetchPending = true;
     if (rowCount(QModelIndex()) == 0)
@@ -595,6 +595,10 @@ void MessagingModel::prependMessage(const QJsonObject &messageObject)
         beginInsertRows(QModelIndex(), 0, 0);
         messages.prepend(messageItem);
         endInsertRows();
+        if (messagePhotoQueue.keys().size() > 0) {
+            for (int key : messagePhotoQueue.keys())
+                messagePhotoQueue[key]++;
+        }
 
     }
 
@@ -614,11 +618,9 @@ void MessagingModel::prependMessage(const QJsonObject &messageObject)
             int sizesCount = messagePhotoPtr->photo_->sizes_.size();
             fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
         }
-        if (fileId > 0) {
-            for (int key : messagePhotoQueue.keys())
-                messagePhotoQueue[key]++;
+        if (fileId > 0)
             messagePhotoQueue[fileId] = 0;
-        }
+
     }
     emit firstIdChanged();
 
@@ -628,9 +630,7 @@ void MessagingModel::addMessageFromUpdate(const QJsonObject &messageUpdateObject
 {
     if (peerId() != messageUpdateObject["message"].toObject()["chat_id"].toVariant().toString())
         return;
-    beginInsertRows(QModelIndex(), 0, 0);
     prependMessage(messageUpdateObject["message"].toObject());
-    endInsertRows();
     QVariantList ids;
     ids.append(messageUpdateObject["message"].toObject()["id"].toDouble());
     viewMessages(ids);
@@ -661,12 +661,14 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
         if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageSticker::ID) {
             auto messageStickerPtr = static_cast<messageSticker *>
                                      (messages[messagePhotoQueue[file->id_]]->content_.data());
-            messageStickerPtr->sticker_->sticker_ = file;
+            if (messageStickerPtr->sticker_->sticker_->id_ == file->id_)
+                messageStickerPtr->sticker_->sticker_ = file;
         }
         if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageDocument::ID) {
             auto messageDocumentPtr = static_cast<messageDocument *>
                                       (messages[messagePhotoQueue[file->id_]]->content_.data());
-            messageDocumentPtr->document_->document_ = file;
+            if ( messageDocumentPtr->document_->document_->id_ == file->id_)
+                messageDocumentPtr->document_->document_ = file;
         }
         if (file->local_->is_downloading_completed_)
             photoRole.append(CONTENT);
@@ -746,6 +748,7 @@ void MessagingModel::setPeerId(QString peerId)
         return;
 
     m_peerId = peerId;
+    m_UserStatus = UsersModel::instance()->getGroupStatus(m_peerId.toLongLong());
 
     emit peerIdChanged(peerId);
 }
@@ -894,17 +897,33 @@ void MessagingModel::deleteMessage(const int rowIndex, const bool revoke)
 
         tdlibJson->deleteMessages(chatId, messageIds, revoke);
 
-        for (int key : messagePhotoQueue.keys())
-            if (rowIndex == messagePhotoQueue[key]) {
-                messagePhotoQueue.remove(key);
+        //1. if exists in fileUpdates (rowIndex == fileIndex) -> remove
+        //2. if rowIndex > fileIndex -> nothing
+        //3. if rowIndex < fileIndex -> decrease by 1
+        for (int key : messagePhotoQueue.keys()) {
+            if (rowIndex < messagePhotoQueue[key]) {
+                messagePhotoQueue[key]--;
                 break;
             }
+            if (rowIndex == messagePhotoQueue[key]) {
+                messagePhotoQueue.remove(key);
+            }
+        }
         beginRemoveRows(QModelIndex(), rowIndex, rowIndex);
         messages.removeAt(rowIndex);
         endRemoveRows();
 
     }
     return;
+}
+
+void MessagingModel::joinChat()
+{
+    TlStorerToString json;
+    chatMemberStatusMember statusJoin;
+    statusJoin.store(json, "status");
+    qDebug() << QJsonDocument::fromVariant(json.doc).toJson();
+
 }
 
 void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
@@ -920,7 +939,7 @@ void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
 void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
-//    tdlibJson->viewMessages(peerId(), ids, force_read);
+    tdlibJson->viewMessages(peerId(), ids, force_read);
     NotificationManager::instance()->removeNotification(peerId().toLongLong());
 
 }

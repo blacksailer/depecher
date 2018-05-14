@@ -226,6 +226,10 @@ void ParseObject::parseResponse(const QByteArray &json)
         auto rootNewMessage = doc.object();
         emit newMessageFromUpdate(rootNewMessage);
     }
+    if (typeField == "updateSupergroup") {
+        emit updateSupergroup(doc.object());
+    }
+
     if (typeField == "chats") {
         QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
         for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
@@ -250,17 +254,17 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "messages") {
         emit newMessages(doc.object());
 
-//        int totalCount = doc.object()["total_count"].toInt();
-//        emit updateTotalCount(totalCount);
+        //        int totalCount = doc.object()["total_count"].toInt();
+        //        emit updateTotalCount(totalCount);
 
-//        QVariantList messagesIds;
+        //        QVariantList messagesIds;
 
-//        QJsonArray messagesArray = doc.object()["messages"].toArray();
-//        for (auto obj : messagesArray) {
-//            emit newMessage(obj.toObject());
-//            messagesIds.append(obj.toObject()["id"].toVariant());
-//        }
-//        emit messageIds(messagesIds);
+        //        QJsonArray messagesArray = doc.object()["messages"].toArray();
+        //        for (auto obj : messagesArray) {
+        //            emit newMessage(obj.toObject());
+        //            messagesIds.append(obj.toObject()["id"].toVariant());
+        //        }
+        //        emit messageIds(messagesIds);
     }
     if (typeField == "updateUserChatAction") {
         emit updateChatAction(doc.object());
@@ -419,6 +423,72 @@ QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
            (new chatTypePrivate);
 }
 
+QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &supergroupObject)
+{
+    if (supergroupObject["@type"].toString() == "supergroup")
+        return QSharedPointer<supergroup>(new supergroup);
+
+    QSharedPointer<supergroup> resultSupergroup = QSharedPointer<supergroup>(new supergroup);
+    resultSupergroup->anyone_can_invite_ = supergroupObject["anyone_can_invite"].toBool();
+    resultSupergroup->date_ = supergroupObject["date"].toInt();
+    resultSupergroup->id_ = getInt64(supergroupObject["id"]);
+    resultSupergroup->is_channel_  = supergroupObject["is_channel"].toBool();
+    resultSupergroup->is_verified_   = supergroupObject["is_verified"].toBool();
+    resultSupergroup->member_count_  = supergroupObject["member_count"].toInt();
+    resultSupergroup->restriction_reason_ =
+        supergroupObject["restriction_reason"].toString().toStdString();
+    resultSupergroup->sign_messages_  = supergroupObject["sign_messages_"].toBool();;
+    resultSupergroup->username_ =        supergroupObject["username"].toString().toStdString();
+
+    resultSupergroup->status_ = parseChatMemberStatus(supergroupObject["status"].toObject());//ptr
+    return resultSupergroup;
+}
+QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonObject
+                                                                    &chatMemberStatusObject)
+{
+    if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusAdministrator") {
+        auto resultStatus = QSharedPointer<chatMemberStatusAdministrator>(new
+                                                                          chatMemberStatusAdministrator);
+        resultStatus->can_be_edited_ = chatMemberStatusObject["can_be_edited"].toBool();
+        resultStatus->can_change_info_ = chatMemberStatusObject["can_change_info"].toBool();
+        resultStatus->can_delete_messages_ = chatMemberStatusObject["can_delete_messages"].toBool();
+        resultStatus->can_edit_messages_ = chatMemberStatusObject["can_edit_messages"].toBool();
+        resultStatus->can_invite_users_ = chatMemberStatusObject["can_invite_users"].toBool();
+        resultStatus->can_pin_messages_ = chatMemberStatusObject["can_pin_messages"].toBool();
+        resultStatus->can_post_messages_ = chatMemberStatusObject["can_post_messages"].toBool();
+        resultStatus->can_promote_members_ = chatMemberStatusObject["can_promote_members"].toBool();
+        resultStatus->can_restrict_members_ = chatMemberStatusObject["can_restrict_members"].toBool();
+        return resultStatus;
+    }
+    if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusBanned") {
+        auto resultStatus = QSharedPointer<chatMemberStatusBanned>(new chatMemberStatusBanned );
+        resultStatus->banned_until_date_ = chatMemberStatusObject["banned_until_date"].toInt();
+        return resultStatus;
+
+    }
+    if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusCreator") {
+        auto resultStatus = QSharedPointer<chatMemberStatusCreator>(new chatMemberStatusCreator );
+        resultStatus->is_member_ = chatMemberStatusObject["is_member"].toBool();
+        return resultStatus;
+    }
+    if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusMember") {
+        auto resultStatus = QSharedPointer<chatMemberStatusMember>(new chatMemberStatusMember );
+        return resultStatus;
+    }
+    if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusRestricted") {
+        auto resultStatus = QSharedPointer<chatMemberStatusRestricted>(new chatMemberStatusRestricted );
+        resultStatus->can_add_web_page_previews_ =
+            chatMemberStatusObject["can_add_web_page_previews"].toBool();
+        resultStatus->can_send_media_messages_ = chatMemberStatusObject["can_send_media_messages"].toBool();
+        resultStatus->can_send_messages_ = chatMemberStatusObject["can_send_messages"].toBool();
+        resultStatus->can_send_other_messages_ = chatMemberStatusObject["can_send_other_messages"].toBool();
+
+        return resultStatus;
+    }
+    auto resultStatus = QSharedPointer<chatMemberStatusLeft>(new chatMemberStatusLeft );
+    return resultStatus;
+
+}
 QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObject
                                                                 &messageContentObject)
 {
@@ -434,7 +504,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-//        return parseMessageAnimation(messageContentObject);
+        //        return parseMessageAnimation(messageContentObject);
         typeMessageText->text_->text_ = "Animation";
         return typeMessageText;
 

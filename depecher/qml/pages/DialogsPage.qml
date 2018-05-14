@@ -14,6 +14,8 @@ Page {
     }
 
     property string titleHeader: "Depecher"
+    //for search in pageStack
+     property bool __chat_page: true
     Drawer{
         id:drawer
         anchors.fill: parent
@@ -32,8 +34,8 @@ Page {
                     onClicked: chatsModel.reset()
                 }
                 MenuItem {
-                    text:qsTr("Menu")
-                    onClicked: drawer.show()
+                    text:qsTr("Settings")
+                    onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
                 }
             }
             delegate: ChatItem {

@@ -14,7 +14,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     client = td_json_client_create();
     //SEG FAULT means that json has error input variable names
     QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
-                              "\"database_directory\":\"depecherDatabase\","
+                              "\"database_directory\":\".local/share/harbour-depecher\","
                               "\"api_id\":" + tdlibQt::appid + ","
                               "\"api_hash\":\"" + tdlibQt::apphash + "\","
                               "\"system_language_code\":\""
@@ -78,7 +78,18 @@ void TdlibJsonWrapper::startListen()
     connect(parseObject, &ParseObject::updateNewUser,
             this, &TdlibJsonWrapper::updateNewUser);
     connect(parseObject, &ParseObject::newChatReceived,
-            this, &TdlibJsonWrapper::newChatGenerated);
+    [this](const QJsonObject & chat) {
+        if (chat.contains("@extra")) {
+            if (chat["@extra"].toString() == "EnSailfish") {
+                auto chatPtr = ParseObject::parseChat(chat);
+                emit getChatByLink(QString::fromStdString(chatPtr->title_), QString::number(chatPtr->id_),
+                                   3, QString::number(chatPtr->last_read_inbox_message_id_),
+                                   QString::number(chatPtr->last_read_outbox_message_id_),
+                                   QString::number(chatPtr->last_message_->id_));
+            }
+        }
+        emit newChatGenerated(chat);
+    });
     connect(parseObject, &ParseObject::updateFile,
             this, &TdlibJsonWrapper::updateFile);
     connect(parseObject, &ParseObject::newMessages,
@@ -106,7 +117,10 @@ void TdlibJsonWrapper::startListen()
     connect(parseObject, &ParseObject::meReceived,
             this, &TdlibJsonWrapper::meReceived);
     connect(parseObject, &ParseObject::errorReceived,
-            this, &TdlibJsonWrapper::errorReceived);
+    [this](const QJsonObject & errorObject) {
+        emit errorReceived(errorObject);
+        emit errorReceivedMap(errorObject.toVariantMap());
+    });
     connect(parseObject, &ParseObject::okReceived,
             this, &TdlibJsonWrapper::okReceived);
 
@@ -116,6 +130,9 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::messageReceived);
     connect(parseObject, &ParseObject::updateMessageSendSucceeded,
             this, &TdlibJsonWrapper::updateMessageSendSucceeded);
+    connect(parseObject, &ParseObject::updateSupergroup,
+            this, &TdlibJsonWrapper::updateSupergroup);
+
     listenThread->start();
     parseThread->start();
 
@@ -191,8 +208,20 @@ void TdlibJsonWrapper::cancelUploadFile(int fileId)
     QString cancelUploadFile =
         "{\"@type\":\"cancelUploadFile\","
         "\"file_id\":" + QString::number(fileId)  + "}";
-    qDebug() << cancelUploadFile;
     td_json_client_send(client, cancelUploadFile.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &extra)
+{
+    QString joinChatByInviteLink =
+        "{\"@type\":\"joinChatByInviteLink\","
+        "\"invite_link\":\"" + link  + "\"}";
+    if (extra != "") {
+        joinChatByInviteLink.remove(joinChatByInviteLink.size() - 1, 1);
+        joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}" );
+    }
+
+    td_json_client_send(client, joinChatByInviteLink.toStdString().c_str());
 }
 
 
@@ -309,7 +338,6 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}" );
     }
-    qDebug() << getFile << getFile.toUtf8();
     td_json_client_send(client, getFile.toUtf8().constData());
 }
 
@@ -382,6 +410,16 @@ void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64
                                 "\"revoke\":" + revokeStr + ","
                                 "\"message_ids\":[" + ids + "]}";
     td_json_client_send(client, deleteMessagesStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_id,
+                                           const QString &status)
+{
+    QString setChatMemberStatusStr = "{\"@type\":\"deleteMessages\","
+                                     "\"chat_id\":\"" + QString::number(chat_id) + "\","
+                                     "\"user_id\":" + QString::number(user_id) + ","
+                                     "\"status\":\"" + status + "\"}";
+    td_json_client_send(client, setChatMemberStatusStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)

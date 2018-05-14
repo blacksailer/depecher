@@ -13,13 +13,16 @@ Drawer{
     property int wall_id:0
     property string typeWriter
     signal sendFiles(var files)
+    signal setFocusToEdit()
+
+    onSetFocusToEdit: messageArea.focus = true
 
     states: [
-    State{
+        State{
             name:"publish"
         },
         State{
-        name:"edit"
+            name:"edit"
         }
     ]
 
@@ -94,14 +97,18 @@ Drawer{
             anchors.bottomMargin: 25
             onClicked: attachDrawer.open=true
         }
+
         TextArea {
             id:messageArea
-
+            onTextChanged: {
+                if(text === "")
+                    messageArea.forceActiveFocus()
+            }
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
-
+            onFocusChanged: console.log(focus)
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
-            width:parent.width-sendButton.width- skrepkaWizard.width
+            width:parent.width - sendButton.width - skrepkaWizard.width
         }
         IconButton {
             id:sendButton
@@ -110,7 +117,6 @@ Drawer{
             anchors.bottom: messageArea.bottom
             anchors.right:parent.right
             anchors.bottomMargin: 25
-
         }
     }
 
@@ -120,13 +126,13 @@ Drawer{
         onClicked: attachDrawer.open = false
     }
     Connections {
-           target: attachLoader.item
-           onSendUrlItems:
-{
-               console.log(items.length,items[0].type,items[0].url)
-               sendFiles(items)
-}
-       }
+        target: attachLoader.item
+        onSendUrlItems:
+        {
+            console.log(items.length,items[0].type,items[0].url)
+            sendFiles(items)
+        }
+    }
 
     background:Loader {
         id:attachLoader

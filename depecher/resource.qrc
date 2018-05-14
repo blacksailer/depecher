@@ -25,5 +25,7 @@
         <file>qml/pages/components/NotificationPanel.qml</file>
         <file>qml/pages/items/MessageItem.qml</file>
         <file>qml/assets/icons/check.svg</file>
+        <file>qml/assets/icons/en_sailfish.jpg</file>
+        <file>qml/assets/icons/ru_sailfish.jpg</file>
     </qresource>
 </RCC>

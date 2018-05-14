@@ -293,7 +293,7 @@ ListItem {
                 width:parent.width
                 height: width
                 fillMode: Image.PreserveAspectFit
-                source:"image://depecherDb/"+content
+                source:content ? "image://depecherDb/"+content : ""
             }
         }
     }

@@ -21,6 +21,7 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(bool atYEnd READ atYEnd WRITE setAtYEnd NOTIFY atYEndChanged)
 
     QList<QSharedPointer<message>> messages;
+    QSharedPointer<ChatMemberStatus> m_UserStatus;
     QMap<int, int> messagePhotoQueue;
     QMap<qint64, QVector<int>> avatarPhotoQueue;
     QVector<qint64> messageIds;
@@ -79,18 +80,6 @@ private slots:
     void processFile(const QJsonObject &fileObject);
     void updateChatReadInbox(const QJsonObject &inboxObject);
     void updateChatReadOutbox(const QJsonObject &outboxObject);
-
-    // QAbstractItemModel interface
-public:
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QHash<int, QByteArray> roleNames() const;
-    QString userName() const;
-    QString peerId() const;
-
-    MessagingModel();
-    ~MessagingModel();
-private slots:
     void appendMessages(const QJsonObject &messagesObject);
     void prependMessage(const QJsonObject &messageObject);
     void addMessageFromUpdate(const QJsonObject &messageUpdateObject);
@@ -101,6 +90,16 @@ private slots:
     void viewMessages(const QVariantList &ids);
     void setAction(const QString &action);
     void updateMessageSend(const QJsonObject &updateMessageSendObject);
+    // QAbstractItemModel interface
+public:
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+    QString userName() const;
+    QString peerId() const;
+
+    MessagingModel();
+    ~MessagingModel();
 public slots:
 
     void setUserName(QString userName);
@@ -117,6 +116,7 @@ public slots:
     void deleteMessages(QList<int> rowIndices, const bool revoke = false);
     void deleteMessage(const int rowIndex, const bool revoke = false);
 
+    void joinChat();
     void getNewMessages();
     void setChatType(const tdlibQt::Enums::ChatType chatType);
     void setCurrentMessage(const QString &currentMessage);
@@ -194,9 +194,17 @@ public:
         Sending_Not_Read,
         Sending_Read
     };
-
+    enum ChatMemberStatuses {
+        Administrator,
+        Banned,
+        Restricted,
+        Left,
+        Member,
+        Creator
+    };
     Q_ENUM(MessageType)
     Q_ENUM(MessageState)
+    Q_ENUM(ChatMemberStatuses)
     double lastOutboxId() const
     {
         return m_lastOutboxId;
@@ -205,5 +213,5 @@ public:
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageState)
-
+Q_DECLARE_METATYPE(tdlibQt::MessagingModel::ChatMemberStatuses)
 #endif // MESSAGINGMODEL_HPP

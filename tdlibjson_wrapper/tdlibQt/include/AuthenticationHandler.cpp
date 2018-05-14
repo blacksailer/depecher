@@ -123,13 +123,13 @@ QString tdlibQt::AuthenticationHandler::getCurrentCodeType() const
             auto codeInfo = static_cast<authenticationCodeInfo *>(waitCode->code_info_.data());
             auto codeType = static_cast<AuthenticationCodeType *>(codeInfo->type_.data());
             if (codeType->get_id() == authenticationCodeTypeSms::ID)
-                return "SMS";
+                return tr("SMS");
             if (codeType->get_id() == authenticationCodeTypeCall::ID)
-                return "Call";
+                return tr("Call");
             if (codeType->get_id() == authenticationCodeTypeFlashCall::ID)
-                return "Flash call";
+                return tr("Flash call");
             if (codeType->get_id() == authenticationCodeTypeTelegramMessage::ID)
-                return "Telegram";
+                return tr("Telegram");
         }
     }
     return "";
@@ -139,6 +139,15 @@ void tdlibQt::AuthenticationHandler::setAuthorizationState(const
                                                            QSharedPointer<tdlibQt::AuthorizationState> &authorizationState)
 {
     m_authorizationState = authorizationState;
+    if (m_authorizationState->get_id() == authorizationStateWaitPassword::ID) {
+        auto waitCode = static_cast<authorizationStateWaitPassword *>(m_authorizationState.data());
+        qDebug() << QString::fromStdString(waitCode->recovery_email_address_pattern_) <<
+                 waitCode->has_recovery_email_address_ <<  QString::fromStdString(waitCode->password_hint_);
+
+        emit getHintChanged(getHint());
+        emit emailPatternChanged(emailPattern());
+        emit hasRecoveryEmailChanged(hasRecoveryEmail());
+    }
     emit getTypeChanged(getCurrentCodeType());
     emit isUserRegisteredChanged(isUserRegistered());
 }

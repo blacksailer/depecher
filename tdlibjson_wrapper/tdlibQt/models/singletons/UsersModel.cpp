@@ -10,7 +10,8 @@ UsersModel::UsersModel(QObject *parent) : QObject(parent),
             this, &UsersModel::getUpdateNewUser);
     connect(m_client, &TdlibJsonWrapper::updateNewChat,
             this, &UsersModel::getUpdateNewChat);
-
+    connect(m_client, &TdlibJsonWrapper::updateSupergroup,
+            this, &UsersModel::getUpdateNewSupergroup);
 }
 
 UsersModel *UsersModel::instance()
@@ -70,11 +71,29 @@ void UsersModel::getUpdateNewUser(const QJsonObject &updateNewUserObject)
     }
 }
 
+void UsersModel::getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupObject)
+{
+    auto supergroupItem = ParseObject::parseSupergroup(
+                              updateNewSupergroupObject["supergroup"].toObject());
+    if (supergroupItem->id_ != 0) {
+        m_supergroups[supergroupItem->id_] = supergroupItem;
+    }
+
+}
+
 void UsersModel::setSmallAvatar(quint64 id, QSharedPointer<file> small)
 {
     if (!m_users.contains(id))
         return;
 
     m_users[id]->profile_photo_->small_ = small;
+}
+
+QSharedPointer<ChatMemberStatus> UsersModel::getGroupStatus(qint64 group_id)
+{
+    if (!m_supergroups.contains(group_id))
+        return QSharedPointer<ChatMemberStatus>(nullptr);
+    return m_supergroups[group_id]->status_;
+
 }
 } //tdlibQt

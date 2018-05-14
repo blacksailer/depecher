@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
 
     auto view = SailfishApp::createView();
     auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
+
+    //Need to create at first launch. Bad design maybe, should change
     auto NotificationManager = tdlibQt::NotificationManager::instance();
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();

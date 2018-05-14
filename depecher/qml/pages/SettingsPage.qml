@@ -1,8 +1,10 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramItems 1.0
 import "../js/utils.js" as Utils
 import Nemo.Notifications 1.0
+import "items"
+import tdlibQtEnums 1.0
 Page {
     id:root
     property bool isProxyConfiguring: false
@@ -17,30 +19,82 @@ Page {
             appName: "Depecher"
             previewBody: qsTr("Proxy is ready")
         }
+        Connections {
+            target: c_telegramWrapper
+            onConnectionStateChanged:{
+                connectionStatus = Utils.setState(connectionState)
+                if(connectionStatus === "Ready" && isProxyConfiguring)
+                {
+                    isProxyConfiguring = false;
+                    notificationProxy.publish()
+                }
+            }
+        }
+
         Column{
             id:column
             width: parent.width
             PageHeader{
                 title:qsTr("Settings")
             }
-            Connections {
-                target: c_telegramWrapper
-                onConnectionStateChanged:{
-                    connectionStatus = Utils.setState(connectionState)
-                    if(connectionStatus === "Ready" && isProxyConfiguring)
-                    {
-                        isProxyConfiguring = false;
-                        notificationProxy.publish()
+            Column {
+                    width:parent.width - 2 * x
+                    x: Theme.horizontalPageMargin
+                    topPadding:  Theme.paddingMedium
+                    spacing: Theme.paddingLarge
+                    Row{
+                        width: parent.width
+                        CircleImage {
+                            id: avatar
+                            width:height
+                            height: 135
+                            source: aboutMe.photoPath ? "image://depecherDb/"+aboutMe.photoPath : ""
+                            fallbackText: aboutMe.firstName.charAt(0)
+                            fallbackItemVisible: aboutMe.photoPath ? false : true
+                        }
                     }
+                    AboutMeDAO{
+                    id:aboutMe
+                    }
+                    Row{
+                        width:parent.width
+                        Column{
+                            width:parent.width-button.width
+                            Label{
+                                text:aboutMe.fullName
+                                color:Theme.highlightColor
+                            }
+                            Label{
+                                text:aboutMe.phoneNumber
+                                color:Theme.secondaryHighlightColor
+
+                            }
+                        }
+                        IconButton{
+                            id:button
+                            icon.source: "image://theme/icon-s-cloud-upload?" + (pressed
+                                                                                 ? Theme.highlightColor
+                                                                                 : Theme.primaryColor)
+                            onClicked:{
+                                pageStack.replace("MessagingPage.qml",{userName:aboutMe.fullName,
+                                                      chatId:aboutMe.id,chatType:TdlibState.Private,
+                                               lastReadMessage:0,lastMessageId:0})
+                            }
+                        }
+                    }
+                    Item{
+                        //bottomPadding
+                        width: parent.width
+                        height: 1
+                    }
+
                 }
-            }
             SectionHeader {
                 text: qsTr("Socks5 proxy")
             }
             Row{
                 width: parent.width -2 *x
                 x: Theme.horizontalPageMargin
-                
                 BusyIndicator{
                     id:busyIndicatorConnection
                     size: BusyIndicatorSize.Small
@@ -52,16 +106,14 @@ Page {
                     wrapMode: Text.WordWrap
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.secondaryColor
-                    text: qsTr("Connection status: "+ root.connectionStatus)
+                    text: qsTr("Connection status: ") + root.connectionStatus
                 }
             }
             ProxyDAO{
                 id:proxyDao
             }
             TextField {
-                id:addressField
-                x: Theme.horizontalPageMargin
-                
+                id:addressField                
                 placeholderText: qsTr("Server address")
                 label: qsTr("Address. Set empty to disable proxy")
                 width: parent.width
@@ -70,9 +122,7 @@ Page {
                 EnterKey.onClicked: portField.focus = true
             }
             TextField {
-                id:portField
-                x: Theme.horizontalPageMargin
-                
+                id:portField                
                 placeholderText: qsTr("Server port")
                 label: qsTr("port")
                 text:proxyDao.port
@@ -83,9 +133,6 @@ Page {
             }
             TextField {
                 id:usernameField
-                x: Theme.horizontalPageMargin
-                
-                
                 placeholderText: qsTr("Username")
                 label: qsTr("username")
                 text:proxyDao.username
@@ -95,8 +142,6 @@ Page {
             }
             PasswordField{
                 id:passwordField
-                x: Theme.horizontalPageMargin
-                
                 width: parent.width
                 text:proxyDao.password
                 placeholderText:qsTr("Password")
@@ -118,19 +163,29 @@ Page {
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeMedium
+                Column {
+                    width: parent.width
                 Label{
-                    text:qsTr("About")
+                    text:qsTr("About program")
                     x: Theme.horizontalPageMargin
                     color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
-                    anchors.verticalCenter: parent.verticalCenter
                 }
+                Label{
+                    text:qsTr("Credits and stuff")
+                    x: Theme.horizontalPageMargin
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                }
+                }
+
                 onClicked: pageStack.push("AboutPage.qml")
             }
-            Item{
-            //move button logout down
-                width: parent.width
-                height:Theme.itemSizeMedium
-            }
+      Item {
+          //for spacing purposes
+      width: parent.width
+      height: Theme.paddingMedium
+      }
+
             Button{
                 id:logoutButton
                 text:qsTr("Log out")
@@ -141,6 +196,12 @@ Page {
                     pageStack.replaceAbove(null,Qt.resolvedUrl("AuthorizeDialog.qml"));
                 }
             }
+            Item {
+                //for spacing purposes
+            width: parent.width
+            height: Theme.paddingMedium
+            }
+
         }
     }
     function setupProxy(){

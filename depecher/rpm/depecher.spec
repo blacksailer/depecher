@@ -61,6 +61,12 @@ rm -rf %{buildroot}
 # >> install post
 systemctl-user restart mce.service
 systemctl-user restart ngfd.service
+#Moving db dir issue - #14
+if [ -d "/home/nemo/depecherDatabase" ]; then
+if [ -e "/home/nemo/depecherDatabase/db.sqlite" ];then
+mv /home/nemo/depecherDatabase /home/nemo/.local/share/harbour-depecher
+fi
+fi
 # << install post
 
 desktop-file-install --delete-original       \

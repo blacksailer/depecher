@@ -37,7 +37,7 @@ public:
                                                                 &messageDocumentObject);
     static QSharedPointer<document> parseDocument(const QJsonObject &documentObject);
     static QSharedPointer<ChatType> parseType(const QJsonObject &typeObject);
-
+    static QSharedPointer<supergroup> parseSupergroup(const QJsonObject &supergroupObject);
     static QSharedPointer<MessageContent> parseMessageContent(const QJsonObject &messageContentObject);
     static QSharedPointer<messageText> parseMessageText(const QJsonObject &messageTextObject);
     static QSharedPointer<messageSticker> parseMessageSticker(const QJsonObject &messageStikerObject);
@@ -125,6 +125,8 @@ public:
     static QSharedPointer<MessageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
     static QSharedPointer<MessageSendingState> parseMessageSendingState(const QJsonObject
                                                                         &messageSendingStateObject);
+    static QSharedPointer<ChatMemberStatus> parseChatMemberStatus(const QJsonObject
+                                                                  &chatMemberStatusObject);
 signals:
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
     void updateConnectionState(Enums::ConnectionState &connectionState);
@@ -135,6 +137,8 @@ signals:
     void updateNewUser(const QJsonObject &updateNewUserObject);
 
     void updateNewMessage(const QVariantMap &msg);
+    void updateSupergroup(const QJsonObject &updateSupergroupObject);
+
     void updateFile(const QJsonObject &fileObject);
     void meReceived(const QJsonObject &meObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);

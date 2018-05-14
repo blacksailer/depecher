@@ -39,14 +39,21 @@ Component.onCompleted: console.log(lastOutboxId)
     Component.onDestruction: {
         c_telegramWrapper.closeChat(messagingModel.peerId)
     }
-    WritingItem{
+    WritingItem {
         id:writer
 
+        Timer {
+        //Because TextBase of TextArea uses Timer for losing focus.
+            //Let's reuse that =)
+        id:restoreFocusTimer
+        interval: 50
+        onTriggered: writer.textArea.forceActiveFocus()
+        }
         actionButton.onClicked:
         {
             messagingModel.sendTextMessage(textArea.text,0)
             textArea.text = ""
-            textArea.forceActiveFocus(Qt.MouseFocusReason)
+            restoreFocusTimer.start()
         }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
@@ -65,9 +72,18 @@ Component.onCompleted: console.log(lastOutboxId)
         Column{
             width:page.width
             height:parent.height-writer.sendAreaHeight
-            PageHeader{
+            SilicaFlickable {
                 id:nameplate
+                width:parent.height
+                height: nameplateHeader.height
+                PullDownMenu {
+                    MenuItem {
+                        text: qsTr("See me?")
+                    }
+                }
 
+            PageHeader{
+                id:nameplateHeader
                 title: messagingModel.userName
                 height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height +  actionLabel.height  + Theme.paddingMedium)
 
@@ -86,6 +102,7 @@ Component.onCompleted: console.log(lastOutboxId)
                     horizontalAlignment: Text.AlignRight
                     truncationMode: TruncationMode.Fade
                 }
+            }
             }
 
 
