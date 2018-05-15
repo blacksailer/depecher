@@ -12,9 +12,9 @@ Name:       depecher
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    My Sailfish OS Application
+Summary:    Telegram client for Sailfish OS
 Version:    0.2
-Release:    1
+Release:    3
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
@@ -57,8 +57,8 @@ rm -rf %{buildroot}
 # << install pre
 %qmake5_install
 
-%post
 # >> install post
+%post
 systemctl-user restart mce.service
 systemctl-user restart ngfd.service
 #Moving db dir issue - #14
@@ -81,7 +81,6 @@ desktop-file-install --delete-original       \
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %{_datadir}/lipstick/notificationcategories/*.conf
 %{_datadir}/ngfd/events.d/*.ini
-%{_datadir}/%{name}/translations
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
 # >> files

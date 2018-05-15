@@ -68,31 +68,12 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation>Depecher - 另一个基于tdlib的旗鱼电报客户端.
-
-功能:
-- 发送/查看/删除 消息
-- 查看图片
-- 查看贴纸
-- 上传/下载 图片/文档
-- 接收通知
-- 两步认证
-
-暂无后台进程。
-
-
-感谢:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>在这里列举的组可以提出与Sailfish操作系统相关的任何问题（一般，开发等）。
-这些小组正是因为交流和与Sailfish操作系统有关的社区而存在。</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -178,8 +159,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>注意：如果电报在你的国家被禁用，请先通过下拉菜单
-设置代理</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -396,6 +376,18 @@ proxy server in settings via PulleyMenu</source>
         <source>Password hint</source>
         <translation>密码提示</translation>
     </message>
+    <message>
+        <source>Enter code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>utils</name>
@@ -422,6 +414,38 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Uknown</source>
         <translation>未知</translation>
+    </message>
+    <message>
+        <source>Wait lib parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait encryption key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

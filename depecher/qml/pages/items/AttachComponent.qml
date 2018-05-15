@@ -34,8 +34,6 @@ Item {
         onCurrentIndexChanged:
         {
             menuTypeChanged(currentIndex)
-            galleryModel.cancel()
-            galleryModel.clear()
         }
 
     }

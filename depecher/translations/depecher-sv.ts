@@ -376,6 +376,18 @@ proxy server in settings via PulleyMenu</source>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enter code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>utils</name>
@@ -401,6 +413,38 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Uknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait lib parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait encryption key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

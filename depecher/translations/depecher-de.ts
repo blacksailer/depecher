@@ -159,8 +159,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>Achtung: Wenn das Telegramm in Ihrem Land blockiert ist, stellen sie als erstes
-einen Proxy-Server in den Einstellungen ein.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -170,10 +169,9 @@ einen Proxy-Server in den Einstellungen ein.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unread
+        <source>Unread 
  messages</source>
-    <translation>Ungelesene
- Nachrichten</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -357,12 +355,6 @@ einen Proxy-Server in den Einstellungen ein.</translation>
         <translation>Hinweis anzeigen</translation>
     </message>
     <message>
-        <source>Enter recovery code.
- Remember! After that 2FA authorization will be disabled</source>
-        <translation>Wiederherstellungscode eingeben.
- Denken Sie daran! Danach wird die 2FA-Autorisierung deaktiviert.</translation>
-    </message>
-    <message>
         <source>Recovery code</source>
         <translation>Wiederherstellungscode</translation>
     </message>
@@ -377,6 +369,23 @@ einen Proxy-Server in den Einstellungen ein.</translation>
     <message>
         <source>Password hint</source>
         <translation>Passworthinweis</translation>
+    </message>
+    <message>
+        <source>Enter code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter recovery code. 
+ Remember! After that 2FA authorization will be disabled</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -403,6 +412,38 @@ einen Proxy-Server in den Einstellungen ein.</translation>
     </message>
     <message>
         <source>Uknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait lib parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait encryption key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

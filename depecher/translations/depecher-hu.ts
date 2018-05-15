@@ -69,31 +69,12 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation>Depecher - Újabb Telegram kliens Sailfish OS-re, a tdlib-re alapozva.
-
-Funkciók:
-- Üzenetek küldése/megtekintése/törlése
-- Képek megtekintése
-- Matricák megtekintése
-- Képek/dokumentumok feltöltése/letöltése
-- Értesítések
-- 2FA azonosítás engedélyezve
-
-Ehgyelőre nincs háttérszolgáltatás (daemon).
-
-
-Köszönet:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Az itt felsoroltak olyan csoportok, ahol bármilyen Sailfish OS-hez kapcsolódó kérdést (általános, fejlesztés stb) feltehetsz.
-Ezen csoportok csak a közösség miatt, a Sailfish OS körüli közösség által léteznek.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -179,7 +160,7 @@ Ezen csoportok csak a közösség miatt, a Sailfish OS körüli közösség ált
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>Figyelem: Ha a Telegram az országodban blokkolva van, előbb állíts be proxy kiszolgálót a beállításokban a lehúzható menü segítségével</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -395,6 +376,18 @@ proxy server in settings via PulleyMenu</source>
         <source>Password hint</source>
         <translation>Jelszóemlékeztető</translation>
     </message>
+    <message>
+        <source>Enter code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>utils</name>
@@ -421,6 +414,38 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Uknown</source>
         <translation>Ismeretlen</translation>
+    </message>
+    <message>
+        <source>Wait lib parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait encryption key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
