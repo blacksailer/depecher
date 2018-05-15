@@ -11,7 +11,7 @@
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished">Dela länk</translation>
+        <translation>Dela länk</translation>
     </message>
 </context>
 <context>
@@ -30,23 +30,23 @@
     </message>
     <message>
         <source>Error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel %1</translation>
     </message>
     <message>
         <source>Groups in Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupper i Telegram</translation>
     </message>
     <message>
         <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Var medveten om att du ansluter till en chatt om du trycker. Att lämna chattar stöds inte för tillfället.</translation>
     </message>
     <message>
         <source>English speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Engelsktalande gemenskap</translation>
     </message>
     <message>
         <source>Joining chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Anslut chatt</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
@@ -68,12 +68,31 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.
+
+Funktioner:
+- Skicka/Visa/Ta bort meddelanden
+- Visa bilder
+- Visa stickers
+- Ladd upp/ner bilder/dokument
+- Ta emot aviseringar
+- 2-faktors autentisering aktiverad
+
+Ingen tjänst ännu.
+
+
+Tack till:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Här ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
+Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
     </message>
 </context>
 <context>
@@ -95,43 +114,43 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachComponent</name>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hem</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå till hemkatalogen</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka ett dokument</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka</translation>
     </message>
     <message>
         <source>Files to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Filer att skicka</translation>
     </message>
 </context>
 <context>
@@ -159,7 +178,8 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>OBS! Om telegram blockeras i ditt land, måste du först
+konfigurera en proxyserver i toppmenyns inställningar.</translation>
     </message>
 </context>
 <context>
@@ -183,7 +203,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Inställningar</translation>
+        <translation>Inställningar</translation>
     </message>
 </context>
 <context>
@@ -197,7 +217,7 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>new messages</source>
-        <translation type="unfinished">Nya meddelanden</translation>
+        <translation>Nya meddelanden</translation>
     </message>
 </context>
 <context>
@@ -212,30 +232,30 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort meddelande</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort för alla</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tar bort...</translation>
     </message>
 </context>
 <context>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
-        <translation>Spara i galleriet</translation>
+        <translation>Spara i Galleri</translation>
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild sparad i Galleri!</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
-        <translation type="unfinished"></translation>
+        <translation>Delningsfunktion kommer snart</translation>
     </message>
 </context>
 <context>
@@ -294,15 +314,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Anslutningsstatus: </translation>
+        <translation>Anslutningsstatus: </translation>
     </message>
     <message>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Om appen</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation type="unfinished"></translation>
+        <translation>Tack och annat</translation>
     </message>
 </context>
 <context>
@@ -333,48 +353,49 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <source>Recover password</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställ lösenord</translation>
     </message>
     <message>
         <source>Email is sent</source>
-        <translation type="unfinished"></translation>
+        <translation>E-postmeddelande har skickats</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställningskod har skickats till %1</translation>
     </message>
     <message>
         <source>Show hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa ledtråd</translation>
     </message>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange återställningskod. 
+Kom ihåg att 2-faktorsautentiseringen är inaktiverad efteråt.</translation>
     </message>
     <message>
         <source>Enter your password</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange ditt lösenord</translation>
     </message>
     <message>
         <source>Recovery code</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställningskod</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Lösenord</translation>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <source>Password hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenordsledtråd</translation>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta på meddelande via %1, som innehåller aktiveringskod, och tryck sedan %2</translation>
     </message>
     <message>
         <source>Enter code</source>
@@ -393,27 +414,27 @@ proxy server in settings via PulleyMenu</source>
     <name>utils</name>
     <message>
         <source>Waiting for network</source>
-        <translation type="unfinished"></translation>
+        <translation>Väntar på nätverk</translation>
     </message>
     <message>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansluter</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansluter till proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uppdaterar...</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Klar</translation>
     </message>
     <message>
         <source>Uknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Okänd</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
