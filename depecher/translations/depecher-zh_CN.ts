@@ -159,7 +159,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>注意：如果电报在你的国家被墙，首先通过下拉菜单设置代理服务器</translation>
     </message>
 </context>
 <context>
@@ -378,15 +378,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>输入代码</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>输入密码</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>认证状态</translation>
     </message>
 </context>
 <context>
@@ -417,35 +417,35 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>等待库参数</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>等待加密密钥</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>等待手机号码</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>等待代码</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>等待密码</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>等待退出</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>等待关闭中</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>等待已关闭</translation>
     </message>
 </context>
 </TS>
