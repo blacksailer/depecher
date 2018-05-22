@@ -89,7 +89,37 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         return QVariant();
     if (index.row() < 0)
         return QVariant();
+    int rowIndex = index.row();
+//    m_stikerSets[rowIndex]->id_;
+//    m_stikerSets[rowIndex]->is_archived_;
+//    m_stikerSets[rowIndex]->is_installed_;
+//    m_stikerSets[rowIndex]->is_masks_;
+//    m_stikerSets[rowIndex]->is_official_;
+//    m_stikerSets[rowIndex]->is_viewed_;
+//    m_stikerSets[rowIndex]->name_;
+//    m_stikerSets[rowIndex]->title_;
 
+
+//    m_installedStickerSets[rowIndex]->id_;
+//    m_installedStickerSets[rowIndex]->is_archived_;
+//    m_installedStickerSets[rowIndex]->is_installed_;
+//    m_installedStickerSets[rowIndex]->is_masks_;
+//    m_installedStickerSets[rowIndex]->is_official_;
+//    m_installedStickerSets[rowIndex]->is_viewed_;
+//    m_installedStickerSets[rowIndex]->name_;
+//    m_installedStickerSets[rowIndex]->title_;
+
+    int offset = 0;
+//    if(rowIndex > 0 && < m_stikerSets)
+// | 0 .. k | k+1 .. q | q+1 ..w | ..
+//      1       2           3
+// if i >= 0 && i < k => 1
+// if i >= k + 1 && i < q => 2
+// . . . . . . . . . . . . . .
+// if i >= m + 1 i && < total => n
+
+    m_stikerSets[rowIndex-offset]->stickers_[rowIndex]->thumbnail_->photo_->local_->path_;
+//    m_installedStickerSets[rowIndex]->covers_;
     switch (role) {
     default:
         return QVariant();
@@ -99,9 +129,14 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 
 int StickerModel::rowCount(const QModelIndex &/*parent*/) const
 {
+    int size = 0;
     if (m_state == SendState)
-        return m_stikerSets.size();
-    return m_installedStickerSets.size();
+        for ( auto val : m_stikerSets )
+        size += val->stickers_.size();
+    else
+        for ( auto val : m_installedStickerSets )
+        size += val->covers_.size();
+    return size;
 }
 
 
