@@ -63,61 +63,6 @@ public:
     static QSharedPointer<UserType> parseUserType(const QJsonObject &userTypeObject);
 
     static QSharedPointer<LinkState> parseLinkState(const QJsonObject &linkStateObject);
-    enum class UpdateState {
-        updateAuthorizationState,
-        updateBasicGroup,
-        updateBasicGroupFullInfo,
-        updateCall,
-        updateChatDraftMessage,
-        updateChatIsPinned,
-        updateChatLastMessage,
-        updateChatOrder,
-        updateChatPhoto,
-        updateChatReadInbox,
-        updateChatReadOutbox,
-        updateChatReplyMarkup,
-        updateChatTitle,
-        updateChatUnreadMentionCount,
-        updateConnectionState,
-        updateDeleteMessages,
-        updateFavoriteStickers,
-        updateFile,
-        updateFileGenerationStart,
-        updateFileGenerationStop,
-        updateInstalledStickerSets,
-        updateMessageContent,
-        updateMessageContentOpened,
-        updateMessageEdited,
-        updateMessageMentionRead,
-        updateMessageSendAcknowledged,
-        updateMessageSendFailed,
-        updateMessageSendSucceeded,
-        updateMessageViews,
-        updateNewCallbackQuery,
-        updateNewChat,
-        updateNewChosenInlineResult,
-        updateNewCustomEvent,
-        updateNewCustomQuery,
-        updateNewInlineCallbackQuery,
-        updateNewInlineQuery,
-        updateNewPreCheckoutQuery,
-        updateNewShippingQuery,
-        updateNotificationSettings,
-        updateOption,
-        updateRecentStickers,
-        updateSavedAnimations,
-        updateSecretChat,
-        updateServiceNotification,
-        updateSupergroup,
-        updateSupergroupFullInfo,
-        updateTrendingStickerSets,
-        updateUser,
-        updateUserChatAction,
-        updateUserFullInfo,
-        updateUserPrivacySettingRules,
-        updateUserStatus,
-        updateNewMessage
-    };
     QString getFirstName(int userId);
     static QSharedPointer<messageAnimation> parseMessageAnimation(const QJsonObject
                                                                   &messageAnimationObject);
@@ -127,6 +72,15 @@ public:
                                                                         &messageSendingStateObject);
     static QSharedPointer<ChatMemberStatus> parseChatMemberStatus(const QJsonObject
                                                                   &chatMemberStatusObject);
+    static QSharedPointer<stickerSets> parseStickerSets(const QJsonObject
+                                                                  &stickerSetsObject);
+    static QSharedPointer<stickerSetInfo> parseStickerSetInfo(const QJsonObject
+                                                                  &stickerSetInfoObject);
+    static QSharedPointer<stickerSet> parseStickerSet(const QJsonObject
+                                                                  &stickerSetObject);
+    static QSharedPointer<stickerEmojis> parseStickerEmojis(const QJsonObject &stickerEmojisObject);
+    static QSharedPointer<stickers> parseStickers(const QJsonObject
+                                                                  &stickersObject);
 signals:
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
     void updateConnectionState(Enums::ConnectionState &connectionState);
@@ -161,7 +115,9 @@ signals:
     void okReceived(const QJsonObject &okObject);
     void fileReceived(const QJsonObject &fileObject);
     void messageReceived(const QJsonObject &messageObject);
-
+    void stickerSetsReceived(const QJsonObject &stickerSetsObject);
+    void stickerSetReceived(const QJsonObject &stickerSetObject);
+    void stickersReceived(const QJsonObject &stickersObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMap>
 #include <nemonotifications-qt5/notification.h>
-#include "include/TdlibNamespace.hpp"
+#include "../tdlibjson_wrapper/tdlibQt/include/TdlibNamespace.hpp"
 #include <QSharedPointer>
 namespace tdlibQt {
 class TdlibJsonWrapper;
@@ -37,6 +37,7 @@ public slots:
                        const qint64 chatId, const qint64 unreadCount = 0);
     void notifyPreview(const qint64 timestamp, const QString &summary, const QString &body,
                        const qint64 chatId, const qint64 unreadCount = 0);
+    void onViewMessages(const qint64 peerId);
 
 };
 }// tdlibQt

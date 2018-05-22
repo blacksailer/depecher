@@ -5,6 +5,7 @@
 #include "tdlibQt/include/TdlibNamespace.hpp"
 namespace tdlibQt {
 class TdlibJsonWrapper;
+class NotificationManager;
 class MessagingModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -29,6 +30,7 @@ class MessagingModel : public QAbstractListModel
     QTimer chatActionTimer;
     const int MESSAGE_LIMIT = 20;
     TdlibJsonWrapper *tdlibJson;
+    NotificationManager *m_NotificationsManager;
     bool isUpdateConnected = false;
     enum MessageRole {
         ID,
@@ -139,6 +141,7 @@ signals:
     void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
     void errorReceived(int error_code, const QString &error_message);
     void firstIdChanged();
+    void viewMessagesChanged(const qint64 peerId);
 
     void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
 

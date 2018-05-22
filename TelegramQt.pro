@@ -13,3 +13,6 @@ app.depends = lib
 # build the project sequentially as listed in SUBDIRS !
 CONFIG += ordered
 
+DISTFILES += \
+    depecher/qml/pages/items/SendStickerComponent.qml
+

@@ -101,6 +101,10 @@ signals:
     void getChatByLink(const QString &title, const QString &chat_id, const int chatType,
                        const QString &last_message_inbox_id, const QString &last_message_outbox_id,
                        const QString &last_message_id);
+    void stickerSetsReceived(const QJsonObject &stickerSetsObject);
+    void stickerSetReceived(const QJsonObject &stickerSetObject);
+    void stickersReceived(const QJsonObject &stickersObject);
+
     void errorReceivedMap(const QVariantMap &errorObject);
     void totalUnreadCountChanged(int totalUnreadCount);
 
@@ -124,7 +128,14 @@ public slots:
     void downloadFile(int fileId, int priority = 1, const QString &extra = "");
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,
                         bool only_local = false, const QString &extra = "");
+    void getAttachedStickerSets(const int file_id);
+    void getStickerSet(const qint64 set_id);
+    void getInstalledStickerSets(const bool is_masks = false);
+    void getFavoriteStickers();
+    void getTrendingStickerSets();
+    void getRecentStickers(const bool is_attached = false);
     void logOut();
+
     void sendMessage(const QString &json);
     void viewMessages(const QString &chat_id, const QVariantList &messageIds, const bool force_read);
     void deleteMessages(const qint64 chat_id, const QVector<qint64> message_ids,
@@ -140,14 +151,7 @@ public slots:
     void cancelDownloadFile(int fileId, bool only_if_pending = false);
     void cancelUploadFile(int fileId);
     void joinChatByInviteLink(const QString &link, const QString &extra = "");
-    void setTotalUnreadCount(int totalUnreadCount)
-    {
-        if (m_totalUnreadCount == totalUnreadCount)
-            return;
-
-        m_totalUnreadCount = totalUnreadCount;
-        emit totalUnreadCountChanged(totalUnreadCount);
-    }
+    void setTotalUnreadCount(int totalUnreadCount);
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

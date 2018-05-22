@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication *app = SailfishApp::application(argc, argv);
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
-                                                          qApp->applicationName()));
+                        qApp->applicationName()));
 
     QTranslator translator;
 
@@ -43,16 +43,17 @@ int main(int argc, char *argv[])
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
     tdlib->setEncryptionKey();
+    tdlib->getInstalledStickerSets();
 
     qmlRegisterUncreatableType<tdlibQt::Enums>("tdlibQtEnums", 1, 0, "TdlibState",
-                                               "Error class uncreatable");
+            "Error class uncreatable");
     qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
     qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
     qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
     qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");
     qmlRegisterType<tdlibQt::ChatsModel>("TelegramModels", 1, 0, "ChatsModel");
     qmlRegisterType<tdlibQt::AuthenticationHandler>("TelegramAuthentication", 1, 0,
-                                                    "TelegramAuthenticationHandler");
+            "TelegramAuthenticationHandler");
     view->setTitle("Depecher");
     view->rootContext()->setContextProperty("c_telegramWrapper", tdlib);
     view->engine()->addImageProvider(QLatin1String("depecherDb"), new tdlibQt::TelegramProfileProvider);

@@ -73,6 +73,15 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::setConnectionState);
     connect(parseObject, &ParseObject::getChat,
             this, &TdlibJsonWrapper::getChat);
+
+    connect(parseObject, &ParseObject::stickerSetReceived,
+            this, &TdlibJsonWrapper::stickerSetReceived);
+    connect(parseObject, &ParseObject::stickerSetsReceived,
+            this, &TdlibJsonWrapper::stickerSetsReceived);
+    connect(parseObject, &ParseObject::stickersReceived,
+            this, &TdlibJsonWrapper::stickersReceived);
+
+
     connect(parseObject, &ParseObject::updateNewChat,
             this, &TdlibJsonWrapper::updateNewChat);
     connect(parseObject, &ParseObject::updateNewUser,
@@ -218,10 +227,19 @@ void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &
         "\"invite_link\":\"" + link  + "\"}";
     if (extra != "") {
         joinChatByInviteLink.remove(joinChatByInviteLink.size() - 1, 1);
-        joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}" );
+        joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}");
     }
 
     td_json_client_send(client, joinChatByInviteLink.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
+{
+    if (m_totalUnreadCount == totalUnreadCount)
+        return;
+
+    m_totalUnreadCount = totalUnreadCount;
+    emit totalUnreadCountChanged(totalUnreadCount);
 }
 
 
@@ -336,7 +354,7 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
                       "}";
     if (extra != "") {
         getFile.remove(getFile.size() - 1, 1);
-        getFile.append(",\"@extra\":\"" + extra + "\"}" );
+        getFile.append(",\"@extra\":\"" + extra + "\"}");
     }
     td_json_client_send(client, getFile.toUtf8().constData());
 }
@@ -359,6 +377,55 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
         getChatHistory.append(",\"@extra\": \"" + extra + "\"");
     getChatHistory.append("}");
     td_json_client_send(client, getChatHistory.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
+{
+    QString getAttachedStickerSetsStr = "{\"@type\":\"getAttachedStickerSets\","
+                                        "\"file_id\":" + QString::number(file_id) +
+                                        ",\"@extra\": \"getAttachedStickerSets\"}";
+    td_json_client_send(client, getAttachedStickerSetsStr.toStdString().c_str());
+}
+void TdlibJsonWrapper::getStickerSet(const qint64 set_id)
+{
+    QString getStickerSetStr = "{\"@type\":\"getStickerSet\","
+                               "\"set_id\":" + QString::number(set_id) + "}";
+    td_json_client_send(client, getStickerSetStr.toStdString().c_str());
+}
+void TdlibJsonWrapper::getInstalledStickerSets(const bool is_masks)
+{
+    QString getInstalledStickerSetsStr = QString("{\"@type\":\"getInstalledStickerSets\","
+                                         "\"is_masks\":");
+    if (is_masks)
+        getInstalledStickerSetsStr.append("true");
+    else
+        getInstalledStickerSetsStr.append("false");
+    getInstalledStickerSetsStr.append(",\"@extra\": \"getInstalledStickerSets\"}");
+    td_json_client_send(client, getInstalledStickerSetsStr.toStdString().c_str());
+}
+void TdlibJsonWrapper::getTrendingStickerSets()
+{
+    QString getTrendingStickerSetsStr = QString("{\"@type\":\"getTrendingStickerSets\","
+                                        "\"@extra\": \"getTrendingStickerSets\"}");
+    td_json_client_send(client, getTrendingStickerSetsStr.toStdString().c_str());
+}
+void TdlibJsonWrapper::getFavoriteStickers()
+{
+    QString getFavoriteStickersStr = "{\"@type\":\"getFavoriteStickers\""
+                                     ",\"@extra\": \"getFavoriteStickers\"}";
+    td_json_client_send(client, getFavoriteStickersStr.toStdString().c_str());
+}
+void TdlibJsonWrapper::getRecentStickers(const bool is_attached)
+{
+    QString getRecentStickersStr = QString("{\"@type\":\"getRecentStickers\","
+                                           "\"is_attached\":");
+    if (is_attached)
+        getRecentStickersStr.append("true");
+    else
+        getRecentStickersStr.append("false");
+    getRecentStickersStr.append(",\"@extra\": \"getRecentStickers\"}");
+    qDebug() << getRecentStickersStr;
+    td_json_client_send(client, getRecentStickersStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::logOut()
@@ -413,7 +480,7 @@ void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64
 }
 
 void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_id,
-                                           const QString &status)
+        const QString &status)
 {
     QString setChatMemberStatusStr = "{\"@type\":\"deleteMessages\","
                                      "\"chat_id\":\"" + QString::number(chat_id) + "\","

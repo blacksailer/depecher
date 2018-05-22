@@ -13,16 +13,15 @@ namespace tdlibQt {
 class ListenObject : public QObject
 {
     Q_OBJECT
+    void *client;
     QWaitCondition *onActive;
     QMutex mutex;
     QTimer *timer;
-
     bool isActive = true;
 
 public:
     explicit ListenObject(void *client_ = nullptr, QWaitCondition *condition = nullptr,
                           QObject *parent = 0);
-    void *client;
 
 signals:
     void resultReady(const QByteArray &s);

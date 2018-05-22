@@ -1,13 +1,14 @@
 #include "MessagingModel.hpp"
 #include "../ParseObject.hpp"
-#include "../NotificationManager.hpp"
 #include "../TdlibJsonWrapper.hpp"
+#include "../NotificationManager.hpp"
 #include "singletons/UsersModel.hpp"
 #include <QVariantMap>
 namespace tdlibQt {
 
 MessagingModel::MessagingModel() :
-    tdlibJson(TdlibJsonWrapper::instance())
+    tdlibJson(TdlibJsonWrapper::instance()),
+    m_NotificationsManager(NotificationManager::instance())
 {
     connect(tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::appendMessages);
@@ -36,7 +37,8 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::updateMessageSend);
     connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendFailed,
             this, &MessagingModel::updateMessageSend);
-
+    connect(this, &MessagingModel::viewMessagesChanged,
+            m_NotificationsManager, &NotificationManager::onViewMessages);
     connect(this, &MessagingModel::firstIdChanged, [this]() {
         if (messages.first()->id_ == lastMessage().toLongLong()) {
             if (!isUpdateConnected)
@@ -47,14 +49,14 @@ MessagingModel::MessagingModel() :
         }
     });
 
-    NotificationManager::instance()->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
+    m_NotificationsManager->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
 }
 
 MessagingModel::~MessagingModel()
 {
-    NotificationManager::instance()->currentViewableChatId = 0;
+    m_NotificationsManager->currentViewableChatId = 0;
 }
 
 
@@ -70,13 +72,13 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return dataContent(rowIndex);
         break;
     case ID: //int64
-        return QString::number( messages[rowIndex]->id_);
+        return QString::number(messages[rowIndex]->id_);
     case SENDER_USER_ID: //int64
-        return QString::number( messages[rowIndex]->sender_user_id_);
+        return QString::number(messages[rowIndex]->sender_user_id_);
     case SENDER_PHOTO: {
         auto profilePhotoPtr = UsersModel::instance()->getUserPhoto(messages[rowIndex]->sender_user_id_);
         if (profilePhotoPtr.data()) {
-            if ( profilePhotoPtr->small_.data()) {
+            if (profilePhotoPtr->small_.data()) {
                 if (profilePhotoPtr->small_->local_->is_downloading_completed_)
                     return QString::fromStdString(profilePhotoPtr->small_->local_->path_);
                 else
@@ -88,7 +90,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case AUTHOR:
         return UsersModel::instance()->getUserFullName(messages[rowIndex]->sender_user_id_);
     case CHAT_ID: //int64
-        return QString::number( messages[rowIndex]->chat_id_);
+        return QString::number(messages[rowIndex]->chat_id_);
     case IS_OUTGOING:
         return messages[rowIndex]->is_outgoing_;
     case CAN_BE_EDITED:
@@ -118,7 +120,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case VIEWS:
         return messages[rowIndex]->views_;
     case MEDIA_ALBUM_ID:
-        return QString::number( messages[rowIndex]->media_album_id_);
+        return QString::number(messages[rowIndex]->media_album_id_);
     case FILE_CAPTION: {
         if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
             auto contentPhotoPtr = static_cast<messagePhoto *>
@@ -442,7 +444,7 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
             if (sizesCount > 0) {
                 if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_)
                     return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount -
-                                                                                             1]->photo_->local_->path_);
+                                                             1]->photo_->local_->path_);
                 else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
                     int fileId = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
                     emit downloadFileStart(fileId, 12, rowIndex);
@@ -667,7 +669,7 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
         if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageDocument::ID) {
             auto messageDocumentPtr = static_cast<messageDocument *>
                                       (messages[messagePhotoQueue[file->id_]]->content_.data());
-            if ( messageDocumentPtr->document_->document_->id_ == file->id_)
+            if (messageDocumentPtr->document_->document_->id_ == file->id_)
                 messageDocumentPtr->document_->document_ = file;
         }
         if (file->local_->is_downloading_completed_)
@@ -717,7 +719,7 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
     if (chatActionUserMap.size() == 1) {
         chatActionTimer.start();
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
-        setAction( userName + " is typing");
+        setAction(userName + " is typing");
     } else
         setAction(QString::number(chatActionUserMap.size()) + " is typing");
 
@@ -809,7 +811,7 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
 }
 
 void MessagingModel::sendDocumentMessage(const QString &filepath, const QString &reply_id,
-                                         const QString &caption)
+        const QString &caption)
 {
     Q_UNUSED(reply_id)
 
@@ -820,7 +822,7 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     sendMessageObject.from_background_ = false;
     sendMessageObject.reply_to_message_id_ = 0;
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageDocument>
-                                               (new inputMessageDocument);
+            (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
                                 (sendMessageObject.input_message_content_.data());
     auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
@@ -940,8 +942,7 @@ void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
     tdlibJson->viewMessages(peerId(), ids, force_read);
-    NotificationManager::instance()->removeNotification(peerId().toLongLong());
-
+    emit viewMessagesChanged(peerId().toLongLong());
 }
 
 void MessagingModel::getNewMessages()
