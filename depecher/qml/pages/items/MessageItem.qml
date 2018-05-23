@@ -334,12 +334,10 @@ ListItem {
 
                 source: MediaPlayer {
                     id: mediaPlayer
-                    audioRole:MediaPlayer.NotificationRole
                     source: file_downloading_completed ? Qt.resolvedUrl(content) : ""
                     autoLoad: true
 //                    autoPlay: true
                     loops:  Animation.Infinite
-                    onStatusChanged:  console.log(status)
                 }
                 Image {
                     id:animationThumbnail
@@ -380,11 +378,24 @@ ListItem {
                             }
                         }
                     }
+
+                    Label {
+
+                        color:  Theme.primaryColor
+                        font.pixelSize: Theme.fontSizeTiny
+                        text: Format.formatFileSize(file_downloaded_size) + "/"
+                              + Format.formatFileSize(file_uploaded_size)
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        anchors.rightMargin: Theme.paddingSmall
+                        anchors.bottomMargin: Theme.paddingSmall
+                    }
+
                 }
                 MouseArea{
                     anchors.fill: parent
                     enabled: file_downloading_completed
-                    onClicked: mediaPlayer.playbackState == MediaPlayer.StoppedState ? mediaPlayer.play() : mediaPlayer.stop()
+                    onClicked: mediaPlayer.playbackState != MediaPlayer.PlayingState ? mediaPlayer.play() : mediaPlayer.stop()
                 }
                 Rectangle {
                     id:dimmedPlayColor
