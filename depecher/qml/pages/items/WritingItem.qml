@@ -10,7 +10,7 @@ Drawer {
     property alias actionButton: sendButton
     property alias text: messageArea.text
     property alias textArea:messageArea
-    property int wall_id:0
+    property int wall_id: 0
     property string typeWriter
     signal sendFiles(var files)
     signal setFocusToEdit()
@@ -81,11 +81,11 @@ Drawer {
                 anchors.rightMargin: Theme.paddingLarge
                 visible: parent.height!=0
                 onClicked: {
-                    author=""
-                    authorsText=""
-                    reply_id=-1
+                    author = ""
+                    authorsText = ""
+                    reply_id = -1
                     if(writer.state=="edit")
-                        writer.state="publish"
+                        writer.state = "publish"
                 }
             }
         }
@@ -108,7 +108,7 @@ Drawer {
             }
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
-            height: Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
+            height: Math.min(Theme.itemSizeHuge,implicitHeight)
             width: parent.width - sendButton.width - skrepkaWizard.width
         }
 
@@ -136,7 +136,7 @@ Drawer {
         }
     }
 
-    background:Loader {
+    background: Loader {
         id: attachLoader
         anchors.fill: parent
     }
