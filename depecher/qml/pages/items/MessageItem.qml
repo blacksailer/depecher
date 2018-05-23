@@ -86,7 +86,7 @@ ListItem {
                     visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
                     width: parent.width
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
-                    spacing: Theme.paddingMedium
+                    spacing: Theme.paddingSmall
 
                     Label {
                         function timestamp(dateTime){
@@ -110,16 +110,16 @@ ListItem {
                                  ||  messagingModel.chatType === TdlibState.Private || messagingModel.chatType === TdlibState.Secret
                         text: {
                             if(sending_state === MessagingModel.Sending_Pending) {
-                                return "🕓" // clock
+                                return "<b>\u23F1</b>" // clock
                             }
                             else if(sending_state === MessagingModel.Sending_Failed) {
-                                return "⚠" // warning sign
+                                return "<b>\u26A0</b>" // warning sign
                             }
                             else if(sending_state == MessagingModel.Sending_Read) {
-                                return "✔✔" // double check mark
+                                return "<b>\u2713\u2713</b>" // double check mark
                             }
                             else {
-                                return "✔" // check mark
+                                return "<b>\u2713</b>" // check mark
                             }
                         }
 
