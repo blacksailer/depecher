@@ -81,17 +81,12 @@ ListItem {
                     //                }
                 }
 
-                /*Separator {
-                    color: pressed ? Theme.primaryColor : Theme.secondaryColor
-                    visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
-                    width: parent.width/3
-                }*/
-
                 Row {
                     id: metaInfoRow
                     visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
                     width: parent.width
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
+                    spacing: Theme.paddingMedium
 
                     Label {
                         function timestamp(dateTime){
