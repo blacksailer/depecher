@@ -145,7 +145,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             if (chatActionMap.count(chats[rowIndex]->id_) > 1)
                 return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " is typing";
             auto chatAction = chatActionMap.value(chats[rowIndex]->id_);
-            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " is typing";
+            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " people are typing";
         }
         return QVariant();
     case LAST_MESSAGE:
