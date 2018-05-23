@@ -1,8 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-Drawer{
-    id:attachDrawer
+Drawer {
+    id: attachDrawer
     state: "publish"
 
     property int sendAreaHeight: sendArea.height
@@ -26,55 +26,56 @@ Drawer{
         }
     ]
 
-    open:false
-    dock:Dock.Bottom
+    open: false
+    dock: Dock.Bottom
     anchors.fill: parent
 
-
-
-    Item{
-        id:sendArea
+    Item {
+        id: sendArea
         anchors.bottom: parent.bottom
         width: parent.width
-        height: replyArea.height+messageArea.height+Theme.paddingSmall
-        Item{
-            id:replyArea
+        height: replyArea.height + messageArea.height + Theme.paddingSmall
+
+        Item {
+            id: replyArea
             width: parent.width
-            height: reply_id!=-1?Theme.itemSizeExtraSmall:0
-            Rectangle{
-                id:replyLine
-                width:3
+            height: reply_id !=- 1 ? Theme.itemSizeExtraSmall : 0
+
+            Rectangle {
+                id: replyLine
+                width: 3
                 height: parent.height
-                color:Theme.secondaryHighlightColor
+                color: Theme.secondaryHighlightColor
                 anchors.left: parent.left
                 anchors.leftMargin: 8
-
             }
-            Column{
-                id:data
+
+            Column {
+                id: data
                 anchors.left: replyLine.right
                 anchors.leftMargin: Theme.paddingLarge
                 anchors.right: removeReplyButton.left
-                Label{
+
+                Label {
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text:author
+                    text: author
                     elide: TruncationMode.Fade
-                    height:authorsTextLabel.text==""?removeReplyButton.height :implicitHeight
+                    height: authorsTextLabel.text == "" ? removeReplyButton.height : implicitHeight
                 }
-                Label{
-                    id:authorsTextLabel
+
+                Label {
+                    id: authorsTextLabel
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text:authorsText
+                    text: authorsText
                     elide: TruncationMode.Fade
-                    visible: authorsText!=""
-
-
+                    visible: authorsText != ""
                 }
             }
+
             IconButton{
-                id:removeReplyButton
+                id: removeReplyButton
                 icon.source: "image://theme/icon-s-clear-opaque-cross?"+Theme.highlightColor
                 anchors.right: parent.right
                 anchors.rightMargin: Theme.paddingLarge
@@ -88,33 +89,35 @@ Drawer{
                 }
             }
         }
+
         IconButton {
-            id:skrepkaWizard
+            id: skrepkaWizard
             icon.source: "image://theme/icon-m-attach"
             highlighted: false
             anchors.bottom: messageArea.bottom
-            anchors.right:messageArea.left
+            anchors.right: messageArea.left
             anchors.bottomMargin: 25
             onClicked: attachDrawer.open=true
         }
 
         TextArea {
-            id:messageArea
+            id: messageArea
             onTextChanged: {
                 if(text === "")
                     messageArea.forceActiveFocus()
             }
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
-            height:  Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
-            width:parent.width - sendButton.width - skrepkaWizard.width
+            height: Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
+            width: parent.width - sendButton.width - skrepkaWizard.width
         }
+
         IconButton {
-            id:sendButton
+            id: sendButton
             icon.source: "image://theme/icon-m-message"
             highlighted: false
             anchors.bottom: messageArea.bottom
-            anchors.right:parent.right
+            anchors.right: parent.right
             anchors.bottomMargin: 25
         }
     }
@@ -124,6 +127,7 @@ Drawer{
         anchors.fill: parent
         onClicked: attachDrawer.open = false
     }
+
     Connections {
         target: attachLoader.item
         onSendUrlItems:
@@ -133,7 +137,7 @@ Drawer{
     }
 
     background:Loader {
-        id:attachLoader
+        id: attachLoader
         anchors.fill: parent
     }
     onOpenedChanged:

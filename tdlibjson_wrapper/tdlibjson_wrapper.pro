@@ -64,4 +64,5 @@ OTHER_FILES += \
     tdlibQt/include/AppApiInfo.hpp.in
 
 DISTFILES += \
+    api_secret.pri \
     api_secret.pri

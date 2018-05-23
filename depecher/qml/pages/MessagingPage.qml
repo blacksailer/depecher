@@ -1,6 +1,7 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
+import QtFeedback 5.0
 import tdlibQtEnums 1.0
 import org.nemomobile.notifications 1.0
 import "items"
@@ -8,22 +9,22 @@ import "items"
 Page {
     id: page
     allowedOrientations: Orientation.All
-    property alias userName:messagingModel.userName
+    property alias userName: messagingModel.userName
     property alias chatId: messagingModel.peerId
     property alias chatType: messagingModel.chatType
     property alias lastMessageId: messagingModel.lastMessage
     property alias lastOutboxId: messagingModel.lastOutboxId
-
     property alias lastReadMessage: messagingModel.currentMessage
 
     Notification {
-        id:notificationError
+        id: notificationError
         appName: "Depecher"
-        icon:"image://theme/icon-lock-warning"
-        expireTimeout:1
+        icon: "image://theme/icon-lock-warning"
+        expireTimeout: 1
     }
+
     MessagingModel{
-        id:messagingModel
+        id: messagingModel
         onChatTypeChanged: {
             if(chatType === TdlibState.Channel)
             {
@@ -33,25 +34,33 @@ Page {
         }
         onErrorReceived: {
             notificationError.previewBody(error_code +"-" +error_message)
-        notificationError.publish()
+            notificationError.publish()
         }
     }
+
     Component.onDestruction: {
         c_telegramWrapper.closeChat(messagingModel.peerId)
     }
+
+    ThemeEffect {
+        id: buzz
+        effect: ThemeEffect.Press
+    }
+
     WritingItem {
-        id:writer
+        id: writer
 
         Timer {
-        //Because TextBase of TextArea uses Timer for losing focus.
+            //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)
-        id:restoreFocusTimer
-        interval: 50
-        onTriggered: writer.textArea.forceActiveFocus()
+            id: restoreFocusTimer
+            interval: 50
+            onTriggered: writer.textArea.forceActiveFocus()
         }
         actionButton.onClicked:
         {
             messagingModel.sendTextMessage(textArea.text,0)
+            buzz.play()
             textArea.text = ""
             restoreFocusTimer.start()
         }
@@ -67,18 +76,19 @@ Page {
                 if(files[i].type === TdlibState.Document)
                     messagingModel.sendDocumentMessage(fileUrl,0,"")
             }
-
         }
-        Column{
-            width:page.width
-            height:parent.height-writer.sendAreaHeight
-            PageHeader{
-                id:nameplate
+
+        Column {
+            width: page.width
+            height: parent.height - writer.sendAreaHeight
+
+            PageHeader {
+                id: nameplate
                 title: messagingModel.userName
-                height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height +  actionLabel.height  + Theme.paddingMedium)
+                height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
 
                 Label {
-                    id:actionLabel
+                    id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
                     anchors {
                         top: parent._titleItem.bottom
@@ -97,52 +107,37 @@ Page {
 
 
             SilicaListView {
-                id:messageList
-                width:parent.width
+                id: messageList
+                width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 verticalLayoutDirection: ListView.BottomToTop
                 spacing: Theme.paddingSmall
-                model:messagingModel
+                model: messagingModel
+                onAtYEndChanged: {
+                    if (messageList.atYEnd) {
+                        console.debug("Newer messages requested, AtYEndChanged")
+                        debouncer.restart() // Debounce to avoid too much requests
+                    }
+                }
 
-                NumberAnimation {
-                    id:moveAnimation
-                    target: messageList
-                    property: "contentY"
-                    duration: 500
-                    easing.type: Easing.InOutQuad
+                Timer {
+                    id: debouncer
+                    interval: 500
+                    repeat: false
                     running: false
-                    onRunningChanged: {
-                        if(!running)
-                            messagingModel.getNewMessages()
-                    }
+                    onTriggered: messagingModel.getNewMessages()
                 }
-                PushUpMenu{
-                    id:pushMenu
-                    quickSelect: true
-                    visible: !messagingModel.atYEnd
-                    MenuItem{
-                        text:qsTr("get newer")
-                        onClicked:
-                        {
-                            var pos = messageList.contentY;
-                            messageList.positionViewAtIndex(1,ListView.Beginning)
-                            var destPos = messageList.contentY;
-                            moveAnimation.from = pos;
-                            moveAnimation.to = destPos;
-                            moveAnimation.running = true;
-                        }
 
-                    }
-                }
                 delegate: MessageItem {
-                    id:myDelegate
+                    id: myDelegate
+
                     RemorseItem {
-                        id:remorseDelete
+                        id: remorseDelete
                     }
-//                    ListView.onAdd: AddAnimation {
-//                        target: myDelegate
-//                    }
+                    //                    ListView.onAdd: AddAnimation {
+                    //                        target: myDelegate
+                    //                    }
                     ListView.onRemove: RemoveAnimation {
                         target: myDelegate
                     }
