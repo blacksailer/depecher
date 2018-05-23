@@ -69,12 +69,12 @@ Page {
             {
                 var fileUrl = String(files[i].url)
                 if(fileUrl.slice(0,4) === "file")
-                    fileUrl = fileUrl.slice(7,fileUrl.length)
+                    fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-                    messagingModel.sendPhotoMessage(fileUrl,0,"")
+                    messagingModel.sendPhotoMessage(fileUrl, 0, "")
                 if(files[i].type === TdlibState.Document)
-                    messagingModel.sendDocumentMessage(fileUrl,0,"")
+                    messagingModel.sendDocumentMessage(fileUrl, 0, "")
             }
         }
 
@@ -95,7 +95,7 @@ Page {
                         right: parent.right
                         rightMargin: parent.rightMargin
                     }
-                    text:messagingModel.action
+                    text: messagingModel.action
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.highlightColor
                     opacity: 0.8
@@ -116,7 +116,6 @@ Page {
                 model: messagingModel
                 onAtYEndChanged: {
                     if (messageList.atYEnd) {
-                        console.debug("Newer messages requested, AtYEndChanged")
                         debouncer.restart() // Debounce to avoid too much requests
                     }
                 }

@@ -81,11 +81,11 @@ ListItem {
                     //                }
                 }
 
-                Separator {
+                /*Separator {
                     color: pressed ? Theme.primaryColor : Theme.secondaryColor
                     visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
                     width: parent.width/3
-                }
+                }*/
 
                 Row {
                     id: metaInfoRow
@@ -108,7 +108,29 @@ ListItem {
                         color: pressed ? Theme.primaryColor : Theme.secondaryColor
                         text: timestamp(date)
                     }
-                    Repeater {
+
+                    Label {
+                        font.pixelSize: Theme.fontSizeTiny
+                        visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
+                                 ||  messagingModel.chatType === TdlibState.Private || messagingModel.chatType === TdlibState.Secret
+                        text: {
+                            if(sending_state === MessagingModel.Sending_Pending) {
+                                return "🕓" // clock
+                            }
+                            else if(sending_state === MessagingModel.Sending_Failed) {
+                                return "⚠" // warning sign
+                            }
+                            else if(sending_state == MessagingModel.Sending_Read) {
+                                return "✔✔" // double check mark
+                            }
+                            else {
+                                return "✔" // check mark
+                            }
+                        }
+
+                    }
+
+                    /*Repeater {
                         model: sending_state == MessagingModel.Sending_Read ? 2 : 1
                         Image {
                             id: stateIcon
@@ -122,7 +144,7 @@ ListItem {
                                                                                           "image://theme/icon-s-high-importance" :
                                                                                           "qrc:/qml/assets/icons/check.svg"
                         }
-                    }
+                    }*/
                 }
             }
         }
