@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
-
+import QtMultimedia 5.6
 ListItem {
     id:messageListItem
     width:parent.width
@@ -33,93 +33,96 @@ ListItem {
                          messagingModel.chatType !== TdlibState.Private &&
                          messagingModel.chatType !== TdlibState.Secret
             }
-           Column {
-               id:contentLoader
-               Row{
-                   id:subInfoRow
-                   width:parent.width
-                   Label {
-                       visible:message_type == MessagingModel.SYSTEM_NEW_MESSAGE ? false :
-                           messagingModel.chatType === TdlibState.BasicGroup ?  true :
-                                                                                    messagingModel.chatType == TdlibState.Supergroup ? true
-                                                                                                                                     : false
-                       id:authorName
-                       //                                        width:Math.max(parent.width*4/5,implicitWidth)
-                       text:author ? author : ""
-                       color: pressed ?Theme.highlightColor: Theme.secondaryHighlightColor
-                       font.pixelSize: Theme.fontSizeExtraSmall
-                       truncationMode: TruncationMode.Fade
-                   }
-               }
-
-            Loader {
-                sourceComponent: message_type == MessagingModel.TEXT ?
-                                     sourceComponent = textContent :
-                                  message_type == MessagingModel.PHOTO  ?
-                                     sourceComponent = imageContent
-                                 : message_type == MessagingModel.STICKER ?
-                                     sourceComponent = stickerContent
-                                 : message_type == MessagingModel.SYSTEM_NEW_MESSAGE ?
-                                     sourceComponent = newMessageContent
-                                 : message_type == MessagingModel.DOCUMENT ?
-                                     sourceComponent = documentContent : undefined
-//                Component.onCompleted:  {
-//                    if(message_type == MessagingModel.TEXT)
-//                        sourceComponent = textContent
-//                    if(message_type == MessagingModel.PHOTO)
-//                        sourceComponent = imageContent
-//                    if(message_type == MessagingModel.STICKER)
-//                        sourceComponent = stickerContent
-//                    if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE)
-//                        sourceComponent = newMessageContent
-//                    if(message_type == MessagingModel.DOCUMENT)
-//                        sourceComponent = documentContent
-//                }
-            }
-
-            Separator{
-                color:pressed ? Theme.primaryColor : Theme.secondaryColor
-                  visible:message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
-                width:parent.width/3
-            }
-            Row {
-                id:metaInfoRow
-                visible:message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
-                width:parent.width
-                layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
-                Label{
-                    function timestamp(dateTime){
-                        var dateTimeDate=new Date(dateTime*1000)
-
-                        var datetime_day = dateTimeDate.getDay()
-                        var currentDay = new Date().getDay()
-
-                        if (datetime_day==currentDay)
-                            return Format.formatDate(dateTimeDate, Formatter.TimeValue)
-                        else
-                            return Format.formatDate(dateTimeDate, Formatter.DateMediumWithoutYear)
+            Column {
+                id:contentLoader
+                Row{
+                    id:subInfoRow
+                    width:parent.width
+                    Label {
+                        visible:message_type == MessagingModel.SYSTEM_NEW_MESSAGE ? false :
+                                                                                    messagingModel.chatType === TdlibState.BasicGroup ?  true :
+                                                                                                                                        messagingModel.chatType == TdlibState.Supergroup ? true
+                                                                                                                                                                                         : false
+                        id:authorName
+                        //                                        width:Math.max(parent.width*4/5,implicitWidth)
+                        text:author ? author : ""
+                        color: pressed ?Theme.highlightColor: Theme.secondaryHighlightColor
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        truncationMode: TruncationMode.Fade
                     }
-                    font.pixelSize: Theme.fontSizeTiny
+                }
+
+                Loader {
+                    sourceComponent: message_type == MessagingModel.TEXT ?
+                                         sourceComponent = textContent :
+                                     message_type == MessagingModel.PHOTO  ?
+                                         sourceComponent = imageContent
+                                   : message_type == MessagingModel.STICKER ?
+                                         sourceComponent = stickerContent
+                                   : message_type == MessagingModel.SYSTEM_NEW_MESSAGE ?
+                                         sourceComponent = newMessageContent
+                                   : message_type == MessagingModel.DOCUMENT ?
+                                         sourceComponent = documentContent
+                                   : message_type == MessagingModel.ANIMATION ?
+                                         sourceComponent = animationContent : undefined
+
+                    //                Component.onCompleted:  {
+                    //                    if(message_type == MessagingModel.TEXT)
+                    //                        sourceComponent = textContent
+                    //                    if(message_type == MessagingModel.PHOTO)
+                    //                        sourceComponent = imageContent
+                    //                    if(message_type == MessagingModel.STICKER)
+                    //                        sourceComponent = stickerContent
+                    //                    if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE)
+                    //                        sourceComponent = newMessageContent
+                    //                    if(message_type == MessagingModel.DOCUMENT)
+                    //                        sourceComponent = documentContent
+                    //                }
+                }
+
+                Separator{
                     color:pressed ? Theme.primaryColor : Theme.secondaryColor
-                    text:timestamp(date)
+                    visible:message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
+                    width:parent.width/3
                 }
-                Repeater {
-                    model:  sending_state == MessagingModel.Sending_Read ? 2 : 1
-                    Image {
-                        id: stateIcon
-                        width: Theme.fontSizeTiny
-                        height: width
-                        visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
-                        ||  messagingModel.chatType === TdlibState.Private  ||    messagingModel.chatType === TdlibState.Secret
+                Row {
+                    id:metaInfoRow
+                    visible:message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
+                    width:parent.width
+                    layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
+                    Label{
+                        function timestamp(dateTime){
+                            var dateTimeDate=new Date(dateTime*1000)
 
-                        source: sending_state == MessagingModel.Sending_Pending ? "image://theme/icon-s-time"
-                                                                                :sending_state == MessagingModel.Sending_Failed ?
-                                                                                      "image://theme/icon-s-high-importance" :
-                                                                                      "qrc:/qml/assets/icons/check.svg"
+                            var datetime_day = dateTimeDate.getDay()
+                            var currentDay = new Date().getDay()
+
+                            if (datetime_day==currentDay)
+                                return Format.formatDate(dateTimeDate, Formatter.TimeValue)
+                            else
+                                return Format.formatDate(dateTimeDate, Formatter.DateMediumWithoutYear)
+                        }
+                        font.pixelSize: Theme.fontSizeTiny
+                        color:pressed ? Theme.primaryColor : Theme.secondaryColor
+                        text:timestamp(date)
+                    }
+                    Repeater {
+                        model:  sending_state == MessagingModel.Sending_Read ? 2 : 1
+                        Image {
+                            id: stateIcon
+                            width: Theme.fontSizeTiny
+                            height: width
+                            visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
+                                     ||  messagingModel.chatType === TdlibState.Private  ||    messagingModel.chatType === TdlibState.Secret
+
+                            source: sending_state == MessagingModel.Sending_Pending ? "image://theme/icon-s-time"
+                                                                                    :sending_state == MessagingModel.Sending_Failed ?
+                                                                                          "image://theme/icon-s-high-importance" :
+                                                                                          "qrc:/qml/assets/icons/check.svg"
+                        }
                     }
                 }
             }
-        }
         }
     }
     Component {
@@ -317,5 +320,97 @@ ListItem {
             }
         }
     }
+    Component {
+        id:animationContent
+        Column{
+            width:animation.width
+            VideoOutput {
+                id: animation
+                property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: Screen.height/2
+                width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
+                height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
+                fillMode: VideoOutput.PreserveAspectFit
 
+                source: MediaPlayer {
+                    id: mediaPlayer
+                    audioRole:MediaPlayer.NotificationRole
+                    source: file_downloading_completed ? Qt.resolvedUrl(content) : ""
+                    autoLoad: true
+//                    autoPlay: true
+                    loops:  Animation.Infinite
+                    onStatusChanged:  console.log(status)
+                }
+                Image {
+                    id:animationThumbnail
+                    anchors.fill: parent
+                    source: "image://depecherDb/"+media_preview
+                    visible:  !file_downloading_completed //mediaPlayer.playbackState == MediaPlayer.StoppedState && file_downloading_completed;
+                    Rectangle {
+                        id:dimmedColor
+                        anchors.fill: parent
+                        opacity: 0.5
+                        color:"black"
+                    }
+                    ProgressCircle {
+                        id:progress
+                        anchors.centerIn: parent
+
+                        visible: file_is_uploading || file_is_downloading
+                        value : file_is_uploading ? file_uploaded_size / file_downloaded_size :
+                                                    file_downloaded_size / file_uploaded_size
+                    }
+                    Image {
+                        id: downloadIcon
+                        visible: !file_downloading_completed || progress.visible
+                        source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
+                                                 : "image://theme/icon-s-update"
+                        anchors.centerIn: parent
+                        MouseArea{
+                            enabled: parent.visible
+                            anchors.fill: parent
+                            onClicked: {
+                                if(progress.visible)
+                                    if(file_is_downloading)
+                                        messagingModel.cancelDownload(index)
+                                    else
+                                        messagingModel.deleteMessage(index)
+                                else
+                                    messagingModel.downloadDocument(index)
+                            }
+                        }
+                    }
+                }
+                MouseArea{
+                    anchors.fill: parent
+                    enabled: file_downloading_completed
+                    onClicked: mediaPlayer.playbackState == MediaPlayer.StoppedState ? mediaPlayer.play() : mediaPlayer.stop()
+                }
+                Rectangle {
+                    id:dimmedPlayColor
+                    anchors.fill: animation
+                    opacity: 0.5
+                    color:"black"
+                    visible: file_downloading_completed && mediaPlayer.playbackState != MediaPlayer.PlayingState
+
+                }
+                Image {
+                    id: playIcon
+                    visible: file_downloading_completed && mediaPlayer.playbackState != MediaPlayer.PlayingState
+                    source:  "image://theme/icon-m-play"
+                    anchors.centerIn: dimmedPlayColor
+                }
+
+            }
+            LinkedLabel {
+                width: parent.width
+                plainText:file_caption
+                color: pressed ? Theme.secondaryColor :Theme.primaryColor
+                linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.WordWrap
+                visible:  file_caption === "" ? false : true
+            }
+        }
+    }
 }

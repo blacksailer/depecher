@@ -65,4 +65,11 @@ Page {
             id:menuList
         }
     }
+    Connections {
+    target: c_telegramWrapper
+    onErrorReceivedMap:{
+        if(errorObject["code"] === 401)
+        pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
+    }
+}
 }
