@@ -43,42 +43,45 @@ ListItem {
                 Row {
                     id: subInfoRow
                     width: parent.width
+
                     Label {
-                        visible: message_type == MessagingModel.SYSTEM_NEW_MESSAGE ? false :
-                                                                                     messagingModel.chatType === TdlibState.BasicGroup ?  true :
-                                                                                                                                         messagingModel.chatType == TdlibState.Supergroup ? true                                                                                                                                                            : false
                         id: authorName
-                        //width:Math.max(parent.width*4/5,implicitWidth)
                         text: author ? author : ""
                         color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeExtraSmall
                         truncationMode: TruncationMode.Fade
+                        visible: {
+                            if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE) {
+                                return false
+                            }
+                            else if(messagingModel.chatType === TdlibState.BasicGroup || messagingModel.chatType == TdlibState.Supergroup) {
+                                return true
+                            }
+
+                            return false
+                        }
                     }
                 }
 
                 Loader {
-                    sourceComponent: message_type == MessagingModel.TEXT ?
-                                         sourceComponent = textContent :
-                                         message_type == MessagingModel.PHOTO  ?
-                                             sourceComponent = imageContent
-                                           : message_type == MessagingModel.STICKER ?
-                                                 sourceComponent = stickerContent
-                                               : message_type == MessagingModel.SYSTEM_NEW_MESSAGE ?
-                                                     sourceComponent = newMessageContent
-                                                   : message_type == MessagingModel.DOCUMENT ?
-                                                         sourceComponent = documentContent : undefined
-                    //                Component.onCompleted:  {
-                    //                    if(message_type == MessagingModel.TEXT)
-                    //                        sourceComponent = textContent
-                    //                    if(message_type == MessagingModel.PHOTO)
-                    //                        sourceComponent = imageContent
-                    //                    if(message_type == MessagingModel.STICKER)
-                    //                        sourceComponent = stickerContent
-                    //                    if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE)
-                    //                        sourceComponent = newMessageContent
-                    //                    if(message_type == MessagingModel.DOCUMENT)
-                    //                        sourceComponent = documentContent
-                    //                }
+                    sourceComponent: {
+                        if(message_type == MessagingModel.TEXT) {
+                            return textContent
+                        }
+                        else if(message_type == MessagingModel.PHOTO) {
+                            return imageContent
+                        }
+                        else if(message_type == MessagingModel.STICKER) {
+                            return stickerContent
+                        }
+                        else if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE) {
+                            return newMessageContent
+                        }
+                        else if(message_type == MessagingModel.DOCUMENT) {
+                            return documentContent
+                        }
+                        return undefined
+                    }
                 }
 
                 Row {
@@ -124,22 +127,6 @@ ListItem {
                         }
 
                     }
-
-                    /*Repeater {
-                        model: sending_state == MessagingModel.Sending_Read ? 2 : 1
-                        Image {
-                            id: stateIcon
-                            width: Theme.fontSizeTiny
-                            height: width
-                            visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
-                                     ||  messagingModel.chatType === TdlibState.Private || messagingModel.chatType === TdlibState.Secret
-
-                            source: sending_state == MessagingModel.Sending_Pending ? "image://theme/icon-s-time"
-                                                                                    : sending_state == MessagingModel.Sending_Failed ?
-                                                                                          "image://theme/icon-s-high-importance" :
-                                                                                          "qrc:/qml/assets/icons/check.svg"
-                        }
-                    }*/
                 }
             }
         }
