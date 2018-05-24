@@ -721,7 +721,7 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
         setAction(userName + " is typing");
     } else
-        setAction(QString::number(chatActionUserMap.size()) + " is typing");
+        setAction(QString::number(chatActionUserMap.size()) + " people are typing");
 
 }
 
