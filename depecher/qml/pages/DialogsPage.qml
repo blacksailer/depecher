@@ -68,7 +68,7 @@ Page {
         }
 
         background: MenuComponent{
-            id:menuList
+            id: menuList
         }
     }
 }
