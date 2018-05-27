@@ -10,6 +10,18 @@ class StickerModel : public QAbstractListModel
 
     Q_PROPERTY(StickerModelState state READ state WRITE setState NOTIFY stateChanged)
 public:
+    enum DataRoles {
+        ID,
+        IS_ARCHIVED,
+        IS_INSTALLED,
+        IS_MASKS,
+        IS_OFFICIAL,
+        IS_VIEWED,
+        NAME,
+        TITLE,
+        STICKERS_COUNT,
+        STICKER
+    };
     enum StickerModelState {
         SendState,
         PreviewState,
@@ -33,8 +45,13 @@ private:
     QList<QSharedPointer<stickerSet>> m_stikerSets;
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;
+    QList<int> m_StickerSetsSize;
+    QMap<int, int> stickerUpdateQueue;
 
     TdlibJsonWrapper *m_client;
+
+    int getOffset(const int row) const;
+    int getSetIndex(const int row) const;
 
     void getAttachedStickerSets(const int file_id);
     void getStickerSet(const qint64 set_id);
@@ -52,6 +69,7 @@ private:
 public slots:
     void setState(StickerModelState state);
     void addStickerSet(const QJsonObject &stickerSetObject);
+    void updateFile(const QJsonObject &fileObject);
 
 signals:
     void stateChanged(StickerModelState state);
