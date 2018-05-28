@@ -93,11 +93,27 @@ Drawer{
             icon.source: "image://theme/icon-m-attach"
             highlighted: false
             anchors.bottom: messageArea.bottom
+            anchors.right:stickerButton.left
+            anchors.bottomMargin: 25
+            onClicked: {
+                attachLoader.setSource("AttachComponent.qml")
+                attachDrawer.open=true
+            }
+            visible: messageArea.text.length == 0
+        }
+        IconButton {
+            id:stickerButton
+            icon.source: "image://theme/icon-m-toy"
+            highlighted: false
+            anchors.bottom: messageArea.bottom
             anchors.right:messageArea.left
             anchors.bottomMargin: 25
-            onClicked: attachDrawer.open=true
+            onClicked: {
+                if(!attachDrawer.opened)
+                attachLoader.setSource("AttachSticker.qml")
+                attachDrawer.open=!attachDrawer.open
+            }
         }
-
         TextArea {
             id:messageArea
             onTextChanged: {
@@ -107,7 +123,7 @@ Drawer{
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)//Math.max(page.height/5, Math.min(page.height/3,implicitHeight))
-            width:parent.width - sendButton.width - skrepkaWizard.width
+            width:parent.width - sendButton.width - skrepkaWizard.width - stickerButton.width
         }
         IconButton {
             id:sendButton
@@ -137,10 +153,6 @@ Drawer{
         anchors.fill: parent
     }
     onOpenedChanged:
-    {
-        if(opened)
-            attachLoader.setSource("AttachComponent.qml")
-        else
+        if(!opened)
             attachLoader.sourceComponent=undefined
-    }
 }

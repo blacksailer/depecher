@@ -13,6 +13,7 @@
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/ChatsModel.hpp"
 #include "tdlibQt/models/MessagingModel.hpp"
+#include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/TelegramProfileProvider.hpp"
 #include "tdlibQt/include/AuthenticationHandler.hpp"
 #include "tdlibQt/items/ProxyDAO.hpp"
@@ -52,6 +53,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
     qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");
     qmlRegisterType<tdlibQt::ChatsModel>("TelegramModels", 1, 0, "ChatsModel");
+    qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
+
     qmlRegisterType<tdlibQt::AuthenticationHandler>("TelegramAuthentication", 1, 0,
             "TelegramAuthenticationHandler");
     view->setTitle("Depecher");

@@ -14,5 +14,6 @@ app.depends = lib
 CONFIG += ordered
 
 DISTFILES += \
-    depecher/qml/pages/items/SendStickerComponent.qml
+    depecher/qml/pages/items/SendStickerComponent.qml \
+    depecher/qml/pages/items/AttachSticker.qml
 
