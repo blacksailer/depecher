@@ -136,6 +136,17 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
 </context>
 <context>
+    <name>AttachSticker</name>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>

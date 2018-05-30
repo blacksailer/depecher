@@ -5,6 +5,7 @@ import TelegramModels 1.0
 import QtQml.Models 2.3
 
 Column {
+    signal sendUrlItems(var items)
     anchors.fill: parent
     SilicaListView {
         id:thumbnails
@@ -41,7 +42,6 @@ Column {
         id:listView
         width: parent.width
         height: parent.height - thumbnails.height
-        signal sendUrlItems(var items)
         property int indexAtTop: 0
 //        curre: ListView.OverlayHeader
         onCurrentIndexChanged: console.log(currentIndex)
