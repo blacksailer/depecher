@@ -105,7 +105,7 @@ Drawer {
         }
         IconButton {
             id:stickerButton
-            icon.source: "image://theme/icon-m-toy"
+            icon.source: "image://theme/icon-m-other"
             highlighted: false
             anchors.bottom: messageArea.bottom
             anchors.right:messageArea.left

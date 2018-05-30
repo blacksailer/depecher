@@ -27,9 +27,9 @@ Column {
            fillMode: Image.PreserveAspectFit
            source: {
             if(title == qsTr("Favorite"))
-                return "image://theme/icon-s-favorite"
+                return "image://theme/icon-m-favorite"
             if(title == qsTr("Recent"))
-                return "image://theme/icon-s-duration"
+                return "image://theme/icon-m-clock"
 
                return "image://depecherDb/"+set_thumbnail
            }
@@ -43,12 +43,8 @@ Column {
         width: parent.width
         height: parent.height - thumbnails.height
         property int indexAtTop: 0
-//        curre: ListView.OverlayHeader
         onCurrentIndexChanged: console.log(currentIndex)
-        onContentYChanged: {
-            console.log(contentY)
-            indexAtTop = indexAt(Screen.width/2,contentY + height/2)
-        }
+        onContentYChanged:             indexAtTop = indexAt(Screen.width/2,contentY + height/2)
         clip:true
 
         StickerModel {

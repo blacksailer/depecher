@@ -57,7 +57,7 @@ void ChatsModel::sortByOrder()
 void ChatsModel::updateChatMentionCount(const QJsonObject &chatMentionCountObject)
 {
     auto chatMentionCount = QSharedPointer<updateChatUnreadMentionCount>(new
-                                                                         updateChatUnreadMentionCount);
+                            updateChatUnreadMentionCount);
     chatMentionCount->chat_id_ = ParseObject::getInt64(chatMentionCountObject["chat_id"]);
     chatMentionCount->unread_mention_count_ = chatMentionCountObject["unread_mention_count"].toInt();
 
@@ -128,7 +128,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             break;
         case chatTypeSupergroup::ID:
             chatTypeSupergroup *superGroupMetaInfo   = static_cast<chatTypeSupergroup *>
-                                                       (chats[rowIndex]->type_.data());
+                    (chats[rowIndex]->type_.data());
             if (superGroupMetaInfo->is_channel_)
                 return QVariant::fromValue(tdlibQt::Enums::ChatType::Channel);
             return QVariant::fromValue(tdlibQt::Enums::ChatType::Supergroup);
@@ -143,9 +143,9 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     case CHAT_ACTION:
         if (chatActionMap.contains(chats[rowIndex]->id_)) {
             if (chatActionMap.count(chats[rowIndex]->id_) > 1)
-                return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " is typing";
+                return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " are typing";
             auto chatAction = chatActionMap.value(chats[rowIndex]->id_);
-            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " people are typing";
+            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " is typing";
         }
         return QVariant();
     case LAST_MESSAGE:
@@ -264,9 +264,9 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
     }
     if (chatItem->last_message_->get_id() == messageAnimation::ID) {
         auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
-            if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
-                tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
-            }
+        if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
+            tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
+        }
     }
 
     //    if (chatItem->notification_settings_->mute_for_ == 0)

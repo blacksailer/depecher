@@ -143,52 +143,58 @@ Item {
 
 
     Component{
-        id: imageComponent
+            id:imageComponent
+            Image {
+                asynchronous: true
+                // From org.nemomobile.thumbnailer
+                source:   "image://nemoThumbnail/"+url
+                sourceSize: Qt.size(Screen.width/3,Screen.width/3)
+                width: Screen.width/3
+                height: width
 
-        Image {
-            asynchronous: true
-            // From org.nemomobile.thumbnailer
-            source: "image://nemoThumbnail/"+url
-            sourceSize: Qt.size(Screen.width/3, Screen.width/3)
-            width: Screen.width/3
-            height: width
+                Rectangle{
+                    id:selectedCircle
+                    border.color: Theme.primaryColor
+                    color: "transparent"
+                    border.width: 2
+                    radius: 90
+                    width:Theme.paddingLarge
+                    height: width
+                    x:Theme.paddingLarge
+                    y:Theme.paddingLarge
+                }
 
-            Rectangle{
-                id: selectedOverlay
-                anchors.fill: parent
-                color: Theme.highlightBackgroundColor
-                opacity: Theme.highlightBackgroundOpacity
-                visible: false
-            }
-
-            MouseArea {
-                id: selectionArea
-                anchors.fill: parent
-                onClicked:
-                {
-                    if(!selectedContainsAndRemove(index,files.currentIndex))
+                MouseArea {
+                    id:selectionArea
+                    x:0
+                    y:0
+                    width:Theme.paddingLarge * 2
+                    height: width
+                    onClicked:
                     {
-                        selectedOverlay.visible = true
-                        thumbnailWrapper.selectedItems.push({"id": index, "type":TdlibState.Photo, "url":galleryModel.get(index).url});
-                        countItems++;
-                    }
-                    else
-                    {
-                        selectedOverlay.visible = false
-                        countItems--;
+                        if(!selectedContainsAndRemove(index,files.currentIndex))
+                        {
+                            selectedCircle.color = Theme.secondaryHighlightColor;
+                            thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
+                            countItems++;
+                        }
+                        else
+                        {
+                            selectedCircle.color = "transparent";
+                            countItems--;
+                        }
                     }
                 }
-            }
 
-            MouseArea {
-                anchors.top: selectionArea.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                onClicked: pageStack.push("../PicturePage.qml", {imagePath:galleryModel.get(index).url})
-            }
+                MouseArea {
+                    anchors.top: selectionArea.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    onClicked: pageStack.push("../PicturePage.qml",{imagePath:galleryModel.get(index).url})
+                }
 
-        }
+            }
 
     }
 
