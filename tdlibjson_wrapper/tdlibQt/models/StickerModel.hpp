@@ -47,7 +47,7 @@ private:
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;
     QList<int> m_StickerSetsSize;
-    QMap<int, int> m_stickerUpdateQueue;
+    QMap<int, QModelIndex> m_stickerUpdateQueue;
 
     TdlibJsonWrapper *m_client;
 
@@ -75,14 +75,20 @@ public slots:
     void stickersReceived(const QJsonObject &setObject);
     void stickersSetsReceived(const QJsonObject &setsObject);
 private slots:
-    void getFile(const int fileId, const int priority, const int indexItem);
+    void getFile(const int fileId, const int priority, const QModelIndex indexItem);
 
 
 signals:
     void modelStateChanged(StickerModelState state);
-    void downloadFileStart(int file_id_, int priority_, int indexItem) const;
+    void downloadFileStart(int file_id_, int priority_, QModelIndex indexItem) const;
 
 
+
+    // QAbstractItemModel interface
+public:
+    int columnCount(const QModelIndex &parent) const override;
+    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &child) const override;
 };
 } //tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::StickerModel::StickerModelState)
