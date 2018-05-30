@@ -582,9 +582,9 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-        //        return parseMessageAnimation(messageContentObject);
-        typeMessageText->text_->text_ = "Animation";
-        return typeMessageText;
+                return parseMessageAnimation(messageContentObject);
+//        typeMessageText->text_->text_ = "Animation";
+//        return typeMessageText;
 
     }
     if (messageContentObject["@type"].toString() == "messageAudio") {

@@ -206,7 +206,7 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>new messages</source>
+        <source>New messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -214,10 +214,6 @@ proxy server in settings via PulleyMenu</source>
     <name>MessagingPage</name>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>get newer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

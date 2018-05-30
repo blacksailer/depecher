@@ -145,7 +145,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             if (chatActionMap.count(chats[rowIndex]->id_) > 1)
                 return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " is typing";
             auto chatAction = chatActionMap.value(chats[rowIndex]->id_);
-            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " is typing";
+            return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " people are typing";
         }
         return QVariant();
     case LAST_MESSAGE:
@@ -166,7 +166,8 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
 
                 if (chats[rowIndex]->last_message_->content_->get_id() == messageSticker::ID)
                     return tr("Sticker");
-
+                if (chats[rowIndex]->last_message_->content_->get_id() == messageAnimation::ID)
+                    return tr("Animation");
                 return QVariant();
             }
         }
@@ -261,6 +262,13 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
             }
         }
     }
+    if (chatItem->last_message_->get_id() == messageAnimation::ID) {
+        auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
+            if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
+                tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
+            }
+    }
+
     //    if (chatItem->notification_settings_->mute_for_ == 0)
     //        emit totalUnreadCountChanged(totalUnreadCount());
 

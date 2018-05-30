@@ -132,6 +132,11 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                       (messages[rowIndex]->content_.data());
             return QString::fromStdString(contentDocumentPtr->caption_->text_);
         }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAnimationPtr->caption_->text_);
+        }
 
         return QVariant();
     }
@@ -141,6 +146,12 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                    (messages[rowIndex]->content_.data());
             return (float)contentPhotoPtr->photo_->sizes_.back()->width_ / (float)
                    contentPhotoPtr->photo_->sizes_.back()->height_;
+        }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return (float)contentAnimationPtr->animation_->width_ / (float)
+                   contentAnimationPtr->animation_->height_;
         }
         return QVariant();
     }
@@ -197,6 +208,18 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 return Sending_Not_Read;
         }
         break;
+    case MEDIA_PREVIEW:
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>(messages[rowIndex]->content_.data());
+            if (contentAnimationPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_)
+                return QString::fromStdString(contentAnimationPtr->animation_->thumbnail_->photo_->local_->path_);
+            else {
+                int fileId = contentAnimationPtr->animation_->thumbnail_->photo_->id_;
+                emit downloadFileStart(fileId, 12, rowIndex);
+            }
+            return QVariant();
+        }
+        break;
     //        FORWARD_INFO,
     //        VIEWS,
     //        REPLY_MARKUP
@@ -240,6 +263,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[AUTHOR_SIGNATURE] = "author_signature";
     roles[VIEWS] = "views";
     roles[MEDIA_ALBUM_ID] = "media_album_id";
+    roles[MEDIA_PREVIEW] = "media_preview";
     roles[CONTENT] = "content";
     roles[FILE_CAPTION] = "file_caption";
     roles[PHOTO_ASPECT] = "photo_aspect";
@@ -443,8 +467,7 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
             int sizesCount = contentPhotoPtr->photo_->sizes_.size();
             if (sizesCount > 0) {
                 if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_)
-                    return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount -
-                                                             1]->photo_->local_->path_);
+                    return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->path_);
                 else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
                     int fileId = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
                     emit downloadFileStart(fileId, 12, rowIndex);
@@ -480,97 +503,67 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
             return QString::fromStdString(contentDocumentPtr->document_->document_->local_->path_);
 
         }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            if (contentAnimationPtr->animation_->animation_->local_->is_downloading_completed_)
+                return QString::fromStdString(contentAnimationPtr->animation_->animation_->local_->path_);
+
+        }
         if (messages[rowIndex]->content_->get_id() == messageUnsupported::ID)
             return "Unsupported message type";
     }
+    return QVariant();
 }
 
 QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
 {
+    file *filePtr = nullptr;
+    if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+        auto contentPhotoPtr = static_cast<messagePhoto *>
+                               (messages[rowIndex]->content_.data());
+        int sizesCount = contentPhotoPtr->photo_->sizes_.size();
+        filePtr = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+        auto contentDocumentPtr = static_cast<messageDocument *>
+                                  (messages[rowIndex]->content_.data());
+        filePtr = contentDocumentPtr->document_->document_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        auto contentAnimationPtr = static_cast<messageAnimation *>
+                                   (messages[rowIndex]->content_.data());
+        filePtr = contentAnimationPtr->animation_->animation_.data();
+    }
     switch (role) {
     case FILE_IS_DOWNLOADING:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_active_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->is_downloading_active_;
-        }
+        if (filePtr)
+            return filePtr->local_->is_downloading_active_;
         return QVariant();
         break;
     case FILE_IS_UPLOADING:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->is_uploading_active_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->is_uploading_active_;
-        }
+        if (filePtr)
+            return filePtr->remote_->is_uploading_active_;
         return QVariant();
         break;
     case FILE_DOWNLOADING_COMPLETED:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->is_downloading_completed_;
-        }
+        if (filePtr)
+            return filePtr->local_->is_downloading_completed_;
         return QVariant();
         break;
     case FILE_UPLOADING_COMPLETED:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->is_uploading_completed_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->is_uploading_completed_;
-        }
+        if (filePtr)
+            return filePtr->remote_->is_uploading_completed_;
         return QVariant();
         break;
     case FILE_DOWNLOADED_SIZE:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->downloaded_size_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->downloaded_size_;
-        }
+        if (filePtr)
+            return filePtr->local_->downloaded_size_;
         return QVariant();
         break;
     case FILE_UPLOADED_SIZE:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->uploaded_size_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->uploaded_size_;
-        }
+        if (filePtr)
+            return filePtr->remote_->uploaded_size_;
         return QVariant();
         break;
     default:
@@ -672,8 +665,19 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
             if (messageDocumentPtr->document_->document_->id_ == file->id_)
                 messageDocumentPtr->document_->document_ = file;
         }
-        if (file->local_->is_downloading_completed_)
+        if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageAnimation::ID) {
+            auto  messageAnimationPtr = static_cast<messageAnimation *>
+                                        (messages[messagePhotoQueue[file->id_]]->content_.data());
+            if (messageAnimationPtr->animation_->animation_->id_ == file->id_)
+                messageAnimationPtr->animation_->animation_ = file;
+            if (messageAnimationPtr->animation_->thumbnail_->photo_->id_ == file->id_)
+                messageAnimationPtr->animation_->thumbnail_->photo_ = file;
+
+        }
+        if (file->local_->is_downloading_completed_) {
             photoRole.append(CONTENT);
+            photoRole.append(MEDIA_PREVIEW);
+        }
         photoRole.append(FILE_DOWNLOADED_SIZE);
         photoRole.append(FILE_UPLOADED_SIZE);
         photoRole.append(FILE_IS_DOWNLOADING);
@@ -721,7 +725,7 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
         setAction(userName + " is typing");
     } else
-        setAction(QString::number(chatActionUserMap.size()) + " is typing");
+        setAction(QString::number(chatActionUserMap.size()) + " people are typing");
 
 }
 
@@ -880,6 +884,12 @@ void MessagingModel::downloadDocument(const int rowIndex)
         int sizesCount = contentDocumentPtr->photo_->sizes_.size();
         fileId = contentDocumentPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
     }
+    if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        auto contentAnimationPtr = static_cast<messageAnimation *>
+                                   (messages[rowIndex]->content_.data());
+        fileId = contentAnimationPtr->animation_->animation_->id_;
+    }
+
     if (fileId > -1)
         emit downloadFileStart(fileId, 10, rowIndex);
 }

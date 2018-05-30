@@ -206,8 +206,8 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>new messages</source>
-        <translation>新消息</translation>
+        <source>New messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -215,10 +215,6 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Copy Text</source>
         <translation>复制文本</translation>
-    </message>
-    <message>
-        <source>get newer</source>
-        <translation>获取更新</translation>
     </message>
     <message>
         <source>Delete Message</source>

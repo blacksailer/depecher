@@ -60,7 +60,7 @@ Dialog {
         }
         PageHeader {
         title: state == "code" ? qsTr("Enter code") : qsTr("Enter password")
-        description: qsTr("Authentication state") +" - "+setAuthState(telegramAuthenticationHandler.currentAuthorizationState)
+        description: qsTr("Authentication state") +" - "+Utils.setAuthState(telegramAuthenticationHandler.currentAuthorizationState)
         }
 
         states:[

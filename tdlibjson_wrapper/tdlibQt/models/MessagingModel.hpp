@@ -57,6 +57,7 @@ class MessagingModel : public QAbstractListModel
         AUTHOR_SIGNATURE,
         VIEWS,
         MEDIA_ALBUM_ID,
+        MEDIA_PREVIEW,
         CONTENT,
         FILE_CAPTION,
         PHOTO_ASPECT,

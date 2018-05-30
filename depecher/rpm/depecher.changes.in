@@ -7,8 +7,9 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Thu May 17 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-4
-- Icons updated
+* Wen May 23 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-4
+- Animations added
+- Icons changed (Thanks to Ruditimmermans and Alain)
 
 * Tue May 15 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-3
 - Switching between types fixed (issue #35)

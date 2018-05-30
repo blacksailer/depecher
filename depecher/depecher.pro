@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql dbus
+QT += sql dbus multimedia
 
 CONFIG += sailfishapp
 CONFIG += c++11
