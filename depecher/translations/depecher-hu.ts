@@ -229,6 +229,10 @@ proxy server in settings via PulleyMenu</source>
         <source>Delete for everyone</source>
         <translation>Törlés mindenkinek</translation>
     </message>
+    <message>
+        <source>get newer</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PicturePage</name>

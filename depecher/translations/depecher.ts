@@ -228,6 +228,10 @@ proxy server in settings via PulleyMenu</source>
         <source>Delete for everyone</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>get newer</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PicturePage</name>

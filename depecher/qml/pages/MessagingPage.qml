@@ -116,20 +116,42 @@ Page {
                 verticalLayoutDirection: ListView.BottomToTop
                 spacing: Theme.paddingSmall
                 model: messagingModel
-                onAtYEndChanged: {
-                    if (messageList.atYEnd) {
-                        debouncer.restart() // Debounce to avoid too much requests
+                //                onAtYEndChanged: {
+                //                    if (messageList.atYEnd) {
+                //                        debouncer.restart() // Debounce to avoid too much requests
+                //                    }
+                //                }
+
+                NumberAnimation {
+                    id:moveAnimation
+                    target: messageList
+                    property: "contentY"
+                    duration: 500
+                    easing.type: Easing.InOutQuad
+                    running: false
+                    onRunningChanged: {
+                        if(!running)
+                            messagingModel.getNewMessages()
                     }
                 }
+                PushUpMenu{
+                    id:pushMenu
+                    quickSelect: true
+                    visible: !messagingModel.atYEnd
+                    MenuItem{
+                        text:qsTr("get newer")
+                        onClicked:
+                        {
+                            var pos = messageList.contentY;
+                            messageList.positionViewAtIndex(1,ListView.Beginning)
+                            var destPos = messageList.contentY;
+                            moveAnimation.from = pos;
+                            moveAnimation.to = destPos;
+                            moveAnimation.running = true;
+                        }
 
-                Timer {
-                    id: debouncer
-                    interval: 500
-                    repeat: false
-                    running: false
-                    onTriggered: messagingModel.getNewMessages()
+                    }
                 }
-
                 delegate: MessageItem {
                     id: myDelegate
 
