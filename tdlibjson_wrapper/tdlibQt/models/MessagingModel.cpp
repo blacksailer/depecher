@@ -838,6 +838,34 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     tdlibJson->sendMessage(jsonString);
 }
 
+void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_id)
+{
+    Q_UNUSED(reply_id)
+
+    TlStorerToString json;
+    sendMessage sendMessageObject;
+    sendMessageObject.chat_id_ = m_peerId.toLongLong();
+    sendMessageObject.disable_notification_ = false;
+    sendMessageObject.from_background_ = false;
+    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.input_message_content_ = QSharedPointer<inputMessageSticker>
+            (new inputMessageSticker);
+    inputMessageSticker *ptr = static_cast<inputMessageSticker *>
+                               (sendMessageObject.input_message_content_.data());
+    auto docPtr = QSharedPointer<inputFileId>(new inputFileId);
+    docPtr->id_ = fileId;
+    ptr->sticker_ = docPtr;
+    ptr->width_ = 512;
+    ptr->height_ = 512;
+
+    sendMessageObject.store(json, "input_message_content");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    tdlibJson->sendMessage(jsonString);
+
+}
+
 void MessagingModel::downloadDocument(const int rowIndex)
 {
     int fileId = -1;

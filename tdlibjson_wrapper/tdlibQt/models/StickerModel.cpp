@@ -4,7 +4,7 @@
 #include "tdlibQt/ParseObject.hpp"
 namespace tdlibQt {
 
-StickerModel::StickerModel(QObject *parent) : QAbstractListModel(parent),
+StickerModel::StickerModel(QObject *parent) : QAbstractItemModel(parent),
     m_client(TdlibJsonWrapper::instance())
 {
     connect(m_client, &TdlibJsonWrapper::stickerSetReceived,
@@ -14,6 +14,9 @@ StickerModel::StickerModel(QObject *parent) : QAbstractListModel(parent),
             this, &StickerModel::stickersSetsReceived);
     connect(m_client, &TdlibJsonWrapper::stickersReceived,
             this, &StickerModel::stickersReceived);
+    connect(m_client, &TdlibJsonWrapper::updateFile,
+            this, &StickerModel::updateFile);
+
     connect(this, &StickerModel::downloadFileStart,
             this, &StickerModel::getFile);
 
@@ -90,6 +93,9 @@ QHash<int, QByteArray> StickerModel::roleNames() const
     roles[NAME] = "name";
     roles[STICKER] = "sticker";
     roles[STICKERS_COUNT] = "stickers_count";
+    roles[SET_STICKER_THUMBNAIL] = "set_thumbnail";
+
+    roles[STICKER_FILE_ID] = "sticker_file_id";
     return roles;
 }
 
@@ -97,14 +103,12 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    qDebug() << index.row() << index.column() << index.parent().row() << index.parent().column();
 
     if (index.row() < 0)
         return QVariant();
 
     int rowIndex = index.row();
     int setNumber = index.parent().row() > -1 ? index.parent().row() : rowIndex;//getSetIndex(rowIndex);
-    qDebug() << setNumber  << rowIndex;
     switch (role) {
     case ID:
         return  QString::number(m_stikerSets[setNumber]->id_);
@@ -122,9 +126,13 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         return   QString::fromStdString(m_stikerSets[setNumber]->title_);
     case NAME:
         return   QString::fromStdString(m_stikerSets[setNumber]->name_);
+    case SET_STICKER_THUMBNAIL:
+        return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->path_);
     case STICKERS_COUNT:
         return m_StickerSetsSize[setNumber];
     case STICKER:
+        if (index.parent().row() == -1)
+            return QVariant();
         //    m_installedStickerSets[rowIndex]->covers_;
         if (m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->is_downloading_completed_)
             return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->path_);
@@ -134,6 +142,11 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         }
         emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->id_, 12, index);
         return QVariant();
+    case STICKER_FILE_ID:
+        if (index.parent().row() == -1)
+            return QVariant();
+        return m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_;
+        break;
     default:
         return QVariant();
         break;
@@ -151,52 +164,25 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 
 }
 
-int StickerModel::getOffset(const int row) const
-{
-    int offset = 0;
-    int rowValue = row;
-    for (int i = 0; i < m_StickerSetsSize.size(); i++) {
-        if (rowValue >= m_StickerSetsSize.at(i)) {
-            offset += m_StickerSetsSize.at(i);
-            rowValue -= m_StickerSetsSize.at(i);
-        } else
-            break;
-    }
-
-    return offset;
-}
-
-int StickerModel::getSetIndex(const int row) const
-{
-    if (m_StickerSetsSize.size() < 0)
-        return 0;
-
-    int cummulativeSize = 0;
-    for (int setIndex = 0; setIndex < m_StickerSetsSize.size(); setIndex++) {
-        cummulativeSize += m_StickerSetsSize.at(setIndex);
-        if (row < cummulativeSize)
-            return setIndex;
-    }
-}
 
 int StickerModel::rowCount(const QModelIndex &parent) const
 {
-    qDebug() << parent.column() << parent.row() << m_stikerSets.size();
-//    if (m_state == SendState)
-    if (parent.column() == 0) {
-        qDebug() << parent.column() << parent.row() << m_stikerSets.at(parent.row())->stickers_.size();
-        return m_stikerSets.at(parent.row())->stickers_.size();
-    } else
-        return m_stikerSets.size();
+    if (m_state == SendState) {
+        if (parent.column() == 0) {
+            return m_stikerSets.at(parent.row())->stickers_.size();
+        } else
+            return m_stikerSets.size();
+    }
 
-    int size = 0;
-    if (m_state == SendState)
-        for (auto val : m_stikerSets)
-            size += val->stickers_.size();
-    else
-        for (auto val : m_installedStickerSets)
-            size += val->covers_.size();
-    return size;
+    return 0;
+//    int size = 0;
+//    if (m_state == SendState)
+//        for (auto val : m_stikerSets)
+//            size += val->stickers_.size();
+//    else
+//        for (auto val : m_installedStickerSets)
+//            size += val->covers_.size();
+//    return size;
 }
 
 
@@ -219,15 +205,13 @@ void StickerModel::addStickerSet(const QJsonObject &stickerSetObject)
         beginInsertRows(QModelIndex(), m_stikerSets.size(), m_stikerSets.size());
         m_stikerSets.append(stickerSetObj);
         endInsertRows();
-        beginInsertRows(index(m_stikerSets.size() - 1, 0), 0, m_stikerSets.last()->stickers_.size());
-        endInsertRows();
     }
 }
 
 void StickerModel::updateFile(const QJsonObject &fileObject)
 {
 
-    if (fileObject["@type"].toString() != "updateFile")
+    if (fileObject["@type"].toString() == "updateFile")
         processFile(fileObject["file"].toObject());
 }
 
@@ -238,18 +222,24 @@ void StickerModel::processFile(const QJsonObject &fileObject)
     if (m_stickerUpdateQueue.keys().contains(file->id_)) {
         QVector<int> photoRole;
         QModelIndex viewIndex = m_stickerUpdateQueue[file->id_];
+        qDebug() << viewIndex << "Row" << viewIndex.row() << "Column" << viewIndex.column() <<  viewIndex.parent().row();
+
         int rowIndex = viewIndex.row();
         int setIndex = viewIndex.parent().row();
+
         if (m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_->id_ == file->id_)
             m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_ = file;
         if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_)
             m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
-        if (file->local_->is_downloading_completed_)
+        if (file->local_->is_downloading_completed_) {
             photoRole.append(STICKER);
+            photoRole.append(SET_STICKER_THUMBNAIL);
+
+        }
         emit dataChanged(m_stickerUpdateQueue[file->id_],
                          m_stickerUpdateQueue[file->id_], photoRole);
-//        if (file->local_->is_downloading_completed_)
-//            m_stickerUpdateQueue.remove(file->id_);
+        if (file->local_->is_downloading_completed_)
+            m_stickerUpdateQueue.remove(file->id_);
     }
 
 }
@@ -279,7 +269,7 @@ void StickerModel::getFile(const int fileId, const int priority, const QModelInd
 
 int StickerModel::columnCount(const QModelIndex &parent) const
 {
-    return 2;
+    return 1;
 }
 
 QModelIndex StickerModel::index(int row, int column, const QModelIndex &parent) const
@@ -316,14 +306,7 @@ void StickerModel::addFavoriteStickers(const QJsonObject &stickersObject)
     auto stickersObj = ParseObject::parseStickers(stickersObject);
     auto resultSet = createStickerSet(tr("Favorite"), tr("Favorite"), stickersObj->stickers_);
     if (resultSet.data()) {
-        int cummulativeSize = 0;
-        for (int idx = 0; idx < m_StickerSetsSize.size(); idx++)
-            cummulativeSize += m_StickerSetsSize.at(idx);
-        m_StickerSetsSize.append(resultSet->stickers_.size());
-
-        int first = cummulativeSize;
-        int last = cummulativeSize + m_StickerSetsSize.last();
-        beginInsertRows(QModelIndex(), first, last);
+        beginInsertRows(QModelIndex(), m_stikerSets.size(), m_stikerSets.size());
         m_stikerSets.append(resultSet);
         endInsertRows();
     }
@@ -335,14 +318,7 @@ void StickerModel::addRecentStickers(const QJsonObject &stickersObjecct)
     auto resultSet = createStickerSet(tr("Recent"), tr("Recent"), stickersObj->stickers_);
 
     if (resultSet.data()) {
-        int cummulativeSize = 0;
-        for (int idx = 0; idx < m_StickerSetsSize.size(); idx++)
-            cummulativeSize += m_StickerSetsSize.at(idx);
-        m_StickerSetsSize.append(resultSet->stickers_.size());
-
-        int first = cummulativeSize;
-        int last = cummulativeSize + m_StickerSetsSize.last();
-        beginInsertRows(QModelIndex(), first, last);
+        beginInsertRows(QModelIndex(), m_stikerSets.size(),  m_stikerSets.size());
         m_stikerSets.append(resultSet);
         endInsertRows();
     }

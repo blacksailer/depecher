@@ -8,17 +8,17 @@ TelegramProfileProvider::TelegramProfileProvider() : QQuickImageProvider(
 }
 
 QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
-                                             const QSize &requestedSize)
+        const QSize &requestedSize)
 {
     QString rsrcid = id;
     QImage image(rsrcid);
-    QImage result;
+    QImage result = image;
 
-    if (requestedSize.isValid()) {
-        result = image.scaled(requestedSize, Qt::KeepAspectRatio);
-    } else {
-        result = image;
-    }
+//    if (requestedSize.isValid()) {
+//        result = image.scaled(requestedSize, Qt::KeepAspectRatio);
+//    } else {
+//        result = image;
+//    }
     *size = result.size();
     return result;
 

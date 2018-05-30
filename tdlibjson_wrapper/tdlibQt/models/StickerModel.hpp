@@ -1,11 +1,11 @@
 #ifndef STICKERMODEL_HPP
 #define STICKERMODEL_HPP
 
-#include <QAbstractListModel>
+#include <QAbstractItemModel>
 #include "../items/TdApi.hpp"
 namespace tdlibQt {
 class TdlibJsonWrapper;
-class StickerModel : public QAbstractListModel
+class StickerModel : public QAbstractItemModel
 {
     Q_OBJECT
     Q_PROPERTY(StickerModelState modelState READ modelState WRITE setModelState NOTIFY modelStateChanged)
@@ -20,7 +20,9 @@ public:
         NAME,
         TITLE,
         STICKERS_COUNT,
-        STICKER
+        SET_STICKER_THUMBNAIL,
+        STICKER,
+        STICKER_FILE_ID
     };
     enum StickerModelState {
         SendState,
@@ -35,11 +37,6 @@ public:
     ~StickerModel();
     StickerModelState modelState() const;
 
-    // QAbstractItemModel interface
-    QHash<int, QByteArray> roleNames() const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-
 private:
 
     StickerModelState m_state = UknownState;
@@ -51,8 +48,6 @@ private:
 
     TdlibJsonWrapper *m_client;
 
-    int getOffset(const int row) const;
-    int getSetIndex(const int row) const;
 
     void getAttachedStickerSets(const int file_id);
     void getStickerSet(const qint64 set_id);
@@ -86,6 +81,9 @@ signals:
 
     // QAbstractItemModel interface
 public:
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
     int columnCount(const QModelIndex &parent) const override;
     QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;

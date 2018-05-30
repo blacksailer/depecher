@@ -66,6 +66,9 @@ Page {
                     messagingModel.sendPhotoMessage(fileUrl,0,"")
                 if(files[i].type === TdlibState.Document)
                     messagingModel.sendDocumentMessage(fileUrl,0,"")
+                if(files[i].type === TdlibState.Sticker)
+                    messagingModel.sendStickerMessage(files[i].id,0)
+
             }
 
         }

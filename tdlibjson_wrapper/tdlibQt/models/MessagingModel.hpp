@@ -111,6 +111,8 @@ public slots:
                           const QString &caption = "");
     void sendDocumentMessage(const QString &filepath, const QString &reply_id,
                              const QString &caption = "");
+    void sendStickerMessage(const int &fileId, const QString &reply_id
+                           );
 
     void downloadDocument(const int rowIndex);
     void cancelDownload(const int rowIndex);
