@@ -26,7 +26,6 @@ StickerModel::~StickerModel()
 {
     m_stikerSets.clear();
     m_installedStickerSets.clear();
-    m_StickerSetsSize.clear();
 }
 
 void StickerModel::getAttachedStickerSets(const int file_id)
@@ -92,6 +91,7 @@ QHash<int, QByteArray> StickerModel::roleNames() const
     roles[TITLE] = "title";
     roles[NAME] = "name";
     roles[STICKER] = "sticker";
+    roles[EMOJI] = "emoji";
     roles[STICKERS_COUNT] = "stickers_count";
     roles[SET_STICKER_THUMBNAIL] = "set_thumbnail";
 
@@ -129,7 +129,7 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
     case SET_STICKER_THUMBNAIL:
         return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->path_);
     case STICKERS_COUNT:
-        return m_StickerSetsSize[setNumber];
+        return m_stikerSets[setNumber]->stickers_.size();
     case STICKER:
         if (index.parent().row() == -1)
             return QVariant();
@@ -142,6 +142,15 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         }
         emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->id_, 12, index);
         return QVariant();
+    case EMOJI: {
+        if (index.parent().row() == -1)
+            return QVariant();
+
+        QString emojis = "";
+        emojis += QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->emoji_);
+        return emojis;
+    }
+    break;
     case STICKER_FILE_ID:
         if (index.parent().row() == -1)
             return QVariant();
@@ -200,8 +209,6 @@ void StickerModel::addStickerSet(const QJsonObject &stickerSetObject)
 {
     auto stickerSetObj = ParseObject::parseStickerSet(stickerSetObject);
     if (stickerSetObj.data()) {
-        m_StickerSetsSize.append(stickerSetObj->stickers_.size());
-
         beginInsertRows(QModelIndex(), m_stikerSets.size(), m_stikerSets.size());
         m_stikerSets.append(stickerSetObj);
         endInsertRows();
@@ -260,6 +267,21 @@ void StickerModel::stickersSetsReceived(const QJsonObject &setsObject)
         addInstalledStickerSets(setsObject);
 }
 
+QVariant StickerModel::getStickerUrl(const int setIndex, const int stickerIndex)
+{
+    return data(index(stickerIndex, 0, createIndex(setIndex, 0)), DataRoles::STICKER);
+}
+
+QVariant StickerModel::getStickerEmoji(const int setIndex, const int stickerIndex)
+{
+    return data(index(stickerIndex, 0, createIndex(setIndex, 0)), DataRoles::EMOJI);
+}
+
+QVariant StickerModel::getStickersCount(const int setIndex)
+{
+    return data(index(setIndex, 0), DataRoles::STICKERS_COUNT);
+}
+
 void StickerModel::getFile(const int fileId, const int priority, const QModelIndex indexItem)
 {
     m_client->downloadFile(fileId, priority);
@@ -304,7 +326,7 @@ QModelIndex StickerModel::parent(const QModelIndex &child) const
 void StickerModel::addFavoriteStickers(const QJsonObject &stickersObject)
 {
     auto stickersObj = ParseObject::parseStickers(stickersObject);
-    auto resultSet = createStickerSet(tr("Favorite"), tr("Favorite"), stickersObj->stickers_);
+    auto resultSet = createStickerSet("Favorite", tr("Favorite"), stickersObj->stickers_);
     if (resultSet.data()) {
         beginInsertRows(QModelIndex(), m_stikerSets.size(), m_stikerSets.size());
         m_stikerSets.append(resultSet);
@@ -315,7 +337,7 @@ void StickerModel::addFavoriteStickers(const QJsonObject &stickersObject)
 void StickerModel::addRecentStickers(const QJsonObject &stickersObjecct)
 {
     auto stickersObj = ParseObject::parseStickers(stickersObjecct);
-    auto resultSet = createStickerSet(tr("Recent"), tr("Recent"), stickersObj->stickers_);
+    auto resultSet = createStickerSet("Recent", tr("Recent"), stickersObj->stickers_);
 
     if (resultSet.data()) {
         beginInsertRows(QModelIndex(), m_stikerSets.size(),  m_stikerSets.size());
@@ -333,7 +355,6 @@ void StickerModel::setModelState(StickerModel::StickerModelState state)
     beginResetModel();
     m_stikerSets.clear();
     m_installedStickerSets.clear();
-    m_StickerSetsSize.clear();
     endResetModel();
     switch (m_state) {
     case SendState:

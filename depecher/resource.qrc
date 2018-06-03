@@ -28,5 +28,6 @@
         <file>qml/assets/icons/en_sailfish.jpg</file>
         <file>qml/assets/icons/ru_sailfish.jpg</file>
         <file>qml/pages/items/AttachSticker.qml</file>
+        <file>qml/pages/items/StickerPreviewComponent.qml</file>
     </qresource>
 </RCC>

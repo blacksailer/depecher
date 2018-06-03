@@ -353,6 +353,7 @@ return undefined
             }
         }
     }
+
     Component {
         id:animationContent
         Column{
@@ -411,7 +412,6 @@ return undefined
                             }
                         }
                     }
-
                     Label {
 
                         color:  Theme.primaryColor
@@ -423,12 +423,14 @@ return undefined
                         anchors.rightMargin: Theme.paddingSmall
                         anchors.bottomMargin: Theme.paddingSmall
                     }
-
                 }
                 MouseArea{
                     anchors.fill: parent
                     enabled: file_downloading_completed
-                    onClicked: mediaPlayer.playbackState != MediaPlayer.PlayingState ? mediaPlayer.play() : mediaPlayer.stop()
+                    onClicked:{
+                        console.log("clicked",mediaPlayer.playbackState)
+                    mediaPlayer.playbackState != MediaPlayer.PlayingState ? mediaPlayer.play() : mediaPlayer.stop()
+                }
                 }
                 Rectangle {
                     id:dimmedPlayColor

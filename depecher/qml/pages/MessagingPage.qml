@@ -49,7 +49,7 @@ Page {
 
     WritingItem {
         id: writer
-
+        rootPage: page
         Timer {
             //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)

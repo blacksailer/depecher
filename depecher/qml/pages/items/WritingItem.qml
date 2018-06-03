@@ -4,7 +4,7 @@ import Sailfish.Silica 1.0
 Drawer {
     id: attachDrawer
     state: "publish"
-
+    property Page rootPage
     property int sendAreaHeight: sendArea.height
     property alias bottomArea: sendArea
     property alias actionButton: sendButton
@@ -112,7 +112,7 @@ Drawer {
             anchors.bottomMargin: 25
             onClicked: {
                 if(!attachDrawer.opened)
-                attachLoader.setSource("AttachSticker.qml")
+                attachLoader.setSource("AttachSticker.qml",{previewView:foregroundItem,rootPage:rootPage})
                 attachDrawer.open=!attachDrawer.open
             }
         }

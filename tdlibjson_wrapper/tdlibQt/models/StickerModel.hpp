@@ -22,6 +22,7 @@ public:
         STICKERS_COUNT,
         SET_STICKER_THUMBNAIL,
         STICKER,
+        EMOJI,
         STICKER_FILE_ID
     };
     enum StickerModelState {
@@ -43,7 +44,6 @@ private:
     QList<QSharedPointer<stickerSet>> m_stikerSets;
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;
-    QList<int> m_StickerSetsSize;
     QMap<int, QModelIndex> m_stickerUpdateQueue;
 
     TdlibJsonWrapper *m_client;
@@ -69,6 +69,10 @@ public slots:
     void processFile(const QJsonObject &fileObject);
     void stickersReceived(const QJsonObject &setObject);
     void stickersSetsReceived(const QJsonObject &setsObject);
+
+    QVariant getStickerUrl(const int setIndex, const int stickerIndex);
+    QVariant getStickerEmoji(const int setIndex, const int stickerIndex);
+    QVariant getStickersCount(const int setIndex);
 private slots:
     void getFile(const int fileId, const int priority, const QModelIndex indexItem);
 

@@ -137,11 +137,7 @@ This groups lives only because of community and by community around Sailfish OS.
 <context>
     <name>AttachSticker</name>
     <message>
-        <source>Favorite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Recent</source>
+        <source>Sticker preview mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
