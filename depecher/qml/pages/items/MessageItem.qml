@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
 import QtMultimedia 5.6
+import "../components"
 ListItem {
     id: messageListItem
     width: parent.width
@@ -322,6 +323,10 @@ return undefined
                 height: width
                 fillMode: Image.PreserveAspectFit
                 source: content ? "image://depecherDb/" + content : ""
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: pageStack.push(Qt.resolvedUrl("../components/PreviewStickerSetDialog.qml"),{set_id:sticker_set_id})
+                }
             }
         }
     }

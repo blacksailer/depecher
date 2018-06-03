@@ -172,7 +172,14 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case FILE_UPLOADED_SIZE:
         return dataFileMeta(rowIndex, role);
         break;
-
+    case STICKER_SET_ID:
+        if (messages[rowIndex]->content_->get_id() == messageSticker::ID) {
+            auto contentStickerPtr = static_cast<messageSticker *>
+                                     (messages[rowIndex]->content_.data());
+            return QString::number(contentStickerPtr->sticker_->set_id_);
+        }
+        return QVariant();
+        break;
     case MESSAGE_TYPE: {
         if (messages[rowIndex]->chat_id_ == 0)
             return SYSTEM_NEW_MESSAGE;
@@ -274,7 +281,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[FILE_IS_UPLOADING] = "file_is_uploading";
     roles[FILE_DOWNLOADING_COMPLETED] = "file_downloading_completed";
     roles[FILE_UPLOADING_COMPLETED] = "file_uploading_completed";
-
+    roles[STICKER_SET_ID] = "sticker_set_id";
     roles[REPLY_MARKUP] = "reply_markup";
     roles[MESSAGE_TYPE] = "message_type";
 

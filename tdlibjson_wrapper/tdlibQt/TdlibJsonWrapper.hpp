@@ -152,6 +152,7 @@ public slots:
     void cancelUploadFile(int fileId);
     void joinChatByInviteLink(const QString &link, const QString &extra = "");
     void setTotalUnreadCount(int totalUnreadCount);
+    void changeStickerSet(const qint64 set_id, const bool is_installed = false, const bool is_archived = false);
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

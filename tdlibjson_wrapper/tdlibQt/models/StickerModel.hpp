@@ -9,6 +9,7 @@ class StickerModel : public QAbstractItemModel
 {
     Q_OBJECT
     Q_PROPERTY(StickerModelState modelState READ modelState WRITE setModelState NOTIFY modelStateChanged)
+    Q_PROPERTY(QString set_id READ set_id WRITE setSet_id NOTIFY set_idChanged)
 public:
     enum DataRoles {
         ID,
@@ -62,6 +63,8 @@ private:
 
     QSharedPointer<stickerSet> createStickerSet(const QString &name, const QString &title,
             const std::vector<QSharedPointer<sticker>> &stickers);
+    QString m_set_id;
+
 public slots:
     void setModelState(StickerModelState state);
     void addStickerSet(const QJsonObject &stickerSetObject);
@@ -69,10 +72,13 @@ public slots:
     void processFile(const QJsonObject &fileObject);
     void stickersReceived(const QJsonObject &setObject);
     void stickersSetsReceived(const QJsonObject &setsObject);
+    void changeStickerSet(const QString &setId, const bool isInstalled = false, const bool isArchived = false);
 
     QVariant getStickerUrl(const int setIndex, const int stickerIndex);
     QVariant getStickerEmoji(const int setIndex, const int stickerIndex);
     QVariant getStickersCount(const int setIndex);
+    void setSet_id(QString set_id);
+
 private slots:
     void getFile(const int fileId, const int priority, const QModelIndex indexItem);
 
@@ -84,6 +90,8 @@ signals:
 
 
     // QAbstractItemModel interface
+    void set_idChanged(QString set_id);
+
 public:
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -91,6 +99,7 @@ public:
     int columnCount(const QModelIndex &parent) const override;
     QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;
+    QString set_id() const;
 };
 } //tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::StickerModel::StickerModelState)

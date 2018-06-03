@@ -245,6 +245,25 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>PreviewStickerSetDialog</name>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove %1 stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add %1 stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>

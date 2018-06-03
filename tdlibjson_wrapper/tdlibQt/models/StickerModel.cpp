@@ -176,7 +176,7 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 
 int StickerModel::rowCount(const QModelIndex &parent) const
 {
-    if (m_state == SendState) {
+    if (m_state == SendState || m_state == PreviewState) {
         if (parent.column() == 0) {
             return m_stikerSets.at(parent.row())->stickers_.size();
         } else
@@ -184,14 +184,6 @@ int StickerModel::rowCount(const QModelIndex &parent) const
     }
 
     return 0;
-//    int size = 0;
-//    if (m_state == SendState)
-//        for (auto val : m_stikerSets)
-//            size += val->stickers_.size();
-//    else
-//        for (auto val : m_installedStickerSets)
-//            size += val->covers_.size();
-//    return size;
 }
 
 
@@ -229,7 +221,7 @@ void StickerModel::processFile(const QJsonObject &fileObject)
     if (m_stickerUpdateQueue.keys().contains(file->id_)) {
         QVector<int> photoRole;
         QModelIndex viewIndex = m_stickerUpdateQueue[file->id_];
-        qDebug() << viewIndex << "Row" << viewIndex.row() << "Column" << viewIndex.column() <<  viewIndex.parent().row();
+//        qDebug() << viewIndex << "Row" << viewIndex.row() << "Column" << viewIndex.column() <<  viewIndex.parent().row();
 
         int rowIndex = viewIndex.row();
         int setIndex = viewIndex.parent().row();
@@ -267,6 +259,11 @@ void StickerModel::stickersSetsReceived(const QJsonObject &setsObject)
         addInstalledStickerSets(setsObject);
 }
 
+void StickerModel::changeStickerSet(const QString &setId, const bool isInstalled, const bool isArchived)
+{
+    m_client->changeStickerSet(setId.toLongLong(), isInstalled, isArchived);
+}
+
 QVariant StickerModel::getStickerUrl(const int setIndex, const int stickerIndex)
 {
     return data(index(stickerIndex, 0, createIndex(setIndex, 0)), DataRoles::STICKER);
@@ -280,6 +277,15 @@ QVariant StickerModel::getStickerEmoji(const int setIndex, const int stickerInde
 QVariant StickerModel::getStickersCount(const int setIndex)
 {
     return data(index(setIndex, 0), DataRoles::STICKERS_COUNT);
+}
+
+void StickerModel::setSet_id(QString set_id)
+{
+    if (m_set_id == set_id)
+        return;
+
+    m_set_id = set_id;
+    emit set_idChanged(m_set_id);
 }
 
 void StickerModel::getFile(const int fileId, const int priority, const QModelIndex indexItem)
@@ -323,6 +329,11 @@ QModelIndex StickerModel::parent(const QModelIndex &child) const
         }
     return createIndex(rowPosition, -1);
 }
+
+QString StickerModel::set_id() const
+{
+    return m_set_id;
+}
 void StickerModel::addFavoriteStickers(const QJsonObject &stickersObject)
 {
     auto stickersObj = ParseObject::parseStickers(stickersObject);
@@ -363,7 +374,8 @@ void StickerModel::setModelState(StickerModel::StickerModelState state)
         getInstalledStickers();
         break;
     case PreviewState:
-        //        getStickerSet();
+        if (set_id().length() > 0)
+            getStickerSet(set_id().toLongLong());
         break;
     case SettingsState:
 

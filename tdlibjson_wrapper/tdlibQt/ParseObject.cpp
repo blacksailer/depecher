@@ -582,7 +582,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-                return parseMessageAnimation(messageContentObject);
+        return parseMessageAnimation(messageContentObject);
 //        typeMessageText->text_->text_ = "Animation";
 //        return typeMessageText;
 
@@ -701,7 +701,7 @@ QSharedPointer<sticker> ParseObject::parseSticker(const QJsonObject &stickerObje
     sticker_->height_ = stickerObject["height"].toInt();
     sticker_->width_ = stickerObject["width"].toInt();
     sticker_->is_mask_ = stickerObject["is_mask"].toBool();
-    sticker_->set_id_ = stickerObject["set_id"].toBool();
+    sticker_->set_id_ = getInt64(stickerObject["set_id"]);
     sticker_->mask_position_ = parseMaskPosition(stickerObject["mask_position"].toObject());
     sticker_->sticker_ = parseFile(stickerObject["sticker"].toObject());
     sticker_->thumbnail_ = parsePhotoSize(stickerObject["thumbnail"].toObject());

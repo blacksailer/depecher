@@ -4,30 +4,18 @@ import tdlibQtEnums 1.0
 import TelegramModels 1.0
 import QtQml.Models 2.3
 import org.nemomobile.notifications 1.0
-Item {
-    anchors.fill: parent
-    id:root
-    signal sendUrlItems(var items)
-    property Item previewView
-    property Page rootPage
+import "../items"
+Dialog {
+    id:rootPage
+    property alias set_id: stickerModel.set_id
     property bool _previewEnabled: false
-    property alias set_id:stickerModel.set_id
-
-    Notification {
-        id:notificationPreviewMode
-        appName: "Depecher"
-        previewBody: qsTr("Sticker preview mode")
-    }
-    StickerModel {
-        id:stickerModel
-        modelState: set_id ==="" ? StickerModel.SendState : StickerModel.PreviewState
-    }
-
+    property bool _setIsInstalled: false
+    canAccept: !_previewEnabled
     states:[
         State {
             name: "general"
             PropertyChanges {
-                target: root
+                target: rootPage
                 _previewEnabled:false
             }
             PropertyChanges {
@@ -43,7 +31,7 @@ Item {
         State {
             name: "preview"
             PropertyChanges {
-                target: root
+                target: rootPage
                 _previewEnabled:true
             }
             PropertyChanges {
@@ -62,101 +50,95 @@ Item {
         }
     ]
     state: "general"
+    onAccepted: {
+    if(_setIsInstalled)
+        stickerModel.changeStickerSet(set_id,false)
+    else
+        stickerModel.changeStickerSet(set_id,true)
+    }
+Notification {
+    id:notificationPreviewMode
+    appName: "Depecher"
+    previewBody: qsTr("Sticker preview mode")
+}
+StickerModel {
+    id:stickerModel
+    modelState: set_id ==="" ? StickerModel.UknownState : StickerModel.PreviewState
+}
 
-    MouseArea {
-        id:previewArea
-        enabled: _previewEnabled
-        focus: _previewEnabled
-        width: parent.width
-        height: parent.height - thumbnails.height
-        anchors.bottom: parent.bottom
-        property var component
-        property var previewItem
-        preventStealing: true
-        onPositionChanged: previewThis(mouseX,mouseY)
-        onEnabledChanged: {
-            if(enabled)
+
+MouseArea {
+    id:previewArea
+    enabled: _previewEnabled
+    focus: _previewEnabled
+    width: parent.width
+    height: parent.height - header.height
+    anchors.bottom: parent.bottom
+    property var component
+    property var previewItem
+    preventStealing: true
+    onPositionChanged: previewThis(mouseX,mouseY)
+    onEnabledChanged: {
+        if(enabled)
+        {
+            component = Qt.createComponent(Qt.resolvedUrl("../items/StickerPreviewComponent.qml"));
+            previewItem = component.createObject(rootPage, {"source": undefined});
+            previewItem.anchors.centerIn = rootPage
+            previewItem.z = listView.z + 2
+        }
+        else {
+            if(component)
+                component.destroy()
+            if(previewItem)
+                previewItem.destroy()
+        }
+    }
+
+    function previewThis(x,y) {
+        //delegateModel do not get item through index
+        //Thats why getting sticker url via model slot
+        var stikerGridIndex =  listView.indexAt(x,y+listView.contentY)
+        var grid =listView.itemAt(x,y+listView.contentY).gridSticker
+        if (grid) {
+            var previousHeight = 0;
+            var indexItem = 0
+            var setIndex = stikerGridIndex
+            //Get height of all gridView previously
+            indexItem = grid.indexAt(x,mapToItem(grid,x,y).y)
+            var stickerUrl = listView.model.model.getStickerUrl(setIndex,indexItem);
+            if(stickerUrl)
             {
-                component = Qt.createComponent(Qt.resolvedUrl("StickerPreviewComponent.qml"));
-                previewItem = component.createObject(previewView, {"source": undefined});
+                previewItem.source = "image://depecherDb/"+stickerUrl;
+                previewItem.emoji = listView.model.model.getStickerEmoji(setIndex,indexItem);
             }
-            else {
-                if(component)
-                    component.destroy()
-                if(previewItem)
-                    previewItem.destroy()
-            }
-        }
 
-        function previewThis(x,y) {
-            //delegateModel do not get item through index
-            //Thats why getting sticker url via model slot
-            var stikerGridIndex =  listView.indexAt(x,y+listView.contentY)
-            var grid =listView.itemAt(x,y+listView.contentY).gridSticker
-            if (grid) {
-                var previousHeight = 0;
-                var indexItem = 0
-                var setIndex = stikerGridIndex
-                //Get height of all gridView previously
-                indexItem = grid.indexAt(x,mapToItem(grid,x,y).y)
-                var stickerUrl = listView.model.model.getStickerUrl(setIndex,indexItem);
-                if(stickerUrl)
-                {
-                    previewItem.source = "image://depecherDb/"+stickerUrl;
-                    previewItem.emoji = listView.model.model.getStickerEmoji(setIndex,indexItem);
-                }
-
-            }
         }
-        onReleased: root.state = "general"
     }
-    Rectangle {
-        id:previewRect
-        visible: false
-        parent: previewView
-        anchors.fill: parent
-        color:Qt.rgba(0,0,0,0.5)
+    onReleased: rootPage.state = "general"
+}
+Rectangle {
+    id:previewRect
+    visible: false
+    parent: rootPage
+    z:listView.z + 1
+    anchors.fill: parent
+    gradient: Gradient {
+        GradientStop { position:  1.0; color: "transparent" }
+        GradientStop { position:  0.0; color: Theme.highlightDimmerColor }
     }
+}
+Column {
+    width:parent.width
 
-    Column {
-        anchors.fill: parent
-        SilicaListView {
-            id:thumbnails
-            width: parent.width
-            height: Theme.itemSizeSmall
-            orientation: Qt.Horizontal
-            layoutDirection: Qt.LeftToRight
-            currentIndex:listView.atYBeginning ? 0 : listView.indexAtTop
-            model: stickerModel
-            spacing: Theme.paddingSmall
-            delegate: BackgroundItem {
-                width: height
-                height: Theme.itemSizeSmall
-                highlighted: ListView.isCurrentItem
-                Image {
-                    width: height
-                    height: Theme.itemSizeSmall - 2* Theme.paddingSmall
-                    anchors.centerIn: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: {
-                        if(name == "Favorite")
-                            return "image://theme/icon-m-favorite"
-                        if(name == "Recent")
-                            return "image://theme/icon-m-clock"
-
-                        return "image://depecherDb/"+set_thumbnail
-                    }
-                }
-                onClicked: listView.currentIndex = index
-            }
-        }
-
+DialogHeader {
+    id:header
+    acceptText: rootPage._setIsInstalled ? qsTr("Remove %1 stickers").arg(listView.contentItem.children[0].gridSticker.count) :qsTr("Add %1 stickers").arg(listView.contentItem.children[0].gridSticker.count)
+    cancelText: qsTr("Back")
+}
         SilicaListView {
             id:listView
             width: parent.width
-            height: parent.height - thumbnails.height
-            property int indexAtTop: 0
-            onContentYChanged: indexAtTop = indexAt(Screen.width/2,contentY + height/2)
+            height: rootPage.height - header.height
             clip:true
             interactive: !_previewEnabled
             onFlickingChanged: previewTimer.stop()
@@ -195,7 +177,7 @@ Item {
                                         previewTimer.start()
                                     }
                                     onClicked:  {
-                                        if( root.state === "general")
+                                        if( rootPage.state === "general")
                                             sendUrlItems([{"id":sticker_file_id,"type":TdlibState.Sticker,"url":sticker}])
 
                                     }
@@ -216,17 +198,20 @@ Item {
                             model:stickers
                         }
                     }
+                Component.onCompleted:{
+                    console.log(is_installed)
+                    rootPage._setIsInstalled = is_installed
+                }
                 }
             }
 
 
         }
+}
+
         Timer {
             id:previewTimer
             interval: 500
-            onTriggered:                 root.state = "preview"
+            onTriggered:                 rootPage.state = "preview"
         }
-
-    }
-
 }

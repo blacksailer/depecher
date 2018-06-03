@@ -10,11 +10,11 @@ namespace tdlibQt {
 
 TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 {
-    td_set_log_verbosity_level(0);
+    td_set_log_verbosity_level(1);
     client = td_json_client_create();
     //SEG FAULT means that json has error input variable names
     QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
-                              "\"database_directory\":\".local/share/harbour-depecher\","
+                              "\"database_directory\":\"/home/nemo/.local/share/harbour-depecher\","
                               "\"api_id\":" + tdlibQt::appid + ","
                               "\"api_hash\":\"" + tdlibQt::apphash + "\","
                               "\"system_language_code\":\""
@@ -240,6 +240,18 @@ void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
 
     m_totalUnreadCount = totalUnreadCount;
     emit totalUnreadCountChanged(totalUnreadCount);
+}
+
+void TdlibJsonWrapper::changeStickerSet(const qint64 set_id, const bool is_installed, const bool is_archived)
+{
+    QString isInstalled = is_installed ? "true" : "false";
+    QString isArchived = is_archived ? "true" : "false";
+
+    QString changeStickerSet = "{\"@type\":\"changeStickerSet\","
+                               "\"set_id\":\"" + QString::number(set_id) + "\","
+                               "\"is_installed\":" + isInstalled + ","
+                               "\"is_archived\":" + isArchived + "}";
+    td_json_client_send(client, changeStickerSet.toStdString().c_str());
 }
 
 
