@@ -12,7 +12,7 @@ Item {
     property Page rootPage
     property bool _previewEnabled: false
     property alias set_id:stickerModel.set_id
-
+    Component.onDestruction: rootPage.backNavigation = true
     Notification {
         id:notificationPreviewMode
         appName: "Depecher"
@@ -144,7 +144,7 @@ Item {
                         if(name == "Recent")
                             return "image://theme/icon-m-clock"
 
-                        return "image://depecherDb/"+set_thumbnail
+                        return "image://depecherDb/"+set_thumbnail+".webp"
                     }
                 }
                 onClicked: listView.currentIndex = index
@@ -159,7 +159,12 @@ Item {
             onContentYChanged: indexAtTop = indexAt(Screen.width/2,contentY + height/2)
             clip:true
             interactive: !_previewEnabled
-            onFlickingChanged: previewTimer.stop()
+            onDragStarted: {
+                previewTimer.stop()
+            }
+            onFlickingChanged: {
+                previewTimer.stop()
+            }
             model:  DelegateModel {
                 id:stickerSetModel
                 model: stickerModel

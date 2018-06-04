@@ -91,8 +91,28 @@ void TdlibJsonWrapper::startListen()
         if (chat.contains("@extra")) {
             if (chat["@extra"].toString() == "EnSailfish") {
                 auto chatPtr = ParseObject::parseChat(chat);
+                QVariantMap resultType;
+                switch (chatPtr->type_->get_id()) {
+                case chatTypeBasicGroup::ID: {
+                    resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::BasicGroup);
+                }
+                case chatTypePrivate::ID: {
+                    resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Private);
+                }
+                case chatTypeSecret::ID: {
+                    resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Secret);
+                }
+                case chatTypeSupergroup::ID: {
+                    chatTypeSupergroup *superGroupMetaInfo   = static_cast<chatTypeSupergroup *>
+                            (chatPtr->type_.data());
+                    resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Supergroup);
+                    resultType["is_channel"] = superGroupMetaInfo->is_channel_;
+                    resultType["supergroup_id"] = superGroupMetaInfo->supergroup_id_;
+                }
+                }
+
                 emit getChatByLink(QString::fromStdString(chatPtr->title_), QString::number(chatPtr->id_),
-                                   3, QString::number(chatPtr->last_read_inbox_message_id_),
+                                   resultType, QString::number(chatPtr->last_read_inbox_message_id_),
                                    QString::number(chatPtr->last_read_outbox_message_id_),
                                    QString::number(chatPtr->last_message_->id_));
             }
@@ -436,7 +456,6 @@ void TdlibJsonWrapper::getRecentStickers(const bool is_attached)
     else
         getRecentStickersStr.append("false");
     getRecentStickersStr.append(",\"@extra\": \"getRecentStickers\"}");
-    qDebug() << getRecentStickersStr;
     td_json_client_send(client, getRecentStickersStr.toStdString().c_str());
 }
 

@@ -20,6 +20,9 @@
 #include "tdlibQt/items/AboutMeDAO.hpp"
 #include "tdlibQt/NotificationManager.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
+
+#include "tdlibQt/models/StickerModel.hpp"
+
 int main(int argc, char *argv[])
 {
     QGuiApplication *app = SailfishApp::application(argc, argv);
@@ -59,6 +62,7 @@ int main(int argc, char *argv[])
             "TelegramAuthenticationHandler");
     view->setTitle("Depecher");
     view->rootContext()->setContextProperty("c_telegramWrapper", tdlib);
+
     view->engine()->addImageProvider(QLatin1String("depecherDb"), new tdlibQt::TelegramProfileProvider);
     view->setSource(QUrl("qrc:///qml/app.qml"));
     view->show();

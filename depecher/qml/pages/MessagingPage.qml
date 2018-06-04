@@ -26,12 +26,31 @@ Page {
     MessagingModel{
         id: messagingModel
         onChatTypeChanged: {
-            if(chatType === TdlibState.Channel)
+            if(chatType["type"] == TdlibState.Supergroup)
             {
-                writer.sendAreaHeight = 0
-                writer.bottomArea.visible = false
+                if(!canPostMessages(memberStatus)) {
+                    writer.sendAreaHeight = 0
+                    writer.bottomArea.visible = false
+                }
             }
         }
+        function canPostMessages(statusObj) {
+            if(messagingModel.chatType["type"] == TdlibState.Supergroup) {
+                if(messagingModel.chatType["is_channel"])
+                {
+                    if(statusObj["status"] == MessagingModel.Member)
+                        return false;
+                    if(statusObj["status"] == MessagingModel.Creator && statusObj["is_member"])
+                        return true;
+                    if(statusObj["status"] == MessagingModel.Administrator)
+                        return statusObj["can_post_messages"];
+                }
+
+                return true;
+            }
+            return true;
+        }
+
         onErrorReceived: {
             notificationError.previewBody(error_code +"-" +error_message)
             notificationError.publish()
@@ -169,7 +188,7 @@ Page {
                             text: qsTr("Copy Text")
                             onClicked: {
                                 if(caption)
-                                Clipboard.text = caption
+                                    Clipboard.text = caption
                                 else
                                     Clipboard.text = content
                             }

@@ -12,7 +12,8 @@ class MessagingModel : public QAbstractListModel
 
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(QString peerId READ peerId WRITE setPeerId NOTIFY peerIdChanged)
-    Q_PROPERTY(tdlibQt::Enums::ChatType chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
+    Q_PROPERTY(QVariant memberStatus READ memberStatus NOTIFY memberStatusChanged)
+    Q_PROPERTY(QVariantMap chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
     Q_PROPERTY(QString action READ action WRITE setAction NOTIFY actionChanged)
     Q_PROPERTY(QString currentMessage READ currentMessage WRITE setCurrentMessage NOTIFY
                currentMessageChanged)
@@ -38,6 +39,7 @@ class MessagingModel : public QAbstractListModel
         SENDER_PHOTO,
         AUTHOR,
         ACTION,
+        MEMBER_STATUS,
         CHAT_ID,
         SENDING_STATE,
         IS_OUTGOING,
@@ -125,7 +127,7 @@ public slots:
 
     void joinChat();
     void getNewMessages();
-    void setChatType(const tdlibQt::Enums::ChatType chatType);
+    void setChatType(const QVariantMap &chatType);
     void setCurrentMessage(const QString &currentMessage);
     void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
@@ -148,7 +150,7 @@ signals:
     void firstIdChanged();
     void viewMessagesChanged(const qint64 peerId);
 
-    void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
+    void chatTypeChanged(const QVariantMap &chatType);
 
     void actionChanged(QString action);
 
@@ -160,14 +162,15 @@ signals:
 
     void lastOutboxIdChanged(double lastOutboxId);
 
+    void memberStatusChanged(const QVariant &memberStatus);
+
 private:
     bool fetchPending = false;
     QString m_userName;
     QString m_peerId;
     int m_totalCount = 1;
 
-    // QAbstractItemModel interface
-    tdlibQt::Enums::ChatType m_chatType;
+    QVariantMap m_chatType;
 
     QString m_action;
 
@@ -178,11 +181,10 @@ private:
     bool m_atYEnd = 0;
 
     qint64 m_lastOutboxId;
-
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
-    tdlibQt::Enums::ChatType chatType() const;
+    QVariantMap chatType() const;
     QString action() const;
     QString currentMessage() const;
     QString lastMessage() const;
@@ -217,6 +219,7 @@ public:
     {
         return m_lastOutboxId;
     }
+    QVariant memberStatus() const;
 };
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)

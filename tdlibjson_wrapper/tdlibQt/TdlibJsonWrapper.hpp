@@ -98,7 +98,7 @@ signals:
     void okReceived(const QJsonObject &okObject);
     void fileReceived(const QJsonObject &fileObject);
     void messageReceived(const QJsonObject &messageObject);
-    void getChatByLink(const QString &title, const QString &chat_id, const int chatType,
+    void getChatByLink(const QString &title, const QString &chat_id, const QVariant &chatType,
                        const QString &last_message_inbox_id, const QString &last_message_outbox_id,
                        const QString &last_message_id);
     void stickerSetsReceived(const QJsonObject &stickerSetsObject);

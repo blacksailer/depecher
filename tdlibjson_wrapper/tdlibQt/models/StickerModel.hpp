@@ -12,7 +12,7 @@ class StickerModel : public QAbstractItemModel
     Q_PROPERTY(QString set_id READ set_id WRITE setSet_id NOTIFY set_idChanged)
 public:
     enum DataRoles {
-        ID,
+        ID = Qt::UserRole + 1,
         IS_ARCHIVED,
         IS_INSTALLED,
         IS_MASKS,
@@ -39,6 +39,8 @@ public:
     ~StickerModel();
     StickerModelState modelState() const;
 
+    QString set_id() const;
+
 private:
 
     StickerModelState m_state = UknownState;
@@ -46,7 +48,7 @@ private:
     QList<QSharedPointer<stickerSet>> m_stikerSets;
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;
-    QMap<int, QModelIndex> m_stickerUpdateQueue;
+    QMap<int, QPersistentModelIndex> m_stickerUpdateQueue;
 
     TdlibJsonWrapper *m_client;
 
@@ -87,7 +89,7 @@ private slots:
 signals:
     void modelStateChanged(StickerModelState state);
     void downloadFileStart(int file_id_, int priority_, QModelIndex indexItem) const;
-
+    void refreshSticker();
 
 
     // QAbstractItemModel interface
@@ -100,7 +102,8 @@ public:
     int columnCount(const QModelIndex &parent) const override;
     QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &child) const override;
-    QString set_id() const;
+
+    bool hasChildren(const QModelIndex &parent) const override;
 };
 } //tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::StickerModel::StickerModelState)

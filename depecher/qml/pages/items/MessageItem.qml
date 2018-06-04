@@ -33,9 +33,9 @@ ListItem {
                 fallbackText: author ? author.charAt(0) : ""
                 fallbackItemVisible: sender_photo ? false : true
                 visible: !is_outgoing && message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                         messagingModel.chatType !== TdlibState.Channel &&
-                         messagingModel.chatType !== TdlibState.Private &&
-                         messagingModel.chatType !== TdlibState.Secret
+                         !messagingModel.chatType["is_channel"]  &&
+                         messagingModel.chatType["type"] != TdlibState.Private &&
+                         messagingModel.chatType["type"] != TdlibState.Secret
             }
             Column {
                 id: contentLoader
@@ -54,7 +54,7 @@ ListItem {
                             if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE) {
                                 return false
                             }
-                            else if(messagingModel.chatType === TdlibState.BasicGroup || messagingModel.chatType == TdlibState.Supergroup) {
+                            else if(messagingModel.chatType["type"] == TdlibState.BasicGroup || (messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"])) {
                                 return true
                             }
 
@@ -113,7 +113,7 @@ ListItem {
                     Label {
                         font.pixelSize: Theme.fontSizeTiny
                         visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
-                                 ||  messagingModel.chatType === TdlibState.Private || messagingModel.chatType === TdlibState.Secret
+                                 ||  messagingModel.chatType["type"] == TdlibState.Private || messagingModel.chatType["type"] == TdlibState.Secret
                         text: {
                             if(sending_state === MessagingModel.Sending_Pending) {
                                 return "<b>\u23F1</b>" // clock
@@ -167,6 +167,7 @@ ListItem {
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: Image.PreserveAspectFit
                 source: "image://depecherDb/"+content
+                Component.onCompleted: console.log(content)
 
                 MouseArea{
                     anchors.fill: parent

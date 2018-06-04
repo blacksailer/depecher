@@ -7,9 +7,13 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Wen May 23 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-4
+* Mon June 4 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-5
+- Stickers sending added
+- Adding/removing sticker sets from chat implemented
+- Sticker preview
 - Animations added
 - Icons changed (Thanks to Ruditimmermans and Alain)
+- verbosity of tdlib changed to level 1 (errors and critical errors)
 
 * Tue May 15 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-3
 - Switching between types fixed (issue #35)

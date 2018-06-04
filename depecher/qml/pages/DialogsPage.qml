@@ -17,14 +17,8 @@ Page {
     //for search in pageStack
     property bool __chat_page: true
 
-    Drawer {
-        id:drawer
-        anchors.fill: parent
-        dock:Dock.Left
-        backgroundSize: parent.width*2/3
         SilicaListView {
             anchors.fill: parent
-            opacity: drawer.open ? 0.5 : 1
             model:chatsModel
             header:  PageHeader {
                 title: titleHeader
@@ -61,16 +55,7 @@ Page {
             }
         }
 
-        MouseArea {
-            anchors.fill: parent
-            enabled: drawer.open
-            onClicked: drawer.hide()
-        }
 
-        background: MenuComponent{
-            id:menuList
-        }
-    }
     Connections {
     target: c_telegramWrapper
     onErrorReceivedMap:{

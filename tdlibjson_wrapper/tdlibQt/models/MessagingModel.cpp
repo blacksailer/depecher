@@ -253,6 +253,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[SENDER_PHOTO] = "sender_photo";
     roles[AUTHOR] = "author";
     roles[CHAT_ID] = "chat_id";
+    roles[MEMBER_STATUS] = "member_status";
     roles[SENDING_STATE] = "sending_state";
     roles[IS_OUTGOING] = "is_outgoing";
     roles[CAN_BE_EDITED] = "can_be_edited";
@@ -312,7 +313,7 @@ bool MessagingModel::canFetchMore(const QModelIndex &parent) const
     return true;
 }
 
-Enums::ChatType MessagingModel::chatType() const
+QVariantMap MessagingModel::chatType() const
 {
     return m_chatType;
 }
@@ -335,6 +336,63 @@ QString MessagingModel::lastMessage() const
 bool MessagingModel::atYEnd() const
 {
     return m_atYEnd;
+}
+
+QVariant MessagingModel::memberStatus() const
+{
+    auto status = m_UserStatus;
+    if (status.data() == nullptr)
+        return QVariant();
+    if (status->get_id() == chatMemberStatusCreator::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Creator;
+        resultStatus["is_member"] = static_cast<chatMemberStatusCreator *>(status.data())->is_member_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusAdministrator::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Administrator;
+        resultStatus["can_be_edited"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_be_edited_;
+        resultStatus["can_change_info"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_change_info_;
+        resultStatus["can_delete_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_delete_messages_;
+        resultStatus["can_edit_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_edit_messages_;
+        resultStatus["can_invite_users"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_invite_users_;
+        resultStatus["can_pin_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_pin_messages_;
+        resultStatus["can_post_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_post_messages_;
+
+        resultStatus["can_promote_members"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_promote_members_;
+        resultStatus["can_restrict_members"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_restrict_members_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusBanned::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Banned;
+        resultStatus["banned_until_date"] = static_cast<chatMemberStatusBanned *>(status.data())->banned_until_date_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusMember::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Member;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusRestricted::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Restricted;
+        resultStatus["can_add_web_page_previews"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_add_web_page_previews_;
+        resultStatus["can_send_media_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_media_messages_;
+        resultStatus["can_send_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_messages_;
+        resultStatus["can_send_other_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_other_messages_;
+        resultStatus["is_member"] = static_cast<chatMemberStatusRestricted *>(status.data())->is_member_;
+        resultStatus["restricted_until_date"] = static_cast<chatMemberStatusRestricted *>(status.data())->restricted_until_date_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusLeft::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Left;
+        return resultStatus;
+
+    }
+    return QVariant();
 }
 
 void MessagingModel::chatActionCleanUp()
@@ -475,9 +533,10 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
                                    (messages[rowIndex]->content_.data());
             int sizesCount = contentPhotoPtr->photo_->sizes_.size();
             if (sizesCount > 0) {
-                if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_)
+                if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_) {
+                    qDebug() << QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->path_);
                     return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->path_);
-                else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
+                } else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
                     int fileId = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
                     emit downloadFileStart(fileId, 12, rowIndex);
                     return QString::fromStdString(contentPhotoPtr->photo_->sizes_[0]->photo_->local_->path_);
@@ -770,8 +829,6 @@ void MessagingModel::setPeerId(QString peerId)
         return;
 
     m_peerId = peerId;
-    m_UserStatus = UsersModel::instance()->getGroupStatus(m_peerId.toLongLong());
-
     emit peerIdChanged(peerId);
 }
 
@@ -1012,12 +1069,16 @@ void MessagingModel::getNewMessages()
     }
 }
 
-void MessagingModel::setChatType(const Enums::ChatType chatType)
+void MessagingModel::setChatType(const QVariantMap &chatType)
 {
     if (m_chatType == chatType)
         return;
 
     m_chatType = chatType;
+    if (static_cast<tdlibQt::Enums::ChatType>(m_chatType["type"].toInt()) == tdlibQt::Enums::ChatType::Supergroup)
+        m_UserStatus = UsersModel::instance()->getGroupStatus(m_chatType["supergroup_id"].toInt());
+    emit memberStatusChanged(memberStatus());
+
     emit chatTypeChanged(chatType);
 }
 

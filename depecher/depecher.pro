@@ -52,7 +52,8 @@ MOC_DIR = build/mocs
 
 SOURCES += \
     src/main.cpp \
-    src/FileWorker.cpp
+    src/FileWorker.cpp \
+    ModelTest.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -92,4 +93,5 @@ DISTFILES += \
     notificationcategories/x-depecher.im.fg.conf
 
 HEADERS += \
-    src/FileWorker.hpp
+    src/FileWorker.hpp \
+    ModelTest.hpp

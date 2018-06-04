@@ -7,6 +7,7 @@ namespace tdlibQt {
 StickerModel::StickerModel(QObject *parent) : QAbstractItemModel(parent),
     m_client(TdlibJsonWrapper::instance())
 {
+    rootSet =     QSharedPointer<stickerSet>(new stickerSet);
     connect(m_client, &TdlibJsonWrapper::stickerSetReceived,
             this, &StickerModel::addStickerSet);
     //BUG? Lambda functions requires disconnection before dectruction?. Even disconnection doesnt help
@@ -106,9 +107,19 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 
     if (index.row() < 0)
         return QVariant();
+    stickerSet *childItem = static_cast<stickerSet *>(index.internalPointer());
+    if (!childItem)
+        return QVariant();
 
     int rowIndex = index.row();
-    int setNumber = index.parent().row() > -1 ? index.parent().row() : rowIndex;//getSetIndex(rowIndex);
+    int setNumber = 0;
+    if (childItem == rootSet.data()) {
+        setNumber = index.row();
+        rowIndex = index.row();
+    } else {
+        setNumber = index.parent().row();
+        rowIndex = index.row();
+    }
     switch (role) {
     case ID:
         return  QString::number(m_stikerSets[setNumber]->id_);
@@ -126,8 +137,12 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         return   QString::fromStdString(m_stikerSets[setNumber]->title_);
     case NAME:
         return   QString::fromStdString(m_stikerSets[setNumber]->name_);
-    case SET_STICKER_THUMBNAIL:
-        return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->path_);
+    case SET_STICKER_THUMBNAIL: {
+        if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->is_downloading_completed_)
+            return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->path_);
+        emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
+        return QVariant();
+    }
     case STICKERS_COUNT:
         return m_stikerSets[setNumber]->stickers_.size();
     case STICKER:
@@ -177,10 +192,14 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
 int StickerModel::rowCount(const QModelIndex &parent) const
 {
     if (m_state == SendState || m_state == PreviewState) {
-        if (parent.column() == 0) {
+        stickerSet *childItem = static_cast<stickerSet *>(parent.internalPointer());
+        if (parent == QModelIndex())
+            return m_stikerSets.size();
+
+        if (childItem == rootSet.data()) {
             return m_stikerSets.at(parent.row())->stickers_.size();
         } else
-            return m_stikerSets.size();
+            return 0;
     }
 
     return 0;
@@ -220,23 +239,29 @@ void StickerModel::processFile(const QJsonObject &fileObject)
     auto file = ParseObject::parseFile(fileObject);
     if (m_stickerUpdateQueue.keys().contains(file->id_)) {
         QVector<int> photoRole;
-        QModelIndex viewIndex = m_stickerUpdateQueue[file->id_];
-//        qDebug() << viewIndex << "Row" << viewIndex.row() << "Column" << viewIndex.column() <<  viewIndex.parent().row();
-
+        QPersistentModelIndex viewIndex = m_stickerUpdateQueue[file->id_];
         int rowIndex = viewIndex.row();
         int setIndex = viewIndex.parent().row();
-
-        if (m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_->id_ == file->id_)
-            m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_ = file;
-        if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_)
-            m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
         if (file->local_->is_downloading_completed_) {
             photoRole.append(STICKER);
             photoRole.append(SET_STICKER_THUMBNAIL);
-
         }
-        emit dataChanged(m_stickerUpdateQueue[file->id_],
-                         m_stickerUpdateQueue[file->id_], photoRole);
+        if (m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_->id_ == file->id_) {
+            m_stikerSets[setIndex]->stickers_[rowIndex]->sticker_ = file;
+            //For child item
+            emit dataChanged(viewIndex,
+                             viewIndex, photoRole);
+        }
+        if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_) {
+            m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
+            //For child item
+            emit dataChanged(viewIndex,
+                             viewIndex, photoRole);
+            //for thumbnails
+            emit dataChanged(viewIndex.parent(),
+                             viewIndex.parent(), photoRole);
+        }
+
         if (file->local_->is_downloading_completed_)
             m_stickerUpdateQueue.remove(file->id_);
     }
@@ -266,12 +291,12 @@ void StickerModel::changeStickerSet(const QString &setId, const bool isInstalled
 
 QVariant StickerModel::getStickerUrl(const int setIndex, const int stickerIndex)
 {
-    return data(index(stickerIndex, 0, createIndex(setIndex, 0)), DataRoles::STICKER);
+    return data(index(stickerIndex, 0, index(setIndex, 0)), DataRoles::STICKER);
 }
 
 QVariant StickerModel::getStickerEmoji(const int setIndex, const int stickerIndex)
 {
-    return data(index(stickerIndex, 0, createIndex(setIndex, 0)), DataRoles::EMOJI);
+    return data(index(stickerIndex, 0, index(setIndex, 0)), DataRoles::EMOJI);
 }
 
 QVariant StickerModel::getStickersCount(const int setIndex)
@@ -305,9 +330,9 @@ QModelIndex StickerModel::index(int row, int column, const QModelIndex &parent) 
     if (!hasIndex(row, column, parent))
         return QModelIndex();
 
-    if (parent.row() > -1)
+    if (parent.column() > -1)
         return createIndex(row, column, m_stikerSets.at(parent.row()).data());
-    return createIndex(row, column);
+    return createIndex(row, column, rootSet.data());
 
 }
 
@@ -320,6 +345,11 @@ QModelIndex StickerModel::parent(const QModelIndex &child) const
     if (!childItem)
         return QModelIndex();
 
+    if (childItem == rootSet.data())
+        return QModelIndex();
+
+    if (child.column() == -1)
+        return QModelIndex();
 
     int rowPosition = 0;
     for (int i = 0; i < m_stikerSets.size(); i++)
@@ -327,7 +357,15 @@ QModelIndex StickerModel::parent(const QModelIndex &child) const
             rowPosition = i;
             break;
         }
-    return createIndex(rowPosition, -1);
+    return createIndex(rowPosition, 0, rootSet.data());
+}
+
+bool StickerModel::hasChildren(const QModelIndex &parent) const
+{
+    if (rowCount(parent) == 0)
+        return false;
+
+    return true;
 }
 
 QString StickerModel::set_id() const

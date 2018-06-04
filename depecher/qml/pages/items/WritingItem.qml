@@ -93,6 +93,7 @@ Drawer {
         IconButton {
             id: skrepkaWizard
             icon.source: "image://theme/icon-m-attach"
+            width: visible ? stickerButton.width : 0
             highlighted: false
             anchors.bottom: messageArea.bottom
             anchors.left:parent.left

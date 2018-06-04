@@ -78,8 +78,10 @@ Page {
                                                                                  ? Theme.highlightColor
                                                                                  : Theme.primaryColor)
                             onClicked:{
+                                var chatType = {};
+                                chatType["type"] = TdlibState.Private
                                 pageStack.replace("MessagingPage.qml",{userName:aboutMe.fullName,
-                                                      chatId:aboutMe.id,chatType:TdlibState.Private,
+                                                      chatId:aboutMe.id,chatType:chatType,
                                                lastReadMessage:0,lastMessageId:0})
                             }
                         }
