@@ -147,7 +147,7 @@ ListItem {
                 color: pressed ? Theme.secondaryColor : Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
         }
     }
@@ -167,7 +167,6 @@ ListItem {
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: Image.PreserveAspectFit
                 source: "image://depecherDb/"+content
-                Component.onCompleted: console.log(content)
 
                 MouseArea{
                     anchors.fill: parent
@@ -213,7 +212,7 @@ ListItem {
                 color: pressed ? Theme.secondaryColor :Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 visible: file_caption === "" ? false : true
             }
         }
@@ -306,7 +305,7 @@ ListItem {
                 color: pressed ? Theme.secondaryColor :Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 visible: file_caption ? true : false
             }
         }
@@ -569,7 +568,7 @@ ListItem {
                 color: pressed ? Theme.secondaryColor :Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 visible:  file_caption === "" ? false : true
             }
         }

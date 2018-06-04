@@ -90,7 +90,8 @@ DISTFILES += \
     events/depecher_im_exists.ini \
     events/depecher_im.ini \
     notificationcategories/x-depecher.im.conf \
-    notificationcategories/x-depecher.im.fg.conf
+    notificationcategories/x-depecher.im.fg.conf \
+    translations/depecher-es.ts
 
 HEADERS += \
     src/FileWorker.hpp \
