@@ -170,6 +170,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case FILE_UPLOADING_COMPLETED:
     case FILE_DOWNLOADED_SIZE:
     case FILE_UPLOADED_SIZE:
+    case FILE_TYPE:
         return dataFileMeta(rowIndex, role);
         break;
     case STICKER_SET_ID:
@@ -281,6 +282,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[FILE_IS_UPLOADING] = "file_is_uploading";
     roles[FILE_DOWNLOADING_COMPLETED] = "file_downloading_completed";
     roles[FILE_UPLOADING_COMPLETED] = "file_uploading_completed";
+    roles[FILE_TYPE] = "file_type";
     roles[STICKER_SET_ID] = "sticker_set_id";
     roles[REPLY_MARKUP] = "reply_markup";
     roles[MESSAGE_TYPE] = "message_type";
@@ -573,6 +575,13 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
             return filePtr->remote_->uploaded_size_;
         return QVariant();
         break;
+    case FILE_TYPE:
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAnimationPtr->animation_->mime_type_);
+        }
+        return QVariant();
     default:
         return QVariant();
         break;

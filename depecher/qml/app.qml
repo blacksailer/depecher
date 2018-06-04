@@ -7,7 +7,6 @@ ApplicationWindow
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
-//    Component.onCompleted: {
 ////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
 ////            pageStack.push(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
 ////        else

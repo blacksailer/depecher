@@ -223,7 +223,7 @@ Item {
         }
         Timer {
             id:previewTimer
-            interval: 500
+            interval: 800
             onTriggered:                 root.state = "preview"
         }
 

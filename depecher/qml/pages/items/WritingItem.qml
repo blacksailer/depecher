@@ -95,7 +95,7 @@ Drawer {
             icon.source: "image://theme/icon-m-attach"
             highlighted: false
             anchors.bottom: messageArea.bottom
-            anchors.right:stickerButton.left
+            anchors.left:parent.left
             anchors.bottomMargin: 25
             onClicked: {
                 attachLoader.setSource("AttachComponent.qml")
@@ -108,7 +108,7 @@ Drawer {
             icon.source: "image://theme/icon-m-other"
             highlighted: false
             anchors.bottom: messageArea.bottom
-            anchors.right:messageArea.left
+            anchors.left:skrepkaWizard.right
             anchors.bottomMargin: 25
             onClicked: {
                 if(!attachDrawer.opened)
@@ -122,6 +122,7 @@ Drawer {
                 if(text === "")
                     messageArea.forceActiveFocus()
             }
+            anchors.left: stickerButton.right
             anchors.bottom: parent.bottom
             anchors.right: sendButton.left
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)

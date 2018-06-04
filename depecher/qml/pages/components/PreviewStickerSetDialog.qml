@@ -130,6 +130,7 @@ Rectangle {
 Column {
     width:parent.width
 
+
 DialogHeader {
     id:header
     acceptText: rootPage._setIsInstalled ? qsTr("Remove %1 stickers").arg(listView.contentItem.children[0].gridSticker.count) :qsTr("Add %1 stickers").arg(listView.contentItem.children[0].gridSticker.count)
@@ -151,7 +152,9 @@ DialogHeader {
                     property alias itemIndex: stickersGrid
                     property alias gridSticker: stickersGrid
                     property alias stickersCount: stickersGrid.count
-
+                    Image {
+                        source: "image://depecherDb/"+sticker_set_thumbnail+".webp"
+                    }
                     Column {
                         id:columnStickers
                         width: parent.width
@@ -164,6 +167,11 @@ DialogHeader {
                             id:stickers
                             model: stickerModel
                             rootIndex:listView.model.modelIndex(index)
+                            Connections {
+                                target: listView.model.model
+                                onDataChanged:console.log("data changed")
+                            }
+
                             delegate: Image {
                                 width: stickersGrid.cellWidth
                                 height: width
@@ -199,7 +207,6 @@ DialogHeader {
                         }
                     }
                 Component.onCompleted:{
-                    console.log(is_installed)
                     rootPage._setIsInstalled = is_installed
                 }
                 }
@@ -211,7 +218,7 @@ DialogHeader {
 
         Timer {
             id:previewTimer
-            interval: 500
+            interval: 800
             onTriggered:                 rootPage.state = "preview"
         }
 }

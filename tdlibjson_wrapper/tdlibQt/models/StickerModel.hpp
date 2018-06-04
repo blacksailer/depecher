@@ -42,6 +42,7 @@ public:
 private:
 
     StickerModelState m_state = UknownState;
+    QSharedPointer<stickerSet> rootSet;
     QList<QSharedPointer<stickerSet>> m_stikerSets;
     QList<QSharedPointer<stickerSetInfo>> m_installedStickerSets;
     QList<QSharedPointer<stickerSetInfo>> m_trendingStickerSets;

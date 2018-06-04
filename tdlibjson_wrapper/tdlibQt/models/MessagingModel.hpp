@@ -69,6 +69,7 @@ class MessagingModel : public QAbstractListModel
         FILE_UPLOADING_COMPLETED,
         FILE_DOWNLOADED_SIZE,
         FILE_UPLOADED_SIZE,
+        FILE_TYPE,
         STICKER_SET_ID,
         MESSAGE_TYPE //Custom
     };

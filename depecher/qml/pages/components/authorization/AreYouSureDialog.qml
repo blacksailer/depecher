@@ -17,7 +17,7 @@ Dialog {
     Connections {
         target: c_telegramWrapper
         onConnectionStateChanged:{
-           connectionStatus = Utils.setState(connectionState)
+            connectionStatus = Utils.setState(connectionState)
         }
     }
 
@@ -29,11 +29,11 @@ Dialog {
         Label{
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-visible: connectionStatus != "Ready"
+            visible: connectionStatus != "Ready"
             wrapMode: Text.WordWrap
             font.pixelSize: Theme.fontSizeExtraSmall
-        text:qsTr("To continue connection to Telegram is needed")
-        color:"red"
+            text:qsTr("To continue connection to Telegram is needed")
+            color:"red"
         }
         Label{
             width: parent.width

@@ -168,19 +168,22 @@ Page {
                         MenuItem {
                             text: qsTr("Copy Text")
                             onClicked: {
-                                Clipboard.text = content
+                                if(caption)
+                                Clipboard.text = caption
+                                else
+                                    Clipboard.text = content
                             }
                         }
                         MenuItem {
                             text: qsTr("Delete Message")
-                            visible: can_be_deleted_only_for_yourself
+                            visible: can_be_deleted_only_for_yourself ? can_be_deleted_only_for_yourself : false
                             onClicked: {
                                 showRemorseDelete()
                             }
                         }
                         MenuItem {
                             text: qsTr("Delete for everyone")
-                            visible: can_be_deleted_for_all_users
+                            visible: can_be_deleted_for_all_users ? can_be_deleted_for_all_users : false
                             onClicked: {
                                 showRemorseDeleteToAll()
                             }
