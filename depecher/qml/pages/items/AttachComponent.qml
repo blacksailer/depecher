@@ -191,8 +191,14 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    onClicked: pageStack.push("../PicturePage.qml",{imagePath:galleryModel.get(index).url})
+                    onClicked:{
+                        var fileUrl = galleryModel.get(index).url.toString()
+//                        if(fileUrl.slice(0,4) === "file")
+//                            fileUrl = fileUrl.slice(7, fileUrl.length)
+
+                        pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
                 }
+                    }
 
             }
 

@@ -12,7 +12,6 @@ QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
         const QSize &requestedSize)
 {
     QString rsrcid = id;
-    QImage image(rsrcid);
     //https://github.com/tdlib/td/issues/264
     if (rsrcid.right(9) == ".jpg.webp") {
         QImageReader imgReader(rsrcid.left(rsrcid.length() - 1 - 4), "webp");
@@ -24,7 +23,8 @@ QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
         *size = result.size();
         return result;
     } else {
-        QImage result = image;
+        QImageReader imgReader(rsrcid);
+        QImage result = imgReader.read();
 
 //    if (requestedSize.isValid()) {
 //        result = image.scaled(requestedSize, Qt::KeepAspectRatio);
