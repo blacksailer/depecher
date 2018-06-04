@@ -157,7 +157,6 @@ ListItem {
 
         Column{
             width: image.maxWidth
-
             Image {
                 id: image
                 asynchronous: true
@@ -315,11 +314,13 @@ ListItem {
         id: stickerContent
 
         Column {
-            width: messageListItem.width/4*3
+            width: stickerImage.width//messageListItem.width/4*3
+            property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
 
             Image {
+                id:stickerImage
                 asynchronous: true
-                width: parent.width
+                width: Math.min(implicitWidth,parent.maxWidth)
                 height: width
                 fillMode: Image.PreserveAspectFit
                 source: content ? "image://depecherDb/" + content : ""

@@ -7,7 +7,8 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-
+* Mon June 4 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-2
+- Bug after rotating device with sticker fixed
 * Mon June 4 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-1
 - Stickers sending added
 - Adding/removing sticker sets from chat implemented
