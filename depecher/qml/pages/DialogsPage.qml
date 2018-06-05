@@ -15,19 +15,15 @@ Page {
 
     property string titleHeader: "Depecher"
     //for search in pageStack
-     property bool __chat_page: true
-    Drawer{
-        id:drawer
-        anchors.fill: parent
-        dock:Dock.Left
-        backgroundSize: parent.width*2/3
+    property bool __chat_page: true
+
         SilicaListView {
             anchors.fill: parent
-            opacity: drawer.open ? 0.5 : 1
             model:chatsModel
             header:  PageHeader {
                 title: titleHeader
             }
+
             PullDownMenu {
                 MenuItem {
                     text:qsTr("Reset dialogs")
@@ -38,11 +34,14 @@ Page {
                     onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
                 }
             }
+
             delegate: ChatItem {
-                id:chatDelegate
+                id: chatDelegate
+
                 ListView.onAdd: AddAnimation {
                     target: chatDelegate
                 }
+
                 ListView.onRemove: RemoveAnimation {
                     target: chatDelegate
                 }
@@ -56,13 +55,12 @@ Page {
             }
         }
 
-        MouseArea {
-            anchors.fill: parent
-            enabled:drawer.open
-            onClicked: drawer.hide()
-        }
-        background: MenuComponent{
-            id:menuList
-        }
+
+    Connections {
+    target: c_telegramWrapper
+    onErrorReceivedMap:{
+        if(errorObject["code"] === 401)
+        pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
     }
+}
 }

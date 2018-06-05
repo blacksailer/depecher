@@ -1,13 +1,14 @@
 #include "MessagingModel.hpp"
 #include "../ParseObject.hpp"
-#include "../NotificationManager.hpp"
 #include "../TdlibJsonWrapper.hpp"
+#include "../NotificationManager.hpp"
 #include "singletons/UsersModel.hpp"
 #include <QVariantMap>
 namespace tdlibQt {
 
 MessagingModel::MessagingModel() :
-    tdlibJson(TdlibJsonWrapper::instance())
+    tdlibJson(TdlibJsonWrapper::instance()),
+    m_NotificationsManager(NotificationManager::instance())
 {
     connect(tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::appendMessages);
@@ -36,7 +37,8 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::updateMessageSend);
     connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendFailed,
             this, &MessagingModel::updateMessageSend);
-
+    connect(this, &MessagingModel::viewMessagesChanged,
+            m_NotificationsManager, &NotificationManager::onViewMessages);
     connect(this, &MessagingModel::firstIdChanged, [this]() {
         if (messages.first()->id_ == lastMessage().toLongLong()) {
             if (!isUpdateConnected)
@@ -47,14 +49,14 @@ MessagingModel::MessagingModel() :
         }
     });
 
-    NotificationManager::instance()->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
+    m_NotificationsManager->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
 }
 
 MessagingModel::~MessagingModel()
 {
-    NotificationManager::instance()->currentViewableChatId = 0;
+    m_NotificationsManager->currentViewableChatId = 0;
 }
 
 
@@ -70,13 +72,13 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return dataContent(rowIndex);
         break;
     case ID: //int64
-        return QString::number( messages[rowIndex]->id_);
+        return QString::number(messages[rowIndex]->id_);
     case SENDER_USER_ID: //int64
-        return QString::number( messages[rowIndex]->sender_user_id_);
+        return QString::number(messages[rowIndex]->sender_user_id_);
     case SENDER_PHOTO: {
         auto profilePhotoPtr = UsersModel::instance()->getUserPhoto(messages[rowIndex]->sender_user_id_);
         if (profilePhotoPtr.data()) {
-            if ( profilePhotoPtr->small_.data()) {
+            if (profilePhotoPtr->small_.data()) {
                 if (profilePhotoPtr->small_->local_->is_downloading_completed_)
                     return QString::fromStdString(profilePhotoPtr->small_->local_->path_);
                 else
@@ -88,7 +90,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case AUTHOR:
         return UsersModel::instance()->getUserFullName(messages[rowIndex]->sender_user_id_);
     case CHAT_ID: //int64
-        return QString::number( messages[rowIndex]->chat_id_);
+        return QString::number(messages[rowIndex]->chat_id_);
     case IS_OUTGOING:
         return messages[rowIndex]->is_outgoing_;
     case CAN_BE_EDITED:
@@ -118,7 +120,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case VIEWS:
         return messages[rowIndex]->views_;
     case MEDIA_ALBUM_ID:
-        return QString::number( messages[rowIndex]->media_album_id_);
+        return QString::number(messages[rowIndex]->media_album_id_);
     case FILE_CAPTION: {
         if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
             auto contentPhotoPtr = static_cast<messagePhoto *>
@@ -130,6 +132,11 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                       (messages[rowIndex]->content_.data());
             return QString::fromStdString(contentDocumentPtr->caption_->text_);
         }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAnimationPtr->caption_->text_);
+        }
 
         return QVariant();
     }
@@ -139,6 +146,12 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                    (messages[rowIndex]->content_.data());
             return (float)contentPhotoPtr->photo_->sizes_.back()->width_ / (float)
                    contentPhotoPtr->photo_->sizes_.back()->height_;
+        }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return (float)contentAnimationPtr->animation_->width_ / (float)
+                   contentAnimationPtr->animation_->height_;
         }
         return QVariant();
     }
@@ -157,9 +170,17 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case FILE_UPLOADING_COMPLETED:
     case FILE_DOWNLOADED_SIZE:
     case FILE_UPLOADED_SIZE:
+    case FILE_TYPE:
         return dataFileMeta(rowIndex, role);
         break;
-
+    case STICKER_SET_ID:
+        if (messages[rowIndex]->content_->get_id() == messageSticker::ID) {
+            auto contentStickerPtr = static_cast<messageSticker *>
+                                     (messages[rowIndex]->content_.data());
+            return QString::number(contentStickerPtr->sticker_->set_id_);
+        }
+        return QVariant();
+        break;
     case MESSAGE_TYPE: {
         if (messages[rowIndex]->chat_id_ == 0)
             return SYSTEM_NEW_MESSAGE;
@@ -195,6 +216,18 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 return Sending_Not_Read;
         }
         break;
+    case MEDIA_PREVIEW:
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>(messages[rowIndex]->content_.data());
+            if (contentAnimationPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_)
+                return QString::fromStdString(contentAnimationPtr->animation_->thumbnail_->photo_->local_->path_);
+            else {
+                int fileId = contentAnimationPtr->animation_->thumbnail_->photo_->id_;
+                emit downloadFileStart(fileId, 12, rowIndex);
+            }
+            return QVariant();
+        }
+        break;
     //        FORWARD_INFO,
     //        VIEWS,
     //        REPLY_MARKUP
@@ -220,6 +253,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[SENDER_PHOTO] = "sender_photo";
     roles[AUTHOR] = "author";
     roles[CHAT_ID] = "chat_id";
+    roles[MEMBER_STATUS] = "member_status";
     roles[SENDING_STATE] = "sending_state";
     roles[IS_OUTGOING] = "is_outgoing";
     roles[CAN_BE_EDITED] = "can_be_edited";
@@ -238,6 +272,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[AUTHOR_SIGNATURE] = "author_signature";
     roles[VIEWS] = "views";
     roles[MEDIA_ALBUM_ID] = "media_album_id";
+    roles[MEDIA_PREVIEW] = "media_preview";
     roles[CONTENT] = "content";
     roles[FILE_CAPTION] = "file_caption";
     roles[PHOTO_ASPECT] = "photo_aspect";
@@ -248,7 +283,8 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[FILE_IS_UPLOADING] = "file_is_uploading";
     roles[FILE_DOWNLOADING_COMPLETED] = "file_downloading_completed";
     roles[FILE_UPLOADING_COMPLETED] = "file_uploading_completed";
-
+    roles[FILE_TYPE] = "file_type";
+    roles[STICKER_SET_ID] = "sticker_set_id";
     roles[REPLY_MARKUP] = "reply_markup";
     roles[MESSAGE_TYPE] = "message_type";
 
@@ -277,7 +313,7 @@ bool MessagingModel::canFetchMore(const QModelIndex &parent) const
     return true;
 }
 
-Enums::ChatType MessagingModel::chatType() const
+QVariantMap MessagingModel::chatType() const
 {
     return m_chatType;
 }
@@ -300,6 +336,63 @@ QString MessagingModel::lastMessage() const
 bool MessagingModel::atYEnd() const
 {
     return m_atYEnd;
+}
+
+QVariant MessagingModel::memberStatus() const
+{
+    auto status = m_UserStatus;
+    if (status.data() == nullptr)
+        return QVariant();
+    if (status->get_id() == chatMemberStatusCreator::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Creator;
+        resultStatus["is_member"] = static_cast<chatMemberStatusCreator *>(status.data())->is_member_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusAdministrator::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Administrator;
+        resultStatus["can_be_edited"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_be_edited_;
+        resultStatus["can_change_info"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_change_info_;
+        resultStatus["can_delete_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_delete_messages_;
+        resultStatus["can_edit_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_edit_messages_;
+        resultStatus["can_invite_users"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_invite_users_;
+        resultStatus["can_pin_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_pin_messages_;
+        resultStatus["can_post_messages"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_post_messages_;
+
+        resultStatus["can_promote_members"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_promote_members_;
+        resultStatus["can_restrict_members"] = static_cast<chatMemberStatusAdministrator *>(status.data())->can_restrict_members_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusBanned::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Banned;
+        resultStatus["banned_until_date"] = static_cast<chatMemberStatusBanned *>(status.data())->banned_until_date_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusMember::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Member;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusRestricted::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Restricted;
+        resultStatus["can_add_web_page_previews"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_add_web_page_previews_;
+        resultStatus["can_send_media_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_media_messages_;
+        resultStatus["can_send_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_messages_;
+        resultStatus["can_send_other_messages"] = static_cast<chatMemberStatusRestricted *>(status.data())->can_send_other_messages_;
+        resultStatus["is_member"] = static_cast<chatMemberStatusRestricted *>(status.data())->is_member_;
+        resultStatus["restricted_until_date"] = static_cast<chatMemberStatusRestricted *>(status.data())->restricted_until_date_;
+        return resultStatus;
+    }
+    if (status->get_id() == chatMemberStatusLeft::ID) {
+        QVariantMap resultStatus;
+        resultStatus["status"] = ChatMemberStatuses::Left;
+        return resultStatus;
+
+    }
+    return QVariant();
 }
 
 void MessagingModel::chatActionCleanUp()
@@ -440,10 +533,9 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
                                    (messages[rowIndex]->content_.data());
             int sizesCount = contentPhotoPtr->photo_->sizes_.size();
             if (sizesCount > 0) {
-                if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_)
-                    return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount -
-                                                                                             1]->photo_->local_->path_);
-                else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
+                if (contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_) {
+                    return QString::fromStdString(contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->path_);
+                } else if (contentPhotoPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
                     int fileId = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
                     emit downloadFileStart(fileId, 12, rowIndex);
                     return QString::fromStdString(contentPhotoPtr->photo_->sizes_[0]->photo_->local_->path_);
@@ -478,99 +570,76 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
             return QString::fromStdString(contentDocumentPtr->document_->document_->local_->path_);
 
         }
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            if (contentAnimationPtr->animation_->animation_->local_->is_downloading_completed_)
+                return QString::fromStdString(contentAnimationPtr->animation_->animation_->local_->path_);
+
+        }
         if (messages[rowIndex]->content_->get_id() == messageUnsupported::ID)
             return "Unsupported message type";
     }
+    return QVariant();
 }
 
 QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
 {
+    file *filePtr = nullptr;
+    if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+        auto contentPhotoPtr = static_cast<messagePhoto *>
+                               (messages[rowIndex]->content_.data());
+        int sizesCount = contentPhotoPtr->photo_->sizes_.size();
+        filePtr = contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+        auto contentDocumentPtr = static_cast<messageDocument *>
+                                  (messages[rowIndex]->content_.data());
+        filePtr = contentDocumentPtr->document_->document_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        auto contentAnimationPtr = static_cast<messageAnimation *>
+                                   (messages[rowIndex]->content_.data());
+        filePtr = contentAnimationPtr->animation_->animation_.data();
+    }
     switch (role) {
     case FILE_IS_DOWNLOADING:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_active_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->is_downloading_active_;
-        }
+        if (filePtr)
+            return filePtr->local_->is_downloading_active_;
         return QVariant();
         break;
     case FILE_IS_UPLOADING:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->is_uploading_active_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->is_uploading_active_;
-        }
+        if (filePtr)
+            return filePtr->remote_->is_uploading_active_;
         return QVariant();
         break;
     case FILE_DOWNLOADING_COMPLETED:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->is_downloading_completed_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->is_downloading_completed_;
-        }
+        if (filePtr)
+            return filePtr->local_->is_downloading_completed_;
         return QVariant();
         break;
     case FILE_UPLOADING_COMPLETED:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->is_uploading_completed_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->is_uploading_completed_;
-        }
+        if (filePtr)
+            return filePtr->remote_->is_uploading_completed_;
         return QVariant();
         break;
     case FILE_DOWNLOADED_SIZE:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->local_->downloaded_size_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->local_->downloaded_size_;
-        }
+        if (filePtr)
+            return filePtr->local_->downloaded_size_;
         return QVariant();
         break;
     case FILE_UPLOADED_SIZE:
-        if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
-            auto contentPhotoPtr = static_cast<messagePhoto *>
-                                   (messages[rowIndex]->content_.data());
-            int sizesCount = contentPhotoPtr->photo_->sizes_.size();
-            return contentPhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->remote_->uploaded_size_;
-        }
-        if (messages[rowIndex]->content_->get_id() == messageDocument::ID) {
-            auto contentDocumentPtr = static_cast<messageDocument *>
-                                      (messages[rowIndex]->content_.data());
-            return contentDocumentPtr->document_->document_->remote_->uploaded_size_;
-        }
+        if (filePtr)
+            return filePtr->remote_->uploaded_size_;
         return QVariant();
         break;
+    case FILE_TYPE:
+        if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAnimationPtr->animation_->mime_type_);
+        }
+        return QVariant();
     default:
         return QVariant();
         break;
@@ -667,11 +736,22 @@ void MessagingModel::processFile(const QJsonObject &fileObject)
         if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageDocument::ID) {
             auto messageDocumentPtr = static_cast<messageDocument *>
                                       (messages[messagePhotoQueue[file->id_]]->content_.data());
-            if ( messageDocumentPtr->document_->document_->id_ == file->id_)
+            if (messageDocumentPtr->document_->document_->id_ == file->id_)
                 messageDocumentPtr->document_->document_ = file;
         }
-        if (file->local_->is_downloading_completed_)
+        if (messages[messagePhotoQueue[file->id_]]->content_->get_id() == messageAnimation::ID) {
+            auto  messageAnimationPtr = static_cast<messageAnimation *>
+                                        (messages[messagePhotoQueue[file->id_]]->content_.data());
+            if (messageAnimationPtr->animation_->animation_->id_ == file->id_)
+                messageAnimationPtr->animation_->animation_ = file;
+            if (messageAnimationPtr->animation_->thumbnail_->photo_->id_ == file->id_)
+                messageAnimationPtr->animation_->thumbnail_->photo_ = file;
+
+        }
+        if (file->local_->is_downloading_completed_) {
             photoRole.append(CONTENT);
+            photoRole.append(MEDIA_PREVIEW);
+        }
         photoRole.append(FILE_DOWNLOADED_SIZE);
         photoRole.append(FILE_UPLOADED_SIZE);
         photoRole.append(FILE_IS_DOWNLOADING);
@@ -717,9 +797,9 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
     if (chatActionUserMap.size() == 1) {
         chatActionTimer.start();
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
-        setAction( userName + " is typing");
+        setAction(userName + " is typing");
     } else
-        setAction(QString::number(chatActionUserMap.size()) + " is typing");
+        setAction(QString::number(chatActionUserMap.size()) + " people are typing");
 
 }
 
@@ -748,8 +828,6 @@ void MessagingModel::setPeerId(QString peerId)
         return;
 
     m_peerId = peerId;
-    m_UserStatus = UsersModel::instance()->getGroupStatus(m_peerId.toLongLong());
-
     emit peerIdChanged(peerId);
 }
 
@@ -809,7 +887,7 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
 }
 
 void MessagingModel::sendDocumentMessage(const QString &filepath, const QString &reply_id,
-                                         const QString &caption)
+        const QString &caption)
 {
     Q_UNUSED(reply_id)
 
@@ -820,7 +898,7 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     sendMessageObject.from_background_ = false;
     sendMessageObject.reply_to_message_id_ = 0;
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageDocument>
-                                               (new inputMessageDocument);
+            (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
                                 (sendMessageObject.input_message_content_.data());
     auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
@@ -834,6 +912,34 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     jsonString = jsonString.replace("\"null\"", "null");
 
     tdlibJson->sendMessage(jsonString);
+}
+
+void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_id)
+{
+    Q_UNUSED(reply_id)
+
+    TlStorerToString json;
+    sendMessage sendMessageObject;
+    sendMessageObject.chat_id_ = m_peerId.toLongLong();
+    sendMessageObject.disable_notification_ = false;
+    sendMessageObject.from_background_ = false;
+    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.input_message_content_ = QSharedPointer<inputMessageSticker>
+            (new inputMessageSticker);
+    inputMessageSticker *ptr = static_cast<inputMessageSticker *>
+                               (sendMessageObject.input_message_content_.data());
+    auto docPtr = QSharedPointer<inputFileId>(new inputFileId);
+    docPtr->id_ = fileId;
+    ptr->sticker_ = docPtr;
+    ptr->width_ = 512;
+    ptr->height_ = 512;
+
+    sendMessageObject.store(json, "input_message_content");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    tdlibJson->sendMessage(jsonString);
+
 }
 
 void MessagingModel::downloadDocument(const int rowIndex)
@@ -850,6 +956,12 @@ void MessagingModel::downloadDocument(const int rowIndex)
         int sizesCount = contentDocumentPtr->photo_->sizes_.size();
         fileId = contentDocumentPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
     }
+    if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+        auto contentAnimationPtr = static_cast<messageAnimation *>
+                                   (messages[rowIndex]->content_.data());
+        fileId = contentAnimationPtr->animation_->animation_->id_;
+    }
+
     if (fileId > -1)
         emit downloadFileStart(fileId, 10, rowIndex);
 }
@@ -940,8 +1052,7 @@ void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
     tdlibJson->viewMessages(peerId(), ids, force_read);
-    NotificationManager::instance()->removeNotification(peerId().toLongLong());
-
+    emit viewMessagesChanged(peerId().toLongLong());
 }
 
 void MessagingModel::getNewMessages()
@@ -957,12 +1068,16 @@ void MessagingModel::getNewMessages()
     }
 }
 
-void MessagingModel::setChatType(const Enums::ChatType chatType)
+void MessagingModel::setChatType(const QVariantMap &chatType)
 {
     if (m_chatType == chatType)
         return;
 
     m_chatType = chatType;
+    if (static_cast<tdlibQt::Enums::ChatType>(m_chatType["type"].toInt()) == tdlibQt::Enums::ChatType::Supergroup)
+        m_UserStatus = UsersModel::instance()->getGroupStatus(m_chatType["supergroup_id"].toInt());
+    emit memberStatusChanged(memberStatus());
+
     emit chatTypeChanged(chatType);
 }
 

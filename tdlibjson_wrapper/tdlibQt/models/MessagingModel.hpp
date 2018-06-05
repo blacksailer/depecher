@@ -5,13 +5,15 @@
 #include "tdlibQt/include/TdlibNamespace.hpp"
 namespace tdlibQt {
 class TdlibJsonWrapper;
+class NotificationManager;
 class MessagingModel : public QAbstractListModel
 {
     Q_OBJECT
 
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(QString peerId READ peerId WRITE setPeerId NOTIFY peerIdChanged)
-    Q_PROPERTY(tdlibQt::Enums::ChatType chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
+    Q_PROPERTY(QVariant memberStatus READ memberStatus NOTIFY memberStatusChanged)
+    Q_PROPERTY(QVariantMap chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
     Q_PROPERTY(QString action READ action WRITE setAction NOTIFY actionChanged)
     Q_PROPERTY(QString currentMessage READ currentMessage WRITE setCurrentMessage NOTIFY
                currentMessageChanged)
@@ -29,6 +31,7 @@ class MessagingModel : public QAbstractListModel
     QTimer chatActionTimer;
     const int MESSAGE_LIMIT = 20;
     TdlibJsonWrapper *tdlibJson;
+    NotificationManager *m_NotificationsManager;
     bool isUpdateConnected = false;
     enum MessageRole {
         ID,
@@ -36,6 +39,7 @@ class MessagingModel : public QAbstractListModel
         SENDER_PHOTO,
         AUTHOR,
         ACTION,
+        MEMBER_STATUS,
         CHAT_ID,
         SENDING_STATE,
         IS_OUTGOING,
@@ -55,6 +59,7 @@ class MessagingModel : public QAbstractListModel
         AUTHOR_SIGNATURE,
         VIEWS,
         MEDIA_ALBUM_ID,
+        MEDIA_PREVIEW,
         CONTENT,
         FILE_CAPTION,
         PHOTO_ASPECT,
@@ -66,6 +71,8 @@ class MessagingModel : public QAbstractListModel
         FILE_UPLOADING_COMPLETED,
         FILE_DOWNLOADED_SIZE,
         FILE_UPLOADED_SIZE,
+        FILE_TYPE,
+        STICKER_SET_ID,
         MESSAGE_TYPE //Custom
     };
 
@@ -109,6 +116,8 @@ public slots:
                           const QString &caption = "");
     void sendDocumentMessage(const QString &filepath, const QString &reply_id,
                              const QString &caption = "");
+    void sendStickerMessage(const int &fileId, const QString &reply_id
+                           );
 
     void downloadDocument(const int rowIndex);
     void cancelDownload(const int rowIndex);
@@ -118,7 +127,7 @@ public slots:
 
     void joinChat();
     void getNewMessages();
-    void setChatType(const tdlibQt::Enums::ChatType chatType);
+    void setChatType(const QVariantMap &chatType);
     void setCurrentMessage(const QString &currentMessage);
     void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
@@ -139,8 +148,9 @@ signals:
     void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
     void errorReceived(int error_code, const QString &error_message);
     void firstIdChanged();
+    void viewMessagesChanged(const qint64 peerId);
 
-    void chatTypeChanged(tdlibQt::Enums::ChatType chatType);
+    void chatTypeChanged(const QVariantMap &chatType);
 
     void actionChanged(QString action);
 
@@ -152,14 +162,15 @@ signals:
 
     void lastOutboxIdChanged(double lastOutboxId);
 
+    void memberStatusChanged(const QVariant &memberStatus);
+
 private:
     bool fetchPending = false;
     QString m_userName;
     QString m_peerId;
     int m_totalCount = 1;
 
-    // QAbstractItemModel interface
-    tdlibQt::Enums::ChatType m_chatType;
+    QVariantMap m_chatType;
 
     QString m_action;
 
@@ -170,11 +181,10 @@ private:
     bool m_atYEnd = 0;
 
     qint64 m_lastOutboxId;
-
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
-    tdlibQt::Enums::ChatType chatType() const;
+    QVariantMap chatType() const;
     QString action() const;
     QString currentMessage() const;
     QString lastMessage() const;
@@ -209,6 +219,7 @@ public:
     {
         return m_lastOutboxId;
     }
+    QVariant memberStatus() const;
 };
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)

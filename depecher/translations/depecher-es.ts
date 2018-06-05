@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="es_ES">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>No hay cuentas para compartir. Puedes añadir cuentas en ajustes</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Compartir enlace</translation>
     </message>
 </context>
 <context>
     <name>AboutPage</name>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <source>Donations</source>
-        <translation type="unfinished"></translation>
+        <translation>Donaciones</translation>
     </message>
     <message>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuentes</translation>
     </message>
     <message>
         <source>Groups in Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupos en Telegram</translation>
     </message>
     <message>
         <source>English speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidad de habla inglesa</translation>
     </message>
     <message>
         <source>Error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error %1</translation>
     </message>
     <message>
         <source>Joining chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Unirse a chat</translation>
     </message>
     <message>
         <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten encuenta que después de hacer clic te unirás al chat. Dejar chats no está soportado aún.</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
@@ -80,58 +80,58 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AreYouSureDialog</name>
     <message>
         <source>Is phone correct?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Es correcto el teléfono?</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Estado conexión: </translation>
     </message>
     <message>
         <source>To continue connection to Telegram is needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Es necesario para continuar con la conexión de Telegram</translation>
     </message>
 </context>
 <context>
     <name>AttachComponent</name>
     <message>
         <source>Photo</source>
-        <translation type="unfinished"></translation>
+        <translation>Foto</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Home</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir a carpeta Home</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un documento</translation>
     </message>
     <message>
         <source>Files to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivos para enviar</translation>
     </message>
 </context>
 <context>
@@ -145,23 +145,23 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserta tu número de teléfono y presiona &apos;Siguiente&apos;</translation>
     </message>
     <message>
         <source>Country Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de país</translation>
     </message>
     <message>
         <source>Phone Number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de teléfono</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes</translation>
     </message>
     <message>
         <source>Welcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenido</translation>
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
@@ -173,30 +173,31 @@ proxy server in settings via PulleyMenu</source>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher</translation>
     </message>
     <message>
         <source>Unread 
  messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensajes 
+ sin leer</translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
         <source>Reset dialogs</source>
-        <translation type="unfinished"></translation>
+        <translation>Restablecer diálogos</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes</translation>
     </message>
 </context>
 <context>
     <name>MenuComponent</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes</translation>
     </message>
 </context>
 <context>
@@ -210,46 +211,42 @@ proxy server in settings via PulleyMenu</source>
     <name>MessagingPage</name>
     <message>
         <source>Copy Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar texto</translation>
     </message>
     <message>
         <source>get newer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver más</translation>
+    </message>
+    <message>
+        <source>Delete Message</source>
+        <translation>Borrar mensaje</translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
+        <translation>Borrando...</translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation>Borrar para todos</translation>
     </message>
 </context>
 <context>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar en Galería</translation>
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Imagen guardada en Galería!</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
-        <translation type="unfinished"></translation>
+        <translation>La función compartir estará aquí pronto</translation>
     </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Sticker preview mode</source>
         <translation type="unfinished"></translation>
@@ -262,215 +259,220 @@ proxy server in settings via PulleyMenu</source>
         <source>Add %1 stickers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes</translation>
     </message>
     <message>
         <source>Socks5 proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy Socks5</translation>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección del servidor</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished"></translation>
+        <translation>Puerto del servidor</translation>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished"></translation>
+        <translation>puerto</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished"></translation>
+        <translation>nombre de usuario</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished"></translation>
+        <translation>El Proxy está listo</translation>
     </message>
     <message>
         <source>Set proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar proxy</translation>
     </message>
     <message>
         <source>Address. Set empty to disable proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección. Déja en blanco para deshabilitar proxy</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Estado de la conexión: </translation>
     </message>
     <message>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca del programa</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation type="unfinished"></translation>
+        <translation>Créditos y demás</translation>
     </message>
 </context>
 <context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation type="unfinished"></translation>
+        <translation>Apellido</translation>
     </message>
     <message>
         <source>Sign In</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <source>Sign up</source>
-        <translation type="unfinished"></translation>
+        <translation>Registrarse</translation>
     </message>
     <message>
         <source>Sending request...</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviando solicitud...</translation>
     </message>
     <message>
         <source>Enter your password</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduce tu contraseña</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error</translation>
     </message>
     <message>
         <source>Recover password</source>
-        <translation type="unfinished"></translation>
+        <translation>Recuperar contraseña</translation>
     </message>
     <message>
         <source>Email is sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Correo enviado</translation>
     </message>
     <message>
         <source>Show hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar pista</translation>
     </message>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduce código de recuperación. 
+¡Recuerda! Después de la autorización 2FA se deshabilitará</translation>
     </message>
     <message>
         <source>Recovery code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de recuperación</translation>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera el mensaje de %1 con el código de activación y presiona %2</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>código de recuperación enviado a %1</translation>
     </message>
     <message>
         <source>Password hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Pista para contraseña</translation>
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduce código</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduce contraseña</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>Estado de autenticación</translation>
     </message>
 </context>
 <context>
     <name>utils</name>
     <message>
         <source>Waiting for network</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperando conexión</translation>
     </message>
     <message>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectando al proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizando...</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectado</translation>
     </message>
     <message>
         <source>Uknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Desconocido</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera parámetros de lib</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera clave de cifrado</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera número de teléfono</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera código</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera contraseña</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera cierre de sesión</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera cierre</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Espera cerrado</translation>
     </message>
 </context>
 </TS>

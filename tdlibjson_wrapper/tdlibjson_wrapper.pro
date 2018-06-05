@@ -8,7 +8,7 @@ QT += dbus quick
 
 CONFIG += c++11
 CONFIG += link_pkgconfig
-PKGCONFIG +=  nemonotifications-qt5 tdlibjson
+PKGCONFIG +=  tdlibjson
 CONFIG (debug, debug|release) {
         OBJECTS_DIR = build/debug
 } else {
@@ -27,7 +27,6 @@ HEADERS += \
     tdlibQt/TelegramProfileProvider.hpp \
     tdlibQt/models/MessagingModel.hpp \
     tdlibQt/FileWriter.hpp \
-    tdlibQt/NotificationManager.hpp \
     tdlibQt/ListenScheduler.hpp \
     tdlibQt/include/AppApiInfo.hpp \
     tdlibQt/include/AuthenticationHandler.hpp \
@@ -35,7 +34,8 @@ HEADERS += \
     tdlibQt/items/AboutMeDAO.hpp \
     tdlibQt/models/singletons/UsersModel.hpp \
     tdlibQt/models/singletons/FileManager.hpp \
-    tdlibQt/models/StickerModel.hpp
+    tdlibQt/models/StickerModel.hpp \
+    tdlibQt/NotificationManager.hpp
 
 SOURCES += \
     tdlibQt/TdlibJsonWrapper.cpp \
@@ -46,14 +46,14 @@ SOURCES += \
     tdlibQt/TelegramProfileProvider.cpp \
     tdlibQt/models/MessagingModel.cpp \
     tdlibQt/FileWriter.cpp \
-    tdlibQt/NotificationManager.cpp \
     tdlibQt/ListenScheduler.cpp \
     tdlibQt/include/AuthenticationHandler.cpp \
     tdlibQt/items/ProxyDAO.cpp \
     tdlibQt/items/AboutMeDAO.cpp \
     tdlibQt/models/singletons/UsersModel.cpp \
     tdlibQt/models/singletons/FileManager.cpp \
-    tdlibQt/models/StickerModel.cpp
+    tdlibQt/models/StickerModel.cpp \
+    tdlibQt/NotificationManager.cpp
 
 info_file.input = $$PWD/tdlibQt/include/AppApiInfo.hpp.in
 info_file.output = $$PWD/tdlibQt/include/AppApiInfo.hpp
@@ -64,4 +64,5 @@ OTHER_FILES += \
     tdlibQt/include/AppApiInfo.hpp.in
 
 DISTFILES += \
+    api_secret.pri \
     api_secret.pri

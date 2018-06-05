@@ -7,22 +7,10 @@ ApplicationWindow
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
-    Connections {
-    target: c_telegramWrapper
-    onAuthorizationStateChanged:{
-        if(c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateWaitPhoneNumber) {
-            pageStack.replace(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
-        }
-//        if(c_telegramWrapper.authorizationState === TdlibState.AuthorizationStateReady) {
-//            pageStack.replace(Qt.resolvedUrl("pages/DialogsPage.qml"))
-//        }
-    }
-    }
-    Component.onCompleted: {
-//        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
-//            pageStack.push(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
-//        else
-//            pageStack.push(Qt.resolvedUrl("pages/DialogsPage.qml"))
-    }
+////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
+////            pageStack.push(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
+////        else
+////            pageStack.push(Qt.resolvedUrl("pages/DialogsPage.qml"))
+//    }
 }
 

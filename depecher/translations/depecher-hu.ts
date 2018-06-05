@@ -136,6 +136,13 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
 </context>
 <context>
+    <name>AttachSticker</name>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -196,8 +203,8 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>new messages</source>
-        <translation>új üzenetek</translation>
+        <source>New messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -205,10 +212,6 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Copy Text</source>
         <translation>Szöveg másolása</translation>
-    </message>
-    <message>
-        <source>get newer</source>
-        <translation>Újak betöltése</translation>
     </message>
     <message>
         <source>Delete Message</source>
@@ -221,6 +224,10 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Delete for everyone</source>
         <translation>Törlés mindenkinek</translation>
+    </message>
+    <message>
+        <source>get newer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -236,6 +243,25 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Share function will be here soon</source>
         <translation>Itt lezs nemsokára a megosztás funkció</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewStickerSetDialog</name>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove %1 stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add %1 stickers</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

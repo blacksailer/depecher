@@ -100,7 +100,7 @@ void ParseObject::parseResponse(const QByteArray &json)
             authorizationState = Enums::AuthorizationState::AuthorizationStateWaitCode;
             QJsonObject obj = doc.object()["authorization_state"].toObject();
             QSharedPointer<authorizationStateWaitCode> stateCode = QSharedPointer<authorizationStateWaitCode>
-                                                                   (new  authorizationStateWaitCode);
+                    (new  authorizationStateWaitCode);
             stateCode->is_registered_ =  obj["is_registered"].toBool();
             stateCode->code_info_ = QSharedPointer<authenticationCodeInfo>
                                     (new  authenticationCodeInfo);
@@ -112,7 +112,7 @@ void ParseObject::parseResponse(const QByteArray &json)
                                                 (new authenticationCodeTypeCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeFlashCall")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeFlashCall>(new
-                                                                                                authenticationCodeTypeFlashCall);
+                                                authenticationCodeTypeFlashCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeSms")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeSms>
                                                 (new authenticationCodeTypeSms);
@@ -192,7 +192,12 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     if (typeField == "message")
         emit messageReceived(doc.object());
-
+    if (typeField == "stickerSets")
+        emit stickerSetsReceived(doc.object());
+    if (typeField == "stickerSet")
+        emit stickerSetReceived(doc.object());
+    if (typeField == "stickers")
+        emit stickersReceived(doc.object());
     if (typeField == "file")
         emit fileReceived(doc.object());
     if (typeField == "updateFile") {
@@ -326,7 +331,7 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
     return resultMessage;
 }
 QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const QJsonObject
-                                                                          &messageSendingStateObject)
+        &messageSendingStateObject)
 {
     if (messageSendingStateObject["@type"].toString() == "messageSendingStatePending")
         return QSharedPointer<MessageSendingState>(new messageSendingStatePending);
@@ -336,7 +341,7 @@ QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const 
 }
 
 QSharedPointer<messageDocument> ParseObject::parseMessageDocument(const QJsonObject
-                                                                  &messageDocumentObject)
+        &messageDocumentObject)
 {
     if (messageDocumentObject["@type"].toString() != "messageDocument")
         return QSharedPointer<messageDocument>(new messageDocument);
@@ -365,9 +370,9 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
                                               (new messageForwardedFromUser);
         resultMessageForwardedFromUser->date_ = forwardObject["date"].toInt();
         resultMessageForwardedFromUser->forwarded_from_chat_id_ = getInt64(
-                                                                      forwardObject["forwarded_from_chat_id"]);
+                    forwardObject["forwarded_from_chat_id"]);
         resultMessageForwardedFromUser->forwarded_from_message_id_ = getInt64(
-                                                                         forwardObject["forwarded_from_message_id"]);
+                    forwardObject["forwarded_from_message_id"]);
         resultMessageForwardedFromUser->sender_user_id_ = getInt64(forwardObject["sender_user_id"]);
         return resultMessageForwardedFromUser;
     }
@@ -379,9 +384,9 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
         resultMessageForwardedPost->chat_id_ = getInt64(forwardObject["chat_id"]);
         resultMessageForwardedPost->date_ = forwardObject["date"].toInt();
         resultMessageForwardedPost->forwarded_from_chat_id_ = getInt64(
-                                                                  forwardObject["forwarded_from_chat_id"]);
+                    forwardObject["forwarded_from_chat_id"]);
         resultMessageForwardedPost->forwarded_from_message_id_ = getInt64(
-                                                                     forwardObject["forwarded_from_message_id"]);
+                    forwardObject["forwarded_from_message_id"]);
         return resultMessageForwardedPost;
 
     }
@@ -425,7 +430,7 @@ QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
 
 QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &supergroupObject)
 {
-    if (supergroupObject["@type"].toString() == "supergroup")
+    if (supergroupObject["@type"].toString() != "supergroup")
         return QSharedPointer<supergroup>(new supergroup);
 
     QSharedPointer<supergroup> resultSupergroup = QSharedPointer<supergroup>(new supergroup);
@@ -444,11 +449,11 @@ QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &super
     return resultSupergroup;
 }
 QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonObject
-                                                                    &chatMemberStatusObject)
+        &chatMemberStatusObject)
 {
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusAdministrator") {
         auto resultStatus = QSharedPointer<chatMemberStatusAdministrator>(new
-                                                                          chatMemberStatusAdministrator);
+                            chatMemberStatusAdministrator);
         resultStatus->can_be_edited_ = chatMemberStatusObject["can_be_edited"].toBool();
         resultStatus->can_change_info_ = chatMemberStatusObject["can_change_info"].toBool();
         resultStatus->can_delete_messages_ = chatMemberStatusObject["can_delete_messages"].toBool();
@@ -461,22 +466,22 @@ QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonO
         return resultStatus;
     }
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusBanned") {
-        auto resultStatus = QSharedPointer<chatMemberStatusBanned>(new chatMemberStatusBanned );
+        auto resultStatus = QSharedPointer<chatMemberStatusBanned>(new chatMemberStatusBanned);
         resultStatus->banned_until_date_ = chatMemberStatusObject["banned_until_date"].toInt();
         return resultStatus;
 
     }
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusCreator") {
-        auto resultStatus = QSharedPointer<chatMemberStatusCreator>(new chatMemberStatusCreator );
+        auto resultStatus = QSharedPointer<chatMemberStatusCreator>(new chatMemberStatusCreator);
         resultStatus->is_member_ = chatMemberStatusObject["is_member"].toBool();
         return resultStatus;
     }
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusMember") {
-        auto resultStatus = QSharedPointer<chatMemberStatusMember>(new chatMemberStatusMember );
+        auto resultStatus = QSharedPointer<chatMemberStatusMember>(new chatMemberStatusMember);
         return resultStatus;
     }
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusRestricted") {
-        auto resultStatus = QSharedPointer<chatMemberStatusRestricted>(new chatMemberStatusRestricted );
+        auto resultStatus = QSharedPointer<chatMemberStatusRestricted>(new chatMemberStatusRestricted);
         resultStatus->can_add_web_page_previews_ =
             chatMemberStatusObject["can_add_web_page_previews"].toBool();
         resultStatus->can_send_media_messages_ = chatMemberStatusObject["can_send_media_messages"].toBool();
@@ -485,12 +490,85 @@ QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonO
 
         return resultStatus;
     }
-    auto resultStatus = QSharedPointer<chatMemberStatusLeft>(new chatMemberStatusLeft );
+    auto resultStatus = QSharedPointer<chatMemberStatusLeft>(new chatMemberStatusLeft);
     return resultStatus;
 
 }
+
+QSharedPointer<stickerSets> ParseObject::parseStickerSets(const QJsonObject &stickerSetsObject)
+{
+    if (stickerSetsObject["@type"].toString() != "stickerSets")
+        return QSharedPointer<stickerSets>(new stickerSets);
+    auto resultStickerSets = QSharedPointer<stickerSets>(new stickerSets);
+    resultStickerSets->total_count_ = stickerSetsObject["total_count"].toInt();
+    for (auto val : stickerSetsObject["sets"].toArray())
+        resultStickerSets->sets_.push_back(parseStickerSetInfo(val.toObject()));
+    return resultStickerSets;
+}
+
+QSharedPointer<stickerSetInfo> ParseObject::parseStickerSetInfo(const QJsonObject &stickerSetInfoObject)
+{
+    if (stickerSetInfoObject["@type"].toString() != "stickerSetInfo")
+        return QSharedPointer<stickerSetInfo>(new stickerSetInfo);
+
+    auto resultStickerSetInfo = QSharedPointer<stickerSetInfo>(new stickerSetInfo);
+    for (auto val : stickerSetInfoObject["covers"].toArray())
+        resultStickerSetInfo->covers_.push_back(parseSticker(val.toObject()));
+    resultStickerSetInfo->covers_;
+    resultStickerSetInfo->id_ = getInt64(stickerSetInfoObject["id"]);
+    resultStickerSetInfo->is_archived_ = stickerSetInfoObject["is_archived"].toBool();
+    resultStickerSetInfo->is_installed_ = stickerSetInfoObject["is_installed"].toBool();
+    resultStickerSetInfo->is_masks_ = stickerSetInfoObject["is_masks"].toBool();
+    resultStickerSetInfo->is_official_ = stickerSetInfoObject["is_official"].toBool();
+    resultStickerSetInfo->is_viewed_ = stickerSetInfoObject["is_viewed"].toBool();
+    resultStickerSetInfo->name_ = stickerSetInfoObject["name"].toString().toStdString();
+    resultStickerSetInfo->size_ = stickerSetInfoObject["size"].toInt();
+    resultStickerSetInfo->title_ = stickerSetInfoObject["title"].toString().toStdString();
+    return resultStickerSetInfo;
+
+}
+
+QSharedPointer<stickerSet> ParseObject::parseStickerSet(const QJsonObject &stickerSetObject)
+{
+    if (stickerSetObject["@type"].toString() != "stickerSet")
+        return QSharedPointer<stickerSet>(new stickerSet);
+    auto resultStickerSet = QSharedPointer<stickerSet>(new stickerSet);
+    resultStickerSet->id_ = getInt64(stickerSetObject["id"]);
+    resultStickerSet->is_archived_ = stickerSetObject["is_archived"].toBool();
+    resultStickerSet->is_installed_ = stickerSetObject["is_installed"].toBool();
+    resultStickerSet->is_masks_ = stickerSetObject["is_masks"].toBool();
+    resultStickerSet->is_official_ = stickerSetObject["is_official"].toBool();
+    resultStickerSet->is_viewed_ = stickerSetObject["is_viewed"].toBool();
+    resultStickerSet->name_ = stickerSetObject["name"].toString().toStdString();
+    resultStickerSet->title_ = stickerSetObject["title"].toString().toStdString();
+    for (auto val : stickerSetObject["emojis"].toArray())
+        resultStickerSet->emojis_.push_back(parseStickerEmojis(val.toObject()));
+    for (auto val : stickerSetObject["stickers"].toArray())
+        resultStickerSet->stickers_.push_back(parseSticker(val.toObject()));
+    return resultStickerSet;
+}
+
+QSharedPointer<stickerEmojis> ParseObject::parseStickerEmojis(const QJsonObject &stickerEmojisObject)
+{
+    if (stickerEmojisObject["@type"].toString() != "stickerEmojis")
+        return QSharedPointer<stickerEmojis>(new stickerEmojis);
+    auto resultEmojis = QSharedPointer<stickerEmojis>(new stickerEmojis);
+    for (auto val : stickerEmojisObject["emojis"].toArray())
+        resultEmojis->emojis_.push_back(val.toString().toStdString());
+    return resultEmojis;
+}
+
+QSharedPointer<stickers> ParseObject::parseStickers(const QJsonObject &stickersObject)
+{
+    if (stickersObject["@type"].toString() != "stickers")
+        return QSharedPointer<stickers>(new stickers);
+    auto resultStickers = QSharedPointer<stickers>(new stickers);
+    for (auto val : stickersObject["stickers"].toArray())
+        resultStickers->stickers_.push_back(parseSticker(val.toObject()));
+    return resultStickers;
+}
 QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObject
-                                                                &messageContentObject)
+        &messageContentObject)
 {
 
     auto typeMessageText = parseMessageText(QJsonObject());
@@ -504,9 +582,9 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation") {
-        //        return parseMessageAnimation(messageContentObject);
-        typeMessageText->text_->text_ = "Animation";
-        return typeMessageText;
+        return parseMessageAnimation(messageContentObject);
+//        typeMessageText->text_->text_ = "Animation";
+//        return typeMessageText;
 
     }
     if (messageContentObject["@type"].toString() == "messageAudio") {
@@ -573,7 +651,7 @@ QSharedPointer<messageText> ParseObject::parseMessageText(const QJsonObject &mes
     return resultMessageContent;
 }
 QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonObject
-                                                                    &messageAnimationObject)
+        &messageAnimationObject)
 {
     if (messageAnimationObject["@type"].toString() != "messageAnimation")
         return QSharedPointer<messageAnimation>(new messageAnimation);
@@ -586,7 +664,7 @@ QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonO
     return resultMessageContent;
 }
 QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
-                                                      &animationObject)
+        &animationObject)
 {
     if (animationObject["@type"].toString() != "animation")
         return QSharedPointer<animation>(new animation);
@@ -602,7 +680,7 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
     return resultAnimation;
 }
 QSharedPointer<messageSticker> ParseObject::parseMessageSticker(const QJsonObject
-                                                                &messageStikerObject)
+        &messageStikerObject)
 {
     if (messageStikerObject["@type"].toString() != "messageSticker")
         return QSharedPointer<messageSticker>(new messageSticker);
@@ -623,7 +701,7 @@ QSharedPointer<sticker> ParseObject::parseSticker(const QJsonObject &stickerObje
     sticker_->height_ = stickerObject["height"].toInt();
     sticker_->width_ = stickerObject["width"].toInt();
     sticker_->is_mask_ = stickerObject["is_mask"].toBool();
-    sticker_->set_id_ = stickerObject["set_id"].toBool();
+    sticker_->set_id_ = getInt64(stickerObject["set_id"]);
     sticker_->mask_position_ = parseMaskPosition(stickerObject["mask_position"].toObject());
     sticker_->sticker_ = parseFile(stickerObject["sticker"].toObject());
     sticker_->thumbnail_ = parsePhotoSize(stickerObject["thumbnail"].toObject());
@@ -679,7 +757,7 @@ QSharedPointer<photo> ParseObject::parsePhoto(const QJsonObject &photoObject)
     auto resultMessagePhoto = QSharedPointer <photo>(new photo);
     resultMessagePhoto->id_ = getInt64(photoObject["id"]);
     resultMessagePhoto->has_stickers_ = photoObject["has_stickers"].toBool();
-    for (auto photoSize : photoObject["sizes"].toArray() )
+    for (auto photoSize : photoObject["sizes"].toArray())
         resultMessagePhoto->sizes_.push_back(parsePhotoSize(photoSize.toObject()));
     return resultMessagePhoto;
 }
@@ -696,7 +774,7 @@ QSharedPointer<photoSize> ParseObject::parsePhotoSize(const QJsonObject &photoSi
 }
 
 QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJsonObject
-                                                                     &formattedTextObject)
+        &formattedTextObject)
 {
     if (formattedTextObject["@type"].toString() != "formattedText")
         return QSharedPointer<formattedText>(new formattedText);
@@ -759,7 +837,7 @@ QSharedPointer<file> ParseObject::parseFile(const QJsonObject &fileObject)
 }
 
 QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObject
-                                                                  &chatActionObject)
+        &chatActionObject)
 {
     if (chatActionObject["@type"].toString() != "updateUserChatAction")
         return QSharedPointer<updateUserChatAction>(new updateUserChatAction);
@@ -773,7 +851,7 @@ QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObj
         resultChatAction->action_ = QSharedPointer<chatActionTyping>(new chatActionTyping);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionChoosingContact")
         resultChatAction->action_ = QSharedPointer<chatActionChoosingContact>(new
-                                                                              chatActionChoosingContact);
+                                    chatActionChoosingContact);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionRecordingVideo")
         resultChatAction->action_ = QSharedPointer<chatActionRecordingVideo>(new chatActionRecordingVideo);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionChoosingLocation")
@@ -832,9 +910,9 @@ QSharedPointer<chat> ParseObject::parseChat(const QJsonObject &chatObject)
     chatItem->id_ =  getInt64(chatObject["id"]);
     chatItem->is_pinned_ = chatObject["is_pinned"].toBool();
     chatItem->last_read_inbox_message_id_ =  getInt64(
-                                                 chatObject["last_read_inbox_message_id"]);
+                chatObject["last_read_inbox_message_id"]);
     chatItem->last_read_outbox_message_id_ =  getInt64(
-                                                  chatObject["last_read_outbox_message_id"]);
+                chatObject["last_read_outbox_message_id"]);
     chatItem->order_ =  chatObject["order"].toString().toLongLong();
     chatItem->reply_markup_message_id_ = getInt64(chatObject["reply_markup_message_id"]);
     chatItem->title_ = chatObject["title"].toString().toStdString();
@@ -896,13 +974,13 @@ QSharedPointer<UserStatus> ParseObject::parseUserStatus(const QJsonObject &userS
         return QSharedPointer<UserStatus>(new userStatusRecently);
     if (userStatusObject["@type"] == "userStatusOnline") {
         QSharedPointer<userStatusOnline> statusObject = QSharedPointer<userStatusOnline>
-                                                        (new userStatusOnline);
+                (new userStatusOnline);
         statusObject->expires_ = userStatusObject["expires"].toInt();
         return statusObject;
     }
     if (userStatusObject["@type"] == "userStatusOffline") {
         QSharedPointer<userStatusOffline> statusObject = QSharedPointer<userStatusOffline>
-                                                         (new userStatusOffline);
+                (new userStatusOffline);
         statusObject->was_online_ = userStatusObject["was_online"].toInt();
         return statusObject;
     }

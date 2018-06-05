@@ -90,6 +90,8 @@ proxy server in settings via PulleyMenu")
                                 cbxcountrycodes.currentIndex = i
                         }
                     }
+                    EnterKey.iconSource: "image://theme/icon-m-enter-next"
+                    EnterKey.onClicked: tfphonenumber.focus = true
                 }
 
                 TextField
@@ -99,6 +101,8 @@ proxy server in settings via PulleyMenu")
                     placeholderText: qsTr("Phone Number")
                     validator: RegExpValidator { regExp: /^[0-9]{3,}$/ }
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly
+                    EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                    EnterKey.onClicked: authorizeDialog.accept()
                 }
             }
         }

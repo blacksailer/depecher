@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql dbus
+QT += sql dbus multimedia
 
 CONFIG += sailfishapp
 CONFIG += c++11
@@ -52,7 +52,8 @@ MOC_DIR = build/mocs
 
 SOURCES += \
     src/main.cpp \
-    src/FileWorker.cpp
+    src/FileWorker.cpp \
+    ModelTest.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -89,7 +90,9 @@ DISTFILES += \
     events/depecher_im_exists.ini \
     events/depecher_im.ini \
     notificationcategories/x-depecher.im.conf \
-    notificationcategories/x-depecher.im.fg.conf
+    notificationcategories/x-depecher.im.fg.conf \
+    translations/depecher-es.ts
 
 HEADERS += \
-    src/FileWorker.hpp
+    src/FileWorker.hpp \
+    ModelTest.hpp

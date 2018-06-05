@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QMap>
 #include <nemonotifications-qt5/notification.h>
-#include "include/TdlibNamespace.hpp"
+#include "../tdlibjson_wrapper/tdlibQt/include/TdlibNamespace.hpp"
 #include <QSharedPointer>
 namespace tdlibQt {
 class TdlibJsonWrapper;
@@ -16,6 +16,7 @@ class NotificationManager : public QObject
     TdlibJsonWrapper *m_client;
     static const int m_expireTimeout = 60 * 60 * 1000;
     QMap<qint64, QSharedPointer<Notification>> m_chatIdsPublished;
+    bool isAtFirstLoaded = true;
     Enums::ConnectionState m_connectionState = Enums::ConnectionState::ConnectionStateConnecting;
     explicit NotificationManager(QObject *parent = 0);
     void publishNotifications();
@@ -37,6 +38,7 @@ public slots:
                        const qint64 chatId, const qint64 unreadCount = 0);
     void notifyPreview(const qint64 timestamp, const QString &summary, const QString &body,
                        const qint64 chatId, const qint64 unreadCount = 0);
+    void onViewMessages(const qint64 peerId);
 
 };
 }// tdlibQt

@@ -57,7 +57,7 @@ void ChatsModel::sortByOrder()
 void ChatsModel::updateChatMentionCount(const QJsonObject &chatMentionCountObject)
 {
     auto chatMentionCount = QSharedPointer<updateChatUnreadMentionCount>(new
-                                                                         updateChatUnreadMentionCount);
+                            updateChatUnreadMentionCount);
     chatMentionCount->chat_id_ = ParseObject::getInt64(chatMentionCountObject["chat_id"]);
     chatMentionCount->unread_mention_count_ = chatMentionCountObject["unread_mention_count"].toInt();
 
@@ -117,22 +117,30 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
         return chats[rowIndex]->is_pinned_;
     case TYPE:
         switch (chats[rowIndex]->type_->get_id()) {
-        case chatTypeBasicGroup::ID:
-            return QVariant::fromValue(tdlibQt::Enums::ChatType::BasicGroup);
-            break;
-        case chatTypePrivate::ID:
-            return QVariant::fromValue(tdlibQt::Enums::ChatType::Private);
-            break;
-        case chatTypeSecret::ID:
-            return QVariant::fromValue(tdlibQt::Enums::ChatType::Secret);
-            break;
-        case chatTypeSupergroup::ID:
+        case chatTypeBasicGroup::ID: {
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::BasicGroup);
+            return resultType;
+        }
+        case chatTypePrivate::ID: {
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Private);
+            return resultType;
+        }
+        case chatTypeSecret::ID: {
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Secret);
+            return resultType;
+        }
+        case chatTypeSupergroup::ID: {
             chatTypeSupergroup *superGroupMetaInfo   = static_cast<chatTypeSupergroup *>
-                                                       (chats[rowIndex]->type_.data());
-            if (superGroupMetaInfo->is_channel_)
-                return QVariant::fromValue(tdlibQt::Enums::ChatType::Channel);
-            return QVariant::fromValue(tdlibQt::Enums::ChatType::Supergroup);
-            break;
+                    (chats[rowIndex]->type_.data());
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::Supergroup);
+            resultType["is_channel"] = superGroupMetaInfo->is_channel_;
+            resultType["supergroup_id"] = superGroupMetaInfo->supergroup_id_;
+            return resultType;
+        }
         }
     case TITLE:
         return QString::fromStdString(chats[rowIndex]->title_);
@@ -143,7 +151,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     case CHAT_ACTION:
         if (chatActionMap.contains(chats[rowIndex]->id_)) {
             if (chatActionMap.count(chats[rowIndex]->id_) > 1)
-                return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " is typing";
+                return  QString::number(chatActionMap.count(chats[rowIndex]->id_)) + " are typing";
             auto chatAction = chatActionMap.value(chats[rowIndex]->id_);
             return tdlibJson->parseObject->getFirstName(chatAction->user_id_) + " is typing";
         }
@@ -166,7 +174,8 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
 
                 if (chats[rowIndex]->last_message_->content_->get_id() == messageSticker::ID)
                     return tr("Sticker");
-
+                if (chats[rowIndex]->last_message_->content_->get_id() == messageAnimation::ID)
+                    return tr("Animation");
                 return QVariant();
             }
         }
@@ -261,6 +270,13 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
             }
         }
     }
+    if (chatItem->last_message_->get_id() == messageAnimation::ID) {
+        auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
+        if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
+            tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
+        }
+    }
+
     //    if (chatItem->notification_settings_->mute_for_ == 0)
     //        emit totalUnreadCountChanged(totalUnreadCount());
 
