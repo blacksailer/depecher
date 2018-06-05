@@ -138,7 +138,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸预览模式</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>新消息</translation>
     </message>
 </context>
 <context>
@@ -226,7 +226,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>get newer</source>
-        <translation type="unfinished"></translation>
+        <translation>获取最新</translation>
     </message>
 </context>
 <context>
@@ -248,19 +248,19 @@ proxy server in settings via PulleyMenu</source>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>返回</translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸预览模式</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>删除%1贴纸</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>添加%1贴纸</translation>
     </message>
 </context>
 <context>
