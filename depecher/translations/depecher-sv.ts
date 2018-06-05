@@ -29,24 +29,24 @@
         <translation>Källkod</translation>
     </message>
     <message>
-        <source>Error %1</source>
-        <translation>Fel %1</translation>
-    </message>
-    <message>
         <source>Groups in Telegram</source>
         <translation>Grupper i Telegram</translation>
-    </message>
-    <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Var medveten om att du ansluter till en chatt om du trycker. Att lämna chattar stöds inte för tillfället.</translation>
     </message>
     <message>
         <source>English speaking community</source>
         <translation>Engelsktalande gemenskap</translation>
     </message>
     <message>
+        <source>Error %1</source>
+        <translation>Fel %1</translation>
+    </message>
+    <message>
         <source>Joining chat</source>
-        <translation>Anslut chatt</translation>
+        <translation>Gå med i chatten</translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
+        <translation>Observera att om du ansluter till en chatt om du trycker. Att lämna chattar stöds inte för tillfället.</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
@@ -62,7 +62,7 @@ Features:
 No daemon yet.
 
 
-Thanks to:
+Thanks to
 - @kaffeine
 - @chuvilin
 - @icoderus
@@ -91,7 +91,7 @@ Tack till:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Här ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
+        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
 Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
     </message>
 </context>
@@ -113,12 +113,20 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
 <context>
     <name>AttachComponent</name>
     <message>
-        <source>Type</source>
-        <translation>Typ</translation>
-    </message>
-    <message>
         <source>Photo</source>
         <translation>Bild</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation>Skicka</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Document</source>
@@ -141,23 +149,22 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <translation>Skicka ett dokument</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation>Skicka</translation>
-    </message>
-    <message>
         <source>Files to send</source>
         <translation>Filer att skicka</translation>
+    </message>
+</context>
+<context>
+    <name>AttachSticker</name>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation>Sticker förhandsvisningsläge</translation>
     </message>
 </context>
 <context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
-        <translation>Ange ditt telefonnummer och tryck &quot;Nästa&quot;</translation>
+        <translation>Ange ditt telefonnummer och tryck &apos;Nästa&apos;</translation>
     </message>
     <message>
         <source>Country Code</source>
@@ -216,7 +223,7 @@ konfigurera en proxyserver i toppmenyns inställningar.</translation>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>new messages</source>
+        <source>New messages</source>
         <translation>Nya meddelanden</translation>
     </message>
 </context>
@@ -227,35 +234,54 @@ konfigurera en proxyserver i toppmenyns inställningar.</translation>
         <translation>Kopiera text</translation>
     </message>
     <message>
-        <source>get newer</source>
-        <translation>Hämta nya</translation>
-    </message>
-    <message>
         <source>Delete Message</source>
         <translation>Ta bort meddelande</translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
+        <translation>Tar bort...</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
         <translation>Ta bort för alla</translation>
     </message>
     <message>
-        <source>Deleting...</source>
-        <translation>Tar bort...</translation>
+        <source>get newer</source>
+        <translation>Hämta nyare</translation>
     </message>
 </context>
 <context>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
-        <translation>Spara i Galleri</translation>
+        <translation>Spara i galleriet</translation>
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation>Bild sparad i Galleri!</translation>
+        <translation>Bild sparad i Galleri</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
         <translation>Delningsfunktion kommer snart</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewStickerSetDialog</name>
+    <message>
+        <source>Back</source>
+        <translation>Tillbaka</translation>
+    </message>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation>Sticker förhandsvisningsläge</translation>
+    </message>
+    <message>
+        <source>Remove %1 stickers</source>
+        <translation>Ta bort %1 stickers</translation>
+    </message>
+    <message>
+        <source>Add %1 stickers</source>
+        <translation>Lägg till %1 stickers</translation>
     </message>
 </context>
 <context>
@@ -352,6 +378,14 @@ konfigurera en proxyserver i toppmenyns inställningar.</translation>
         <translation>Skickar begäran...</translation>
     </message>
     <message>
+        <source>Enter your password</source>
+        <translation>Ange ditt lösenord</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Lösenord</translation>
+    </message>
+    <message>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
@@ -364,10 +398,6 @@ konfigurera en proxyserver i toppmenyns inställningar.</translation>
         <translation>E-postmeddelande har skickats</translation>
     </message>
     <message>
-        <source>recovery code sent to %1</source>
-        <translation>Återställningskod har skickats till %1</translation>
-    </message>
-    <message>
         <source>Show hint</source>
         <translation>Visa ledtråd</translation>
     </message>
@@ -375,27 +405,35 @@ konfigurera en proxyserver i toppmenyns inställningar.</translation>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
         <translation>Ange återställningskod. 
-Kom ihåg att 2-faktorsautentiseringen är inaktiverad efteråt.</translation>
-    </message>
-    <message>
-        <source>Enter your password</source>
-        <translation>Ange ditt lösenord</translation>
+ OBS! 2-faktorsautentiseringen kommer att vara inaktiverad efteråt</translation>
     </message>
     <message>
         <source>Recovery code</source>
         <translation>Återställningskod</translation>
     </message>
     <message>
-        <source>Password</source>
-        <translation>Lösenord</translation>
+        <source>Wait for the message via %1 containing the activation code and press %2</source>
+        <translation>Vänta på meddelande via %1 innehållande aktiveringskod. Tryck sedan %2</translation>
+    </message>
+    <message>
+        <source>recovery code sent to %1</source>
+        <translation>Återställningskod skickad till %1</translation>
     </message>
     <message>
         <source>Password hint</source>
         <translation>Lösenordsledtråd</translation>
     </message>
     <message>
-        <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation>Vänta på meddelande via %1, som innehåller aktiveringskod, och tryck sedan %2</translation>
+        <source>Enter code</source>
+        <translation>Ange kod</translation>
+    </message>
+    <message>
+        <source>Enter password</source>
+        <translation>Ange lösenord</translation>
+    </message>
+    <message>
+        <source>Authentication state</source>
+        <translation>Autentiseringsstatus</translation>
     </message>
 </context>
 <context>
@@ -410,7 +448,7 @@ Kom ihåg att 2-faktorsautentiseringen är inaktiverad efteråt.</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation>Ansluter till proxy</translation>
+        <translation>Ansluter proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -423,6 +461,38 @@ Kom ihåg att 2-faktorsautentiseringen är inaktiverad efteråt.</translation>
     <message>
         <source>Uknown</source>
         <translation>Okänd</translation>
+    </message>
+    <message>
+        <source>Wait lib parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait encryption key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait phone number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait closed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
