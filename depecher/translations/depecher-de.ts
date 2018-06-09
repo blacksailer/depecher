@@ -11,7 +11,7 @@
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished">Link teilen</translation>
+        <translation>Link teilen</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler %1</translation>
     </message>
     <message>
         <source>Joining chat</source>
@@ -73,7 +73,8 @@ Thanks to:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier werden Gruppen aufgelistet, in denen Sie Fragen zu Sailfish OS stellen können (allgemein, dev etc.).
+Diese Gruppe lebt nur wegen der Gemeinschaft und der Gemeinschaft um Sailfish OS.</translation>
     </message>
 </context>
 <context>
@@ -138,7 +139,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
 </context>
 <context>
@@ -166,7 +167,8 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung: Wenn Telegramm in Ihrem Land blockiert sein sollte, finden sie die Einstellung
+Proxy-Server in den Einstellungen über das Pull-Down Menü.</translation>
     </message>
 </context>
 <context>
@@ -176,9 +178,10 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unread 
+        <source>Unread
  messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungelesen
+ Mitteilungen</translation>
     </message>
 </context>
 <context>
@@ -203,7 +206,7 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Nachrichten</translation>
     </message>
 </context>
 <context>
@@ -226,7 +229,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>get newer</source>
-        <translation type="unfinished"></translation>
+        <translation>aktualisiere</translation>
     </message>
 </context>
 <context>
@@ -248,19 +251,19 @@ proxy server in settings via PulleyMenu</source>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker %1 entfernen</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker %1 hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -271,7 +274,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Socks5 proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Socks5-Proxy</translation>
     </message>
     <message>
         <source>Server address</source>
@@ -283,7 +286,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Username</source>
@@ -398,20 +401,21 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code eingeben</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort eingeben</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierungsstatus</translation>
     </message>
     <message>
-        <source>Enter recovery code. 
+        <source>Enter recovery code.
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode eingeben.
+ Denken Sie daran! Danach wird die 2FA-Autorisierung deaktiviert.</translation>
     </message>
 </context>
 <context>
@@ -438,7 +442,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Uknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
@@ -446,11 +450,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten auf Verschlüsselungsschlüssel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Warten auf Telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
@@ -462,15 +466,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte logge aus</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Schließe</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschlossen</translation>
     </message>
 </context>
 </TS>
