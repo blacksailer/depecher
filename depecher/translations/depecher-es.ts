@@ -68,31 +68,12 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation>Depecher - Otro cliente de Telegram para Sailfish OS basado en tdlib.
-
-Funcionalidades:
-- Enviar/Ver/Borrar mensajes
-- Ver fotos
-- Ver stickers
-- Subir/Descargar fotos/documentos
-- Recibir notificaciones
-- Autorización 2FA habilitada
-
-Ejecución en segundo plano no soportado aún.
-
-
-Agradecimientos a:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Aquí está la lista de grupos donde puedes preguntar dudas (general, desarrollador, etc.) relacionado con Sailfish OS.
-Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish OS.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -154,6 +135,13 @@ Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish
     </message>
 </context>
 <context>
+    <name>AttachSticker</name>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -178,8 +166,7 @@ Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>Atención: Si Telegram está bloqueado en tu país, configura primero
-el servidor proxy en ajustes desde el menú deslizante</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -216,8 +203,8 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>new messages</source>
-        <translation>nuevos mensajes</translation>
+        <source>New messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -256,6 +243,25 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     <message>
         <source>Share function will be here soon</source>
         <translation>La función compartir estará aquí pronto</translation>
+    </message>
+</context>
+<context>
+    <name>PreviewStickerSetDialog</name>
+    <message>
+        <source>Sticker preview mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove %1 stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add %1 stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

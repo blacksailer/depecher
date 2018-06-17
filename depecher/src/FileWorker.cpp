@@ -8,7 +8,6 @@ FileWorker::FileWorker(QObject *parent) : QObject(parent),
     m_PicturesPath(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/Depecher")
 {
     QDir pictureDir;
-    qDebug() << m_PicturesPath;
     pictureDir.mkpath(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/Depecher");
 }
 

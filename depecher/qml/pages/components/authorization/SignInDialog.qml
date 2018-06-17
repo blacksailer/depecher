@@ -59,8 +59,9 @@ Dialog {
             }
         }
         PageHeader {
+            id:header
         title: state == "code" ? qsTr("Enter code") : qsTr("Enter password")
-        description: qsTr("Authentication state") +" - "+setAuthState(telegramAuthenticationHandler.currentAuthorizationState)
+        description: qsTr("Authentication state") +" - "+Utils.setAuthState(telegramAuthenticationHandler.currentAuthorizationState)
         }
 
         states:[
@@ -96,7 +97,7 @@ Dialog {
             id:keyColumn
             spacing: Theme.paddingMedium
             x:Theme.horizontalPageMargin
-            topPadding:(signInDialog.height - imglock.height - lblInfoPass.height - tfPassword.height - hintLabel.height - btnpassword.height - 4 * spacing)/2
+            topPadding:Math.max(header.height,(signInDialog.height - imglock.height - lblInfoPass.height - tfPassword.height - hintLabel.height - btnpassword.height - 4 * spacing)/2)
             width: parent.width-2*x
             visible: false
             Image {
@@ -146,7 +147,7 @@ Dialog {
             spacing: Theme.paddingMedium
             x:Theme.horizontalPageMargin
             width: parent.width-2*x
-            topPadding:(signInDialog.height - imgwaiting.height - lblinfo.height - tfcode.height - tfRowName.height - btnsignin.height - 4 * spacing)/2
+            topPadding:Math.max(header.height,(signInDialog.height - imgwaiting.height - lblinfo.height - tfcode.height - tfRowName.height - btnsignin.height - 4 * spacing)/2)
             visible: true
             Image {
                 id: imgwaiting

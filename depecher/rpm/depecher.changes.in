@@ -7,6 +7,17 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Mon June 4 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-2
+- Bug after rotating device with sticker fixed
+* Mon June 4 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-1
+- Stickers sending added
+- Adding/removing sticker sets from chat implemented
+- Sticker preview
+- Animations added
+- Icons changed (Thanks to Ruditimmermans and Alain)
+- verbosity of tdlib changed to level 1 (errors and critical errors)
+- Spanish translation added
+
 * Tue May 15 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.2-3
 - Switching between types fixed (issue #35)
 - Added and updated translations (German, Simpl Chinese, Hungarian, Swedish)

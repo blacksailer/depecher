@@ -1,0 +1,8 @@
+style=kr 
+attach-namespaces
+indent=spaces=4
+pad-oper 
+unpad-paren 
+pad-header 
+align-pointer=name
+keep-one-line-blocks

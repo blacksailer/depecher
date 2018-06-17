@@ -6,20 +6,20 @@ import org.nemomobile.thumbnailer 1.0
 
 import tdlibQtEnums 1.0
 Item {
-    id:thumbnailWrapper
+    id: thumbnailWrapper
     anchors.fill: parent
-    property var selectedItems:[]
+    property var selectedItems: []
     property int countItems: selectedItems.length
-    property alias docType : galleryModel.rootType
+    property alias docType: galleryModel.rootType
     property string attachmentId: ""
-    property string attachmentPreview:""
+    property string attachmentPreview: ""
     signal sendUrlItems(var items)
     signal menuTypeChanged (var type)
 
     // if there are many options, they will open
     // in a separate dialog
     ComboBox {
-        id:files
+        id: files
         width: parent.width
         label: qsTr("Type")
         menu: ContextMenu {
@@ -60,6 +60,7 @@ Item {
         \endlist
         The default value is DocumentGallery.File
     */
+
     DocumentGalleryModel {
         id: galleryModel
         rootType: DocumentGallery.Image //DocumentGallery.File || DocumentGallery.Audio
@@ -67,64 +68,74 @@ Item {
         autoUpdate: true
         sortProperties: ["-dateTaken"]
     }
+
     ListModel {
         id: fileModel
+
         ListElement {
             iconPath: "image://theme/icon-m-home"
-            title : qsTr("Home")
+            title: qsTr("Home")
             subtitle: qsTr("Go to Home folder")
         }
+
         ListElement {
             iconPath: "image://theme/icon-m-file-folder"
-            title : qsTr("Documents")
+            title: qsTr("Documents")
             subtitle: qsTr("Send a document")
         }
     }
+
     Component {
         id: filesViewComponent
+
         SilicaListView {
             model: fileModel
             anchors.fill: parent
             spacing: Theme.paddingSmall
             currentIndex: -1 // otherwise currentItem will steal focus
-            delegate:  fileComponent
+            delegate: fileComponent
             clip: true
             VerticalScrollDecorator {}
         }
     }
+
     Loader {
         width: parent.width
         anchors.top: files.bottom
         anchors.bottom: attachButton.top
+        anchors.bottomMargin: Theme.paddingMedium
         sourceComponent: files.currentIndex === 1 ? filesViewComponent : photosViewComponent
     }
 
     Component {
         id: photosViewComponent
+
         SilicaGridView{
-            id:thumbnailPhotos
-            property var icons:["image://theme/icon-l-image","image://theme/icon-l-diagnostic","image://theme/icon-l-document"]
-            width:parent.width
+            id: thumbnailPhotos
+            property var icons: ["image://theme/icon-l-image", "image://theme/icon-l-diagnostic", "image://theme/icon-l-document"]
+            width: parent.width
             anchors.fill: parent
-            clip:true
-            //            anchors.fill: parent
+            clip: true
+            //anchors.fill: parent
             cellWidth: width/3
             cellHeight: width/3
             model: galleryModel
             delegate: imageComponent
         }
     }
-    Button{
-        id:attachButton
+
+    Button {
+        id: attachButton
         preferredWidth: Theme.buttonWidthLarge
         text: countItems == 0 ? qsTr("Cancel") : qsTr("Send") + " ("+countItems+")"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: Theme.paddingMedium
         onClicked: {
             if(countItems>0)
             {
                 thumbnailWrapper.sendUrlItems(thumbnailWrapper.selectedItems)
-                thumbnailWrapper.selectedItems=[];
+                thumbnailWrapper.selectedItems = [];
             }
             attachDrawer.open = false
         }
@@ -132,64 +143,74 @@ Item {
 
 
     Component{
-        id:imageComponent
-        Image {
-            asynchronous: true
-            // From org.nemomobile.thumbnailer
-            source:   "image://nemoThumbnail/"+url
-            sourceSize: Qt.size(Screen.width/3,Screen.width/3)
-            width: Screen.width/3
-            height: width
+            id:imageComponent
+            Image {
+                asynchronous: true
+                // From org.nemomobile.thumbnailer
+                source:   "image://nemoThumbnail/"+url
+                sourceSize: Qt.size(Screen.width/3,Screen.width/3)
+                width: Screen.width/3
+                height: width
 
-            Rectangle{
-                id:selectedCircle
-                border.color: Theme.primaryColor
-                color: "transparent"
-                border.width: 2
-                radius: 90
-                width:Theme.paddingLarge
-                height: width
-                x:Theme.paddingLarge
-                y:Theme.paddingLarge
-            }
-            MouseArea {
-                id:selectionArea
-                x:0
-                y:0
-                width:Theme.paddingLarge * 2
-                height: width
-                onClicked:
-                {
-                    if(!selectedContainsAndRemove(index,files.currentIndex))
+                Rectangle{
+                    id:selectedCircle
+                    border.color: Theme.primaryColor
+                    color: "transparent"
+                    border.width: 2
+                    radius: 90
+                    width:Theme.paddingLarge
+                    height: width
+                    x:Theme.paddingLarge
+                    y:Theme.paddingLarge
+                }
+
+                MouseArea {
+                    id:selectionArea
+                    x:0
+                    y:0
+                    width:Theme.paddingLarge * 2
+                    height: width
+                    onClicked:
                     {
-                        selectedCircle.color = Theme.secondaryHighlightColor;
-                        thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
-                        countItems++;
-                    }
-                    else
-                    {
-                        selectedCircle.color = "transparent";
-                        countItems--;
+                        if(!selectedContainsAndRemove(index,files.currentIndex))
+                        {
+                            selectedCircle.color = Theme.secondaryHighlightColor;
+                            thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
+                            countItems++;
+                        }
+                        else
+                        {
+                            selectedCircle.color = "transparent";
+                            countItems--;
+                        }
                     }
                 }
-            }
 
-            MouseArea {
-                anchors.top: selectionArea.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                onClicked: pageStack.push("../PicturePage.qml",{imagePath:galleryModel.get(index).url})
-            }
+                MouseArea {
+                    anchors.top: selectionArea.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    onClicked:{
+                        var fileUrl = galleryModel.get(index).url.toString()
+//                        if(fileUrl.slice(0,4) === "file")
+//                            fileUrl = fileUrl.slice(7, fileUrl.length)
 
-        }
+                        pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
+                }
+                    }
+
+            }
 
     }
-    Component {id:audioComponent
+
+    Component {
+        id: audioComponent
+
         Image {
             asynchronous: true
             // From org.nemomobile.thumbnailer
-            source:   thumbnailPhotos.icons[1]
+            source: thumbnailPhotos.icons[1]
             sourceSize: Qt.size(thumbnailPhotos.cellWidth, thumbnailPhotos.cellHeight)
 
             Rectangle{
@@ -198,51 +219,60 @@ Item {
                 color: "transparent"
                 border.width: 2
                 radius: 90
-                width:Theme.paddingLarge
+                width: Theme.paddingLarge
                 height: width
-                x:Theme.paddingLarge
-                y:Theme.paddingLarge
+                x: Theme.paddingLarge
+                y: Theme.paddingLarge
             }
+
             MouseArea {
                 anchors.fill: parent
                 onClicked:
                 {
-
                     selectedCircle.color = Theme.secondaryHighlightColor;
-                    thumbnailWrapper.selectedItems.push({"url":audioModel.get(index).url,"type":files.currentIndex});
+                    thumbnailWrapper.selectedItems.push({"url":audioModel.get(index).url, "type":files.currentIndex});
                 }
             }
-            Label{
+
+            Label {
                 width: parent.width
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: Theme.paddingSmall
-                wrapMode:Text.Wrap
-                text:title
+                wrapMode: Text.Wrap
+                text: title
             }
         }
     }
-    Component {id:fileComponent
+
+    Component {
+        id: fileComponent
+
         BackgroundItem{
             width: parent.width
             height: Theme.itemSizeSmall
+
             Row {
-                width:parent.width - Theme.horizontalPageMargin * 2
+                width: parent.width - 2*Theme.horizontalPageMargin
                 x: Theme.horizontalPageMargin
                 height: parent.height
                 spacing: Theme.paddingSmall
+
                 Image {
                     id:icon
                     anchors.verticalCenter: parent.verticalCenter
-                    source:iconPath
+                    source: iconPath
                 }
+
                 Column {
                     width: parent.width - icon.width - spacing
                     anchors.verticalCenter: parent.verticalCenter
+
                     Label {
                         font.pixelSize: Theme.fontSizeSmall
                         font.bold: true
                         text: title
                     }
+
                     Label {
                         font.pixelSize: Theme.fontSizeTiny
                         color: Theme.secondaryColor
@@ -250,40 +280,39 @@ Item {
                     }
                 }
             }
-           onClicked: index ===0 ? pageStack.push(filePickerPage) : pageStack.push(documentPickerPage)
+            onClicked: index ===0 ? pageStack.push(filePickerPage) : pageStack.push(documentPickerPage)
+
             Component {
                 id: filePickerPage
+
                 FilePickerPage {
                     title: qsTr("Files to send")
                     onSelectedContentPropertiesChanged: {
                         thumbnailWrapper.selectedItems = []
-                        thumbnailWrapper.selectedItems.push({"id":0,"type":TdlibState.Document,"url":selectedContentProperties.filePath});
+                        thumbnailWrapper.selectedItems.push({"id":0, "type":TdlibState.Document, "url":selectedContentProperties.filePath});
                         thumbnailWrapper.sendUrlItems(thumbnailWrapper.selectedItems)
                         thumbnailWrapper.selectedItems=[];
-                    attachDrawer.open = false
-
+                        attachDrawer.open = false
                     }
                 }
             }
+
             Component {
                 id: documentPickerPage
+
                 DocumentPickerPage {
                     title: qsTr("Files to send")
                     onSelectedContentPropertiesChanged: {
                         thumbnailWrapper.selectedItems = []
-                        thumbnailWrapper.selectedItems.push({"id":0,"type":TdlibState.Document,"url":selectedContentProperties.filePath});
+                        thumbnailWrapper.selectedItems.push({"id":0, "type":TdlibState.Document, "url":selectedContentProperties.filePath});
                         thumbnailWrapper.sendUrlItems(thumbnailWrapper.selectedItems)
                         thumbnailWrapper.selectedItems=[];
-                    attachDrawer.open = false
-
+                        attachDrawer.open = false
                     }
                 }
             }
-
         }
     }
-
-
 
     function selectedContainsAndRemove(idx, type)
     {

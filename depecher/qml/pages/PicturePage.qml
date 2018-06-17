@@ -28,8 +28,6 @@ Page {
             contentWidth: imageContainer.width; contentHeight: imageContainer.height
             clip: true
             onHeightChanged: if (imagePreview.status === Image.Ready) imagePreview.fitToScreen();
-
-
             Item {
                 id: imageContainer
                 width: Math.max(imagePreview.width * imagePreview.scale, imageFlickable.width)
@@ -99,7 +97,7 @@ Page {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    enabled: imagePreview.status === Image.Ready
+                    enabled: true//imagePreview.status === Image.Ready
                     onClicked: drawer.open = !drawer.open
                 }
             }

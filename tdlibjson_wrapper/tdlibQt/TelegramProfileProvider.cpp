@@ -1,5 +1,6 @@
 #include "TelegramProfileProvider.hpp"
 #include <QDebug>
+#include <QImageReader>
 namespace tdlibQt {
 TelegramProfileProvider::TelegramProfileProvider() : QQuickImageProvider(
         QQuickImageProvider::Image)
@@ -8,19 +9,30 @@ TelegramProfileProvider::TelegramProfileProvider() : QQuickImageProvider(
 }
 
 QImage TelegramProfileProvider::requestImage(const QString &id, QSize *size,
-                                             const QSize &requestedSize)
+        const QSize &requestedSize)
 {
     QString rsrcid = id;
-    QImage image(rsrcid);
-    QImage result;
-
-    if (requestedSize.isValid()) {
-        result = image.scaled(requestedSize, Qt::KeepAspectRatio);
+    //https://github.com/tdlib/td/issues/264
+    if (rsrcid.right(9) == ".jpg.webp") {
+        QImageReader imgReader(rsrcid.left(rsrcid.length() - 1 - 4), "webp");
+        QImage result = imgReader.read();
+        if (imgReader.error() == QImageReader::InvalidDataError || imgReader.error() == QImageReader::DeviceError) {
+            imgReader.setFormat("jpg");
+            result = imgReader.read();
+        }
+        *size = result.size();
+        return result;
     } else {
-        result = image;
-    }
-    *size = result.size();
-    return result;
+        QImageReader imgReader(rsrcid);
+        QImage result = imgReader.read();
 
+//    if (requestedSize.isValid()) {
+//        result = image.scaled(requestedSize, Qt::KeepAspectRatio);
+//    } else {
+//        result = image;
+//    }
+        *size = result.size();
+        return result;
+    }
 }
 }

@@ -36,7 +36,8 @@ public:
         Photo,
         Video,
         Document,
-        Animation
+        Animation,
+        Sticker
     };
     Q_ENUM(FileType)
     Q_ENUM(AuthorizationState)

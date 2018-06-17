@@ -1,9 +1,9 @@
 #include "NotificationManager.hpp"
 #include <QDebug>
 #include <QGuiApplication>
-#include "TdlibJsonWrapper.hpp"
-#include "models/singletons/UsersModel.hpp"
-#include "ParseObject.hpp"
+#include "../tdlibjson_wrapper/tdlibQt/TdlibJsonWrapper.hpp"
+#include "../tdlibjson_wrapper/tdlibQt/models/singletons/UsersModel.hpp"
+#include "../tdlibjson_wrapper/tdlibQt/ParseObject.hpp"
 #include <QJsonObject>
 namespace tdlibQt {
 
@@ -17,7 +17,10 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
         if (m_connectionState == connectionState)
             return;
         m_connectionState = connectionState;
-        publishNotifications();
+        if (isAtFirstLoaded) {
+            publishNotifications();
+            isAtFirstLoaded = false;
+        }
     });
     connect(m_client, &TdlibJsonWrapper::newMessageFromUpdate,
             this, &NotificationManager::gotNewMessage);
@@ -117,6 +120,11 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
 
 }
 
+void NotificationManager::onViewMessages(const qint64 peerId)
+{
+    removeNotification(peerId);
+}
+
 void NotificationManager::notifySummary(const qint64 timestamp, const QString &summary,
                                         const QString &body, const qint64 chatId,  const qint64 unreadCount)
 {
@@ -130,20 +138,23 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
         notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
     }
     notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
-                                                                 1000 /* timestamp have secs , not msecs*/));
+                                  1000 /* timestamp have secs , not msecs*/));
     notificationPtr->setSummary(summary);
     notificationPtr->setBody(body);
 
     //Too lazy to create another map. saving message id in hint value
     notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-                                                                QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-                                                                "getId"));
+                                     QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
+                                     "getId"));
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
     });
     m_chatIdsPublished[chatId] = notificationPtr;
-    publishNotifications();
+    if (isAtFirstLoaded)
+        publishNotifications();
+    else
+        notificationPtr->publish();
 }
 
 void NotificationManager::notifyPreview(const qint64 timestamp, const QString &summary,
@@ -160,21 +171,17 @@ void NotificationManager::notifyPreview(const qint64 timestamp, const QString &s
         notificationPtr->setReplacesId(m_chatIdsPublished[chatId]->replacesId());
     }
     notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
-                                                                 1000 /* timestamp have secs , not msecs*/));
+                                  1000 /* timestamp have secs , not msecs*/));
     notificationPtr->setPreviewBody(body);
-//    notificationPtr->setBody(body);
-//    notificationPtr->setPreviewSummary(summary);
-//    notificationPtr->setSummary(summary);
 
-//    //Too lazy to create another map. saving message id in hint value
-//    notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-//                                                                QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-//                                                                "getId"));
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr));
     });
     m_chatIdsPublished[chatId] = notificationPtr;
-    publishNotifications();
+    if (isAtFirstLoaded)
+        publishNotifications();
+    else
+        notificationPtr->publish();
 }
 }// tdlibQt
