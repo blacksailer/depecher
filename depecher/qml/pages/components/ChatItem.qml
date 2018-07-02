@@ -29,22 +29,23 @@ ListItem {
                 //icon-m-speaker-mute
                 width:parent.width-avatar.width-parent.spacing
                 height: parent.height
-                Row{
+                Row {
                     width:parent.width
                     height: parent.height/2
                     spacing: Theme.paddingSmall
                     Image {
                         id: iconGroup
-                        source: type == TdlibState.Channel ? "image://theme/icon-m-media-radio?" + (pressed
+                        source: type["is_channel"] ? "image://theme/icon-m-media-radio?" + (pressed
                                                                                                     ? Theme.highlightColor
                                                                                                     : Theme.primaryColor) :
-                                                             type == TdlibState.Supergroup || type == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
+                                                             type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
                                                                                                                                                                    ? Theme.highlightColor
                                                                                                                                                                    : Theme.primaryColor) :
-                                                                                                                              type == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
+                                                                                                                              type["type"] == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
                                                                                                                                                                                            ? Theme.highlightColor
                                                                                                                                                                                            : Theme.primaryColor) :
                                                                                                                                                           ""
+                        anchors.verticalCenter: parent.verticalCenter
                         height: parent.height
                         width: source == "" ? 0 : implicitWidth
                         fillMode: Image.PreserveAspectFit
@@ -54,8 +55,8 @@ ListItem {
                         height:parent.height
                         Label {
                             //title
+                            anchors.verticalCenter: parent.verticalCenter
                             width: Math.min(implicitWidth,parent.width - iconMute.width)
-                            height: parent.height
                             color: pressed?Theme.secondaryHighlightColor:Theme.highlightColor
                             font.pixelSize: Theme.fontSizeSmall
                             text:title
@@ -77,6 +78,7 @@ ListItem {
                     }
                     Label{
                         id:messageTimestamp
+                        anchors.verticalCenter: parent.verticalCenter
                         function timestamp(dateTime){
                             var postedTimeDate=new Date(dateTime*1000)
                             var date = postedTimeDate.getDate()
@@ -94,19 +96,21 @@ ListItem {
                         text:timestamp(date)
                     }
                 }
-                Row{
+                Row {
                     width:parent.width
                     height: parent.height/2
                     spacing: Theme.paddingSmall
                     Label {
                         id:lastMessageAuthor
+                        anchors.verticalCenter: parent.verticalCenter
                         color:pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         text: last_message_author+":"
                         font.pixelSize: Theme.fontSizeExtraSmall
                         visible: action ? false : type == TdlibState.BasicGroup || type==TdlibState.Supergroup ? true : false
                         width: visible ? implicitWidth : 0
                     }
-                    Label{
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
                         width:lastMessageAuthor.width == 0 ?parent.width - mentions.width  : parent.width  - lastMessageAuthor.width - mentions.width  - parent.spacing
                         text:action ?  action : last_message ? last_message : ""
                         font.pixelSize: Theme.fontSizeExtraSmall
@@ -121,6 +125,28 @@ ListItem {
                         id: mentions
                         height: parent.height
                         spacing: Theme.paddingSmall
+                        Label {
+                            font.pixelSize: Theme.fontSizeTiny
+                            width: visible ? implicitWidth : 0
+                            color:pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                            visible: !(type["type"] == TdlibState.Supergroup && type["is_channel"])
+                            anchors.verticalCenter: counterWrapper.verticalCenter
+                            text: {
+                                if(sending_state === TdlibState.Sending_Pending) {
+                                    return "<b>\u23F1</b>" // clock
+                                }
+                                else if(sending_state === TdlibState.Sending_Failed) {
+                                    return "<b>\u26A0</b>" // warning sign
+                                }
+                                else if(sending_state == TdlibState.Sending_Read) {
+                                    return "<b>\u2713\u2713</b>" // double check mark
+                                }
+                                else {
+                                    return "<b>\u2713</b>" // check mark
+                                }
+                            }
+                        }
+
                         Image {
                             id: iconPinned
                             source: is_pinned ? "image://theme/icon-s-task?"+ (pressed
@@ -165,7 +191,9 @@ ListItem {
                             }
                         }
                     }
+
                 }
+
             }
         }
     }

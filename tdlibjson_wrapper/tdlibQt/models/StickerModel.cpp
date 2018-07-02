@@ -138,10 +138,17 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
     case NAME:
         return   QString::fromStdString(m_stikerSets[setNumber]->name_);
     case SET_STICKER_THUMBNAIL: {
-        if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->is_downloading_completed_)
-            return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->path_);
-        emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
-        return QVariant();
+        if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_.data()) {
+            if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->is_downloading_completed_)
+                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->path_);
+            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
+            return QVariant();
+        } else {
+            if (m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->is_downloading_completed_)
+                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->sticker_->local_->path_);
+            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->sticker_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));
+            return QVariant();
+        }
     }
     case STICKERS_COUNT:
         return m_stikerSets[setNumber]->stickers_.size();
@@ -151,12 +158,18 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
         //    m_installedStickerSets[rowIndex]->covers_;
         if (m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->is_downloading_completed_)
             return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->local_->path_);
-        if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->is_downloading_completed_) {
+        if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_.data()) {
+            if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->is_downloading_completed_) {
+                emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_, 12, index);
+                return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->path_);
+            }
+            emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->id_, 12, index);
+            return QVariant();
+        } else {
+            //Sometimes there is no thumbnails in sticker
             emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->sticker_->id_, 12, index);
-            return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->local_->path_);
+            return QVariant();
         }
-        emit downloadFileStart(m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_->photo_->id_, 12, index);
-        return QVariant();
     case EMOJI: {
         if (index.parent().row() == -1)
             return QVariant();
@@ -252,14 +265,16 @@ void StickerModel::processFile(const QJsonObject &fileObject)
             emit dataChanged(viewIndex,
                              viewIndex, photoRole);
         }
-        if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_) {
-            m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
-            //For child item
-            emit dataChanged(viewIndex,
-                             viewIndex, photoRole);
-            //for thumbnails
-            emit dataChanged(viewIndex.parent(),
-                             viewIndex.parent(), photoRole);
+        if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_.data()) {
+            if (m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_->id_ == file->id_) {
+                m_stikerSets[setIndex]->stickers_[rowIndex]->thumbnail_->photo_ = file;
+                //For child item
+                emit dataChanged(viewIndex,
+                                 viewIndex, photoRole);
+                //for thumbnails
+                emit dataChanged(viewIndex.parent(),
+                                 viewIndex.parent(), photoRole);
+            }
         }
 
         if (file->local_->is_downloading_completed_)

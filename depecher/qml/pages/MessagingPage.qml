@@ -187,10 +187,12 @@ Page {
                         MenuItem {
                             text: qsTr("Copy Text")
                             onClicked: {
-                                if(caption)
-                                    Clipboard.text = caption
-                                else
+                                if(message_type == MessagingModel.TEXT)
                                     Clipboard.text = content
+                                else
+                                    Clipboard.text = file_caption
+
+
                             }
                         }
                         MenuItem {

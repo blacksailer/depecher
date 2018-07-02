@@ -196,6 +196,28 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             if (chats[rowIndex]->photo_->small_.data() != nullptr)
                 return QString::fromStdString(chats[rowIndex]->photo_->small_->local_->path_);
         }
+    case SENDING_STATE: {
+        if (chats[rowIndex]->last_message_->sending_state_.data()) {
+            if (chats[rowIndex]->last_message_->sending_state_->get_id() == messageSendingStatePending::ID)
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Pending);
+            if (chats[rowIndex]->last_message_->sending_state_->get_id() == messageSendingStateFailed::ID)
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Failed);
+        }
+        if (chats[rowIndex]->last_message_->is_outgoing_) {
+            if (chats[rowIndex]->last_message_->id_ <= chats[rowIndex]->last_read_outbox_message_id_)
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
+            else
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
+        } else {
+            if (chats[rowIndex]->last_message_->id_ <= chats[rowIndex]->last_read_inbox_message_id_)
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
+            else
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
+        }
+
+    }
+
+    default:
         return QVariant();
     }
 
@@ -237,6 +259,7 @@ QHash<int, QByteArray> ChatsModel::roleNames() const
     roles[REPLY_MARKUP_MESSAGE_ID] = "reply_markup_message_id";
     roles[DRAFT_MESSAGE] = "draft_message";
     roles[CLIENT_DATA] = "client_data";
+    roles[SENDING_STATE] = "sending_state";
     return roles;
 }
 
@@ -244,6 +267,14 @@ bool ChatsModel::canFetchMore(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return !fetchPending;
+}
+
+int ChatsModel::getIndex(const qint64 chatId)
+{
+    for (int i = 0; i < chats.size(); i++)
+        if (chats[i]->id_ == chatId)
+            return i;
+    return -1;
 }
 
 void ChatsModel::chatActionCleanUp()
@@ -346,6 +377,7 @@ void ChatsModel::updateChatReadInbox(const QJsonObject &chatReadInboxObject)
             QVector<int> roles;
             roles.append(UNREAD_COUNT);
             roles.append(LAST_MESSAGE_INBOX_ID);
+            roles.append(SENDING_STATE);
 
             emit dataChanged(index(i), index(i), roles);
             break;
@@ -362,10 +394,10 @@ void ChatsModel::updateChatReadOutbox(const QJsonObject &chatReadOutboxObject)
             chats[i]->last_read_outbox_message_id_ = lastOutboxId;
             QVector<int> roles;
             roles.append(LAST_MESSAGE_OUTBOX_ID);
+            roles.append(SENDING_STATE);
             emit dataChanged(index(i), index(i), roles);
             return;
         }
-
     }
 }
 
@@ -397,5 +429,4 @@ void ChatsModel::reset()
     fetchMore(QModelIndex());
     endResetModel();
 }
-
 }//namespace tdlibQt

@@ -39,7 +39,7 @@ Drawer {
         Item {
             id: replyArea
             width: parent.width
-            height: reply_id !=- 1 ? Theme.itemSizeExtraSmall : 0
+            height: reply_id  ? Theme.itemSizeExtraSmall : 0
 
             Rectangle {
                 id: replyLine
@@ -59,16 +59,15 @@ Drawer {
                 Label {
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text: author
+                    text: author ? author : ""
                     elide: TruncationMode.Fade
                     height: authorsTextLabel.text == "" ? removeReplyButton.height : implicitHeight
                 }
-
                 Label {
                     id: authorsTextLabel
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text: authorsText
+                    text: authorsText ? authorsText : ""
                     elide: TruncationMode.Fade
                     visible: authorsText != ""
                 }

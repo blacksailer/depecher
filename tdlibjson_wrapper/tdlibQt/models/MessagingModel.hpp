@@ -198,12 +198,7 @@ public:
         SYSTEM_NEW_MESSAGE,
         UNDEFINED
     };
-    enum MessageState {
-        Sending_Failed,
-        Sending_Pending,
-        Sending_Not_Read,
-        Sending_Read
-    };
+
     enum ChatMemberStatuses {
         Administrator,
         Banned,
@@ -213,7 +208,6 @@ public:
         Creator
     };
     Q_ENUM(MessageType)
-    Q_ENUM(MessageState)
     Q_ENUM(ChatMemberStatuses)
     double lastOutboxId() const
     {
@@ -223,6 +217,5 @@ public:
 };
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)
-Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageState)
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::ChatMemberStatuses)
 #endif // MESSAGINGMODEL_HPP
