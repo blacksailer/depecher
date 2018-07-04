@@ -138,7 +138,7 @@ QVariant StickerModel::data(const QModelIndex &index, int role) const
     case NAME:
         return   QString::fromStdString(m_stikerSets[setNumber]->name_);
     case SET_STICKER_THUMBNAIL: {
-        if (m_stikerSets[setNumber]->stickers_[rowIndex]->thumbnail_.data()) {
+        if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_.data()) {
             if (m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->is_downloading_completed_)
                 return   QString::fromStdString(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->local_->path_);
             emit downloadFileStart(m_stikerSets[setNumber]->stickers_[0]->thumbnail_->photo_->id_, 12, this->index(0, 0, this->index(setNumber, 0)));

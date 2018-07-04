@@ -7,6 +7,9 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Mon July 3 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-4
+- Fixed opening sticker sending dialog
+
 * Mon July 3 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-3
 - Copy text issue fixed  #59
 - Message state to chats added #61

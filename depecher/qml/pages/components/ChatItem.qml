@@ -89,7 +89,6 @@ ListItem {
                             else
                                 return Format.formatDate(postedTimeDate, Formatter.DateMediumWithoutYear)
                         }
-                        height: parent.height
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: Theme.fontSizeSmall
                         color: pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
