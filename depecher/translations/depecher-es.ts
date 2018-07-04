@@ -138,7 +138,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo vista previa de stickers</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevos mensajes</translation>
     </message>
 </context>
 <context>
@@ -249,19 +249,19 @@ proxy server in settings via PulleyMenu</source>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo vista previa de stickers</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar %1 stickers</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir %1 stickers</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver</translation>
     </message>
 </context>
 <context>

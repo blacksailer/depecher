@@ -73,8 +73,7 @@ Thanks to:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>In diese Gruppen könnt Ihr Fragen zu Sailfish OS (allgemein, dev usw.) stellen.
-Diese Gruppen leben nur wegen der Gemeinschaft und der Gemeinschaft um Sailfish OS.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -167,8 +166,7 @@ Diese Gruppen leben nur wegen der Gemeinschaft und der Gemeinschaft um Sailfish 
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation>Achtung: Falls Telegramm in deinen Land blockiert wurde, musst Du zuerst den
-Proxy-Server in den Einstellungen über das Pulley-Menü einrichten</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
