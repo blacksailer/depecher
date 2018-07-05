@@ -68,12 +68,31 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - Otro cliente de Telegram para Sailfish OS basado en tdlib.
+
+Funcionalidades:
+- Enviar/Ver/Borrar mensajes
+- Ver fotos
+- Ver stickers
+- Subir/Descargar fotos/documentos
+- Recibir notificaciones
+- Autorización 2FA habilitada
+
+Ejecución en segundo plano no soportado aún.
+
+
+Agradecimientos a:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aquí está la lista de grupos donde puedes preguntar dudas (general, desarrollador, etc.) relacionado con Sailfish OS.
+Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish OS.</translation>
     </message>
 </context>
 <context>
@@ -166,7 +185,8 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Atención: si Telegram está bloqueado en tu país, configura primero
+el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
 </context>
 <context>
