@@ -39,6 +39,13 @@ public:
         Animation,
         Sticker
     };
+    enum class MessageState {
+        Sending_Failed,
+        Sending_Pending,
+        Sending_Not_Read,
+        Sending_Read
+    };
+    Q_ENUM(MessageState)
     Q_ENUM(FileType)
     Q_ENUM(AuthorizationState)
     Q_ENUM(ConnectionState)
@@ -51,6 +58,7 @@ public:
 Q_DECLARE_METATYPE(tdlibQt::Enums::AuthorizationState)
 Q_DECLARE_METATYPE(tdlibQt::Enums::ConnectionState)
 Q_DECLARE_METATYPE(tdlibQt::Enums::ChatType)
+Q_DECLARE_METATYPE(tdlibQt::Enums::MessageState)
 
 Q_DECLARE_METATYPE(Qt::ApplicationState)
 

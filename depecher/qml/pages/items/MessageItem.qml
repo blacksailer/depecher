@@ -112,16 +112,16 @@ ListItem {
 
                     Label {
                         font.pixelSize: Theme.fontSizeTiny
-                        visible: sending_state === MessagingModel.Sending_Pending || sending_state === MessagingModel.Sending_Failed
+                        visible: sending_state === TdlibState.Sending_Pending || sending_state === TdlibState.Sending_Failed
                                  ||  messagingModel.chatType["type"] == TdlibState.Private || messagingModel.chatType["type"] == TdlibState.Secret
                         text: {
-                            if(sending_state === MessagingModel.Sending_Pending) {
+                            if(sending_state == TdlibState.Sending_Pending) {
                                 return "<b>\u23F1</b>" // clock
                             }
-                            else if(sending_state === MessagingModel.Sending_Failed) {
+                            else if(sending_state == TdlibState.Sending_Failed) {
                                 return "<b>\u26A0</b>" // warning sign
                             }
-                            else if(sending_state == MessagingModel.Sending_Read) {
+                            else if(sending_state == TdlibState.Sending_Read) {
                                 return "<b>\u2713\u2713</b>" // double check mark
                             }
                             else {

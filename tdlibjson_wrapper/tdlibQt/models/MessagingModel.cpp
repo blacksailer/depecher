@@ -200,20 +200,20 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case SENDING_STATE:
         if (messages[rowIndex]->sending_state_.data()) {
             if (messages[rowIndex]->sending_state_->get_id() == messageSendingStatePending::ID)
-                return Sending_Pending;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Pending);
             if (messages[rowIndex]->sending_state_->get_id() == messageSendingStateFailed::ID)
-                return Sending_Failed;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Failed);
         }
         if (messages[rowIndex]->is_outgoing_) {
             if (messages[rowIndex]->id_ <= lastOutboxId())
-                return Sending_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
-                return Sending_Not_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         } else {
             if (messages[rowIndex]->id_ <= lastMessage().toLongLong())
-                return Sending_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
-                return Sending_Not_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         }
         break;
     case MEDIA_PREVIEW:

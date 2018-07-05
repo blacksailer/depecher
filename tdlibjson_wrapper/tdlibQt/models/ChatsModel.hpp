@@ -37,7 +37,8 @@ class ChatsModel : public QAbstractListModel
         NOTIFICATION_SETTINGS,
         REPLY_MARKUP_MESSAGE_ID,
         DRAFT_MESSAGE,
-        CLIENT_DATA
+        CLIENT_DATA,
+        SENDING_STATE
     };
     TdlibJsonWrapper *tdlibJson;
     void changeChatOrder(qint64 chatId, qint64 order);
@@ -52,6 +53,7 @@ public:
     void fetchMore(const QModelIndex &parent) override;
     QHash<int, QByteArray> roleNames() const override;
     bool canFetchMore(const QModelIndex &parent) const override;
+    int getIndex(const qint64 chatId);
 
     int totalUnreadCount() const
     {
@@ -81,7 +83,6 @@ public slots:
     void sortByOrder();
     void updateChatMentionCount(const QJsonObject &chatMentionCountObject);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
-
     void reset();
 };
 } // namespace tdlibQt

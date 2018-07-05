@@ -765,7 +765,7 @@ QSharedPointer<photo> ParseObject::parsePhoto(const QJsonObject &photoObject)
 QSharedPointer<photoSize> ParseObject::parsePhotoSize(const QJsonObject &photoSizeObject)
 {
     if (photoSizeObject["@type"].toString() != "photoSize")
-        return QSharedPointer<photoSize>(new photoSize);
+        return QSharedPointer<photoSize>(nullptr); //Checked for nullptr in  StickerModel
     auto resultPhotoSize = QSharedPointer <photoSize>(new photoSize);
     resultPhotoSize->width_ = photoSizeObject["width"].toInt();
     resultPhotoSize->height_ = photoSizeObject["height"].toInt();
