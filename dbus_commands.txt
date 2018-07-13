@@ -1,0 +1,15 @@
+
+#Get object path
+dbus-send --session --type=method_call --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.GetUnit string:"depecher.service"
+
+#Get enable/disable status
+dbus-send --session --type=method_call --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.GetUnitFileState string:"depecher.service"
+
+#Set enable/disable status
+dbus-send --session --type=method_call --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.EnableUnitFiles array:string:"depecher.service" boolean:false boolean:false
+
+#Start daemon
+dbus-send --session --type=method_call --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.StartUnit string:"depecher.service" string:"fail"
+#Get app status (active/inactive)
+dbus-send --session --dest=org.freedesktop.systemd1  --print-reply /org/freedesktop/systemd1/unit/depecher_2eservice \
+org.freedesktop.DBus.Properties.Get string:org.freedesktop.systemd1.Unit string:ActiveState 

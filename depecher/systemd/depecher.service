@@ -1,0 +1,13 @@
+[Unit]
+Description=native application for Tenegram based on tdlib
+Requires=lipstick.service dbus.service
+After=lipstick.service
+
+[Service]
+Type=dbus
+Alias = org.blacksailer.depecher.service
+ExecStart=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher
+BusName=org.blacksailer.depecher
+
+[Install]
+WantedBy=post-user-session.target

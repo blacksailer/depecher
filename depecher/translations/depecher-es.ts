@@ -13,6 +13,10 @@
         <extracomment>List header for link sharing method list</extracomment>
         <translation>Compartir enlace</translation>
     </message>
+    <message id="When this is off, you won't get Depecher app on boot">
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AboutPage</name>
@@ -180,6 +184,33 @@ proxy server in settings via PulleyMenu</source>
  messages</source>
         <translation>Mensajes 
  sin leer</translation>
+    </message>
+</context>
+<context>
+    <name>DepecherAppSettings</name>
+    <message>
+        <source>Depecher settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Depecher on bootup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depecher current status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop daemon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

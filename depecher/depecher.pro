@@ -25,7 +25,17 @@ LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper
 # WebP Plugin
 webp.files = $$OUT_PWD/../webp-plugin/plugins/imageformats/*.so
 webp.path  = /usr/share/$$TARGET/lib/imageformats
-INSTALLS += webp
+
+dbus.files = $$PWD/dbus/org.blacksailer.depecher.service
+dbus.path = /usr/share/dbus-1/services
+
+dbus_interface.files= $$PWD/dbus/org.blacksailer.depecher.xml
+dbus_interface.path= /usr/share/dbus-1/interfaces
+
+systemd.files = $$PWD/systemd/depecher.service
+systemd.path = /usr/lib/systemd/user
+
+INSTALLS += webp dbus dbus_interface systemd
 
 DEPENDPATH += $$OUT_PWD/../tdlibjson_wrapper
 INCLUDEPATH = $$PWD/../tdlibjson_wrapper
@@ -37,6 +47,15 @@ events.files=$$PWD/events/*.ini
 events.path=/usr/share/ngfd/events.d
 
 INSTALLS += notificationcategories events
+
+# Settings
+settings_json.files = $$PWD/qml/settings/$${TARGET}.json
+settings_json.path = /usr/share/jolla-settings/entries/
+INSTALLS += settings_json
+
+settings_qml.files = $$PWD/qml/settings/*.qml
+settings_qml.path = /usr/share/$${TARGET}/settings/
+INSTALLS += settings_qml
 
 i18n.path = /usr/share/depecher/translations
 i18n.files =     translations/*.qm
@@ -53,7 +72,9 @@ MOC_DIR = build/mocs
 SOURCES += \
     src/main.cpp \
     src/FileWorker.cpp \
-    ModelTest.cpp
+    ModelTest.cpp \
+    src/DBusAdaptor.cpp \
+    dbus/DepecherAdaptor.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -91,8 +112,14 @@ DISTFILES += \
     events/depecher_im.ini \
     notificationcategories/x-depecher.im.conf \
     notificationcategories/x-depecher.im.fg.conf \
-    translations/depecher-es.ts
+    translations/depecher-es.ts \
+    systemd/depecher.service \
+    dbus/org.blacksailer.depecher.service \
+    dbus/org.blacksailer.depecher.xml \
+    dbus/application.xml
 
 HEADERS += \
     src/FileWorker.hpp \
-    ModelTest.hpp
+    ModelTest.hpp \
+    src/DBusAdaptor.hpp \
+    dbus/DepecherAdaptor.hpp

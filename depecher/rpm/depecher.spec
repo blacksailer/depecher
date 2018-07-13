@@ -13,8 +13,8 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.3
-Release:    4
+Version:    0.4
+Release:    1
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
@@ -54,6 +54,11 @@ Another Telegram client for Sailfish OS built on top of tdlib
 %install
 rm -rf %{buildroot}
 # >> install pre
+#systemctl-user stop org.blacksailer.depecher.service
+
+if /sbin/pidof depecher > /dev/null; then
+killall depecher || true
+fi
 # << install pre
 %qmake5_install
 
@@ -67,11 +72,22 @@ if [ -e "/home/nemo/depecherDatabase/db.sqlite" ];then
 mv /home/nemo/depecherDatabase /home/nemo/.local/share/harbour-depecher
 fi
 fi
+
+systemctl-user daemon-reload
+systemctl-user enable org.blacksailer.depecher
+systemctl-user restart org.blacksailer.depecher
 # << install post
 
 desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
+
+%preun
+# >> preun
+systemctl-user stop org.blacksailer.depecher.service || true
+systemctl-user disable org.blacksailer.depecher || true
+systemctl-user daemon-reload
+# << preun
 
 %files
 %defattr(-,root,root,-)
@@ -83,5 +99,11 @@ desktop-file-install --delete-original       \
 %{_datadir}/ngfd/events.d/*.ini
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
+%{_datadir}/dbus-1/services/org.blacksailer.depecher.service
+%{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml
+%{_libdir}/systemd/user/depecher.service
+%{_datadir}/%{name}/settings/*.qml
+%{_datadir}/jolla-settings/entries/*.json
+
 # >> files
 # << files

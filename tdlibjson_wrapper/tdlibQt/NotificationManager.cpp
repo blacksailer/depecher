@@ -108,6 +108,7 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
         if (messageObject["content"].toObject()["@type"] == "messageText")
             notificationBody.append(" " +
                                     messageObject["content"].toObject()["text"].toObject()["text"].toString());
+
         if (qApp->applicationState() != Qt::ApplicationActive)
             notifySummary(notificationTimestamp, notificationSummary,
                           notificationBody,
@@ -142,10 +143,6 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
     notificationPtr->setSummary(summary);
     notificationPtr->setBody(body);
 
-    //Too lazy to create another map. saving message id in hint value
-    notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-                                     QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-                                     "getId"));
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
