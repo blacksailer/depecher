@@ -13,10 +13,6 @@
         <extracomment>List header for link sharing method list</extracomment>
         <translation>分享链接</translation>
     </message>
-    <message id="When this is off, you won't get Depecher app on boot">
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AboutPage</name>
@@ -77,6 +73,33 @@ Thanks to:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AppearancePage</name>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -183,33 +206,6 @@ proxy server in settings via PulleyMenu</source>
         <source>Unread 
  messages</source>
         <translation>未读消息</translation>
-    </message>
-</context>
-<context>
-    <name>DepecherAppSettings</name>
-    <message>
-        <source>Depecher settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Depecher on bootup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Depecher current status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop daemon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start/stop Depecher daemon. Stopping Depecher daemon will also stop receiving notifications</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -359,6 +355,14 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Credits and stuff</source>
         <translation>学分之类的</translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message by enter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

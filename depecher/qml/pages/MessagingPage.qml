@@ -4,6 +4,7 @@ import TelegramModels 1.0
 import QtFeedback 5.0
 import tdlibQtEnums 1.0
 import org.nemomobile.notifications 1.0
+import Nemo.Configuration 1.0
 import "items"
 
 Page {
@@ -22,7 +23,16 @@ Page {
         icon: "image://theme/icon-lock-warning"
         expireTimeout: 1
     }
-
+    ConfigurationValue {
+        id:sendByEnter
+        key:"/apps/depecher/sendByEnter"
+        defaultValue: false
+    }
+    ConfigurationValue {
+        id:hideNameplate
+        key:"/apps/depecher/ui/hideNameplate"
+        defaultValue: false
+    }
     MessagingModel{
         id: messagingModel
         onChatTypeChanged: {
@@ -76,6 +86,15 @@ Page {
             interval: 50
             onTriggered: writer.textArea.forceActiveFocus()
         }
+        EnterKey.iconSource: sendByEnter.value ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
+        EnterKey.onClicked: {
+            if(sendByEnter.value) {
+                messagingModel.sendTextMessage(textArea.text,0)
+                buzz.play()
+                textArea.text = ""
+                restoreFocusTimer.start()
+            }
+        }
         actionButton.onClicked:
         {
             messagingModel.sendTextMessage(textArea.text,0)
@@ -105,14 +124,14 @@ Page {
 
             PageHeader {
                 id: nameplate
-                title: messagingModel.userName
-                height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
-
+                title: hideNameplate.value ? "" : messagingModel.userName
+                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
                     anchors {
-                        top: parent._titleItem.bottom
+                        top: hideNameplate.value ? parent.top : parent._titleItem.bottom
+                        topMargin: hideNameplate.value ? Theme.paddingSmall : 0
                         right: parent.right
                         rightMargin: parent.rightMargin
                     }
@@ -156,7 +175,7 @@ Page {
                 PushUpMenu{
                     id:pushMenu
                     quickSelect: true
-                    visible: !messagingModel.atYEnd
+                    visible: lastMessageId !== 0 ? false : !messagingModel.atYEnd
                     MenuItem{
                         text:qsTr("get newer")
                         onClicked:

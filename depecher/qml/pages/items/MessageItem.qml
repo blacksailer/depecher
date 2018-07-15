@@ -3,25 +3,86 @@ import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
 import QtMultimedia 5.6
+import Nemo.Configuration 1.0
 import "../components"
 ListItem {
     id: messageListItem
     width: parent.width
     contentHeight: columnWrapper.height
+    property string settingsPath:  "/apps/depecher/ui/message"
+
+    ConfigurationValue {
+        id:radiusValue
+        key:settingsPath +"/radius"
+        defaultValue: 0
+    }
+    ConfigurationValue {
+        id:opacityValue
+        key:settingsPath +"/opacity"
+        defaultValue: 0
+    }
+    ConfigurationValue {
+        id:colorValue
+        key:settingsPath +"/color"
+        defaultValue: Theme.secondaryColor
+    }
+    ConfigurationValue {
+        id:incomingColorValue
+        key:settingsPath +"/incomingColor"
+        defaultValue: Theme.secondaryColor
+    }
+    Rectangle {
+        id:background
+        width: columnWrapper.width
+        height: columnWrapper.height
+        x:columnWrapper.x
+        y:columnWrapper.y
+        visible: message_type != MessagingModel.STICKER &&
+                 message_type != MessagingModel.SYSTEM_NEW_MESSAGE
+
+        radius: radiusValue.value
+        opacity: opacityValue.value
+        color:is_outgoing ? getColor(colorValue.value) : getColor(incomingColorValue.value)
+
+        function getColor(colorEnum) {
+            if(typeof colorEnum == "number") {
+            switch(colorEnum) {
+            case 0:
+                return Theme.primaryColor
+            case 1:
+                return Theme.secondaryColor
+            case 2:
+                return Theme.highlightColor
+            case 3:
+                return Theme.highlightBackgroundColor
+            case 4:
+                return Theme.secondaryHighlightColor
+            case 5:
+                return Theme.highlightDimmerColor
+            }
+}
+            return colorEnum
+        }
+    }
 
     Column {
         id: columnWrapper
-        width: contentWrapper.width
-        height: contentWrapper.height
+        width: contentWrapper.width + 20
+        height: contentWrapper.height + 20
         anchors.right: is_outgoing ? parent.right : undefined
         anchors.left: is_outgoing ? undefined : parent.left
         anchors.rightMargin: Theme.horizontalPageMargin
         anchors.leftMargin: Theme.horizontalPageMargin
+        Item {
+            width: parent.width
+            height:10
+        }
 
         Row {
             id: contentWrapper
             spacing: Theme.paddingMedium
-            width: userAvatar.width + contentLoader.width + spacing
+            x:10
+            width: Math.max(metaInfoRow.width,userAvatar.width + contentLoader.width + (userAvatar.width == 0 ? 0:spacing))
             height: Math.max(userAvatar.height,contentLoader.height)
             layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
 
@@ -42,7 +103,6 @@ ListItem {
 
                 Row {
                     id: subInfoRow
-                    width: parent.width
 
                     Label {
                         id: authorName
@@ -90,7 +150,6 @@ ListItem {
                 Row {
                     id: metaInfoRow
                     visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE
-                    width: parent.width
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: Theme.paddingSmall
 
@@ -142,7 +201,7 @@ ListItem {
 
             LinkedLabel {
                 id: textItem
-                width: text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
+                width: Math.min(paintedWidth ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)//text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
                 plainText:content ? content : ""
                 color: pressed ? Theme.secondaryColor : Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
@@ -156,7 +215,7 @@ ListItem {
         id: imageContent
 
         Column{
-            width: image.maxWidth
+            width: image.width
             Image {
                 id: image
                 asynchronous: true

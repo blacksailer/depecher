@@ -196,6 +196,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
             if (chats[rowIndex]->photo_->small_.data() != nullptr)
                 return QString::fromStdString(chats[rowIndex]->photo_->small_->local_->path_);
         }
+        return QVariant();
     case SENDING_STATE: {
         if (chats[rowIndex]->last_message_->sending_state_.data()) {
             if (chats[rowIndex]->last_message_->sending_state_->get_id() == messageSendingStatePending::ID)

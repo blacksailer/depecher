@@ -49,11 +49,11 @@ events.path=/usr/share/ngfd/events.d
 INSTALLS += notificationcategories events
 
 # Settings
-settings_json.files = $$PWD/qml/settings/$${TARGET}.json
+settings_json.files = $$PWD/settings/$${TARGET}.json
 settings_json.path = /usr/share/jolla-settings/entries/
 INSTALLS += settings_json
 
-settings_qml.files = $$PWD/qml/settings/*.qml
+settings_qml.files = $$PWD/settings/*.qml
 settings_qml.path = /usr/share/$${TARGET}/settings/
 INSTALLS += settings_qml
 

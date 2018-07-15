@@ -5,10 +5,17 @@ import "../js/utils.js" as Utils
 import org.nemomobile.notifications 1.0
 import "items"
 import tdlibQtEnums 1.0
+import Nemo.Configuration 1.0
 Page {
     id:root
     property bool isProxyConfiguring: false
     property bool isLogoutVisible: true
+    property string settingsPath:  "/apps/depecher"
+    ConfigurationValue {
+        id:sendByEnter
+        key:settingsPath +"/sendByEnter"
+        defaultValue: false
+    }
     property string connectionStatus: Utils.setState(c_telegramWrapper.connectionState)
     SilicaFlickable{
         anchors.fill: parent
@@ -93,6 +100,35 @@ Page {
                     }
 
                 }
+            SectionHeader {
+                text: qsTr("Settings")
+            }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeMedium
+                Label {
+                text: qsTr("Appearance")
+                anchors.verticalCenter: parent.verticalCenter
+                x:Theme.horizontalPageMargin
+                }
+                onClicked: pageStack.push(Qt.resolvedUrl("components/settings/AppearancePage.qml"))
+
+
+            }
+
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: sendByEnter.value
+                automaticCheck: false
+                text: qsTr("Send message by enter")
+                onClicked: {
+                    sendByEnter.value = !checked
+                    sendByEnter.sync()
+                }
+
+            }
+
             SectionHeader {
                 text: qsTr("Socks5 proxy")
             }

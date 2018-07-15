@@ -48,9 +48,10 @@ Page {
 
                 onClicked:{
                     c_telegramWrapper.openChat(id)
-                    pageStack.push("MessagingPage.qml",{userName:title,chatId:id,chatType:type,
+                    pageStack.pushAttached("MessagingPage.qml",{userName:title,chatId:id,chatType:type,
                                        lastReadMessage:last_message_inbox_id,
                                        lastOutboxId:last_message_outbox_id,lastMessageId:last_message_id})
+                pageStack.navigateForward()
                 }
             }
         }

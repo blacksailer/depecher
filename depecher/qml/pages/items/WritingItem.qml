@@ -116,6 +116,7 @@ Drawer {
                 attachDrawer.open=!attachDrawer.open
             }
         }
+
         TextArea {
             id: messageArea
             onTextChanged: {

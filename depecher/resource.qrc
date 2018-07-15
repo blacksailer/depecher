@@ -30,6 +30,6 @@
         <file>qml/pages/items/AttachSticker.qml</file>
         <file>qml/pages/items/StickerPreviewComponent.qml</file>
         <file>qml/pages/components/PreviewStickerSetDialog.qml</file>
-        <file>qml/settings/DepecherAppSettings.qml</file>
+        <file>qml/pages/components/settings/AppearancePage.qml</file>
     </qresource>
 </RCC>
