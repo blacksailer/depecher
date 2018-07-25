@@ -102,6 +102,10 @@ This groups lives only because of community and by community around Sailfish OS.
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Minimize nameplate</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -232,6 +236,22 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>New messages</source>
         <translation>Nuevos mensajes</translation>
+    </message>
+    <message>
+        <source>edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined by invite link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined Telegram!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 created the group %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

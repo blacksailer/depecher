@@ -14,11 +14,14 @@ TARGET = depecher
 
 QT += sql dbus multimedia
 
+
+
 CONFIG += sailfishapp
 CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
-PKGCONFIG += sailfishapp
+PKGCONFIG += sailfishapp mlite5
+
 
 LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper
 
@@ -74,7 +77,8 @@ SOURCES += \
     src/FileWorker.cpp \
     ModelTest.cpp \
     src/DBusAdaptor.cpp \
-    dbus/DepecherAdaptor.cpp
+    dbus/DepecherAdaptor.cpp \
+    src/singletons/PageAppStarter.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -116,10 +120,13 @@ DISTFILES += \
     systemd/depecher.service \
     dbus/org.blacksailer.depecher.service \
     dbus/org.blacksailer.depecher.xml \
-    dbus/application.xml
+    dbus/application.xml \
+    settings/DepecherAppSettings.qml \
+    qml/app.qml
 
 HEADERS += \
     src/FileWorker.hpp \
     ModelTest.hpp \
     src/DBusAdaptor.hpp \
-    dbus/DepecherAdaptor.hpp
+    dbus/DepecherAdaptor.hpp \
+    src/singletons/PageAppStarter.hpp

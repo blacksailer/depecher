@@ -12,9 +12,7 @@ Page {
                 var page = pageStack.find(function (page) {
                     return page.__chat_page !== undefined;
                 });
-                pageStack.replaceAbove(page,"MessagingPage.qml",{userName:title,chatId:chat_id,chatType:chatType,
-                                           lastReadMessage:last_message_inbox_id,
-                                           lastOutboxId:last_message_outbox_id,lastMessageId:last_message_id})
+                pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:chat_id})
             }
             onErrorReceivedMap: {
                 notificationProxy.previewBody = qsTr("Error %1").arg(errorObject["code"] ) +" "+ errorObject["message"]
@@ -144,7 +142,7 @@ This groups lives only because of community and by community around Sailfish OS.
                     id:joinPopup
                 }
                 onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
-                    c_telegramWrapper.joinChatByInviteLink("https://t.me/joinchat/AWx9iUE-U9qNKNpGgSbd3w","EnSailfish")
+                    c_telegramWrapper.joinChatByInviteLink("https://t.me/joinchat/AWx9iUE-U9pZ_NeJlxXs0w","EnSailfish")
                 } )
 
             }

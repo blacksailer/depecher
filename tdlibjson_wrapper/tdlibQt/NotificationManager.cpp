@@ -143,6 +143,12 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
     notificationPtr->setSummary(summary);
     notificationPtr->setBody(body);
 
+    QVariantList arguments;
+    arguments.append(chatId);
+    QVariantList actions;
+    actions.append(Notification::remoteAction("default", "openConversation", "org.blacksailer.depecher", "/org/blacksailer/depecher", "org.blacksailer.depecher", "openConversation", arguments));
+    notificationPtr->setRemoteActions(actions);
+
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
@@ -170,6 +176,11 @@ void NotificationManager::notifyPreview(const qint64 timestamp, const QString &s
     notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
                                   1000 /* timestamp have secs , not msecs*/));
     notificationPtr->setPreviewBody(body);
+    QVariantList arguments;
+    arguments.append(chatId);
+    QVariantList actions;
+    actions.append(Notification::remoteAction("default", "openConversation", "org.blacksailer.depecher", "/org/blacksailer/depecher", "org.blacksailer.depecher", "openConversation", arguments));
+    notificationPtr->setRemoteActions(actions);
 
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());

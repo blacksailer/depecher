@@ -128,6 +128,22 @@ Drawer {
             anchors.right: sendButton.left
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)
             width:parent.width - sendButton.width - skrepkaWizard.width - stickerButton.width
+            _labelItem.opacity: 1
+            _labelItem.font.pixelSize: Theme.fontSizeTiny
+
+            Timer {
+                interval: 60*1000
+                repeat: true
+                running: true
+                onTriggered: {
+                    var date = new Date()
+                    parent.label =  Format.formatDate(date, Formatter.TimeValue)
+                }
+            }
+            Component.onCompleted: {
+                var date = new Date()
+                label =  Format.formatDate(date, Formatter.TimeValue)
+            }
         }
 
         IconButton {

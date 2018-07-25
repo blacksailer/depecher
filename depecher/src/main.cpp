@@ -39,6 +39,5 @@ int main(int argc, char *argv[])
     tdlib->getInstalledStickerSets();
     QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
 
-
     return app->exec();
 }

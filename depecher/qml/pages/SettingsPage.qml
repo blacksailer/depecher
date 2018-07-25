@@ -87,9 +87,7 @@ Page {
                             onClicked:{
                                 var chatType = {};
                                 chatType["type"] = TdlibState.Private
-                                pageStack.replace("MessagingPage.qml",{userName:aboutMe.fullName,
-                                                      chatId:aboutMe.id,chatType:chatType,
-                                               lastReadMessage:0,lastMessageId:0})
+                                pageStack.replace("MessagingPage.qml",{chatId:aboutMe.id})
                             }
                         }
                     }
@@ -112,8 +110,6 @@ Page {
                 x:Theme.horizontalPageMargin
                 }
                 onClicked: pageStack.push(Qt.resolvedUrl("components/settings/AppearancePage.qml"))
-
-
             }
 
             TextSwitch {

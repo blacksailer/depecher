@@ -1,4 +1,5 @@
 #include "DBusAdaptor.hpp"
+#include "singletons/PageAppStarter.hpp"
 #include "FileWorker.hpp"
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
@@ -23,7 +24,7 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 
     new DepecherAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-
+    pagesStarter = new PageAppStarter(this);
     bool ready = dbus.registerService("org.blacksailer.depecher");
     qDebug() << "Register service" << ready;
     qDebug() << "Register object" << dbus.registerObject("/org/blacksailer/depecher", this); //object path
@@ -45,7 +46,6 @@ DBusAdaptor::~DBusAdaptor()
 
 void DBusAdaptor::ShowApp(const QStringList &cmd)
 {
-    qDebug() << "Parameters" << cmd;
     if (!view) {
         qDebug() << "Construct view";
         view = SailfishApp::createView();
@@ -66,9 +66,9 @@ void DBusAdaptor::ShowApp(const QStringList &cmd)
                 "TelegramAuthenticationHandler");
         view->setTitle("Depecher");
         view->rootContext()->setContextProperty("c_telegramWrapper", tdlibQt::TdlibJsonWrapper::instance());
-
+        view->rootContext()->setContextProperty("c_PageStarter", pagesStarter);
         view->engine()->addImageProvider(QLatin1String("depecherDb"), new tdlibQt::TelegramProfileProvider);
-        view->setSource(QUrl("qrc:///qml/app.qml"));
+        view->setSource(SailfishApp::pathTo("qml/app.qml"));
         view->show();
     } else if (view->windowState() == Qt::WindowNoState) {
         view->create();
@@ -81,7 +81,8 @@ void DBusAdaptor::ShowApp(const QStringList &cmd)
 
 void DBusAdaptor::openConversation(const qlonglong &chatId)
 {
-
+    pagesStarter->addPage(chatId);
+    ShowApp(QStringList());
 }
 
 void DBusAdaptor::onViewDestroyed()

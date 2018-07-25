@@ -3,24 +3,20 @@ import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import QtFeedback 5.0
 import tdlibQtEnums 1.0
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import "items"
 
 Page {
     id: page
     allowedOrientations: Orientation.All
-    property alias userName: messagingModel.userName
     property alias chatId: messagingModel.peerId
-    property alias chatType: messagingModel.chatType
-    property alias lastMessageId: messagingModel.lastMessage
-    property alias lastOutboxId: messagingModel.lastOutboxId
-    property alias lastReadMessage: messagingModel.currentMessage
 
     Notification {
         id: notificationError
         appName: "Depecher"
-        icon: "image://theme/icon-lock-warning"
+
+        //        icon: "image://theme/icon-lock-warning"
         expireTimeout: 1
     }
     ConfigurationValue {
@@ -35,6 +31,7 @@ Page {
     }
     MessagingModel{
         id: messagingModel
+        isActive: page.status === PageStatus.Active
         onChatTypeChanged: {
             if(chatType["type"] == TdlibState.Supergroup)
             {
@@ -60,13 +57,25 @@ Page {
             }
             return true;
         }
+        onCallbackQueryAnswerShow: {
+            notificationError.previewBody = text
+            if(show_alert)
+                notificationError.icon = "image://theme/icon-lock-warning"
+            else
+                notificationError.icon = "image://theme/icon-lock-information"
+            notificationError.publish()
+        }
 
         onErrorReceived: {
-            notificationError.previewBody(error_code +"-" +error_message)
+            notificationError.previewBody = error_code +"-" +error_message
+            notificationError.icon = "image://theme/icon-lock-warning"
+
             notificationError.publish()
         }
     }
-
+    Component.onCompleted: {
+        c_telegramWrapper.openChat(messagingModel.peerId)
+    }
     Component.onDestruction: {
         c_telegramWrapper.closeChat(messagingModel.peerId)
     }
@@ -175,7 +184,7 @@ Page {
                 PushUpMenu{
                     id:pushMenu
                     quickSelect: true
-                    visible: lastMessageId !== 0 ? false : !messagingModel.atYEnd
+                    visible:!messagingModel.atYEnd
                     MenuItem{
                         text:qsTr("get newer")
                         onClicked:

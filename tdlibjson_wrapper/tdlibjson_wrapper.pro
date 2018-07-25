@@ -9,6 +9,8 @@ QT += dbus quick
 CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG +=  tdlibjson
+PKGCONFIG += mlite5
+
 CONFIG (debug, debug|release) {
         OBJECTS_DIR = build/debug
 } else {

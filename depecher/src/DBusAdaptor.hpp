@@ -5,11 +5,13 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include "dbus/DepecherAdaptor.hpp"
+class PageAppStarter;
 class DBusAdaptor : public QObject
 {
     Q_OBJECT
     QGuiApplication *app = nullptr;
     QQuickView *view = nullptr;
+    PageAppStarter *pagesStarter;
 
 public:
     explicit DBusAdaptor(QGuiApplication *parent = nullptr);

@@ -5,6 +5,8 @@
 #include "ListenObject.hpp"
 #include "ParseObject.hpp"
 #include <td/telegram/td_log.h>
+#include <MGConfItem>
+
 
 namespace tdlibQt {
 
@@ -13,19 +15,58 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     td_set_log_verbosity_level(1);
     client = td_json_client_create();
     //SEG FAULT means that json has error input variable names
+    MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
+    MGConfItem useFileDatabase("/apps/depecher/tdlib/use_file_database");
+    MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
+    MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
+    MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
+
+    QFileInfo checkDir(filesDirectory.value("").toString());
+    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
+        filesDirectory.set("");
+    else {
+        //Disable directory for being tracked by tracker
+        QFile file(filesDirectory.value("").toString() + "/.nomedia");
+        if (!file.exists()) {
+            file.open(QIODevice::WriteOnly);
+            file.close();
+        }
+    }
+    /*
+    std::string 	files_directory_
+    The path to the directory for storing files; if empty, database_directory will be used.
+
+    bool 	use_file_database_
+    If set to true, information about downloaded and uploaded files will be saved between application restarts.
+
+    bool 	use_chat_info_database_
+    If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies use_file_database.
+
+    bool 	use_message_database_
+    If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database.
+
+    bool 	enable_storage_optimizer_
+    If set to true, old files will automatically be deleted.
+    */
     QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
                               "\"database_directory\":\"/home/nemo/.local/share/harbour-depecher\","
+                              "\"files_directory\":\"" + filesDirectory.value("").toString() + "\","
                               "\"api_id\":" + tdlibQt::appid + ","
                               "\"api_hash\":\"" + tdlibQt::apphash + "\","
                               "\"system_language_code\":\""
                               + QLocale::languageToString(QLocale::system().language()) + "\","
                               "\"device_model\":\"" + QSysInfo::prettyProductName() + "\","
                               "\"system_version\":\"" + QSysInfo::productVersion() + "\","
-                              "\"application_version\":\"0.3\","
-                              "\"use_message_database\":true,"
+                              "\"application_version\":\"0.4\","
+                              "\"use_file_database\":" + (useFileDatabase.value(true).toBool() ?
+                                      "true" : "false") + ","
+                              "\"use_chat_info_database\":" + (useChatInfoDatabase.value(true).toBool() ?
+                                      "true" : "false") + ","
+                              "\"use_message_database\":" + (useMessageDatabase.value(true).toBool() ?
+                                      "true" : "false") + ","
                               "\"use_secret_chats\":false,"
-                              "\"enable_storage_optimizer\":true"
-//                              ",\"use_test_dc\":true"
+                              "\"enable_storage_optimizer\":" + (enableStorageOptimizer.value(true).toBool() ?
+                                      "true" : "false") +
                               "}}";
     td_json_client_send(client, tdlibParameters.toStdString().c_str());
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
@@ -73,7 +114,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::setConnectionState);
     connect(parseObject, &ParseObject::getChat,
             this, &TdlibJsonWrapper::getChat);
-
+    connect(parseObject, &ParseObject::callbackQueryAnswerReceived,
+            this, &TdlibJsonWrapper::callbackQueryAnswerReceived);
     connect(parseObject, &ParseObject::stickerSetReceived,
             this, &TdlibJsonWrapper::stickerSetReceived);
     connect(parseObject, &ParseObject::stickerSetsReceived,
@@ -125,6 +167,12 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::newMessages);
     connect(parseObject, &ParseObject::newMessageFromUpdate,
             this, &TdlibJsonWrapper::newMessageFromUpdate);
+    connect(parseObject, &ParseObject::updateMessageEdited,
+            this, &TdlibJsonWrapper::updateMessageEdited);
+    connect(parseObject, &ParseObject::updateMessageContent,
+            this, &TdlibJsonWrapper::updateMessageContent);
+    connect(parseObject, &ParseObject::updateDeleteMessages,
+            this, &TdlibJsonWrapper::updateDeleteMessages);
     connect(parseObject, &ParseObject::updateChatOrder,
             this, &TdlibJsonWrapper::updateChatOrder);
     connect(parseObject, &ParseObject::updateChatLastMessage,
@@ -479,7 +527,7 @@ void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &
 {
     QString ids = "";
     for (auto id : messageIds)
-        ids.append(QString::number((qint64)id.toDouble()) + ",");
+        ids.append(QString::number(id.toLongLong()) + ",");
 
     ids = ids.remove(ids.length() - 1, 1);
 
