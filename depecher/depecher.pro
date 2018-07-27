@@ -35,7 +35,7 @@ dbus.path = /usr/share/dbus-1/services
 dbus_interface.files= $$PWD/dbus/org.blacksailer.depecher.xml
 dbus_interface.path= /usr/share/dbus-1/interfaces
 
-systemd.files = $$PWD/systemd/depecher.service
+systemd.files = $$PWD/systemd/org.blacksailer.depecher.service
 systemd.path = /usr/lib/systemd/user
 
 INSTALLS += webp dbus dbus_interface systemd
@@ -117,12 +117,12 @@ DISTFILES += \
     notificationcategories/x-depecher.im.conf \
     notificationcategories/x-depecher.im.fg.conf \
     translations/depecher-es.ts \
-    systemd/depecher.service \
     dbus/org.blacksailer.depecher.service \
     dbus/org.blacksailer.depecher.xml \
     dbus/application.xml \
     settings/DepecherAppSettings.qml \
-    qml/app.qml
+    qml/app.qml \
+    systemd/org.blacksailer.depecher.service
 
 HEADERS += \
     src/FileWorker.hpp \

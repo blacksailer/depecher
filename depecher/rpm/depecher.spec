@@ -54,15 +54,12 @@ Another Telegram client for Sailfish OS built on top of tdlib
 %install
 rm -rf %{buildroot}
 # >> install pre
-#systemctl-user stop org.blacksailer.depecher.service
-
-if /sbin/pidof depecher > /dev/null; then
-killall depecher || true
-fi
 # << install pre
 %qmake5_install
 
 # >> install post
+%pre
+systemctl-user stop org.blacksailer.depecher.service || true
 %post
 systemctl-user restart mce.service
 systemctl-user restart ngfd.service
@@ -74,8 +71,7 @@ fi
 fi
 
 systemctl-user daemon-reload
-systemctl-user enable org.blacksailer.depecher
-systemctl-user restart org.blacksailer.depecher
+systemctl-user enable depecher || true
 # << install post
 
 desktop-file-install --delete-original       \
@@ -84,8 +80,8 @@ desktop-file-install --delete-original       \
 
 %preun
 # >> preun
-systemctl-user stop org.blacksailer.depecher.service || true
-systemctl-user disable org.blacksailer.depecher || true
+systemctl-user stop depecher || true
+systemctl-user disable depecher || true
 systemctl-user daemon-reload
 # << preun
 
@@ -101,9 +97,7 @@ systemctl-user daemon-reload
 %exclude %{_libdir}/debug/*
 %{_datadir}/dbus-1/services/org.blacksailer.depecher.service
 %{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml
-%{_libdir}/systemd/user/depecher.service
-%{_datadir}/%{name}/settings/*.qml
-%{_datadir}/jolla-settings/entries/*.json
-
+%{_datadir}/jolla-settings/entries/%{name}.json
+%{_libdir}/systemd/user/org.blacksailer.depecher.service
 # >> files
 # << files

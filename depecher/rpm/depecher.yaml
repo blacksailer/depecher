@@ -37,6 +37,7 @@ PkgConfigBR:
 Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - tdlibjson >= 1.2
+
 # All installed files
 Files:
   - '%{_bindir}'
@@ -49,7 +50,9 @@ Files:
   - '%exclude %{_libdir}/debug/*'
   - '%{_datadir}/dbus-1/services/org.blacksailer.depecher.service'
   - '%{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml'
-  - '%{_libdir}/systemd/user/depecher.service'
+  - '%{_datadir}/jolla-settings/entries/%{name}.json'
+  - '%{_libdir}/systemd/user/org.blacksailer.depecher.service'
+
 
 # For more information about yaml and what's supported in Sailfish OS
 # build system, please see https://wiki.merproject.org/wiki/Spectacle

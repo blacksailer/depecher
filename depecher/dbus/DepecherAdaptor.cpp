@@ -33,10 +33,10 @@ DepecherAdaptor::~DepecherAdaptor()
     // destructor
 }
 
-void DepecherAdaptor::ShowApp(const QStringList &item)
+void DepecherAdaptor::showApp(const QStringList &item)
 {
-    // handle method call org.blacksailer.depecher.ShowApp
-    QMetaObject::invokeMethod(parent(), "ShowApp", Q_ARG(QStringList, item));
+    // handle method call org.blacksailer.depecher.showApp
+    QMetaObject::invokeMethod(parent(), "showApp", Q_ARG(QStringList, item));
 }
 
 void DepecherAdaptor::openConversation(qlonglong chatId)

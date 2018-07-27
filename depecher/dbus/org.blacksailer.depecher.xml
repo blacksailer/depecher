@@ -7,7 +7,7 @@
 <arg direction="in" type="x" name="chatId"/>
 <annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
 </method>
-<method name="ShowApp">
+<method name="showApp">
 <arg direction="in" type="as" name="item"/>
 <annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
 </method>

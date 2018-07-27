@@ -1,8 +1,7 @@
-# cat /usr/share/dbus-1/system-services/org.blacksailer.depecher.service
-
 [D-BUS Service]
 Name=org.blacksailer.depecher
-#https://jdebp.eu/Softwares/nosh/avoid-dbus-bus-activation.html
-Exec=/bin/false
 User=nemo
 SystemdService=depecher.service
+
+#https://jdebp.eu/Softwares/nosh/avoid-dbus-bus-activation.html
+Exec=/bin/false

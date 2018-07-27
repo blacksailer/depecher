@@ -36,7 +36,7 @@ class DepecherAdaptor: public QDBusAbstractAdaptor
                 "      <arg direction=\"in\" type=\"x\" name=\"chatId\"/>\n"
                 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
                 "    </method>\n"
-                "    <method name=\"ShowApp\">\n"
+                "    <method name=\"showApp\">\n"
                 "      <arg direction=\"in\" type=\"as\" name=\"item\"/>\n"
                 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
                 "    </method>\n"

@@ -9,4 +9,4 @@ X-Maemo-Service=org.blacksailer.depecher
 X-Maemo-Object-Path=/org/blacksailer/depecher
 X-Maemo-Method=org.blacksailer.depecher.ShowApp
 X-Maemo-Fixed-Args=Start
-Exec=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher
+#Exec=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher

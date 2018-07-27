@@ -16,11 +16,12 @@ class DBusAdaptor : public QObject
 public:
     explicit DBusAdaptor(QGuiApplication *parent = nullptr);
     ~DBusAdaptor();
-
+    static bool isRegistered();
+    static bool raiseApp();
 signals:
 
 public slots:
-    void ShowApp(const QStringList &cmd);
+    void showApp(const QStringList &cmd);
     void openConversation(const qlonglong &chatId);
 private slots:
     void onViewDestroyed();

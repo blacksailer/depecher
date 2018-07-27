@@ -21,7 +21,7 @@ Page {
     }
     ConfigurationValue {
         id:sendByEnter
-        key:"/apps/depecher/sendByEnter"
+        key:"/apps/depecher/behavior/sendByEnter"
         defaultValue: false
     }
     ConfigurationValue {

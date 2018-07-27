@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQml 2.2
 import Sailfish.Silica 1.0
 
 Drawer {
@@ -137,7 +138,7 @@ Drawer {
                 running: true
                 onTriggered: {
                     var date = new Date()
-                    parent.label =  Format.formatDate(date, Formatter.TimeValue)
+                    messageArea.label =  Format.formatDate(date, Formatter.TimeValue)
                 }
             }
             Component.onCompleted: {

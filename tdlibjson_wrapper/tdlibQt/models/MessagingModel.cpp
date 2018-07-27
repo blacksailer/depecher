@@ -709,6 +709,8 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
 void MessagingModel::prependMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
+    if (peerId().toLongLong() != messageItem->chat_id_)
+        return;
     bool is_replaced = false;
     if (messageItem->sending_state_.data())
         if (messageItem->sending_state_->get_id() == messageSendingStatePending::ID) {

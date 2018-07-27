@@ -18,6 +18,11 @@
 #include <QQmlEngine>
 #include "sailfishapp.h"
 
+static const QString c_dbusServiceName = QStringLiteral("org.blacksailer.depecher");
+static const QString c_dbusObjectPath = QStringLiteral("/org/blacksailer/depecher");
+static const QString c_dbusInterface = QStringLiteral("org.blacksailer.depecher");
+static const QString c_dbusMethod = QStringLiteral("showApp");
+
 DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 {
 //    connect(app, &QGuiApplication::destroyed, this, &DBusAdaptor::stopDaemon);
@@ -25,9 +30,9 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
     new DepecherAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     pagesStarter = new PageAppStarter(this);
-    bool ready = dbus.registerService("org.blacksailer.depecher");
+    bool ready = dbus.registerService(c_dbusServiceName);
     qDebug() << "Register service" << ready;
-    qDebug() << "Register object" << dbus.registerObject("/org/blacksailer/depecher", this); //object path
+    qDebug() << "Register object" << dbus.registerObject(c_dbusObjectPath, this); //object path
 
     if (!ready) {
         qWarning() << "Service already registered, exiting...";
@@ -38,13 +43,29 @@ DBusAdaptor::~DBusAdaptor()
 {
     QDBusConnection dbus = QDBusConnection::sessionBus();
 
-    dbus.unregisterObject("/org/blacksailer/depecher"); //object path
-    bool ready = dbus.unregisterService("org.blacksailer.depecher");
+    dbus.unregisterObject(c_dbusObjectPath); //object path
+    bool ready = dbus.unregisterService(c_dbusServiceName);
     qDebug() << "Unregister service" << ready; //object path
 
 }
 
-void DBusAdaptor::ShowApp(const QStringList &cmd)
+bool DBusAdaptor::isRegistered()
+{
+    return QDBusConnection::sessionBus().interface()->isServiceRegistered(c_dbusServiceName);
+}
+
+bool DBusAdaptor::raiseApp()
+{
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    QDBusMessage showUi = QDBusMessage::createMethodCall(
+                              c_dbusServiceName,
+                              c_dbusObjectPath,
+                              c_dbusInterface,
+                              c_dbusMethod);
+    return dbus.send(showUi);
+}
+
+void DBusAdaptor::showApp(const QStringList &cmd)
 {
     if (!view) {
         qDebug() << "Construct view";

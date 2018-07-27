@@ -201,6 +201,17 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>BehaviorPage</name>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message by enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
@@ -382,7 +393,7 @@ proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send message by enter</source>
+        <source>Behavior</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

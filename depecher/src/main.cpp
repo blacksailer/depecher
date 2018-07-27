@@ -14,6 +14,20 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication *app = SailfishApp::application(argc, argv);
+
+
+    if (DBusAdaptor::isRegistered()) {
+        if (Service::raise()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+
+
+    QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
+
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
     app->setQuitOnLastWindowClosed(false);
@@ -29,15 +43,16 @@ int main(int argc, char *argv[])
     }
     app->installTranslator(&translator);
 
-    auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
 
     //Need to create at first launch. Bad design maybe, should change
+
+    auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
     auto NotificationManager = tdlibQt::NotificationManager::instance();
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
     tdlib->setEncryptionKey();
     tdlib->getInstalledStickerSets();
-    QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
+
 
     return app->exec();
 }

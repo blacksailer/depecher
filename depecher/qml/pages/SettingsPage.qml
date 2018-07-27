@@ -10,12 +10,7 @@ Page {
     id:root
     property bool isProxyConfiguring: false
     property bool isLogoutVisible: true
-    property string settingsPath:  "/apps/depecher"
-    ConfigurationValue {
-        id:sendByEnter
-        key:settingsPath +"/sendByEnter"
-        defaultValue: false
-    }
+
     property string connectionStatus: Utils.setState(c_telegramWrapper.connectionState)
     SilicaFlickable{
         anchors.fill: parent
@@ -103,7 +98,7 @@ Page {
             }
             BackgroundItem {
                 width: parent.width
-                height: Theme.itemSizeMedium
+                height: Theme.itemSizeSmall
                 Label {
                 text: qsTr("Appearance")
                 anchors.verticalCenter: parent.verticalCenter
@@ -111,20 +106,16 @@ Page {
                 }
                 onClicked: pageStack.push(Qt.resolvedUrl("components/settings/AppearancePage.qml"))
             }
-
-            TextSwitch {
-                width: parent.width -2*x
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                text: qsTr("Behavior")
+                anchors.verticalCenter: parent.verticalCenter
                 x:Theme.horizontalPageMargin
-                checked: sendByEnter.value
-                automaticCheck: false
-                text: qsTr("Send message by enter")
-                onClicked: {
-                    sendByEnter.value = !checked
-                    sendByEnter.sync()
                 }
-
+                onClicked: pageStack.push(Qt.resolvedUrl("components/settings/BehaviorPage.qml"))
             }
-
             SectionHeader {
                 text: qsTr("Socks5 proxy")
             }

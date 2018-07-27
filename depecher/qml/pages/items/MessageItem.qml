@@ -542,10 +542,6 @@ ListItem {
             height: Theme.itemSizeSmall
             x:Theme.horizontalPageMargin/2
             Rectangle {
-anchors.fill: parent
-color:"yellow"
-            }
-            Rectangle {
                 width: joinByLinkLabel.width + 4*Theme.paddingLarge
                 height: joinByLinkLabel.height + 1*Theme.paddingLarge
                 anchors.centerIn: parent
