@@ -69,14 +69,14 @@ Page {
 
         signal unitNew(string name)
         onUnitNew: {
-            if (name == "depecher.service") {
+            if (name == "org.blacksailer.depecher.service") {
                 pathUpdateTimer.start()
             }
         }
 
         signal unitRemoved(string name)
         onUnitRemoved: {
-            if (name == "depecher.service") {
+            if (name == "org.blacksailer.depecher.service") {
                 depecherService.path = ""
                 pathUpdateTimer.stop()
             }
@@ -92,7 +92,7 @@ Page {
             updateAutostart()
         }
         function updateAutostart() {
-            manager.typedCall("GetUnitFileState", [{"type": "s", "value": "depecher.service"}],
+            manager.typedCall("GetUnitFileState", [{"type": "s", "value": "org.blacksailer.depecher.service"}],
                               function(state) {
                                   console.log(state)
                                   if (state !== "disabled" && state !== "invalid") {
@@ -112,7 +112,7 @@ Page {
                 disableDepecherUnit()
         }
         function enableDepecherUnit() {
-            manager.typedCall( "EnableUnitFiles",[{"type":"as","value":["depecher.service"]},
+            manager.typedCall( "EnableUnitFiles",[{"type":"as","value":["org.blacksailer.depecher.service"]},
                                                   {"type":"b","value":false},
                                                   {"type":"b","value":false}],
                               function(carries_install_info,changes){
@@ -125,7 +125,7 @@ Page {
                               )
         }
         function disableDepecherUnit() {
-            manager.typedCall( "DisableUnitFiles",[{"type":"as","value":["depecher.service"]},
+            manager.typedCall( "DisableUnitFiles",[{"type":"as","value":["org.blacksailer.depecher.service"]},
                                                    {"type":"b","value":false}],
                               function(changes){
                                   root.depecherAutostart = false
@@ -137,7 +137,7 @@ Page {
                               )
         }
         function startDepecherUnit() {
-            manager.typedCall( "StartUnit",[{"type":"s","value":"depecher.service"},
+            manager.typedCall( "StartUnit",[{"type":"s","value":"org.blacksailer.depecher.service"},
                                             {"type":"s","value":"fail"}],
                               function(job) {
                                   console.log("job started - ", job)
@@ -149,7 +149,7 @@ Page {
                               })
         }
         function stopDepecherUnit() {
-            manager.typedCall( "StopUnit",[{"type":"s","value":"depecher.service"},
+            manager.typedCall( "StopUnit",[{"type":"s","value":"org.blacksailer.depecher.service"},
                                            {"type":"s","value":"replace"}],
                               function(job) {
                                   console.log("job stopped - ", job)
@@ -160,7 +160,7 @@ Page {
                               })
         }
         function updatePath() {
-            manager.typedCall("GetUnit", [{ "type": "s", "value": "depecher.service"}], function(unit) {
+            manager.typedCall("GetUnit", [{ "type": "s", "value": "org.blacksailer.depecher.service"}], function(unit) {
                 depecherService.path = unit
             }, function() {
                 depecherService.path = ""

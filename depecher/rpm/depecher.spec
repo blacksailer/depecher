@@ -14,7 +14,7 @@ Name:       depecher
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
 Version:    0.4
-Release:    1
+Release:    2
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
@@ -58,9 +58,12 @@ rm -rf %{buildroot}
 %qmake5_install
 
 # >> install post
-%pre
-systemctl-user stop org.blacksailer.depecher.service || true
 %post
+systemctl-user stop org.blacksailer.depecher.service || true
+if /sbin/pidof depecher > /dev/null; then
+killall depecher || true
+fi
+
 systemctl-user restart mce.service
 systemctl-user restart ngfd.service
 #Moving db dir issue - #14
@@ -71,7 +74,9 @@ fi
 fi
 
 systemctl-user daemon-reload
-systemctl-user enable depecher || true
+systemctl-user enable org.blacksailer.depecher.service || true
+systemctl-user restart org.blacksailer.depecher.service || true
+
 # << install post
 
 desktop-file-install --delete-original       \

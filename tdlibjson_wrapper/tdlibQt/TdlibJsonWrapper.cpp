@@ -122,6 +122,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::stickerSetsReceived);
     connect(parseObject, &ParseObject::stickersReceived,
             this, &TdlibJsonWrapper::stickersReceived);
+    connect(parseObject, &ParseObject::updateNotificationSettingsReceived,
+            this, &TdlibJsonWrapper::updateNotificationSettingsReceived);
 
 
     connect(parseObject, &ParseObject::updateNewChat,

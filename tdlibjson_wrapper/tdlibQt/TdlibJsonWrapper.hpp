@@ -92,7 +92,7 @@ signals:
     void updateMessageEdited(const QJsonObject &updateNewMessageObject);
     void updateMessageContent(const QJsonObject &updateMessageContentObject);
     void updateDeleteMessages(const QJsonObject &updateDeleteMessagesObject);
-
+    void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);

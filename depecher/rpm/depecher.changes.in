@@ -7,7 +7,11 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Wed July 26 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-1
+* Mon July 30 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-2
+- Mute/unmute chats from ChatsPage
+- Fixed issue with on enter pressing, and adding \n symbol
+
+* Fri July 27 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-1
 - Added daemon
 - Added settings to control daemon in Settings->Apps->Depecher
 - Added appearance control (Bubbles, background color of message)
@@ -20,7 +24,7 @@
 - Added time under message #70
 - Changed appid and apphash
 - Click on notification opens chat
-- Added inline buttons suppotr in messages (they used in votes for example)
+- Added inline buttons support in messages (they used in votes for example)
 
 * Mon July 3 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.3-4
 - Fixed opening sticker sending dialog

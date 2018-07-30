@@ -48,7 +48,7 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
-    Q_NOREPLY void ShowApp(const QStringList &item);
+    Q_NOREPLY void showApp(const QStringList &item);
     Q_NOREPLY void openConversation(qlonglong chatId);
 Q_SIGNALS: // SIGNALS
 };

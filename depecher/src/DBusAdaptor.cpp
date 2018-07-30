@@ -27,16 +27,17 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 {
 //    connect(app, &QGuiApplication::destroyed, this, &DBusAdaptor::stopDaemon);
 
-    new DepecherAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
+    new DepecherAdaptor(this);
     pagesStarter = new PageAppStarter(this);
-    bool ready = dbus.registerService(c_dbusServiceName);
-    qDebug() << "Register service" << ready;
     qDebug() << "Register object" << dbus.registerObject(c_dbusObjectPath, this); //object path
-
-    if (!ready) {
-        qWarning() << "Service already registered, exiting...";
-        app->quit();
+    if (!isRegistered()) {
+        bool ready = dbus.registerService(c_dbusServiceName);
+        qDebug() << "Register service" << ready;
+        if (!ready) {
+            qWarning() << "Service already registered, exiting...";
+            app->quit();
+        }
     }
 }
 DBusAdaptor::~DBusAdaptor()
@@ -62,7 +63,14 @@ bool DBusAdaptor::raiseApp()
                               c_dbusObjectPath,
                               c_dbusInterface,
                               c_dbusMethod);
-    return dbus.send(showUi);
+    QStringList args;
+    args << "Start";
+    showUi << QVariant::fromValue(args);
+
+    auto result = dbus.call(showUi);
+    if (result.errorName() != "")
+        qDebug() << result.errorName() << result.errorMessage();
+    return true;
 }
 
 void DBusAdaptor::showApp(const QStringList &cmd)
@@ -103,7 +111,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
 void DBusAdaptor::openConversation(const qlonglong &chatId)
 {
     pagesStarter->addPage(chatId);
-    ShowApp(QStringList());
+    showApp(QStringList());
 }
 
 void DBusAdaptor::onViewDestroyed()

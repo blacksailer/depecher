@@ -39,6 +39,13 @@ Page {
         delegate: ChatItem {
             id: chatDelegate
 
+            menu:  ContextMenu {
+                MenuItem {
+                    text: mute_for > 0 ? qsTr("Unmute") : qsTr("Mute")
+                    onClicked: chatsModel.changeNotificationSettings(id,!(mute_for > 0))
+                }
+            }
+
             ListView.onAdd: AddAnimation {
                 target: chatDelegate
             }

@@ -24,6 +24,9 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &tdlibQt::ChatsModel::updateChatReadOutbox);
 
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateNotificationSettingsReceived,
+            this, &tdlibQt::ChatsModel::updateNotificationSettings);
+
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserChatAction,
             this, &tdlibQt::ChatsModel::updateChatAction);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatMention,
@@ -88,6 +91,76 @@ void ChatsModel::updateMentionRead(const QJsonObject &messageMentionReadObject)
         }
     }
 
+}
+
+void ChatsModel::updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject)
+{
+    auto settings = ParseObject::parseNotificationSettings(updateNotificationSettingsObject["notification_settings"].toObject());
+    auto scopeObject = updateNotificationSettingsObject["scope"].toObject();
+    if (scopeObject["@type"].toString() == "notificationSettingsScopeAllChats") {
+        for (int i = 0; i < chats.size(); i++)
+            chats[i]->notification_settings_ = settings;
+
+        QVector<int> roles;
+        roles.append(MUTE_FOR);
+        emit dataChanged(index(0), index(chats.size() - 1), roles);
+
+    }
+    if (scopeObject["@type"].toString() == "notificationSettingsScopeBasicGroupChats") {
+        for (int i = 0; i < chats.size(); i++) {
+            if (chats[i]->type_->get_id() == chatTypeBasicGroup::ID) {
+                chats[i]->notification_settings_ = settings;
+                QVector<int> roles;
+                roles.append(MUTE_FOR);
+                emit dataChanged(index(i), index(i), roles);
+            }
+        }
+    }
+    if (scopeObject["@type"].toString() == "notificationSettingsScopeChat") {
+        qint64 chat_id = ParseObject::getInt64(scopeObject["chat_id"]);
+        for (int i = 0; i < chats.size(); i++) {
+            if (chats[i]->id_ == chat_id) {
+                chats[i]->notification_settings_ = settings;
+                QVector<int> roles;
+                roles.append(MUTE_FOR);
+                emit dataChanged(index(i), index(i), roles);
+                break;
+            }
+        }
+    }
+    if (scopeObject["@type"].toString() == "notificationSettingsScopePrivateChats") {
+        for (int i = 0; i < chats.size(); i++) {
+            if (chats[i]->type_->get_id() == chatTypeSecret::ID) {
+                chats[i]->notification_settings_ = settings;
+                QVector<int> roles;
+                roles.append(MUTE_FOR);
+                emit dataChanged(index(i), index(i), roles);
+            }
+        }
+    }
+
+}
+
+void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
+{
+    bool ok = false;
+    qint64 chat_id = chatId.toLongLong(&ok, 10);
+    if (!ok)
+        return;
+    setNotificationSettings muteFunction;
+    muteFunction.scope_ = QSharedPointer<NotificationSettingsScope>(new notificationSettingsScopeChat(chat_id));
+    if (mute)
+        muteFunction.notification_settings_ = QSharedPointer<notificationSettings>(new notificationSettings(std::numeric_limits<int>::max(), std::string(""), false));
+    else
+        muteFunction.notification_settings_ = QSharedPointer<notificationSettings>(new notificationSettings(0, std::string(""), false));
+
+    TlStorerToString jsonConverter;
+    muteFunction.store(jsonConverter, "muteFunction");
+    QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    qDebug() << jsonString;
+    tdlibJson->sendMessage(jsonString);
 }
 
 int ChatsModel::rowCount(const QModelIndex &parent) const

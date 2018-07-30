@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
 
     if (DBusAdaptor::isRegistered()) {
-        if (Service::raise()) {
+        if (DBusAdaptor::raiseApp()) {
             return 0;
         } else {
             return 1;

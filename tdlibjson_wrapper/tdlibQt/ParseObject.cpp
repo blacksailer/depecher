@@ -64,7 +64,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateNewInlineQuery":
     //    case "updateNewPreCheckoutQuery":
     //    case "updateNewShippingQuery":
-    //    case "updateNotificationSettings":
     //    case "updateOption":
     //    case "updateRecentStickers":
     //    case "updateSavedAnimations":
@@ -85,7 +84,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "ok") {
         emit okReceived(doc.object());
     }
-
     if (typeField == "updateAuthorizationState") {
         QString authState = doc.object()["authorization_state"].toObject()["@type"].toString();
         auto authorizationState = Enums::AuthorizationState::AuthorizationStateWaitTdlibParameters;
@@ -199,6 +197,9 @@ void ParseObject::parseResponse(const QByteArray &json)
         emit fileReceived(doc.object());
     if (typeField == "updateFile") {
         emit updateFile(doc.object());
+    }
+    if (typeField ==  "updateNotificationSettings") {
+        emit updateNotificationSettingsReceived(doc.object());
     }
     if (typeField == "updateChatOrder") {
         emit updateChatOrder(doc.object());

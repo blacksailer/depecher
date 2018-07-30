@@ -5,8 +5,8 @@ After=lipstick.service dbus.service
 
 [Service]
 Type=dbus
-ExecStart=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher
 BusName=org.blacksailer.depecher
+ExecStart=/usr/bin/depecher
 
 [Install]
 WantedBy=post-user-session.target

@@ -98,7 +98,10 @@ Page {
         EnterKey.iconSource: sendByEnter.value ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
         EnterKey.onClicked: {
             if(sendByEnter.value) {
-                messagingModel.sendTextMessage(textArea.text,0)
+                //removing on enter clicked symbol - /n
+                var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
+
+                messagingModel.sendTextMessage(messageText,0)
                 buzz.play()
                 textArea.text = ""
                 restoreFocusTimer.start()

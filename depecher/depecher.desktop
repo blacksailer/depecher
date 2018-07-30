@@ -5,8 +5,8 @@ Comment=Telegram client
 Icon=depecher
 Name=Depecher
 #https://git.merproject.org/mer-core/libcontentaction/blob/master/src/doc.h
+Exec=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher
 X-Maemo-Service=org.blacksailer.depecher
 X-Maemo-Object-Path=/org/blacksailer/depecher
-X-Maemo-Method=org.blacksailer.depecher.ShowApp
+X-Maemo-Method=org.blacksailer.depecher.showApp
 X-Maemo-Fixed-Args=Start
-#Exec=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher

@@ -53,14 +53,14 @@
 
 Features:
 - Send/View/Delete messages
+- Mute/unmute chats
 - View photos
-- View stickers
+- View animations (gifs)
+- View/Send stickers
+- Manage stickers from chat
 - Uploading/Downloading photos/docs
 - Receive notifications
 - 2FA authorization enabled
-
-No daemon yet.
-
 
 Thanks to:
 - @kaffeine
@@ -233,6 +233,14 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Settings</source>
         <translation>Ajustes</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
