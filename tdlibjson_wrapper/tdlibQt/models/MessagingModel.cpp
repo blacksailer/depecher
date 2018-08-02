@@ -14,7 +14,8 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::appendMessages);
     connect(tdlibJson, &TdlibJsonWrapper::messageReceived,
             this, &MessagingModel::prependMessage);
-
+    connect(tdlibJson, &TdlibJsonWrapper::callbackQueryAnswerReceived,
+            this, &MessagingModel::onCallbackAnswerReceived);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
             this, &tdlibQt::MessagingModel::updateFile);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::fileReceived,
@@ -24,7 +25,10 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::updateChatReadInbox);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &MessagingModel::updateChatReadOutbox);
-
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageEdited,
+            this, &MessagingModel::onMessageEdited);
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageContent,
+            this, &MessagingModel::onMessageContentEdited);
     connect(tdlibJson, &TdlibJsonWrapper::updateTotalCount,
             this, &MessagingModel::updateTotalCount);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserChatAction,
@@ -33,8 +37,13 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::getFile);
     connect(this, &MessagingModel::downloadAvatarStart,
             this, &MessagingModel::getAvatar);
+    connect(this, &MessagingModel::isActiveChanged,
+            this, &MessagingModel::onActiveChanged);
     connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendSucceeded,
             this, &MessagingModel::updateMessageSend);
+    connect(tdlibJson, &TdlibJsonWrapper::updateDeleteMessages,
+            this, &MessagingModel::onMessageDeleted);
+
     connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendFailed,
             this, &MessagingModel::updateMessageSend);
     connect(this, &MessagingModel::viewMessagesChanged,
@@ -70,7 +79,6 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case CONTENT:
         return dataContent(rowIndex);
-        break;
     case ID: //int64
         return QString::number(messages[rowIndex]->id_);
     case SENDER_USER_ID: //int64
@@ -194,26 +202,36 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
             return DOCUMENT;
         if (messages[rowIndex]->content_->get_id() == messageAnimation::ID)
             return ANIMATION;
+        if (messages[rowIndex]->content_->get_id() == messageContact::ID)
+            return CONTACT;
+        if (messages[rowIndex]->content_->get_id() == messageChatJoinByLink::ID)
+            return JOINBYLINK;
+        if (messages[rowIndex]->content_->get_id() == messageContactRegistered::ID)
+            return CONTACT_REGISTERED;
+        if (messages[rowIndex]->content_->get_id() == messageSupergroupChatCreate::ID)
+            return CHAT_CREATED;
+        if (messages[rowIndex]->content_->get_id() == messageBasicGroupChatCreate::ID)
+            return CHAT_CREATED;
         return UNDEFINED;
         break;
     }
     case SENDING_STATE:
         if (messages[rowIndex]->sending_state_.data()) {
             if (messages[rowIndex]->sending_state_->get_id() == messageSendingStatePending::ID)
-                return Sending_Pending;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Pending);
             if (messages[rowIndex]->sending_state_->get_id() == messageSendingStateFailed::ID)
-                return Sending_Failed;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Failed);
         }
         if (messages[rowIndex]->is_outgoing_) {
             if (messages[rowIndex]->id_ <= lastOutboxId())
-                return Sending_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
-                return Sending_Not_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         } else {
             if (messages[rowIndex]->id_ <= lastMessage().toLongLong())
-                return Sending_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Read);
             else
-                return Sending_Not_Read;
+                return QVariant::fromValue(tdlibQt::Enums::MessageState::Sending_Not_Read);
         }
         break;
     case MEDIA_PREVIEW:
@@ -228,9 +246,30 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
         break;
+
+    case REPLY_MARKUP:
+        if (messages[rowIndex]->reply_markup_.data()) {
+            if (messages[rowIndex]->reply_markup_->get_id() == replyMarkupInlineKeyboard::ID) {
+                auto replyMarkupPtr = static_cast<replyMarkupInlineKeyboard *>(messages[rowIndex]->reply_markup_.data());
+                QVariantList rowsButtons;
+                for (auto row : replyMarkupPtr->rows_) {
+                    QVariantList cellInRowButtons;
+                    for (auto cell : row) {
+                        TlStorerToString json;
+                        cell->store(json, "button");
+                        cellInRowButtons.append(json.doc["button"]);
+                    }
+                    rowsButtons.append(QVariant());
+                    rowsButtons.back() = cellInRowButtons;
+
+                }
+                return rowsButtons;
+            }
+        }
+        return QVariant();
+        break;
     //        FORWARD_INFO,
     //        VIEWS,
-    //        REPLY_MARKUP
 
     default:
         break;
@@ -453,40 +492,40 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
     QVariantList messagesIds;
 
     QJsonArray messagesArray = messagesObject["messages"].toArray();
-    if (extra == "prepend") {
-        for (int r_i = messagesArray.size() - 1; r_i != -1; r_i--) {
-            if (ParseObject::getInt64(messagesArray[r_i].toObject()["id"]) > messages.first()->id_) {
-                prependMessage(messagesArray[r_i].toObject());
-                messagesIds.append(messagesArray[r_i].toObject()["id"].toVariant());
+    if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId().toDouble()) {
+        if (extra == "prepend") {
+            for (int r_i = messagesArray.size() - 1; r_i != -1; r_i--) {
+                if (ParseObject::getInt64(messagesArray[r_i].toObject()["id"]) > messages.first()->id_) {
+                    prependMessage(messagesArray[r_i].toObject());
+                    messagesIds.append(messagesArray[r_i].toObject()["id"].toVariant());
+                }
+            }
+        } else if (extra == "append") {
+            for (auto obj : messagesArray) {
+                beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
+                appendMessage(obj.toObject());
+                messagesIds.append(obj.toObject()["id"].toVariant());
+                endInsertRows();
+            }
+        } else {
+            beginInsertRows(QModelIndex(), 0, totalCount + 1);
+            for (auto obj : messagesArray) {
+                if (currentMessage() != lastMessage()
+                        && currentMessage().toLongLong() == ParseObject::getInt64(obj.toObject()["id"])) {
+                    const QByteArray messageSeparator =
+                        " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": 0,         \"edit_date\": 0,         \"id\": 0,         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
+
+                    appendMessage(QJsonDocument::fromJson(messageSeparator).object());
+                }
+                appendMessage(obj.toObject());
+                messagesIds.append(obj.toObject()["id"].toVariant());
 
             }
-        }
-    } else if (extra == "append") {
-        for (auto obj : messagesArray) {
-            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
-            appendMessage(obj.toObject());
-            messagesIds.append(obj.toObject()["id"].toVariant());
             endInsertRows();
         }
-    } else {
-        beginInsertRows(QModelIndex(), 0, totalCount + 1);
-        for (auto obj : messagesArray) {
-            if (currentMessage() != lastMessage()
-                    && currentMessage().toLongLong() == ParseObject::getInt64(obj.toObject()["id"])) {
-                const QByteArray messageSeparator =
-                    " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": 0,         \"edit_date\": 0,         \"id\": 0,         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
-
-                appendMessage(QJsonDocument::fromJson(messageSeparator).object());
-            }
-            appendMessage(obj.toObject());
-            messagesIds.append(obj.toObject()["id"].toVariant());
-
-        }
-        endInsertRows();
-
+        viewMessages(messagesIds);
+        fetchPending = false;
     }
-    viewMessages(messagesIds);
-    fetchPending = false;
 }
 
 void MessagingModel::appendMessage(const QJsonObject &messageObject)
@@ -514,8 +553,8 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
             messagePhotoQueue[fileId] = messages.size() - 1;
     }
 
-    if (messages.size() == 1)
-        emit firstIdChanged();
+//    if (messages.size() == 1)
+    emit firstIdChanged();
 }
 
 QVariant MessagingModel::dataContent(const int rowIndex) const
@@ -577,6 +616,27 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
                 return QString::fromStdString(contentAnimationPtr->animation_->animation_->local_->path_);
 
         }
+        if (messages[rowIndex]->content_->get_id() == messageContact::ID) {
+            auto contactPtr = static_cast<messageContact *>
+                              (messages[rowIndex]->content_.data());
+            QVariantMap contactData;
+            contactData["phone_number"] = QString::fromStdString(contactPtr->contact_->phone_number_);
+            contactData["first_name"] = QString::fromStdString(contactPtr->contact_->first_name_);
+            contactData["last_name"] = QString::fromStdString(contactPtr->contact_->last_name_);
+            contactData["user_id"] = contactPtr->contact_->user_id_;
+            return contactData;
+        }
+        if (messages[rowIndex]->content_->get_id() == messageSupergroupChatCreate::ID) {
+            auto createdPtr = static_cast<messageSupergroupChatCreate *>
+                              (messages[rowIndex]->content_.data());
+            return QString::fromStdString(createdPtr->title_);
+        }
+        if (messages[rowIndex]->content_->get_id() == messageBasicGroupChatCreate::ID) {
+            auto createdPtr = static_cast<messageBasicGroupChatCreate *>
+                              (messages[rowIndex]->content_.data());
+            return QString::fromStdString(createdPtr->title_);
+        }
+
         if (messages[rowIndex]->content_->get_id() == messageUnsupported::ID)
             return "Unsupported message type";
     }
@@ -649,6 +709,8 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
 void MessagingModel::prependMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
+    if (peerId().toLongLong() != messageItem->chat_id_)
+        return;
     bool is_replaced = false;
     if (messageItem->sending_state_.data())
         if (messageItem->sending_state_->get_id() == messageSendingStatePending::ID) {
@@ -702,7 +764,12 @@ void MessagingModel::addMessageFromUpdate(const QJsonObject &messageUpdateObject
     prependMessage(messageUpdateObject["message"].toObject());
     QVariantList ids;
     ids.append(messageUpdateObject["message"].toObject()["id"].toDouble());
-    viewMessages(ids);
+    if (isActive())
+        viewMessages(ids);
+    else {
+        int64 messageId = ParseObject::getInt64(messageUpdateObject["message"].toObject()["id"]);
+        unseenMessageIds.append(messageId);
+    }
 }
 
 void MessagingModel::updateFile(const QJsonObject &fileObject)
@@ -828,6 +895,15 @@ void MessagingModel::setPeerId(QString peerId)
         return;
 
     m_peerId = peerId;
+
+    setLastOutboxId(UsersModel::instance()->getLastMessageOutbox(m_peerId.toLongLong()));
+    setLastMessage(QString::number(UsersModel::instance()->getLastMessageId(m_peerId.toLongLong())));
+    setCurrentMessage(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
+    setUserName(UsersModel::instance()->getChatTitle(m_peerId.toLongLong()));
+    setChatType(UsersModel::instance()->getChatType(m_peerId.toLongLong()));
+
+    if (messages.size() > 0)
+        emit firstIdChanged();
     emit peerIdChanged(peerId);
 }
 
@@ -940,6 +1016,28 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
 
     tdlibJson->sendMessage(jsonString);
 
+}
+
+void MessagingModel::getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType, const QString &payloadData)
+{
+    getCallbackQueryAnswer obj;
+    obj.chat_id_ = peerId().toLongLong();
+    obj.message_id_ = messageId.toLongLong();
+    if (payloadType == "inlineKeyboardButtonTypeCallback") {
+        auto payload = QSharedPointer<callbackQueryPayloadData>(new callbackQueryPayloadData);
+        payload->data_ = payloadData.toStdString();
+        obj.payload_ = payload;
+    }
+    if (payloadType == "inlineKeyboardButtonTypeCallbackGame") {
+        auto payload = QSharedPointer<callbackQueryPayloadGame>(new callbackQueryPayloadGame);
+        payload->game_short_name_ = payloadData.toStdString();
+        obj.payload_ = payload;
+    }
+    TlStorerToString json;
+    obj.store(json, "getCallbackQueryAnswer");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["getCallbackQueryAnswer"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+    tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::downloadDocument(const int rowIndex)
@@ -1106,6 +1204,85 @@ void MessagingModel::updateMessageSend(const QJsonObject &updateMessageSendObjec
                            updateMessageSendObject["error_message"].toString());
     }
 
+}
+
+void MessagingModel::onActiveChanged(const bool isActive)
+{
+    if (isActive) {
+        if (unseenMessageIds.size() > 0)
+            viewMessages(unseenMessageIds);
+        unseenMessageIds.clear();
+    }
+
+}
+
+void MessagingModel::onMessageContentEdited(const QJsonObject &updateMessageContentObject)
+{
+    qint64 chatId = ParseObject::getInt64(updateMessageContentObject["chat_id"]);
+    if (peerId().toLongLong() != chatId)
+        return;
+    qint64 messageId = ParseObject::getInt64(updateMessageContentObject["message_id"]);
+    auto newContent  = ParseObject::parseMessageContent(updateMessageContentObject["new_content"].toObject());
+    for (int i = 0 ; i < messages.size(); i++) {
+        if (messages[i]->id_ == messageId) {
+            messages[i]->content_ = newContent;
+            QVector<int> roles;
+            roles.append(CONTENT);
+            emit dataChanged(index(i), index(i), roles);
+            break;
+        }
+    }
+}
+
+void MessagingModel::onMessageEdited(const QJsonObject &updateMessageEditedObject)
+{
+    qint64 chatId = ParseObject::getInt64(updateMessageEditedObject["chat_id"]);
+    if (peerId().toLongLong() != chatId)
+        return;
+    qint64 messageId = ParseObject::getInt64(updateMessageEditedObject["message_id"]);
+    int editDate = updateMessageEditedObject["edit_date"].toInt();
+    auto replyMarkup  = ParseObject::parseReplyMarkup(updateMessageEditedObject["reply_markup"].toObject());
+    for (int i = 0 ; i < messages.size(); i++) {
+        if (messages[i]->id_ == messageId) {
+            messages[i]->edit_date_ = editDate;
+            messages[i]->reply_markup_ = replyMarkup;
+            QVector<int> roles;
+            roles.append(EDIT_DATE);
+            roles.append(REPLY_MARKUP);
+            emit dataChanged(index(i), index(i), roles);
+            break;
+        }
+    }
+}
+
+void MessagingModel::onMessageDeleted(const QJsonObject &updateDeleteMessagesObject)
+{
+    bool fromCache = updateDeleteMessagesObject["from_cache"].toBool();
+    if (fromCache)
+        return;
+    qint64 chatId = ParseObject::getInt64(updateDeleteMessagesObject["chat_id"]);
+    if (chatId != peerId().toLongLong())
+        return;
+    bool isPermanent = updateDeleteMessagesObject["is_permanent"].toBool();
+    QList<qint64> messageIds;
+    for (auto val :  updateDeleteMessagesObject["message_ids"].toArray())
+        messageIds.push_back(ParseObject::getInt64(val));
+    while (messageIds.size() > 0) {
+        qint64 id = messageIds.takeAt(0);
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages[i]->id_ == id) {
+                beginRemoveRows(QModelIndex(), i, i);
+                messages.removeAt(i);
+                endRemoveRows();
+                break;
+            }
+        }
+    }
+}
+
+void MessagingModel::onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject)
+{
+    emit callbackQueryAnswerShow(callbackAnswerObject["text"].toString(), callbackAnswerObject["show_alert"].toBool());
 }
 
 void MessagingModel::setCurrentMessage(const QString &currentMessage)

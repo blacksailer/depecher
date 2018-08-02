@@ -14,18 +14,31 @@ TARGET = depecher
 
 QT += sql dbus multimedia
 
+
+
 CONFIG += sailfishapp
 CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
-PKGCONFIG += sailfishapp
+PKGCONFIG += sailfishapp mlite5
+
 
 LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper
 
 # WebP Plugin
 webp.files = $$OUT_PWD/../webp-plugin/plugins/imageformats/*.so
 webp.path  = /usr/share/$$TARGET/lib/imageformats
-INSTALLS += webp
+
+dbus.files = $$PWD/dbus/org.blacksailer.depecher.service
+dbus.path = /usr/share/dbus-1/services
+
+dbus_interface.files= $$PWD/dbus/org.blacksailer.depecher.xml
+dbus_interface.path= /usr/share/dbus-1/interfaces
+
+systemd.files = $$PWD/systemd/org.blacksailer.depecher.service
+systemd.path = /usr/lib/systemd/user
+
+INSTALLS += webp dbus dbus_interface systemd
 
 DEPENDPATH += $$OUT_PWD/../tdlibjson_wrapper
 INCLUDEPATH = $$PWD/../tdlibjson_wrapper
@@ -37,6 +50,15 @@ events.files=$$PWD/events/*.ini
 events.path=/usr/share/ngfd/events.d
 
 INSTALLS += notificationcategories events
+
+# Settings
+settings_json.files = $$PWD/settings/$${TARGET}.json
+settings_json.path = /usr/share/jolla-settings/entries/
+INSTALLS += settings_json
+
+settings_qml.files = $$PWD/settings/*.qml
+settings_qml.path = /usr/share/$${TARGET}/settings/
+INSTALLS += settings_qml
 
 i18n.path = /usr/share/depecher/translations
 i18n.files =     translations/*.qm
@@ -53,7 +75,10 @@ MOC_DIR = build/mocs
 SOURCES += \
     src/main.cpp \
     src/FileWorker.cpp \
-    ModelTest.cpp
+    ModelTest.cpp \
+    src/DBusAdaptor.cpp \
+    dbus/DepecherAdaptor.cpp \
+    src/singletons/PageAppStarter.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -91,8 +116,17 @@ DISTFILES += \
     events/depecher_im.ini \
     notificationcategories/x-depecher.im.conf \
     notificationcategories/x-depecher.im.fg.conf \
-    translations/depecher-es.ts
+    translations/depecher-es.ts \
+    dbus/org.blacksailer.depecher.service \
+    dbus/org.blacksailer.depecher.xml \
+    dbus/application.xml \
+    settings/DepecherAppSettings.qml \
+    qml/app.qml \
+    systemd/org.blacksailer.depecher.service
 
 HEADERS += \
     src/FileWorker.hpp \
-    ModelTest.hpp
+    ModelTest.hpp \
+    src/DBusAdaptor.hpp \
+    dbus/DepecherAdaptor.hpp \
+    src/singletons/PageAppStarter.hpp

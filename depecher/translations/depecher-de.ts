@@ -6,7 +6,7 @@
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Keine Konten zum teilen verfügbar. Du kannst Konten in den Einstellungen hinzufügen</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler %1</translation>
     </message>
     <message>
         <source>Joining chat</source>
@@ -53,14 +53,14 @@
 
 Features:
 - Send/View/Delete messages
+- Mute/unmute chats
 - View photos
-- View stickers
+- View animations (gifs)
+- View/Send stickers
+- Manage stickers from chat
 - Uploading/Downloading photos/docs
 - Receive notifications
 - 2FA authorization enabled
-
-No daemon yet.
-
 
 Thanks to:
 - @kaffeine
@@ -73,6 +73,37 @@ Thanks to:
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AppearancePage</name>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize nameplate</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -115,7 +146,7 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Home</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
@@ -138,7 +169,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker Vorschau-Modus</translation>
     </message>
 </context>
 <context>
@@ -170,15 +201,27 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>BehaviorPage</name>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message by enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher</translation>
     </message>
     <message>
         <source>Unread 
  messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungelesene 
+ Nachrichten</translation>
     </message>
 </context>
 <context>
@@ -190,6 +233,14 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Reset dialogs</source>
         <translation>Dialoge zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -203,6 +254,22 @@ proxy server in settings via PulleyMenu</source>
     <name>MessageItem</name>
     <message>
         <source>New messages</source>
+        <translation>Neue Nachrichten</translation>
+    </message>
+    <message>
+        <source>edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined by invite link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined Telegram!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -226,7 +293,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>get newer</source>
-        <translation type="unfinished"></translation>
+        <translation>neuere laden</translation>
     </message>
 </context>
 <context>
@@ -248,19 +315,19 @@ proxy server in settings via PulleyMenu</source>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker Vorschau-Modus</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker %1 entfernen</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker %1 hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -271,7 +338,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Socks5 proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Socks5-Proxy</translation>
     </message>
     <message>
         <source>Server address</source>
@@ -283,7 +350,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Username</source>
@@ -327,6 +394,14 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Credits and stuff</source>
+        <translation>Credits und stuff</translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behavior</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -334,7 +409,7 @@ proxy server in settings via PulleyMenu</source>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code</translation>
     </message>
     <message>
         <source>First Name</source>
@@ -398,20 +473,21 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code eingeben</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort eingeben</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifizierungsstatus</translation>
     </message>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode eingeben.
+  Merke! Danach wird die 2FA-Autorisierung deaktiviert</translation>
     </message>
 </context>
 <context>
@@ -438,39 +514,39 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Uknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte lib Parameter</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte Verschlüsselungsschlüssel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte Telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte Code</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte Passwort</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte ausloggen</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte schließt</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte geschlossen</translation>
     </message>
 </context>
 </TS>

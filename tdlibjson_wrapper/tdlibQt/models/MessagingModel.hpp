@@ -21,12 +21,13 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(QString lastMessage READ lastMessage WRITE setLastMessage NOTIFY lastMessageChanged)
     Q_PROPERTY(double lastOutboxId READ lastOutboxId WRITE setLastOutboxId NOTIFY lastOutboxIdChanged)
     Q_PROPERTY(bool atYEnd READ atYEnd WRITE setAtYEnd NOTIFY atYEndChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY isActiveChanged)
 
     QList<QSharedPointer<message>> messages;
     QSharedPointer<ChatMemberStatus> m_UserStatus;
     QMap<int, int> messagePhotoQueue;
     QMap<qint64, QVector<int>> avatarPhotoQueue;
-    QVector<qint64> messageIds;
+    QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QTimer chatActionTimer;
     const int MESSAGE_LIMIT = 20;
@@ -97,6 +98,12 @@ private slots:
     void viewMessages(const QVariantList &ids);
     void setAction(const QString &action);
     void updateMessageSend(const QJsonObject &updateMessageSendObject);
+    void onActiveChanged(const bool isActive);
+    void onMessageContentEdited(const QJsonObject &updateMessageContentObject);
+    void onMessageEdited(const QJsonObject &updateMessageEditedObject);
+    void onMessageDeleted(const QJsonObject &updateDeleteMessagesObject);
+    void onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject);
+
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex &parent) const;
@@ -118,6 +125,8 @@ public slots:
                              const QString &caption = "");
     void sendStickerMessage(const int &fileId, const QString &reply_id
                            );
+    void getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType,
+                                    const QString &payloadData);
 
     void downloadDocument(const int rowIndex);
     void cancelDownload(const int rowIndex);
@@ -141,6 +150,15 @@ public slots:
         emit lastOutboxIdChanged(lastOutboxId);
     }
 
+    void setIsActive(bool isActive)
+    {
+        if (m_isActive == isActive)
+            return;
+
+        m_isActive = isActive;
+        emit isActiveChanged(m_isActive);
+    }
+
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);
@@ -151,6 +169,7 @@ signals:
     void viewMessagesChanged(const qint64 peerId);
 
     void chatTypeChanged(const QVariantMap &chatType);
+    void callbackQueryAnswerShow(const QString &text, const bool show_alert);
 
     void actionChanged(QString action);
 
@@ -163,6 +182,8 @@ signals:
     void lastOutboxIdChanged(double lastOutboxId);
 
     void memberStatusChanged(const QVariant &memberStatus);
+
+    void isActiveChanged(bool isActive);
 
 private:
     bool fetchPending = false;
@@ -181,6 +202,8 @@ private:
     bool m_atYEnd = 0;
 
     qint64 m_lastOutboxId;
+    bool m_isActive;
+
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
@@ -196,14 +219,13 @@ public:
         DOCUMENT,
         ANIMATION,
         SYSTEM_NEW_MESSAGE,
+        CONTACT,
+        JOINBYLINK,
+        CONTACT_REGISTERED,
+        CHAT_CREATED,
         UNDEFINED
     };
-    enum MessageState {
-        Sending_Failed,
-        Sending_Pending,
-        Sending_Not_Read,
-        Sending_Read
-    };
+
     enum ChatMemberStatuses {
         Administrator,
         Banned,
@@ -213,16 +235,18 @@ public:
         Creator
     };
     Q_ENUM(MessageType)
-    Q_ENUM(MessageState)
     Q_ENUM(ChatMemberStatuses)
     double lastOutboxId() const
     {
         return m_lastOutboxId;
     }
     QVariant memberStatus() const;
+    bool isActive() const
+    {
+        return m_isActive;
+    }
 };
 } //namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageType)
-Q_DECLARE_METATYPE(tdlibQt::MessagingModel::MessageState)
 Q_DECLARE_METATYPE(tdlibQt::MessagingModel::ChatMemberStatuses)
 #endif // MESSAGINGMODEL_HPP

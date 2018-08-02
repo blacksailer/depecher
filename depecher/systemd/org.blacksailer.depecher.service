@@ -1,0 +1,12 @@
+[Unit]
+Description=native application for Telegram based on tdlib
+Requires=lipstick.service dbus.service
+After=lipstick.service dbus.service
+
+[Service]
+Type=dbus
+BusName=org.blacksailer.depecher
+ExecStart=/usr/bin/depecher
+
+[Install]
+WantedBy=post-user-session.target

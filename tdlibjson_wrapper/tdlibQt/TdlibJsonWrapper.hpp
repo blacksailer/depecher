@@ -79,7 +79,7 @@ signals:
     void proxyReceived(const QJsonObject &proxyObject);
     void updateFile(const QJsonObject &fileObject);
     void updateSupergroup(const QJsonObject &updateSupergroupObject);
-
+    void callbackQueryAnswerReceived(const QJsonObject &callbackQueryAnswerObject);
     void newMessages(const QJsonObject &messageObject);
     void newMessageFromUpdate(const QJsonObject &messageUpdateObject);
     void updateTotalCount(int totalCount);
@@ -89,7 +89,10 @@ signals:
     void updateChatReadOutbox(const QJsonObject &chatReadOutbox);
     void updateMessageSendSucceeded(const QJsonObject &updateMessageSendObject);
     void updateMessageSendFailed(const QJsonObject &updateMessageSendObject);
-
+    void updateMessageEdited(const QJsonObject &updateNewMessageObject);
+    void updateMessageContent(const QJsonObject &updateMessageContentObject);
+    void updateDeleteMessages(const QJsonObject &updateDeleteMessagesObject);
+    void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);

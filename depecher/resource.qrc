@@ -1,34 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/app.qml</file>
-        <file>qml/pages/AuthorizeDialog.qml</file>
-        <file>qml/cover/CoverPage.qml</file>
-        <file>qml/js/countries.js</file>
-        <file>qml/pages/DialogsPage.qml</file>
-        <file>qml/pages/items/CircleImage.qml</file>
-        <file>qml/pages/SettingsPage.qml</file>
-        <file>qml/pages/ContactsPage.qml</file>
-        <file>qml/pages/MessagingPage.qml</file>
-        <file>qml/pages/items/AttachComponent.qml</file>
-        <file>qml/pages/items/ShareComponent.qml</file>
-        <file>qml/pages/items/WritingItem.qml</file>
-        <file>qml/pages/components/ChatItem.qml</file>
-        <file>qml/pages/components/MenuComponent.qml</file>
-        <file>qml/pages/components/authorization/AreYouSureDialog.qml</file>
-        <file>qml/pages/components/authorization/SignInDialog.qml</file>
-        <file>qml/js/utils.js</file>
-        <file>qml/pages/PicturePage.qml</file>
-        <file>qml/pages/AboutPage.qml</file>
         <file>qml/assets/icons/git.svg</file>
         <file>qml/assets/icons/paypal.svg</file>
         <file>qml/assets/icons/rocket.svg</file>
-        <file>qml/pages/components/NotificationPanel.qml</file>
-        <file>qml/pages/items/MessageItem.qml</file>
         <file>qml/assets/icons/check.svg</file>
         <file>qml/assets/icons/en_sailfish.jpg</file>
         <file>qml/assets/icons/ru_sailfish.jpg</file>
-        <file>qml/pages/items/AttachSticker.qml</file>
-        <file>qml/pages/items/StickerPreviewComponent.qml</file>
-        <file>qml/pages/components/PreviewStickerSetDialog.qml</file>
     </qresource>
 </RCC>

@@ -1,11 +1,12 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
+Comment=Telegram client
 Icon=depecher
-Exec=depecher
 Name=Depecher
-# translation example:
-# your app name in German locale (de)
-# Remember to comment out the following line, if you do not want to use
-# a different app name in German locale (de).
-Name[de]=Depecher
+#https://git.merproject.org/mer-core/libcontentaction/blob/master/src/doc.h
+Exec=/usr/bin/invoker  -s --type=silica-qt5 /usr/bin/depecher
+X-Maemo-Service=org.blacksailer.depecher
+X-Maemo-Object-Path=/org/blacksailer/depecher
+X-Maemo-Method=org.blacksailer.depecher.showApp
+X-Maemo-Fixed-Args=Start

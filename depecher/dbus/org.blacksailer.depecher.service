@@ -1,0 +1,7 @@
+[D-BUS Service]
+Name=org.blacksailer.depecher
+User=nemo
+SystemdService=org.blacksailer.depecher.service
+
+#https://jdebp.eu/Softwares/nosh/avoid-dbus-bus-activation.html
+Exec=/bin/false

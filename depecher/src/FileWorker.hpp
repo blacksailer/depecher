@@ -14,6 +14,7 @@ signals:
 
 public slots:
     bool savePictureToGallery(const QString &sourcePath);
+    QString openContact(const QString &firstName, const QString &lastName, const QString &phoneNumber, const int userId);
 };
 
 #endif // FILEWORKER_HPP
