@@ -68,43 +68,62 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - 基于tdlib的另一个SailfishOS telegram客户端
+
+特性:
+- 发送/查询/删除 消息
+- 静音/取消静音 讨论
+- 查看图片
+- 查看动画(gifs)
+- 查看/发送 贴纸
+- 从讨论中管理贴纸
+- 上传/下载 图片/文档
+- 接收通知
+- 启用两步验证
+
+感谢:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>这里列举了的群组，您可以在这里询问与Sailfish OS相关的任何问题（一般，开发等）。
+        这个群组为了Sailfish OS相关的社区而生。</translation>
     </message>
 </context>
 <context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>外观</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>圆角</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明度</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>接收的消息背景颜色</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>发送的消息背景颜色</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>重置为默认</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>最小化名字</translation>
     </message>
 </context>
 <context>
@@ -204,11 +223,11 @@ proxy server in settings via PulleyMenu</source>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>行为</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>按回车发送消息</translation>
     </message>
 </context>
 <context>
@@ -235,11 +254,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>取消静音</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>静音</translation>
     </message>
 </context>
 <context>
@@ -257,19 +276,19 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>已修改</translation>
     </message>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 通过邀请链接加入</translation>
     </message>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 加入了Telegram!</translation>
     </message>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 创建了群组 %2</translation>
     </message>
 </context>
 <context>
@@ -397,11 +416,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>外观</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>行为</translation>
     </message>
 </context>
 <context>
