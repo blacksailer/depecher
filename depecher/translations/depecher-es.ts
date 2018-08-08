@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.0" language="es_ES">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
@@ -99,31 +99,31 @@ Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacidad</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color-fondo en mensajes recibidos</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color-fondo en mensajes enviados</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurar valores</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar nombre del chat</translation>
     </message>
 </context>
 <context>
@@ -224,11 +224,11 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcionamiento</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar mensaje con intro</translation>
     </message>
 </context>
 <context>
@@ -256,11 +256,11 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Dejar de silenciar</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Silenciar</translation>
     </message>
 </context>
 <context>
@@ -278,19 +278,19 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>editado</translation>
     </message>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 se unió con un enlace de invitación</translation>
     </message>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡%1 se unió a Telegram!</translation>
     </message>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha creado el grupo %2</translation>
     </message>
 </context>
 <context>
@@ -418,11 +418,11 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcionamiento</translation>
     </message>
 </context>
 <context>
