@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.0" language="es_ES">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
@@ -68,43 +68,62 @@ Thanks to:
 - @icoderus
 - @aa13q
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - Otro cliente de Telegram para Sailfish OS basado en tdlib.
+
+Funcionalidades:
+- Enviar/Ver/Borrar mensajes
+- Ver fotos
+- Ver stickers
+- Subir/Descargar fotos/documentos
+- Recibir notificaciones
+- Autorización 2FA habilitada
+
+Ejecución en segundo plano no soportado aún.
+
+
+Agradecimientos a:
+- @kaffeine
+- @chuvilin
+- @icoderus
+- @aa13q
+</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
 This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aquí está la lista de grupos donde puedes preguntar dudas (general, desarrollador, etc.) relacionado con Sailfish OS.
+Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish OS.</translation>
     </message>
 </context>
 <context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radio</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacidad</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color-fondo en mensajes recibidos</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color-fondo en mensajes enviados</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurar valores</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar nombre del chat</translation>
     </message>
 </context>
 <context>
@@ -197,18 +216,19 @@ This groups lives only because of community and by community around Sailfish OS.
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup
 proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Atención: si Telegram está bloqueado en tu país, configura primero
+el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcionamiento</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar mensaje con intro</translation>
     </message>
 </context>
 <context>
@@ -236,11 +256,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Dejar de silenciar</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Silenciar</translation>
     </message>
 </context>
 <context>
@@ -258,19 +278,19 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>editado</translation>
     </message>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 se unió con un enlace de invitación</translation>
     </message>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡%1 se unió a Telegram!</translation>
     </message>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha creado el grupo %2</translation>
     </message>
 </context>
 <context>
@@ -398,11 +418,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Apariencia</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcionamiento</translation>
     </message>
 </context>
 <context>
