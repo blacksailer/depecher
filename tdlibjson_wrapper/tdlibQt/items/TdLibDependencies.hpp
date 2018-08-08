@@ -316,7 +316,7 @@ public:
         result += value;
         result += "\"";
         store_field_end();
-        insert_to_map(name, value);
+        insert_to_map(name, QString::fromUtf8(value));
     }
 
     void store_field(const char *name, const std::string &value)
@@ -326,7 +326,7 @@ public:
         result.append(value.data(), value.size());
         result += '"';
         store_field_end();
-        insert_to_map(name, QString::fromStdString(value));
+        insert_to_map(name,  QString::fromUtf8(value.c_str()));
     }
 
     template <class T>
@@ -354,7 +354,7 @@ public:
         result.append(bytes);
         result.append("}");
         store_field_end();
-        insert_to_map(name, QString::fromStdString(bytes));
+        insert_to_map(name, QString::fromUtf8(value.c_str()));
     }
 
     void store_field(const char *name, const UInt128 &value)

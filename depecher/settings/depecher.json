@@ -1,0 +1,14 @@
+{
+    "translation_catalog" : "depecher",
+    "entries": [
+        {
+            "path": "applications/depecher.desktop",
+            "title": "Depecher",
+            "type": "page",
+            "icon": "depecher",
+            "params": {
+                "source": "/usr/share/depecher/settings/DepecherAppSettings.qml"
+            }
+        }
+    ]
+}

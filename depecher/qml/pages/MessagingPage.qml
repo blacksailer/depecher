@@ -3,28 +3,35 @@ import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import QtFeedback 5.0
 import tdlibQtEnums 1.0
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
+import Nemo.Configuration 1.0
 import "items"
 
 Page {
     id: page
     allowedOrientations: Orientation.All
-    property alias userName: messagingModel.userName
     property alias chatId: messagingModel.peerId
-    property alias chatType: messagingModel.chatType
-    property alias lastMessageId: messagingModel.lastMessage
-    property alias lastOutboxId: messagingModel.lastOutboxId
-    property alias lastReadMessage: messagingModel.currentMessage
 
     Notification {
         id: notificationError
         appName: "Depecher"
-        icon: "image://theme/icon-lock-warning"
+
+        //        icon: "image://theme/icon-lock-warning"
         expireTimeout: 1
     }
-
+    ConfigurationValue {
+        id:sendByEnter
+        key:"/apps/depecher/behavior/sendByEnter"
+        defaultValue: false
+    }
+    ConfigurationValue {
+        id:hideNameplate
+        key:"/apps/depecher/ui/hideNameplate"
+        defaultValue: false
+    }
     MessagingModel{
         id: messagingModel
+        isActive: page.status === PageStatus.Active
         onChatTypeChanged: {
             if(chatType["type"] == TdlibState.Supergroup)
             {
@@ -50,13 +57,25 @@ Page {
             }
             return true;
         }
+        onCallbackQueryAnswerShow: {
+            notificationError.previewBody = text
+            if(show_alert)
+                notificationError.icon = "image://theme/icon-lock-warning"
+            else
+                notificationError.icon = "image://theme/icon-lock-information"
+            notificationError.publish()
+        }
 
         onErrorReceived: {
-            notificationError.previewBody(error_code +"-" +error_message)
+            notificationError.previewBody = error_code +"-" +error_message
+            notificationError.icon = "image://theme/icon-lock-warning"
+
             notificationError.publish()
         }
     }
-
+    Component.onCompleted: {
+        c_telegramWrapper.openChat(messagingModel.peerId)
+    }
     Component.onDestruction: {
         c_telegramWrapper.closeChat(messagingModel.peerId)
     }
@@ -75,6 +94,18 @@ Page {
             id: restoreFocusTimer
             interval: 50
             onTriggered: writer.textArea.forceActiveFocus()
+        }
+        EnterKey.iconSource: sendByEnter.value ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
+        EnterKey.onClicked: {
+            if(sendByEnter.value) {
+                //removing on enter clicked symbol - /n
+                var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
+
+                messagingModel.sendTextMessage(messageText,0)
+                buzz.play()
+                textArea.text = ""
+                restoreFocusTimer.start()
+            }
         }
         actionButton.onClicked:
         {
@@ -105,14 +136,14 @@ Page {
 
             PageHeader {
                 id: nameplate
-                title: messagingModel.userName
-                height: Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
-
+                title: hideNameplate.value ? "" : messagingModel.userName
+                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
                     anchors {
-                        top: parent._titleItem.bottom
+                        top: hideNameplate.value ? parent.top : parent._titleItem.bottom
+                        topMargin: hideNameplate.value ? Theme.paddingSmall : 0
                         right: parent.right
                         rightMargin: parent.rightMargin
                     }
@@ -156,7 +187,7 @@ Page {
                 PushUpMenu{
                     id:pushMenu
                     quickSelect: true
-                    visible: !messagingModel.atYEnd
+                    visible:!messagingModel.atYEnd
                     MenuItem{
                         text:qsTr("get newer")
                         onClicked:

@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQml 2.2
 import Sailfish.Silica 1.0
 
 Drawer {
@@ -116,6 +117,7 @@ Drawer {
                 attachDrawer.open=!attachDrawer.open
             }
         }
+
         TextArea {
             id: messageArea
             onTextChanged: {
@@ -127,6 +129,22 @@ Drawer {
             anchors.right: sendButton.left
             height:  Math.min(Theme.itemSizeHuge,implicitHeight)
             width:parent.width - sendButton.width - skrepkaWizard.width - stickerButton.width
+            _labelItem.opacity: 1
+            _labelItem.font.pixelSize: Theme.fontSizeTiny
+
+            Timer {
+                interval: 60*1000
+                repeat: true
+                running: true
+                onTriggered: {
+                    var date = new Date()
+                    messageArea.label =  Format.formatDate(date, Formatter.TimeValue)
+                }
+            }
+            Component.onCompleted: {
+                var date = new Date()
+                label =  Format.formatDate(date, Formatter.TimeValue)
+            }
         }
 
         IconButton {

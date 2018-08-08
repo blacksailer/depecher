@@ -1,7 +1,7 @@
 Name: depecher
 Summary: Telegram client for Sailfish OS
-Version: 0.3
-Release: 4
+Version: 0.4
+Release: 2
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
 Group: Applications/Communications
@@ -37,6 +37,7 @@ PkgConfigBR:
 Requires:
   - sailfishsilica-qt5 >= 0.10.9 
   - tdlibjson >= 1.2
+
 # All installed files
 Files:
   - '%{_bindir}'
@@ -47,5 +48,11 @@ Files:
   - '%{_datadir}/ngfd/events.d/*.ini'
   - '%exclude %{_libdir}/cmake/*'
   - '%exclude %{_libdir}/debug/*'
+  - '%{_datadir}/dbus-1/services/org.blacksailer.depecher.service'
+  - '%{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml'
+  - '%{_datadir}/jolla-settings/entries/%{name}.json'
+  - '%{_libdir}/systemd/user/org.blacksailer.depecher.service'
+
+
 # For more information about yaml and what's supported in Sailfish OS
 # build system, please see https://wiki.merproject.org/wiki/Spectacle

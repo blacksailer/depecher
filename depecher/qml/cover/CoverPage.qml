@@ -42,8 +42,11 @@ CoverBackground {
     }
     Label {
     id:status
+    width:parent.width
     color: Theme.highlightColor
     text: Utils.setState(c_telegramWrapper.connectionState)
+    horizontalAlignment: Text.AlignHCenter
+    wrapMode: Text.WordWrap
     anchors.horizontalCenter: parent.horizontalCenter
 }
 

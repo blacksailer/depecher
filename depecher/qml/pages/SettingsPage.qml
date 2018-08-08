@@ -5,10 +5,12 @@ import "../js/utils.js" as Utils
 import org.nemomobile.notifications 1.0
 import "items"
 import tdlibQtEnums 1.0
+import Nemo.Configuration 1.0
 Page {
     id:root
     property bool isProxyConfiguring: false
     property bool isLogoutVisible: true
+
     property string connectionStatus: Utils.setState(c_telegramWrapper.connectionState)
     SilicaFlickable{
         anchors.fill: parent
@@ -80,9 +82,7 @@ Page {
                             onClicked:{
                                 var chatType = {};
                                 chatType["type"] = TdlibState.Private
-                                pageStack.replace("MessagingPage.qml",{userName:aboutMe.fullName,
-                                                      chatId:aboutMe.id,chatType:chatType,
-                                               lastReadMessage:0,lastMessageId:0})
+                                pageStack.replace("MessagingPage.qml",{chatId:aboutMe.id})
                             }
                         }
                     }
@@ -93,6 +93,29 @@ Page {
                     }
 
                 }
+            SectionHeader {
+                text: qsTr("Settings")
+            }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                text: qsTr("Appearance")
+                anchors.verticalCenter: parent.verticalCenter
+                x:Theme.horizontalPageMargin
+                }
+                onClicked: pageStack.push(Qt.resolvedUrl("components/settings/AppearancePage.qml"))
+            }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                text: qsTr("Behavior")
+                anchors.verticalCenter: parent.verticalCenter
+                x:Theme.horizontalPageMargin
+                }
+                onClicked: pageStack.push(Qt.resolvedUrl("components/settings/BehaviorPage.qml"))
+            }
             SectionHeader {
                 text: qsTr("Socks5 proxy")
             }

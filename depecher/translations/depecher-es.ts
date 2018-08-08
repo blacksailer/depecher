@@ -53,14 +53,14 @@
 
 Features:
 - Send/View/Delete messages
+- Mute/unmute chats
 - View photos
-- View stickers
+- View animations (gifs)
+- View/Send stickers
+- Manage stickers from chat
 - Uploading/Downloading photos/docs
 - Receive notifications
 - 2FA authorization enabled
-
-No daemon yet.
-
 
 Thanks to:
 - @kaffeine
@@ -93,6 +93,37 @@ Agradecimientos a:
 This groups lives only because of community and by community around Sailfish OS.</source>
         <translation>Aquí está la lista de grupos donde puedes preguntar dudas (general, desarrollador, etc.) relacionado con Sailfish OS.
 Estos grupos sólo viven de la comunidad y por la comunidad que rodea a Sailfish OS.</translation>
+    </message>
+</context>
+<context>
+    <name>AppearancePage</name>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcoming message background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize nameplate</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -190,6 +221,17 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     </message>
 </context>
 <context>
+    <name>BehaviorPage</name>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message by enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
@@ -212,6 +254,14 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
+    <message>
+        <source>Unmute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mute</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MenuComponent</name>
@@ -225,6 +275,22 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     <message>
         <source>New messages</source>
         <translation>Nuevos mensajes</translation>
+    </message>
+    <message>
+        <source>edited</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined by invite link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 joined Telegram!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 created the group %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -349,6 +415,14 @@ el servidor proxy en ajustes desde el menú deslizante</translation>
     <message>
         <source>Credits and stuff</source>
         <translation>Créditos y demás</translation>
+    </message>
+    <message>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

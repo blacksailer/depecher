@@ -67,11 +67,6 @@ public:
     }
 private slots:
     void chatActionCleanUp();
-signals:
-
-    void totalUnreadCountChanged(int totalUnreadCount);
-
-public slots:
     void addChat(const QJsonObject &chatObject);
     void updateChatPhoto(const QJsonObject &chatObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
@@ -83,6 +78,13 @@ public slots:
     void sortByOrder();
     void updateChatMentionCount(const QJsonObject &chatMentionCountObject);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
+    void updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject);
+signals:
+
+    void totalUnreadCountChanged(int totalUnreadCount);
+
+public slots:
+    void changeNotificationSettings(const QString &chatId, bool mute);
     void reset();
 };
 } // namespace tdlibQt

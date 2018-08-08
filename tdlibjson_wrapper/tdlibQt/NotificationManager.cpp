@@ -75,7 +75,7 @@ void NotificationManager::removeNotification(qint64 chatId)
 void NotificationManager::getUpdateChatOutbox(const QJsonObject &chatReadOutbox)
 {
     qint64 chat_id = ParseObject::getInt64(chatReadOutbox["chat_id"]);
-    qint64 last_message_id = ParseObject::getInt64(chatReadOutbox["last_read_outbox_message_id"]);
+    //qint64 last_message_id = ParseObject::getInt64(chatReadOutbox["last_read_outbox_message_id"]);
     if (m_chatIdsPublished.contains(chat_id)) {
         removeNotification(chat_id);
     }
@@ -108,6 +108,7 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
         if (messageObject["content"].toObject()["@type"] == "messageText")
             notificationBody.append(" " +
                                     messageObject["content"].toObject()["text"].toObject()["text"].toString());
+
         if (qApp->applicationState() != Qt::ApplicationActive)
             notifySummary(notificationTimestamp, notificationSummary,
                           notificationBody,
@@ -129,7 +130,7 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
                                         const QString &body, const qint64 chatId,  const qint64 unreadCount)
 {
     QSharedPointer<Notification> notificationPtr = QSharedPointer<Notification>(new Notification);
-
+    notificationPtr->setAppName("Depecher");
     notificationPtr->setCategory("x-depecher.im");
     notificationPtr->setExpireTimeout(m_expireTimeout);
     notificationPtr->setItemCount(unreadCount);
@@ -142,10 +143,12 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
     notificationPtr->setSummary(summary);
     notificationPtr->setBody(body);
 
-    //Too lazy to create another map. saving message id in hint value
-    notificationPtr->setRemoteAction(Notification::remoteAction("telegram_message_id",
-                                     QString::number(unreadCount), "org.freedesktop.Notifications", "/depecher", "Utility",
-                                     "getId"));
+    QVariantList arguments;
+    arguments.append(chatId);
+    QVariantList actions;
+    actions.append(Notification::remoteAction("default", "openConversation", "org.blacksailer.depecher", "/org/blacksailer/depecher", "org.blacksailer.depecher", "openConversation", arguments));
+    notificationPtr->setRemoteActions(actions);
+
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
@@ -173,6 +176,13 @@ void NotificationManager::notifyPreview(const qint64 timestamp, const QString &s
     notificationPtr->setTimestamp(QDateTime::fromMSecsSinceEpoch(timestamp *
                                   1000 /* timestamp have secs , not msecs*/));
     notificationPtr->setPreviewBody(body);
+//https://git.merproject.org/mer-core/lipstick/blob/master/doc/src/notifications.dox#L41
+    //    notificationPtr->setPreviewSummary(summary);
+    //    QVariantList arguments;
+//    arguments.append(chatId);
+//    QVariantList actions;
+//    actions.append(Notification::remoteAction("default", "openConversation", "org.blacksailer.depecher", "/org/blacksailer/depecher", "org.blacksailer.depecher", "openConversation", arguments));
+//    notificationPtr->setRemoteActions(actions);
 
     connect(notificationPtr.data(), &Notification::closed, [this]() {
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
