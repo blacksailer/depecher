@@ -1,8 +1,14 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.nemomobile.notifications 1.0
+import depecherUtils 1.0
 import "components"
 Page {
+
+    Component.onCompleted:  {
+        DNSLookup.lookupServer()
+    }
+
     SilicaFlickable{
         anchors.fill: parent
         contentHeight: column.height
@@ -142,7 +148,14 @@ This groups lives only because of community and by community around Sailfish OS.
                     id:joinPopup
                 }
                 onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
-                    c_telegramWrapper.joinChatByInviteLink("https://t.me/joinchat/AWx9iUE-U9pZ_NeJlxXs0w","EnSailfish")
+                    var url = DNSLookup.inviteLink
+                    if(url.indexOf("t.me/joinchat") != -1)
+                        c_telegramWrapper.joinChatByInviteLink(url,"EnSailfish")
+                    else {
+                        notificationProxy.previewBody = qsTr("Error to get invite link")
+                        notificationProxy.publish()
+                    }
+
                 } )
 
             }

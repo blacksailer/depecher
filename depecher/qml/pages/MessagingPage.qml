@@ -137,7 +137,7 @@ Page {
             PageHeader {
                 id: nameplate
                 title: hideNameplate.value ? "" : messagingModel.userName
-                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
+                height: hideNameplate.value ? actionLabel.height + sectionWrapper.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + sectionWrapper.height + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
@@ -154,23 +154,99 @@ Page {
                     horizontalAlignment: Text.AlignRight
                     truncationMode: TruncationMode.Fade
                 }
+                Item {
+                    id:sectionWrapper
+                    width: sectionLabel.width + 2*Theme.paddingMedium
+                    height: opacity === 1 ? sectionLabel.height : 0
+                    opacity: 1
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: Theme.paddingSmall
+                    Behavior on opacity {
+                        NumberAnimation {   duration: 300; easing.type: Easing.InOutQuad }
+                    }
+                    Behavior on height {
+                        NumberAnimation {   duration: 300; easing.type: Easing.OutInQuad }
+                    }
+
+                    Label {
+                        id:sectionLabel
+                        property int section:messageList.currentSection
+                        property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
+                        wrapMode: Text.WordWrap
+                        color:Theme.highlightColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        text:defaultString
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked:{
+                                parent.text = Format.formatDate(new Date(parent.section*1000),Formatter.DateFull)
+                                restoreDefaultSectionTimer.start()
+                            }
+                        }
+                        Timer {
+                            id:restoreDefaultSectionTimer
+                            interval: 3 * 1000
+                            onTriggered: {
+                                parent.text = parent.defaultString
+                                hideTimer.restart()
+                            }
+                        }
+
+                    }
+                    Timer {
+                        id:hideTimer
+                        interval:3*1000
+                        onTriggered: parent.opacity = 0
+                    }
+
+                }
             }
 
 
 
             SilicaListView {
                 id: messageList
+                property int bottomSection: 0
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 verticalLayoutDirection: ListView.BottomToTop
                 spacing: Theme.paddingSmall
                 model: messagingModel
-                //                onAtYEndChanged: {
-                //                    if (messageList.atYEnd) {
-                //                        debouncer.restart() // Debounce to avoid too much requests
-                //                    }
-                //                }
+                onDragStarted: sectionWrapper.opacity = 1
+                onDragEnded: hideTimer.restart()
+                section {
+                    property: "section"
+                    delegate: Label {
+                        property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
+                        wrapMode: Text.WordWrap
+                        color:Theme.highlightColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        text: defaultString
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.topMargin: Theme.paddingMedium
+                        anchors.bottomMargin: Theme.paddingMedium
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked:{
+                                console.log(section,messageList.bottomSection)
+                                parent.text = Format.formatDate(new Date(section*1000),Formatter.DateFull)
+                                restoreDefaultInlineSectionTimer.start()
+                            }
+                        }
+                        Timer {
+                            id:restoreDefaultInlineSectionTimer
+                            interval: 3 * 1000
+                            onTriggered: {
+                                parent.text = parent.defaultString
+                            }
+                        }
+
+                    }
+                }
 
                 NumberAnimation {
                     id:moveAnimation
@@ -247,6 +323,7 @@ Page {
                     function showRemorseDelete() {
                         remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
+                    Component.onCompleted: if(index === 0) messageList.bottomSection = section
                 }
             }
         }

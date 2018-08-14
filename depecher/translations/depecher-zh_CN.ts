@@ -49,6 +49,10 @@
         <translation>请注意，点击后你会加入讨论组， 暂时不支持离开讨论组。</translation>
     </message>
     <message>
+        <source>Error to get invite link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
 
 Features:
@@ -401,6 +405,10 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daemon settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

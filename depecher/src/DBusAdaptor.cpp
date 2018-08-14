@@ -12,6 +12,8 @@
 #include "tdlibQt/items/ProxyDAO.hpp"
 #include "tdlibQt/items/AboutMeDAO.hpp"
 
+#include "singletons/DNSTXTLookup.hpp"
+
 #include <QDebug>
 #include <QQuickView>
 #include <QQmlContext>
@@ -84,6 +86,14 @@ void DBusAdaptor::showApp(const QStringList &cmd)
 
         qmlRegisterUncreatableType<tdlibQt::Enums>("tdlibQtEnums", 1, 0, "TdlibState",
                 "Error class uncreatable");
+        qmlRegisterSingletonType<DNSTXTLookup>("depecherUtils", 1, 0, "DNSLookup", [](QQmlEngine * engine, QJSEngine * scriptEngine) -> QObject * {
+            Q_UNUSED(engine)
+            Q_UNUSED(scriptEngine)
+
+            DNSTXTLookup *example = new DNSTXTLookup();
+            return example;
+        });
+
         qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
         qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
         qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");

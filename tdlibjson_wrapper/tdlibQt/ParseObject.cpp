@@ -319,7 +319,7 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
     resultMessage->media_album_id_ = getInt64(messageObject["media_album_id"]);
 
     resultMessage->content_ = parseMessageContent(messageObject["content"].toObject());
-    resultMessage->reply_markup_ = parseReplyMarkup(messageObject["reply_markup"].toObject());//QSharedPointer<ReplyMarkup>(nullptr);
+    resultMessage->reply_markup_ = parseReplyMarkup(messageObject["reply_markup"].toObject());
     resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>
                                    (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
     resultMessage->sending_state_ = parseMessageSendingState(messageObject["sending_state"].toObject());

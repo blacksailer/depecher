@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import TelegramItems 1.0
 import "../js/utils.js" as Utils
 import org.nemomobile.notifications 1.0
+import Nemo.DBus 2.0
 import "items"
 import tdlibQtEnums 1.0
 import Nemo.Configuration 1.0
@@ -116,6 +117,35 @@ Page {
                 }
                 onClicked: pageStack.push(Qt.resolvedUrl("components/settings/BehaviorPage.qml"))
             }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                text: qsTr("Daemon settings")
+                anchors.verticalCenter: parent.verticalCenter
+                x:Theme.horizontalPageMargin
+                }
+                onClicked: {
+                    setingsDbus.typedCall("showPage", [{"type": "s", "value": "applications/depecher.desktop"}],
+                                      function() {
+                                          console.log("opened settings")
+                                      },
+                                      function() {
+                                          console.log("fail to open settings")
+                                      })
+
+                }
+
+                DBusInterface {
+                    id: setingsDbus
+
+                    bus: DBus.SessionBus
+                    service: "com.jolla.settings"
+                    path: "/com/jolla/settings/ui"
+                    iface: "com.jolla.settings.ui"
+                }
+            }
+
             SectionHeader {
                 text: qsTr("Socks5 proxy")
             }

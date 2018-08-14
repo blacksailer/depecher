@@ -34,6 +34,11 @@ ListItem {
         key:settingsPath +"/incomingColor"
         defaultValue: Theme.secondaryColor
     }
+    ConfigurationValue {
+        id:timeValue
+        key:settingsPath +"/timepoint"
+        defaultValue: Formatter.Timepoint
+    }
     Rectangle {
         id:background
         width: columnWrapper.width
@@ -193,13 +198,7 @@ ListItem {
                     Label {
                         function timestamp(dateTime){
                             var dateTimeDate=new Date(dateTime*1000)
-                            var datetime_day = dateTimeDate.getDay()
-                            var currentDay = new Date().getDay()
-
-                            if (datetime_day==currentDay)
                                 return Format.formatDate(dateTimeDate, Formatter.TimeValue)
-                            else
-                                return Format.formatDate(dateTimeDate, Formatter.DateMediumWithoutYear)
                         }
                         font.pixelSize: Theme.fontSizeTiny
                         color:pressed ? Theme.primaryColor : Theme.secondaryColor

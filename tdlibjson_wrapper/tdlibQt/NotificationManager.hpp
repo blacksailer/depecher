@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QTimer>
 #include <nemonotifications-qt5/notification.h>
 #include "../tdlibjson_wrapper/tdlibQt/include/TdlibNamespace.hpp"
 #include <QSharedPointer>
@@ -15,11 +16,14 @@ class NotificationManager : public QObject
 
     TdlibJsonWrapper *m_client;
     static const int m_expireTimeout = 60 * 60 * 1000;
+    QMap<qint64, QSharedPointer<Notification>> m_chatIdsToPublish;
     QMap<qint64, QSharedPointer<Notification>> m_chatIdsPublished;
     bool isAtFirstLoaded = true;
     Enums::ConnectionState m_connectionState = Enums::ConnectionState::ConnectionStateConnecting;
+    QTimer m_PublishTimer;
+
+
     explicit NotificationManager(QObject *parent = 0);
-    void publishNotifications();
 public:
     qint64 currentViewableChatId = 0; //Setted by MessageModel
     static NotificationManager *instance();
@@ -32,6 +36,7 @@ signals:
 private slots:
     void getUpdateChatOutbox(const QJsonObject &chatReadOutbox);
     void gotNewMessage(const QJsonObject &updateNewMessage);
+    void publishNotifications();
 
 public slots:
     void notifySummary(const qint64 timestamp, const QString &summary, const QString &body,

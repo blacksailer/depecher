@@ -4,12 +4,29 @@
 #include "../NotificationManager.hpp"
 #include "singletons/UsersModel.hpp"
 #include <QVariantMap>
+#include <QGuiApplication>
+
 namespace tdlibQt {
 
 MessagingModel::MessagingModel() :
     tdlibJson(TdlibJsonWrapper::instance()),
     m_NotificationsManager(NotificationManager::instance())
 {
+    /* Reply Workthrough
+     * 1. Create map of ReplyMessagesForMessage, queue of messagesId
+     * 2. With every call of appendMessages(); call getMessages for filling ReplyMessagesForMessage
+     * 3. Test UI
+     * 4. On click  append MessageId to queue of MessagesId to replyMessage
+     * 4.1 if in message array scroll to message
+     * 4.2 If not in message array, clear all, unconnect updates, and get messages with reply_id
+     * 5. highlight for two seconds replyId message
+     * 5. On return dequeue messageId
+     * 5.1 if in message array scroll to message
+     * 5.2 If not in message array, clear all, unconnect updates, and get messages with messageId
+     * 6.  highlight for two seconds messageId message
+     * 7. Test UI
+     *
+     */
     connect(tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::appendMessages);
     connect(tdlibJson, &TdlibJsonWrapper::messageReceived,
@@ -268,6 +285,13 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
+
+    case SECTION: {
+        auto messageDateTime = QDateTime::fromTime_t(messages[rowIndex]->date_);
+        auto messageDate = messageDateTime.date();
+        auto DateTimestamp = QDateTime::fromString(messageDate.toString(Qt::ISODate), Qt::ISODate);
+        return DateTimestamp.toTime_t();
+    }
     //        FORWARD_INFO,
     //        VIEWS,
 
@@ -326,7 +350,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[STICKER_SET_ID] = "sticker_set_id";
     roles[REPLY_MARKUP] = "reply_markup";
     roles[MESSAGE_TYPE] = "message_type";
-
+    roles[SECTION] = "section";
     return roles;
 }
 
@@ -375,6 +399,11 @@ QString MessagingModel::lastMessage() const
 bool MessagingModel::atYEnd() const
 {
     return m_atYEnd;
+}
+
+double MessagingModel::lastOutboxId() const
+{
+    return m_lastOutboxId;
 }
 
 QVariant MessagingModel::memberStatus() const
@@ -512,8 +541,9 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
             for (auto obj : messagesArray) {
                 if (currentMessage() != lastMessage()
                         && currentMessage().toLongLong() == ParseObject::getInt64(obj.toObject()["id"])) {
+                    int objTime = obj.toObject()["date"].toInt();
                     const QByteArray messageSeparator =
-                        " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": 0,         \"edit_date\": 0,         \"id\": 0,         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
+                        " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": " + QString::number(objTime).toLatin1() + ",         \"edit_date\": 0,         \"id\": 0,         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
 
                     appendMessage(QJsonDocument::fromJson(messageSeparator).object());
                 }
@@ -1132,8 +1162,6 @@ void MessagingModel::joinChat()
     TlStorerToString json;
     chatMemberStatusMember statusJoin;
     statusJoin.store(json, "status");
-    qDebug() << QJsonDocument::fromVariant(json.doc).toJson();
-
 }
 
 void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
@@ -1149,8 +1177,10 @@ void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
 void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
-    tdlibJson->viewMessages(peerId(), ids, force_read);
-    emit viewMessagesChanged(peerId().toLongLong());
+    if (qApp->applicationState() == Qt::ApplicationActive)    {
+        tdlibJson->viewMessages(peerId(), ids, force_read);
+        emit viewMessagesChanged(peerId().toLongLong());
+    }
 }
 
 void MessagingModel::getNewMessages()
@@ -1311,6 +1341,24 @@ void MessagingModel::setAtYEnd(bool atYEnd)
     m_atYEnd = atYEnd;
 
     emit atYEndChanged(atYEnd);
+}
+
+void MessagingModel::setLastOutboxId(double lastOutboxId)
+{
+    if (m_lastOutboxId == lastOutboxId)
+        return;
+
+    m_lastOutboxId = lastOutboxId;
+    emit lastOutboxIdChanged(lastOutboxId);
+}
+
+void MessagingModel::setIsActive(bool isActive)
+{
+    if (m_isActive == isActive)
+        return;
+
+    m_isActive = isActive;
+    emit isActiveChanged(m_isActive);
 }
 
 } //namespace tdlibQt

@@ -74,6 +74,7 @@ class MessagingModel : public QAbstractListModel
         FILE_UPLOADED_SIZE,
         FILE_TYPE,
         STICKER_SET_ID,
+        SECTION, //Custom
         MESSAGE_TYPE //Custom
     };
 
@@ -141,23 +142,9 @@ public slots:
     void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
 
-    void setLastOutboxId(double lastOutboxId)
-    {
-        if (m_lastOutboxId == lastOutboxId)
-            return;
+    void setLastOutboxId(double lastOutboxId);
 
-        m_lastOutboxId = lastOutboxId;
-        emit lastOutboxIdChanged(lastOutboxId);
-    }
-
-    void setIsActive(bool isActive)
-    {
-        if (m_isActive == isActive)
-            return;
-
-        m_isActive = isActive;
-        emit isActiveChanged(m_isActive);
-    }
+    void setIsActive(bool isActive);
 
 signals:
     void userNameChanged(QString userName);
@@ -236,10 +223,7 @@ public:
     };
     Q_ENUM(MessageType)
     Q_ENUM(ChatMemberStatuses)
-    double lastOutboxId() const
-    {
-        return m_lastOutboxId;
-    }
+    double lastOutboxId() const;
     QVariant memberStatus() const;
     bool isActive() const
     {
