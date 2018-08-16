@@ -15,14 +15,16 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(QVariant memberStatus READ memberStatus NOTIFY memberStatusChanged)
     Q_PROPERTY(QVariantMap chatType READ chatType WRITE setChatType NOTIFY chatTypeChanged)
     Q_PROPERTY(QString action READ action WRITE setAction NOTIFY actionChanged)
-    Q_PROPERTY(QString currentMessage READ currentMessage WRITE setCurrentMessage NOTIFY
-               currentMessageChanged)
+    Q_PROPERTY(QString lastInbox READ lastInbox WRITE setLastInbox NOTIFY
+               lastInboxChanged)
 
     Q_PROPERTY(QString lastMessage READ lastMessage WRITE setLastMessage NOTIFY lastMessageChanged)
     Q_PROPERTY(double lastOutboxId READ lastOutboxId WRITE setLastOutboxId NOTIFY lastOutboxIdChanged)
     Q_PROPERTY(bool atYEnd READ atYEnd WRITE setAtYEnd NOTIFY atYEndChanged)
     Q_PROPERTY(bool isActive READ isActive WRITE setIsActive NOTIFY isActiveChanged)
-
+    Q_PROPERTY(int lastMessageIndex READ lastMessageIndex NOTIFY lastMessageIndexChanged)
+    Q_PROPERTY(bool fetchOlderPending READ fetchOlderPending WRITE setFetchOlderPending NOTIFY fetchOlderPendingChanged)
+    Q_PROPERTY(bool reachedHistoryEnd READ reachedHistoryEnd WRITE setReachedHistoryEnd NOTIFY reachedHistoryEndChanged)
     QList<QSharedPointer<message>> messages;
     QSharedPointer<ChatMemberStatus> m_UserStatus;
     QMap<int, int> messagePhotoQueue;
@@ -30,10 +32,10 @@ class MessagingModel : public QAbstractListModel
     QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QTimer chatActionTimer;
-    const int MESSAGE_LIMIT = 20;
     TdlibJsonWrapper *tdlibJson;
     NotificationManager *m_NotificationsManager;
     bool isUpdateConnected = false;
+    bool isAllOldMessages = false;
     enum MessageRole {
         ID,
         SENDER_USER_ID,
@@ -82,6 +84,7 @@ class MessagingModel : public QAbstractListModel
     void appendMessage(const QJsonObject &messageObject);
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
+    bool canFetchOlder();
 private slots:
     void chatActionCleanUp();
     void getFile(const int fileId, const int priority, const int indexItem);
@@ -136,9 +139,9 @@ public slots:
     void deleteMessage(const int rowIndex, const bool revoke = false);
 
     void joinChat();
-    void getNewMessages();
+    void fetchOlder();
     void setChatType(const QVariantMap &chatType);
-    void setCurrentMessage(const QString &currentMessage);
+    void setLastInbox(const QString &lastInbox);
     void setLastMessage(QString lastMessage);
     void setAtYEnd(bool atYEnd);
 
@@ -146,11 +149,39 @@ public slots:
 
     void setIsActive(bool isActive);
 
+    void setLastMessageIndex(int lastMessageIndex)
+    {
+        if (m_lastMessageIndex == lastMessageIndex)
+            return;
+
+        m_lastMessageIndex = lastMessageIndex;
+        emit lastMessageIndexChanged(m_lastMessageIndex);
+    }
+
+    void setFetchOlderPending(bool fetchOlderPending)
+    {
+        if (m_fetchOlderPending == fetchOlderPending)
+            return;
+
+        m_fetchOlderPending = fetchOlderPending;
+        emit fetchOlderPendingChanged(m_fetchOlderPending);
+    }
+
+    void setReachedHistoryEnd(bool reachedHistoryEnd)
+    {
+        if (m_reachedHistoryEnd == reachedHistoryEnd)
+            return;
+
+        m_reachedHistoryEnd = reachedHistoryEnd;
+        emit reachedHistoryEndChanged(m_reachedHistoryEnd);
+    }
+
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);
     void downloadFileStart(int file_id_, int priority_, int indexItem) const;
     void downloadAvatarStart(qint64 file_id_, int priority_, int indexItem) const;
+    void fetchOldMessages() const;
     void errorReceived(int error_code, const QString &error_message);
     void firstIdChanged();
     void viewMessagesChanged(const qint64 peerId);
@@ -160,7 +191,7 @@ signals:
 
     void actionChanged(QString action);
 
-    void currentMessageChanged(QString currentMessage);
+    void lastInboxChanged(QString lastInbox);
 
     void lastMessageChanged(QString lastMessage);
 
@@ -172,6 +203,12 @@ signals:
 
     void isActiveChanged(bool isActive);
 
+    void lastMessageIndexChanged(int lastMessageIndex);
+
+    void fetchOlderPendingChanged(bool fetchOlderPending);
+
+    void reachedHistoryEndChanged(bool reachedHistoryEnd);
+
 private:
     bool fetchPending = false;
     QString m_userName;
@@ -182,21 +219,27 @@ private:
 
     QString m_action;
 
-    QString m_currentMessage = "";
+    QString m_lastMessageInbox = "";
 
     QString m_lastMessage = "";
 
-    bool m_atYEnd = 0;
+    bool m_atYEnd = false;
 
     qint64 m_lastOutboxId;
     bool m_isActive;
+
+    int m_lastMessageIndex;
+
+    bool m_fetchOlderPending = false;
+
+    bool m_reachedHistoryEnd = false;
 
 public:
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
     QVariantMap chatType() const;
     QString action() const;
-    QString currentMessage() const;
+    QString lastInbox() const;
     QString lastMessage() const;
     bool atYEnd() const;
     enum MessageType {
@@ -228,6 +271,18 @@ public:
     bool isActive() const
     {
         return m_isActive;
+    }
+    int lastMessageIndex() const
+    {
+        return m_lastMessageIndex;
+    }
+    bool fetchOlderPending() const
+    {
+        return m_fetchOlderPending;
+    }
+    bool reachedHistoryEnd() const
+    {
+        return m_reachedHistoryEnd;
     }
 };
 } //namespace tdlibQt

@@ -277,12 +277,14 @@ ListItem {
 
             LinkedLabel {
                 id: textItem
-                width: Math.min(paintedWidth ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)//text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
                 plainText:content ? content : ""
                 color: pressed ? Theme.secondaryColor : Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                Component.onCompleted: {
+                    width = Math.min(width ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)
+                }
             }
         }
     }

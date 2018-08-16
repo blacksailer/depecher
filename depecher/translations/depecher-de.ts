@@ -216,6 +216,13 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>ChatCreatedDelegate</name>
+    <message>
+        <source>%1 created the group %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
@@ -244,6 +251,20 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Mute</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>JoinByLinkDelegate</name>
+    <message>
+        <source>%1 joined by invite link</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>JoinedDelegate</name>
+    <message>
+        <source>%1 joined Telegram!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -296,8 +317,15 @@ proxy server in settings via PulleyMenu</source>
         <translation>Für alle Löschen</translation>
     </message>
     <message>
-        <source>get newer</source>
-        <translation>neuere laden</translation>
+        <source>get more</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewMessageDelegate</name>
+    <message>
+        <source>New messages</source>
+        <translation type="unfinished">Neue Nachrichten</translation>
     </message>
 </context>
 <context>

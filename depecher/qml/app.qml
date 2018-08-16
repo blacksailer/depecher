@@ -24,7 +24,8 @@ ApplicationWindow
                 var page = pageStack.find(function (page) {
                     return page.__chat_page !== undefined;
                 });
-                pageStack.popAttached(page,PageStackAction.Immediate)
+                if(pageStack.depth > 1)
+                    pageStack.popAttached(page,PageStackAction.Immediate)
                 pageStack.pushAttached(page_dialog,{chatId:listPages[0].pageParam})
                 pageStack.navigateForward()
             }

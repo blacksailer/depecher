@@ -129,6 +129,12 @@ Page {
                     messagingModel.sendStickerMessage(files[i].id,0)
             }
         }
+        BusyIndicator {
+            id:placeholder
+            running: true
+            size: BusyIndicatorSize.Large
+            anchors.centerIn: messageList.parent
+        }
 
         Column {
             width: page.width
@@ -137,7 +143,7 @@ Page {
             PageHeader {
                 id: nameplate
                 title: hideNameplate.value ? "" : messagingModel.userName
-                height: hideNameplate.value ? actionLabel.height + sectionWrapper.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + sectionWrapper.height + Theme.paddingMedium)
+                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height  + Theme.paddingMedium)
                 Label {
                     id: actionLabel
                     width: parent.width - parent.leftMargin - parent.rightMargin
@@ -154,72 +160,49 @@ Page {
                     horizontalAlignment: Text.AlignRight
                     truncationMode: TruncationMode.Fade
                 }
-                Item {
-                    id:sectionWrapper
-                    width: sectionLabel.width + 2*Theme.paddingMedium
-                    height: opacity === 1 ? sectionLabel.height : 0
-                    opacity: 1
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: Theme.paddingSmall
-                    Behavior on opacity {
-                        NumberAnimation {   duration: 300; easing.type: Easing.InOutQuad }
-                    }
-                    Behavior on height {
-                        NumberAnimation {   duration: 300; easing.type: Easing.OutInQuad }
-                    }
-
-                    Label {
-                        id:sectionLabel
-                        property int section:messageList.currentSection
-                        property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
-                        wrapMode: Text.WordWrap
-                        color:Theme.highlightColor
-                        font.pixelSize: Theme.fontSizeSmall
-                        text:defaultString
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked:{
-                                parent.text = Format.formatDate(new Date(parent.section*1000),Formatter.DateFull)
-                                restoreDefaultSectionTimer.start()
-                            }
-                        }
-                        Timer {
-                            id:restoreDefaultSectionTimer
-                            interval: 3 * 1000
-                            onTriggered: {
-                                parent.text = parent.defaultString
-                                hideTimer.restart()
-                            }
-                        }
-
-                    }
-                    Timer {
-                        id:hideTimer
-                        interval:3*1000
-                        onTriggered: parent.opacity = 0
-                    }
-
-                }
             }
-
-
-
             SilicaListView {
                 id: messageList
-                property int bottomSection: 0
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
-                verticalLayoutDirection: ListView.BottomToTop
                 spacing: Theme.paddingSmall
                 model: messagingModel
-                onDragStarted: sectionWrapper.opacity = 1
-                onDragEnded: hideTimer.restart()
+                onCurrentIndexChanged:{
+                    console.log(currentIndex)
+//                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
+//                    if(currentIndex == 10)
+//                        messagingModel.fetchOlder()
+                }
+                state: "preparing"
+                states: [
+                    State {
+                        name: "preparing"
+                        PropertyChanges {
+                            target: placeholder
+                            running:true
+                        }
+                        PropertyChanges {
+                            target: messageList
+                            visible:false
+                        }
+                    }, State {
+                        name: "ready"
+                        PropertyChanges {
+                            target: placeholder
+                            running:false
+                        }
+                        PropertyChanges {
+                            target: messageList
+                            visible:true
+                        }
+                    }
+                ]
                 section {
                     property: "section"
+                    labelPositioning:ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
                     delegate: Label {
+                        id:secLabel
                         property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
                         wrapMode: Text.WordWrap
                         color:Theme.highlightColor
@@ -232,7 +215,6 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked:{
-                                console.log(section,messageList.bottomSection)
                                 parent.text = Format.formatDate(new Date(section*1000),Formatter.DateFull)
                                 restoreDefaultInlineSectionTimer.start()
                             }
@@ -244,7 +226,6 @@ Page {
                                 parent.text = parent.defaultString
                             }
                         }
-
                     }
                 }
 
@@ -257,26 +238,26 @@ Page {
                     running: false
                     onRunningChanged: {
                         if(!running)
-                            messagingModel.getNewMessages()
+                            messagingModel.fetchOlder()
                     }
                 }
-                PushUpMenu{
-                    id:pushMenu
+                PullDownMenu {
                     quickSelect: true
-                    visible:!messagingModel.atYEnd
+                    visible:!messagingModel.reachedHistoryEnd
                     MenuItem{
-                        text:qsTr("get newer")
+                        text:qsTr("get more")
                         onClicked:
                         {
                             var pos = messageList.contentY;
                             messageList.positionViewAtIndex(1,ListView.Beginning)
+                            messageList.currentIndex = 1
                             var destPos = messageList.contentY;
                             moveAnimation.from = pos;
                             moveAnimation.to = destPos;
                             moveAnimation.running = true;
                         }
-
                     }
+                    busy: messagingModel.fetchOlderPending
                 }
                 delegate: MessageItem {
                     id: myDelegate
@@ -323,8 +304,22 @@ Page {
                     function showRemorseDelete() {
                         remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
-                    Component.onCompleted: if(index === 0) messageList.bottomSection = section
                 }
+
+                Timer {
+                    id:centerTimer
+                    interval: 500
+                    onTriggered: {
+                        messageList.positionViewAtIndex(messagingModel.lastMessageIndex,ListView.Center)
+                        messageList.currentIndex = messagingModel.lastMessageIndex
+                        messageList.state = "ready"
+                    }
+                }
+
+                Component.onCompleted: {
+                    centerTimer.start()
+                }
+
             }
         }
     }

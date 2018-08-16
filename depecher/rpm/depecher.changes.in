@@ -14,7 +14,8 @@
 - Fixed notification publishing after reading in other device #79
 - Fixed issue with opening chat page on notification
 - Symbols .(dot) and ~(tilda) added to validation to Files directory text field
-
+- Infinite loading now on new messages
+- Added date as sections in ListView #74
 
 * Mon July 30 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-2
 - Mute/unmute chats from ChatsPage
