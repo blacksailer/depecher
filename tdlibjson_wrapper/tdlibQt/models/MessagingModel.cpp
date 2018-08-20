@@ -4,16 +4,36 @@
 #include "../NotificationManager.hpp"
 #include "singletons/UsersModel.hpp"
 #include <QVariantMap>
+#include <QGuiApplication>
+
 namespace tdlibQt {
+
+constexpr int MESSAGE_LIMIT = 50;
+constexpr int FETCH_OFFSET = 10;
 
 MessagingModel::MessagingModel() :
     tdlibJson(TdlibJsonWrapper::instance()),
     m_NotificationsManager(NotificationManager::instance())
 {
+    /* Reply Workthrough
+     * 1. Create map of ReplyMessagesForMessage, queue of messagesId
+     * 2. With every call of appendMessages(); call getMessages for filling ReplyMessagesForMessage
+     * 3. Test UI
+     * 4. On click  append MessageId to queue of MessagesId to replyMessage
+     * 4.1 if in message array scroll to message
+     * 4.2 If not in message array, clear all, unconnect updates, and get messages with reply_id
+     * 5. highlight for two seconds replyId message
+     * 5. On return dequeue messageId
+     * 5.1 if in message array scroll to message
+     * 5.2 If not in message array, clear all, unconnect updates, and get messages with messageId
+     * 6.  highlight for two seconds messageId message
+     * 7. Test UI
+     *
+     */
     connect(tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::appendMessages);
     connect(tdlibJson, &TdlibJsonWrapper::messageReceived,
-            this, &MessagingModel::prependMessage);
+            this, &MessagingModel::appendMessage);
     connect(tdlibJson, &TdlibJsonWrapper::callbackQueryAnswerReceived,
             this, &MessagingModel::onCallbackAnswerReceived);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
@@ -49,7 +69,7 @@ MessagingModel::MessagingModel() :
     connect(this, &MessagingModel::viewMessagesChanged,
             m_NotificationsManager, &NotificationManager::onViewMessages);
     connect(this, &MessagingModel::firstIdChanged, [this]() {
-        if (messages.first()->id_ == lastMessage().toLongLong()) {
+        if (messages.last()->id_ == lastMessage().toLongLong()) {
             if (!isUpdateConnected)
                 connect(tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
                         this, &MessagingModel::addMessageFromUpdate);
@@ -76,6 +96,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     int rowIndex = index.row();
     if (rowIndex > rowCount(QModelIndex()))
         return QVariant();
+    if (rowIndex == FETCH_OFFSET)
+        emit fetchOldMessages();
     switch (role) {
     case CONTENT:
         return dataContent(rowIndex);
@@ -268,6 +290,13 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
+
+    case SECTION: {
+        auto messageDateTime = QDateTime::fromTime_t(messages[rowIndex]->date_);
+        auto messageDate = messageDateTime.date();
+        auto DateTimestamp = QDateTime::fromString(messageDate.toString(Qt::ISODate), Qt::ISODate);
+        return DateTimestamp.toTime_t();
+    }
     //        FORWARD_INFO,
     //        VIEWS,
 
@@ -326,30 +355,35 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[STICKER_SET_ID] = "sticker_set_id";
     roles[REPLY_MARKUP] = "reply_markup";
     roles[MESSAGE_TYPE] = "message_type";
-
+    roles[SECTION] = "section";
     return roles;
 }
 
 void MessagingModel::fetchMore(const QModelIndex & /*parent*/)
 {
-
-    qint64 lastMessageOutboxId = 0;
-    if (currentMessage().length() > 0)
-        lastMessageOutboxId = m_currentMessage.toLongLong();
+    qint64 lastMessageId =  lastInbox().toLongLong();
+    //If do not check this, and in chat no new messages, getChatHistory returns 1 message. UI issue.
+    if ((qint64)lastOutboxId() == lastMessage().toLongLong())
+        lastMessageId = (qint64)lastOutboxId();
 
     fetchPending = true;
-    if (rowCount(QModelIndex()) == 0)
-        tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageOutboxId, -2,
-                                  MESSAGE_LIMIT, false);
-    else
-        tdlibJson->getChatHistory(peerId().toLongLong(), messages.last()->id_, 0, MESSAGE_LIMIT,
+    if (rowCount(QModelIndex()) == 0) {
+        if (lastMessageId != lastMessage().toLongLong())
+            tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageId, -10,
+                                      MESSAGE_LIMIT, false);
+        else
+            tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageId, -1,
+                                      MESSAGE_LIMIT, false);
+    } else {
+        tdlibJson->getChatHistory(peerId().toLongLong(), messages.last()->id_, MESSAGE_LIMIT * -1 + 1, MESSAGE_LIMIT,
                                   false, "append");
+    }
 }
 
 bool MessagingModel::canFetchMore(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return true;
+    return !fetchPending && !atYEnd();
 }
 
 QVariantMap MessagingModel::chatType() const
@@ -362,9 +396,9 @@ QString MessagingModel::action() const
     return m_action;
 }
 
-QString MessagingModel::currentMessage() const
+QString MessagingModel::lastInbox() const
 {
-    return m_currentMessage;
+    return m_lastMessageInbox;
 }
 
 QString MessagingModel::lastMessage() const
@@ -375,6 +409,11 @@ QString MessagingModel::lastMessage() const
 bool MessagingModel::atYEnd() const
 {
     return m_atYEnd;
+}
+
+double MessagingModel::lastOutboxId() const
+{
+    return m_lastOutboxId;
 }
 
 QVariant MessagingModel::memberStatus() const
@@ -465,7 +504,7 @@ void MessagingModel::updateChatReadInbox(const QJsonObject &inboxObject)
     qint64 chatId = ParseObject::getInt64(inboxObject["chat_id"]);
     if (chatId == peerId().toLongLong()) {
         qint64 lastReadId = ParseObject::getInt64(inboxObject["last_read_inbox_message_id"]);
-        setLastMessage(QString::number(lastReadId));
+        setLastInbox(QString::number(lastReadId));
         QVector<int> stateRole;
         stateRole.append(SENDING_STATE);
         emit dataChanged(index(0), index(messages.size() - 1), stateRole);
@@ -492,35 +531,75 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
     QVariantList messagesIds;
 
     QJsonArray messagesArray = messagesObject["messages"].toArray();
+    if (extra == "prepend" && totalCount == 0) {
+        isAllOldMessages = true;
+        setReachedHistoryEnd(true);
+    }
     if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId().toDouble()) {
+        //Oldest
         if (extra == "prepend") {
-            for (int r_i = messagesArray.size() - 1; r_i != -1; r_i--) {
-                if (ParseObject::getInt64(messagesArray[r_i].toObject()["id"]) > messages.first()->id_) {
-                    prependMessage(messagesArray[r_i].toObject());
-                    messagesIds.append(messagesArray[r_i].toObject()["id"].toVariant());
-                }
+            beginInsertRows(QModelIndex(), 0, totalCount - 1);
+            //Why for iteration starts from 1? to skip duplicate message
+            for (int i = 0; i < messagesArray.size(); i++) {
+                prependMessage(messagesArray[i].toObject());
+                messagesIds.append(messagesArray[i].toObject()["id"].toVariant());
             }
+            endInsertRows();
+            setFetchOlderPending(false);
         } else if (extra == "append") {
-            for (auto obj : messagesArray) {
-                beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
-                appendMessage(obj.toObject());
-                messagesIds.append(obj.toObject()["id"].toVariant());
-                endInsertRows();
-            }
-        } else {
-            beginInsertRows(QModelIndex(), 0, totalCount + 1);
-            for (auto obj : messagesArray) {
-                if (currentMessage() != lastMessage()
-                        && currentMessage().toLongLong() == ParseObject::getInt64(obj.toObject()["id"])) {
-                    const QByteArray messageSeparator =
-                        " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": 0,         \"edit_date\": 0,         \"id\": 0,         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
-
-                    appendMessage(QJsonDocument::fromJson(messageSeparator).object());
+            //Newest
+            int totaltGoodMessages = 0;
+            for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
+                auto obj = messagesArray[r_i];
+                if (ParseObject::getInt64(obj.toObject()["id"]) > messages.last()->id_) {
+                    totaltGoodMessages++;
+                    messagesIds.append(obj.toObject()["id"].toVariant());
                 }
-                appendMessage(obj.toObject());
-                messagesIds.append(obj.toObject()["id"].toVariant());
-
             }
+            if (totaltGoodMessages == 0)
+                return;
+            beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + totaltGoodMessages - 1);
+            for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
+                auto obj = messagesArray[r_i];
+                if (ParseObject::getInt64(obj.toObject()["id"]) > messages.last()->id_) {
+                    appendMessage(obj.toObject());
+                }
+            }
+            endInsertRows();
+        } else {
+            int indexToAppend = -1;
+            int objTime = -1;
+
+            beginInsertRows(QModelIndex(), 0, totalCount - 1);
+            for (int i = 0; i < messagesArray.size(); i++) {
+                auto obj = messagesArray[i];
+
+                prependMessage(obj.toObject());
+                messagesIds.append(obj.toObject()["id"].toVariant());
+            }
+            endInsertRows();
+            if (lastInbox() != lastMessage())
+                for (int i = messages.size() - 1; i != -1; i--) {
+                    if (lastInbox().toLongLong() == messages[i]->id_) {
+                        indexToAppend = i;
+                        objTime = messages[i]->date_;
+                        break;
+                    }
+                }
+            if (indexToAppend == -1) {
+                setLastMessageIndex(messages.size() - 1);
+                return;
+            }
+            indexToAppend++;
+            setLastMessageIndex(indexToAppend);
+            beginInsertRows(QModelIndex(), indexToAppend, indexToAppend);
+            qint64 messageId = messages[indexToAppend - 1]->id_;
+            const QByteArray messageSeparator =
+                " {         \"@type\": \"message\",         \"author_signature\": \"\",         \"can_be_deleted_for_all_users\": false,         \"can_be_deleted_only_for_self\": false,         \"can_be_edited\": false,         \"can_be_forwarded\": false,         \"chat_id\": 0,         \"contains_unread_mention\": false,         \"content\": {             \"@type\": \"messageText\",             \"text\": {                 \"@type\": \"formattedText\",                 \"entities\": [                 ],                 \"text\": \"new message separator\"             }         },         \"date\": " + QString::number(objTime).toLatin1() + ",         \"edit_date\": 0,         \"id\": " + QString::number(messageId).toLatin1() + ",         \"is_channel_post\": false,         \"is_outgoing\": false,         \"media_album_id\": \"0\",         \"reply_to_message_id\": 0,         \"sender_user_id\": 0,         \"ttl\": 0,         \"ttl_expires_in\": 0,         \"via_bot_user_id\": 0,         \"views\": 0     } ";
+
+            auto messageItem = ParseObject::parseMessage(QJsonDocument::fromJson(messageSeparator).object());
+
+            messages.insert(indexToAppend, messageItem);
             endInsertRows();
         }
         viewMessages(messagesIds);
@@ -531,12 +610,33 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
 void MessagingModel::appendMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
-    messages.append(messageItem);
+    if (peerId().toLongLong() != messageItem->chat_id_)
+        return;
+    bool is_replaced = false;
+    if (messageItem->sending_state_.data())
+        if (messageItem->sending_state_->get_id() == messageSendingStatePending::ID) {
+            for (int i = 0 ; i < messages.size(); i++)
+                if (messages[i]->id_ == messageItem->id_) {
+                    messages.replace(i, messageItem);
+                    emit dataChanged(index(i), index(i));
+                    is_replaced = true;
+                    break;
+                }
+        }
+    if (!is_replaced) {
+        messages.append(messageItem);
+        if (messagePhotoQueue.keys().size() > 0) {
+            for (int key : messagePhotoQueue.keys())
+                messagePhotoQueue[key]++;
+        }
 
-    bool is_uploading = data(index(messages.size() - 1), FILE_IS_UPLOADING).toBool();
-    bool is_downloading = data(index(messages.size() - 1), FILE_IS_DOWNLOADING).toBool()  ;
-    if (is_downloading || is_uploading) {
+    }
+
+    bool is_downl_or_upl = data(index(0), FILE_IS_UPLOADING).toBool()
+                           || data(index(0), FILE_IS_DOWNLOADING).toBool()  ;
+    if (is_downl_or_upl) {
         int fileId = -1;
+        //Increment all ids in messagePhotoQueue
         if (messageItem->content_->get_id() == messageDocument::ID) {
             auto messageDocumentPtr = static_cast<messageDocument *>
                                       (messageItem->content_.data());
@@ -548,13 +648,12 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
             int sizesCount = messagePhotoPtr->photo_->sizes_.size();
             fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
         }
-
         if (fileId > 0)
-            messagePhotoQueue[fileId] = messages.size() - 1;
-    }
+            messagePhotoQueue[fileId] = 0;
 
-//    if (messages.size() == 1)
+    }
     emit firstIdChanged();
+
 }
 
 QVariant MessagingModel::dataContent(const int rowIndex) const
@@ -706,38 +805,21 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
     }
 }
 
+bool MessagingModel::canFetchOlder()
+{
+    return !isAllOldMessages;
+}
+
 void MessagingModel::prependMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
-    if (peerId().toLongLong() != messageItem->chat_id_)
-        return;
-    bool is_replaced = false;
-    if (messageItem->sending_state_.data())
-        if (messageItem->sending_state_->get_id() == messageSendingStatePending::ID) {
-            for (int i = 0 ; i < messages.size(); i++)
-                if (messages[i]->id_ == messageItem->id_) {
-                    messages.replace(i, messageItem);
-                    emit dataChanged(index(i), index(i));
-                    is_replaced = true;
-                    break;
-                }
-        }
-    if (!is_replaced) {
-        beginInsertRows(QModelIndex(), 0, 0);
-        messages.prepend(messageItem);
-        endInsertRows();
-        if (messagePhotoQueue.keys().size() > 0) {
-            for (int key : messagePhotoQueue.keys())
-                messagePhotoQueue[key]++;
-        }
 
-    }
+    messages.prepend(messageItem);
 
-    bool is_downl_or_upl = data(index(0), FILE_IS_UPLOADING).toBool()
-                           || data(index(0), FILE_IS_DOWNLOADING).toBool()  ;
-    if (is_downl_or_upl) {
+    bool is_uploading = data(index(messages.size() - 1), FILE_IS_UPLOADING).toBool();
+    bool is_downloading = data(index(messages.size() - 1), FILE_IS_DOWNLOADING).toBool()  ;
+    if (is_downloading || is_uploading) {
         int fileId = -1;
-        //Increment all ids in messagePhotoQueue
         if (messageItem->content_->get_id() == messageDocument::ID) {
             auto messageDocumentPtr = static_cast<messageDocument *>
                                       (messageItem->content_.data());
@@ -749,10 +831,12 @@ void MessagingModel::prependMessage(const QJsonObject &messageObject)
             int sizesCount = messagePhotoPtr->photo_->sizes_.size();
             fileId = messagePhotoPtr->photo_->sizes_[sizesCount - 1]->photo_->id_;
         }
-        if (fileId > 0)
-            messagePhotoQueue[fileId] = 0;
 
+        if (fileId > 0)
+            messagePhotoQueue[fileId] = messages.size() - 1;
     }
+
+    //    if (messages.size() == 1)
     emit firstIdChanged();
 
 }
@@ -761,7 +845,9 @@ void MessagingModel::addMessageFromUpdate(const QJsonObject &messageUpdateObject
 {
     if (peerId() != messageUpdateObject["message"].toObject()["chat_id"].toVariant().toString())
         return;
-    prependMessage(messageUpdateObject["message"].toObject());
+    beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
+    appendMessage(messageUpdateObject["message"].toObject());
+    endInsertRows();
     QVariantList ids;
     ids.append(messageUpdateObject["message"].toObject()["id"].toDouble());
     if (isActive())
@@ -898,7 +984,7 @@ void MessagingModel::setPeerId(QString peerId)
 
     setLastOutboxId(UsersModel::instance()->getLastMessageOutbox(m_peerId.toLongLong()));
     setLastMessage(QString::number(UsersModel::instance()->getLastMessageId(m_peerId.toLongLong())));
-    setCurrentMessage(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
+    setLastInbox(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
     setUserName(UsersModel::instance()->getChatTitle(m_peerId.toLongLong()));
     setChatType(UsersModel::instance()->getChatType(m_peerId.toLongLong()));
 
@@ -1132,8 +1218,6 @@ void MessagingModel::joinChat()
     TlStorerToString json;
     chatMemberStatusMember statusJoin;
     statusJoin.store(json, "status");
-    qDebug() << QJsonDocument::fromVariant(json.doc).toJson();
-
 }
 
 void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
@@ -1149,20 +1233,18 @@ void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
 void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
-    tdlibJson->viewMessages(peerId(), ids, force_read);
-    emit viewMessagesChanged(peerId().toLongLong());
+    if (qApp->applicationState() == Qt::ApplicationActive)    {
+        tdlibJson->viewMessages(peerId(), ids, force_read);
+        emit viewMessagesChanged(peerId().toLongLong());
+    }
 }
 
-void MessagingModel::getNewMessages()
+void MessagingModel::fetchOlder()
 {
-    if (messages.size() > 0
-            && !fetchPending
-            && !isUpdateConnected) {
-        if (lastMessage().toLongLong() != messages.first()->id_) {
-            fetchPending = true;
-            tdlibJson->getChatHistory(peerId().toLongLong(), messages.first()->id_, MESSAGE_LIMIT * -1 + 1,
-                                      MESSAGE_LIMIT, false, "prepend");
-        }
+    if (messages.size() > 0 && canFetchOlder() && !fetchOlderPending()) {
+        setFetchOlderPending(true);
+        tdlibJson->getChatHistory(peerId().toLongLong(), messages.first()->id_, 0,
+                                  MESSAGE_LIMIT, false, "prepend");
     }
 }
 
@@ -1285,13 +1367,13 @@ void MessagingModel::onCallbackAnswerReceived(const QJsonObject &callbackAnswerO
     emit callbackQueryAnswerShow(callbackAnswerObject["text"].toString(), callbackAnswerObject["show_alert"].toBool());
 }
 
-void MessagingModel::setCurrentMessage(const QString &currentMessage)
+void MessagingModel::setLastInbox(const QString &currentMessage)
 {
-    if (m_currentMessage == currentMessage)
+    if (m_lastMessageInbox == currentMessage)
         return;
 
-    m_currentMessage = currentMessage;
-    emit currentMessageChanged(currentMessage);
+    m_lastMessageInbox = currentMessage;
+    emit lastInboxChanged(currentMessage);
 }
 
 void MessagingModel::setLastMessage(QString lastMessage)
@@ -1311,6 +1393,24 @@ void MessagingModel::setAtYEnd(bool atYEnd)
     m_atYEnd = atYEnd;
 
     emit atYEndChanged(atYEnd);
+}
+
+void MessagingModel::setLastOutboxId(double lastOutboxId)
+{
+    if (m_lastOutboxId == lastOutboxId)
+        return;
+
+    m_lastOutboxId = lastOutboxId;
+    emit lastOutboxIdChanged(lastOutboxId);
+}
+
+void MessagingModel::setIsActive(bool isActive)
+{
+    if (m_isActive == isActive)
+        return;
+
+    m_isActive = isActive;
+    emit isActiveChanged(m_isActive);
 }
 
 } //namespace tdlibQt

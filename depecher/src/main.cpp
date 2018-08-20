@@ -4,17 +4,18 @@
 
 #include <sailfishapp.h>
 #include <QGuiApplication>
-
+#include <MGConfItem>
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/NotificationManager.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "DBusAdaptor.hpp"
 
+
 int main(int argc, char *argv[])
 {
     QGuiApplication *app = SailfishApp::application(argc, argv);
-
+    MGConfItem quitOnCloseUi("/apps/depecher/tdlib/quit_on_close_ui");
 
     if (DBusAdaptor::isRegistered()) {
         if (DBusAdaptor::raiseApp()) {
@@ -25,12 +26,10 @@ int main(int argc, char *argv[])
     }
 
 
-
     QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
 
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
-    app->setQuitOnLastWindowClosed(false);
 
 
     QTranslator translator;
@@ -51,8 +50,12 @@ int main(int argc, char *argv[])
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
     tdlib->setEncryptionKey();
-    tdlib->getInstalledStickerSets();
 
+    if (quitOnCloseUi.value(false).toBool()) {
+        app->setQuitOnLastWindowClosed(true);
+        DBusAdaptor::raiseApp();
+    } else
+        app->setQuitOnLastWindowClosed(false);
 
     return app->exec();
 }

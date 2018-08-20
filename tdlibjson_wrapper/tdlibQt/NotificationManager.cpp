@@ -7,10 +7,15 @@
 #include <QJsonObject>
 namespace tdlibQt {
 
+constexpr int cWaitTimerSeconds = 1000;
+
 NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
     m_client(TdlibJsonWrapper::instance())
 {
 
+    m_PublishTimer.setInterval(cWaitTimerSeconds);
+    m_PublishTimer.setSingleShot(true);
+    connect(&m_PublishTimer, &QTimer::timeout, this, &NotificationManager::publishNotifications);
     //План Б. Получать список уведомлений по updateChatReadInbox и notifications
     connect(m_client, &TdlibJsonWrapper::connectionStateChanged,
     [this](Enums::ConnectionState connectionState) {
@@ -30,6 +35,8 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
         qint64 chat_id = ParseObject::getInt64(object["chat_id"]);
         int unread_count = object["unread_count"].toInt();
         //        qint64 last_message_id = ParseObject::getInt64(object["last_read_inbox_message_id"]);
+
+        // Notify on first start app
         if (m_connectionState != Enums::ConnectionState::ConnectionStateReady) {
             if (UsersModel::instance()->getChatMuteFor(chat_id) <= 0 && unread_count > 0) {
                 if (m_chatIdsPublished.contains(chat_id))
@@ -40,8 +47,16 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
                                   unread_count);
                 }
             } else {
-                if (m_chatIdsPublished.contains(chat_id))
-                    removeNotification(chat_id);
+                removeNotification(chat_id);
+            }
+        } else {
+            // Workaround for chatting via different computer
+            if (UsersModel::instance()->getChatMuteFor(chat_id) <= 0 && unread_count == 0) {
+                removeNotification(chat_id);
+                if (m_chatIdsToPublish.contains(chat_id)) {
+                    m_chatIdsToPublish[chat_id]->close();
+                    m_chatIdsToPublish.remove(chat_id);
+                }
             }
         }
     });
@@ -52,9 +67,13 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
 
 void NotificationManager::publishNotifications()
 {
-    if (m_connectionState == Enums::ConnectionState::ConnectionStateReady)
-        for (auto itr = m_chatIdsPublished.begin(); itr != m_chatIdsPublished.end(); ++itr)
+    if (m_connectionState == Enums::ConnectionState::ConnectionStateReady) {
+        for (auto itr = m_chatIdsToPublish.begin(); itr != m_chatIdsToPublish.end(); ++itr) {
+            m_chatIdsPublished[itr.key()] = itr.value();
             itr.value()->publish();
+        }
+        m_chatIdsToPublish.clear();
+    }
 }
 
 NotificationManager *NotificationManager::instance()
@@ -76,17 +95,16 @@ void NotificationManager::getUpdateChatOutbox(const QJsonObject &chatReadOutbox)
 {
     qint64 chat_id = ParseObject::getInt64(chatReadOutbox["chat_id"]);
     //qint64 last_message_id = ParseObject::getInt64(chatReadOutbox["last_read_outbox_message_id"]);
-    if (m_chatIdsPublished.contains(chat_id)) {
-        removeNotification(chat_id);
-    }
+    removeNotification(chat_id);
 }
 
 void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
 {
-    if (updateNewMessage["disable_notification"].toBool() != true
-            && m_connectionState == Enums::ConnectionState::ConnectionStateReady) {
+    bool disableNotification  = updateNewMessage["disable_notification"].toBool();
+    qDebug() << disableNotification;
+    if (!disableNotification) {
         auto messageObject = updateNewMessage["message"].toObject();
-
+        qDebug() << "Publishing...";
         auto notificationTimestamp = qint64(messageObject["date"].toInt());
         QString notificationSummary;
         QString notificationBody;
@@ -153,11 +171,15 @@ void NotificationManager::notifySummary(const qint64 timestamp, const QString &s
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr)) ;
     });
-    m_chatIdsPublished[chatId] = notificationPtr;
-    if (isAtFirstLoaded)
-        publishNotifications();
-    else
-        notificationPtr->publish();
+    m_chatIdsToPublish[chatId] = notificationPtr;
+
+    if (!m_PublishTimer.isActive())
+        m_PublishTimer.start();
+
+//    if (isAtFirstLoaded)
+//        publishNotifications();
+//    else
+//        notificationPtr->publish();
 }
 
 void NotificationManager::notifyPreview(const qint64 timestamp, const QString &summary,
@@ -188,10 +210,14 @@ void NotificationManager::notifyPreview(const qint64 timestamp, const QString &s
         auto ptr = QSharedPointer<Notification>((Notification *)sender());
         m_chatIdsPublished.remove(m_chatIdsPublished.key(ptr));
     });
-    m_chatIdsPublished[chatId] = notificationPtr;
-    if (isAtFirstLoaded)
-        publishNotifications();
-    else
-        notificationPtr->publish();
+    m_chatIdsToPublish[chatId] = notificationPtr;
+
+    if (!m_PublishTimer.isActive())
+        m_PublishTimer.start();
+
+//    if (isAtFirstLoaded)
+//        publishNotifications();
+//    else
+//        notificationPtr->publish();
 }
 }// tdlibQt

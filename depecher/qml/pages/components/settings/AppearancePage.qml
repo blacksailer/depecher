@@ -37,6 +37,7 @@ Page {
                     date:124532454
                     content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     sending_state:TdlibState.Sending_Pending
+                    section:1533848400
                 }
                 ListElement {
                     is_outgoing: true
@@ -46,6 +47,7 @@ Page {
                     date:124532484
                     content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     sending_state:TdlibState.Sending_Read
+                    section:1533848400
                 }
             }
             ConfigurationValue {

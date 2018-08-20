@@ -32,22 +32,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
             file.close();
         }
     }
-    /*
-    std::string 	files_directory_
-    The path to the directory for storing files; if empty, database_directory will be used.
 
-    bool 	use_file_database_
-    If set to true, information about downloaded and uploaded files will be saved between application restarts.
-
-    bool 	use_chat_info_database_
-    If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies use_file_database.
-
-    bool 	use_message_database_
-    If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database.
-
-    bool 	enable_storage_optimizer_
-    If set to true, old files will automatically be deleted.
-    */
     QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
                               "\"database_directory\":\"/home/nemo/.local/share/harbour-depecher\","
                               "\"files_directory\":\"" + filesDirectory.value("").toString() + "\","
@@ -68,7 +53,26 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
                               "\"enable_storage_optimizer\":" + (enableStorageOptimizer.value(true).toBool() ?
                                       "true" : "false") +
                               "}}";
-    td_json_client_send(client, tdlibParameters.toStdString().c_str());
+
+    QVariantMap parametersObject;
+    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
+    parametersObject["files_directory"] = filesDirectory.value("").toString();
+    parametersObject["api_id"] = tdlibQt::appid.toInt();
+    parametersObject["api_hash"] = tdlibQt::apphash;
+    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
+    parametersObject["device_model"] = QSysInfo::prettyProductName();
+    parametersObject["system_version"] = QSysInfo::productVersion();
+    parametersObject["application_version"] = "0.4";
+    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
+    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
+    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
+    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
+    parametersObject["use_secret_chats"] = false;
+
+    QVariantMap rootObject;
+    rootObject["@type"] = "setTdlibParameters";
+    rootObject["parameters"] = parametersObject;
+    td_json_client_send(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
 

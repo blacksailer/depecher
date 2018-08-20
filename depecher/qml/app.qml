@@ -21,6 +21,11 @@ ApplicationWindow
             var page_dialog=Qt.resolvedUrl("pages/MessagingPage.qml")
             if(listPages.length>0)
             {
+                var page = pageStack.find(function (page) {
+                    return page.__chat_page !== undefined;
+                });
+                if(pageStack.depth > 1)
+                    pageStack.popAttached(page,PageStackAction.Immediate)
                 pageStack.pushAttached(page_dialog,{chatId:listPages[0].pageParam})
                 pageStack.navigateForward()
             }

@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql dbus multimedia
+QT += sql dbus multimedia network
 
 
 
@@ -23,7 +23,7 @@ PKGCONFIG += nemonotifications-qt5 tdlibjson
 PKGCONFIG += sailfishapp mlite5
 
 
-LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper
+LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv
 
 # WebP Plugin
 webp.files = $$OUT_PWD/../webp-plugin/plugins/imageformats/*.so
@@ -78,12 +78,14 @@ SOURCES += \
     ModelTest.cpp \
     src/DBusAdaptor.cpp \
     dbus/DepecherAdaptor.cpp \
-    src/singletons/PageAppStarter.cpp
+    src/singletons/PageAppStarter.cpp \
+    src/singletons/DNSTXTLookup.cpp
 
 
 OTHER_FILES += qml/app.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
+qml/pages/items/delegates/*.qml \
     translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
@@ -129,4 +131,5 @@ HEADERS += \
     ModelTest.hpp \
     src/DBusAdaptor.hpp \
     dbus/DepecherAdaptor.hpp \
-    src/singletons/PageAppStarter.hpp
+    src/singletons/PageAppStarter.hpp \
+    src/singletons/DNSTXTLookup.hpp

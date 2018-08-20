@@ -34,6 +34,11 @@ ListItem {
         key:settingsPath +"/incomingColor"
         defaultValue: Theme.secondaryColor
     }
+    ConfigurationValue {
+        id:timeValue
+        key:settingsPath +"/timepoint"
+        defaultValue: Formatter.Timepoint
+    }
     Rectangle {
         id:background
         width: columnWrapper.width
@@ -193,13 +198,7 @@ ListItem {
                     Label {
                         function timestamp(dateTime){
                             var dateTimeDate=new Date(dateTime*1000)
-                            var datetime_day = dateTimeDate.getDay()
-                            var currentDay = new Date().getDay()
-
-                            if (datetime_day==currentDay)
                                 return Format.formatDate(dateTimeDate, Formatter.TimeValue)
-                            else
-                                return Format.formatDate(dateTimeDate, Formatter.DateMediumWithoutYear)
                         }
                         font.pixelSize: Theme.fontSizeTiny
                         color:pressed ? Theme.primaryColor : Theme.secondaryColor
@@ -278,12 +277,14 @@ ListItem {
 
             LinkedLabel {
                 id: textItem
-                width: Math.min(paintedWidth ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)//text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
                 plainText:content ? content : ""
                 color: pressed ? Theme.secondaryColor : Theme.primaryColor
                 linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                Component.onCompleted: {
+                    width = Math.min(width ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)
+                }
             }
         }
     }

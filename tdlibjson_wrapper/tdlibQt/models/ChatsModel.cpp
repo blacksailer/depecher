@@ -35,6 +35,8 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
             this, &tdlibQt::ChatsModel::updateMentionRead);
     connect(&chatActionTimer, &QTimer::timeout, this, &tdlibQt::ChatsModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
+
+    tdlibJson->getInstalledStickerSets();
 }
 void ChatsModel::changeChatOrder(qint64 chatId, qint64 order)
 {

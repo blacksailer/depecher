@@ -38,6 +38,11 @@ Page {
         key: tdlibSettingsPath + "/enable_storage_optimizer"
         defaultValue: true
     }
+    ConfigurationValue {
+        id:quitOnCloseUi
+        key: tdlibSettingsPath + "/quit_on_close_ui"
+        defaultValue: false
+    }
 
     DBusInterface {
         id: depecherService
@@ -97,6 +102,7 @@ Page {
                                   console.log(state)
                                   if (state !== "disabled" && state !== "invalid") {
                                       root.depecherAutostart = true
+                                      quitOnCloseUi.value = false
                                   } else {
                                       root.depecherAutostart = false
                                   }
@@ -202,7 +208,7 @@ Page {
                 //% "Start Depecher on bootup"
                 text: qsTr("Start Depecher on bootup")
                 description: qsTr("When this is off, you won't get Depecher app on boot")
-                enabled: root.ready
+                enabled: root.ready && !quitOnCloseUiSwitch.checked
                 automaticCheck: false
                 checked: root.depecherAutostart
                 onClicked: {
@@ -252,6 +258,19 @@ Page {
                 }
             }
 
+            TextSwitch {
+                id: quitOnCloseUiSwitch
+                //% "Start Depecher on bootup"
+                text: qsTr("Close app on closing UI")
+                description: qsTr("When this is on, Depecher quits after closing ui. No daemon. Autostart should be disabled")
+                enabled: !autostart.checked
+                automaticCheck: false
+                checked: quitOnCloseUi.value
+                onClicked: {
+                    quitOnCloseUi.value = !checked
+                }
+            }
+
             SectionHeader {
                 text: qsTr("Library settings")
             }
@@ -263,7 +282,7 @@ Page {
                 x:Theme.horizontalPageMargin
                 label: qsTr("Path to files directory")
                 validator: RegExpValidator {
-                    regExp: /^(\/[\w^\- ]+)+\/?$/
+                    regExp: /^(\/[\w^\- .~]+)+\/?$/
                 }
                 visible: useFileDatabaseValue.value
 
