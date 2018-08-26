@@ -53,30 +53,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
-
-Features:
-- Send/View/Delete messages
-- Mute/unmute chats
-- View photos
-- View animations (gifs)
-- View/Send stickers
-- Manage stickers from chat
-- Uploading/Downloading photos/docs
-- Receive notifications
-- 2FA authorization enabled
-
-Thanks to:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</source>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
-This groups lives only because of community and by community around Sailfish OS.</source>
+        <source>Features:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Send/View/Delete messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Mute/unmute chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View animations (gifs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View/Send stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Manage stickers from chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Uploading/Downloading photos/docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Receive notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- 2FA authorization enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thanks to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -199,8 +228,7 @@ This groups lives only because of community and by community around Sailfish OS.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Attention: If Telegram is blocked in your country, first setup
-proxy server in settings via PulleyMenu</source>
+        <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
