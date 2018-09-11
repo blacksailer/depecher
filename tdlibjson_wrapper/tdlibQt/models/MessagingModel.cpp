@@ -848,6 +848,7 @@ void MessagingModel::addMessageFromUpdate(const QJsonObject &messageUpdateObject
     beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
     appendMessage(messageUpdateObject["message"].toObject());
     endInsertRows();
+    setLastMessage(QString::number(messages.last()->id_));
     QVariantList ids;
     ids.append(messageUpdateObject["message"].toObject()["id"].toDouble());
     if (isActive())
@@ -1233,6 +1234,7 @@ void MessagingModel::deleteMessages(QList<int> rowIndices, const bool revoke)
 void MessagingModel::viewMessages(const QVariantList &ids)
 {
     bool force_read = false;
+
     if (qApp->applicationState() == Qt::ApplicationActive)    {
         tdlibJson->viewMessages(peerId(), ids, force_read);
         emit viewMessagesChanged(peerId().toLongLong());

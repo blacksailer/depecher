@@ -31,7 +31,7 @@ Page {
     }
     MessagingModel{
         id: messagingModel
-        isActive: page.status === PageStatus.Active
+        isActive: page.status === PageStatus.Active && Qt.application.active
         onChatTypeChanged: {
             if(chatType["type"] == TdlibState.Supergroup)
             {
@@ -107,8 +107,7 @@ Page {
                 restoreFocusTimer.start()
             }
         }
-        actionButton.onClicked:
-        {
+        actionButton.onClicked:  {
             messagingModel.sendTextMessage(textArea.text,0)
             buzz.play()
             textArea.text = ""
@@ -134,6 +133,10 @@ Page {
             running: true
             size: BusyIndicatorSize.Large
             anchors.centerIn: messageList.parent
+        }
+
+        bottomArea.onFocusChanged: {
+            messageList.positionViewAtEnd()
         }
 
         Column {
@@ -163,16 +166,35 @@ Page {
             }
             SilicaListView {
                 id: messageList
+                property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
+
+                Connections {
+                    target: messagingModel
+                    onRowsAboutToBeInserted: {
+                        if(messageList.atYEnd)
+                        {
+                            messageList.needToScroll = true
+                            console.log("about to be inserted")
+                        }
+                    }
+                }
+                onFlickStarted: needToScroll = false
+                onCountChanged: {
+                    if(needToScroll)
+                    {
+                        positionViewAtEnd()
+                    }
+                }
                 onCurrentIndexChanged:{
                     console.log(currentIndex)
-//                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
-//                    if(currentIndex == 10)
-//                        messagingModel.fetchOlder()
+                    //                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
+                    //                    if(currentIndex == 10)
+                    //                        messagingModel.fetchOlder()
                 }
                 state: "preparing"
                 states: [
