@@ -339,7 +339,7 @@ ListItem {
                 id: image
                 asynchronous: true
                 property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: messageListItem.height/2
+                property int maxHeight: page.height/2
                 width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: Image.PreserveAspectFit
@@ -627,7 +627,7 @@ ListItem {
                 AnimatedImage {
                     id:animationGif
                     property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                    property int maxHeight: messageListItem.height/2
+                    property int maxHeight: page.height/2
                     width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                     height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                     fillMode: VideoOutput.PreserveAspectFit
@@ -721,7 +721,7 @@ ListItem {
                 VideoOutput {
                     id: animation
                     property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                    property int maxHeight: messageListItem.height/2
+                    property int maxHeight: page.height/2
                     width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                     height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                     fillMode: VideoOutput.PreserveAspectFit
