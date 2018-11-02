@@ -12,7 +12,7 @@ namespace tdlibQt {
 
 TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 {
-    td_set_log_verbosity_level(1);
+    td_set_log_verbosity_level(2);
     client = td_json_client_create();
     //SEG FAULT means that json has error input variable names
     MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
@@ -526,6 +526,49 @@ void TdlibJsonWrapper::sendMessage(const QString &json)
     while (jsonStr.at(jsonStr.length() - 1) == '\n')
         jsonStr = jsonStr.remove(jsonStr.length() - 1, 1);
     td_json_client_send(client, jsonStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id, const QString extra)
+{
+    QString viewMessageStr = "{\"@type\":\"getMessage\","
+                             "\"chat_id\":\"%1\","
+                             "\"message_id\":\"%2\"}";
+    viewMessageStr.arg(chat_id, message_id);
+    if (extra == "") {
+        viewMessageStr = "{\"@type\":\"getMessage\","
+                         "\"chat_id\":\"%1\","
+                         "\"message_id\":\"%2\"}";
+        viewMessageStr.arg(chat_id, message_id);
+    } else {
+        viewMessageStr = "{\"@type\":\"getMessage\","
+                         "\"chat_id\":\"%1\","
+                         "\"message_id\":\"%2\","
+                         "\"extra\":\"%3\"}";
+        viewMessageStr.arg(QString::number(chat_id), QString::number(message_id), extra);
+    }
+    td_json_client_send(client, viewMessageStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getMessages(const qint64 chat_id, QVector<qint64> message_ids, const QString &extra)
+{
+    QString getMessagesStr = "{\"@type\":\"getMessages\","
+                             "\"chat_id\":\"%1\","
+                             "\"message_ids\":%2,"
+                             "\"@extra\":\"%3\"}";
+    QString messageIdsStr = "[%1]";
+    QString messagesIds = "";
+
+    for (int i = 0; i < message_ids.size(); i++)
+        if (i == 0)
+            messagesIds += "\"" + QString::number(message_ids[i]) + "\"";
+        else
+            messagesIds += ",\"" + QString::number(message_ids[i]) + "\"";
+
+    getMessagesStr = getMessagesStr.arg(QString::number(chat_id), messageIdsStr.arg(messagesIds), extra);
+
+    qDebug() << getMessagesStr;
+
+    td_json_client_send(client, getMessagesStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &messageIds,

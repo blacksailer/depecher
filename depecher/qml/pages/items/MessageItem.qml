@@ -148,6 +148,36 @@ ListItem {
                     }
                 }
 
+                Row {
+                    id:replyZone
+                    height: reply_to_message_id != 0 ? Theme.itemSizeExtraSmall : 0
+                    visible: reply_to_message_id != 0
+                    Rectangle {
+                        width:5
+                        height: parent.height
+                        color: Theme.highlightColor
+                    }
+                    Item {
+                    width:Theme.paddingMedium
+                    height: parent.height
+                    }
+                    Column {
+                        id:replyContentColumn
+                        Label {
+                            id:replyAuthorLabel
+                            color: Theme.secondaryHighlightColor
+                            font.pixelSize: Theme.fontSizeSmall
+                            text:reply_author
+                        }
+                        Label {
+                            id:replyTextLabel
+                            color: Theme.secondaryColor
+                            font.pixelSize: Theme.fontSizeTiny
+                            text:reply_message
+                        }
+                    }
+                }
+
                 Loader {
                     sourceComponent: {
                         if(message_type == MessagingModel.TEXT) {

@@ -16,9 +16,11 @@ MessagingModel::MessagingModel() :
     m_NotificationsManager(NotificationManager::instance())
 {
     /* Reply Workthrough
-     * 1. Create map of ReplyMessagesForMessage, queue of messagesId
-     * 2. With every call of appendMessages(); call getMessages for filling ReplyMessagesForMessage
-     * 3. Test UI
+     * 1. Create map of replyMessagesMap, queue of messagesId +
+     * 2.1 With every call of appendMessages(); call getMessages +
+     * 2.2 Parse response from getMessages to  fill replyMessagesMap +
+     * 2.3 Modify data() to return replyMessage values +
+     * 3. Test UI +
      * 4. On click  append MessageId to queue of MessagesId to replyMessage
      * 4.1 if in message array scroll to message
      * 4.2 If not in message array, clear all, unconnect updates, and get messages with reply_id
@@ -28,8 +30,8 @@ MessagingModel::MessagingModel() :
      * 5.2 If not in message array, clear all, unconnect updates, and get messages with messageId
      * 6.  highlight for two seconds messageId message
      * 7. Test UI
-     *
      */
+
     connect(tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::appendMessages);
     connect(tdlibJson, &TdlibJsonWrapper::messageReceived,
@@ -141,6 +143,33 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return messages[rowIndex]->edit_date_;
     case REPLY_TO_MESSAGE_ID:  //int64
         return QString::number(messages[rowIndex]->reply_to_message_id_);
+    case REPLY_AUTHOR: {
+        if (messages[rowIndex]->reply_to_message_id_ == 0)
+            return QVariant();
+        //А как оповестить потомка что появился реплай в мапе?
+        // 1. Сигналом модели
+        if (replyMessagesMap.contains(messages[rowIndex]->reply_to_message_id_)) {
+            return UsersModel::instance()->getUserFullName(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->sender_user_id_);
+        }
+        return QVariant();
+    }
+    case REPLY_MESSAGE: {
+        if (messages[rowIndex]->reply_to_message_id_ == 0)
+            return QVariant();
+        //А как оповестить потомка что появился реплай в мапе?
+        // 1. Сигналом модели
+        if (replyMessagesMap.contains(messages[rowIndex]->reply_to_message_id_)) {
+            if (replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_->get_id() == messageText::ID) {
+                auto contentPtr = static_cast<messageText *>
+                                  (replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
+                if (contentPtr->text_.data() != nullptr)
+                    return QString::fromStdString(contentPtr->text_->text_);
+                return QVariant();
+            } else
+                return messageTypeToString(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
+        }
+        return QVariant();
+    }
     case TTL:
         return messages[rowIndex]->ttl_;
     case TTL_EXPIRES_IN:
@@ -334,6 +363,8 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[EDIT_DATE] = "edit_date";
     roles[FORWARD_INFO] = "forward_info";
     roles[REPLY_TO_MESSAGE_ID] = "reply_to_message_id";
+    roles[REPLY_AUTHOR] = "reply_author";
+    roles[REPLY_MESSAGE] = "reply_message";
     roles[TTL] = "ttl";
     roles[TTL_EXPIRES_IN] = "ttl_expires_in";
     roles[VIA_BOT_USER_ID] = "via_bot_user_id";
@@ -531,16 +562,23 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
     QVariantList messagesIds;
 
     QJsonArray messagesArray = messagesObject["messages"].toArray();
-    if (extra == "prepend" && totalCount == 0) {
-        isAllOldMessages = true;
-        setReachedHistoryEnd(true);
-    }
     if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId().toDouble()) {
+        qDebug() << "append extra:" << extra << "total Count" << totalCount;
+        QVector<qint64> messageReplyIds;
+        if (extra == "prepend" && totalCount == 0) {
+            isAllOldMessages = true;
+            setReachedHistoryEnd(true);
+        }
         //Oldest
         if (extra == "prepend") {
             beginInsertRows(QModelIndex(), 0, totalCount - 1);
-            //Why for iteration starts from 1? to skip duplicate message
             for (int i = 0; i < messagesArray.size(); i++) {
+
+                qint64 reply_id = ParseObject::getInt64(messagesArray[i].toObject()["reply_to_message_id"]);
+                qDebug() << "Reply id" << reply_id;
+                if (reply_id != 0)
+                    messageReplyIds.append(reply_id);
+
                 prependMessage(messagesArray[i].toObject());
                 messagesIds.append(messagesArray[i].toObject()["id"].toVariant());
             }
@@ -549,6 +587,8 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
         } else if (extra == "append") {
             //Newest
             int totaltGoodMessages = 0;
+
+
             for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
                 auto obj = messagesArray[r_i];
                 if (ParseObject::getInt64(obj.toObject()["id"]) > messages.last()->id_) {
@@ -561,11 +601,29 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
             beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()) + totaltGoodMessages - 1);
             for (int r_i = messagesArray.size() - 1; r_i >= 0; r_i--) {
                 auto obj = messagesArray[r_i];
+                qint64 reply_id = ParseObject::getInt64(obj.toObject()["reply_to_message_id"]);
+                qDebug() << "Reply id" << reply_id;
+
+                if (reply_id != 0)
+                    messageReplyIds.append(reply_id);
+
                 if (ParseObject::getInt64(obj.toObject()["id"]) > messages.last()->id_) {
                     appendMessage(obj.toObject());
                 }
             }
             endInsertRows();
+        } else if (extra == "getReplies") {
+            for (int i = 0; i < messagesArray.size(); i++) {
+                auto obj = messagesArray[i].toObject();
+                qint64 reply_message_id = ParseObject::getInt64(obj["id"]);
+                replyMessagesMap[reply_message_id] = ParseObject::parseMessage(obj);
+            }
+
+            QVector<int> roles;
+            roles.append(REPLY_AUTHOR);
+            roles.append(REPLY_MESSAGE);
+            emit dataChanged(index(0), index(messages.size() - 1), roles);
+
         } else {
             int indexToAppend = -1;
             int objTime = -1;
@@ -573,7 +631,10 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
             beginInsertRows(QModelIndex(), 0, totalCount - 1);
             for (int i = 0; i < messagesArray.size(); i++) {
                 auto obj = messagesArray[i];
-
+                qint64 reply_id = ParseObject::getInt64(obj.toObject()["reply_to_message_id"]);
+                qDebug() << "Reply id" << reply_id;
+                if (reply_id != 0)
+                    messageReplyIds.append(reply_id);
                 prependMessage(obj.toObject());
                 messagesIds.append(obj.toObject()["id"].toVariant());
             }
@@ -588,6 +649,9 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
                 }
             if (indexToAppend == -1) {
                 setLastMessageIndex(messages.size() - 1);
+                if (messageReplyIds.size() > 0)
+                    tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, "getReplies");
+
                 return;
             }
             indexToAppend++;
@@ -602,14 +666,58 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
             messages.insert(indexToAppend, messageItem);
             endInsertRows();
         }
+
+
         viewMessages(messagesIds);
+        qDebug() << "Reply id size" << messageReplyIds.size();
+
+        if (messageReplyIds.size() > 0)
+            tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, "getReplies");
         fetchPending = false;
+    }
+}
+
+QString MessagingModel::messageTypeToString(MessageContent *messageContent) const
+{
+    switch (messageContent->get_id()) {
+    case  messagePhoto::ID:
+        return tr("Photo");
+    case  messageDocument::ID:
+        return tr("Document");
+    case messageVideo::ID:
+        return tr("Video");
+    case messageAudio::ID:
+        return tr("Audio");
+    case messageVideoNote::ID:
+        return tr("Video note");
+    case messageAnimation::ID:
+        return tr("GIF");
+    case messageCall::ID:
+        return tr("Call");
+    case messageContact::ID:
+        return tr("Contact");
+    case messageVoiceNote::ID:
+        return tr("Audio note");
+    case messageVenue::ID:
+        return tr("Venue");
+    case messageUnsupported::ID:
+        return tr("Unsupported");
+    case messageSticker::ID:
+        return tr("Sticker");
+    default:
+        return tr("Message content");
     }
 }
 
 void MessagingModel::appendMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
+    if (messageObject.contains("@extra")) {
+        if (messageObject["@extra"].toString() != "") {
+            replyMessagesMap[messageItem->id_] = messageItem;
+            return;
+        }
+    }
     if (peerId().toLongLong() != messageItem->chat_id_)
         return;
     bool is_replaced = false;
@@ -805,6 +913,19 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
     }
 }
 
+QSharedPointer<message> MessagingModel::findMessageById(const qint64 messageId) const
+{
+    QSharedPointer<message> result = nullptr;
+    for (int i = 0; i < messages.size(); i++) {
+        if (messages[i]->id_ == messageId) {
+            result = messages[i];
+            break;
+        }
+    }
+
+    return result;
+}
+
 bool MessagingModel::canFetchOlder()
 {
     return !isAllOldMessages;
@@ -997,13 +1118,12 @@ void MessagingModel::setPeerId(QString peerId)
 void MessagingModel::sendTextMessage(const QString &text,
                                      const QString &reply_id)
 {
-    Q_UNUSED(reply_id)
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
     sendMessageObject.disable_notification_ = false;
     sendMessageObject.from_background_ = false;
-    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageText>(new inputMessageText);
     inputMessageText *ptr = static_cast<inputMessageText *>
                             (sendMessageObject.input_message_content_.data());
@@ -1012,6 +1132,8 @@ void MessagingModel::sendTextMessage(const QString &text,
     ptr->text_ = QSharedPointer<formattedText>(new formattedText);
     ptr->text_->text_ = text.toStdString();
 
+    if (reply_id != "0")
+        replyMessagesMap[reply_id.toLongLong()] = findMessageById(reply_id.toLongLong());
 
     sendMessageObject.store(json, "input_message_content");
     QVariantMap originalObject = json.doc["input_message_content"].toMap();

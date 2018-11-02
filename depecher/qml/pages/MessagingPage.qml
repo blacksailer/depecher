@@ -100,19 +100,12 @@ Page {
             if(sendByEnter.value) {
                 //removing on enter clicked symbol - /n
                 var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
-
-                messagingModel.sendTextMessage(messageText,0)
-                buzz.play()
-                textArea.text = ""
-                restoreFocusTimer.start()
+sendText(messageText,writer.reply_id)
             }
         }
         actionButton.onClicked:  {
-            messagingModel.sendTextMessage(textArea.text,0)
-            buzz.play()
-            textArea.text = ""
-            restoreFocusTimer.start()
-        }
+            sendText(textArea.text,writer.reply_id)
+                    }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
             {
@@ -294,6 +287,7 @@ Page {
                         target: myDelegate
                     }
                     menu: ContextMenu {
+
                         MenuItem {
                             text: qsTr("Copy Text")
                             onClicked: {
@@ -303,6 +297,37 @@ Page {
                                     Clipboard.text = file_caption
 
 
+                            }
+                        }
+                        MenuItem {
+                            text: qsTr("Reply")
+                            onClicked: {
+                                writer.reply_id = id
+                                writer.replyMessageAuthor = author
+                                writer.replyMessageText = replyMessageContent()
+
+
+                            }
+                            function replyMessageContent() {
+                                if(message_type == MessagingModel.TEXT) {
+                                    return content
+                                }
+                                else if(message_type == MessagingModel.PHOTO) {
+                                    return qsTr("Photo")
+                                }
+                                else if(message_type == MessagingModel.STICKER) {
+                                    return qsTr("Sticker")
+                                }
+                                else if(message_type == MessagingModel.DOCUMENT) {
+                                    return qsTr("Document")
+                                }
+                                else if(message_type == MessagingModel.ANIMATION) {
+                                    return qsTr("Animation")
+                                }
+                                else if(message_type == MessagingModel.CONTACT) {
+                                    return qsTr("Contact")
+                                }
+                                return qsTr("Message");
                             }
                         }
                         MenuItem {
@@ -343,6 +368,13 @@ Page {
                 }
 
             }
+        }
+
+        function sendText(text,reply_id) {
+            messagingModel.sendTextMessage(text,reply_id)
+            buzz.play()
+            textArea.text = ""
+            restoreFocusTimer.start()
         }
     }
 

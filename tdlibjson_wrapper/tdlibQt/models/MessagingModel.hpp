@@ -31,6 +31,7 @@ class MessagingModel : public QAbstractListModel
     QMap<qint64, QVector<int>> avatarPhotoQueue;
     QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
+    QMap<qint64, QSharedPointer<message>> replyMessagesMap;
     QTimer chatActionTimer;
     TdlibJsonWrapper *tdlibJson;
     NotificationManager *m_NotificationsManager;
@@ -56,6 +57,8 @@ class MessagingModel : public QAbstractListModel
         EDIT_DATE,
         FORWARD_INFO,
         REPLY_TO_MESSAGE_ID,
+        REPLY_AUTHOR,
+        REPLY_MESSAGE,
         TTL,
         TTL_EXPIRES_IN,
         VIA_BOT_USER_ID,
@@ -80,10 +83,11 @@ class MessagingModel : public QAbstractListModel
         MESSAGE_TYPE //Custom
     };
 
-
+    QString messageTypeToString(MessageContent *messageContent) const;
     void appendMessage(const QJsonObject &messageObject);
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
+    QSharedPointer<message> findMessageById(const qint64 messageId) const;
     bool canFetchOlder();
 private slots:
     void chatActionCleanUp();
@@ -122,7 +126,7 @@ public slots:
 
     void setUserName(QString userName);
     void setPeerId(QString peerId);
-    void sendTextMessage(const QString &text, const QString &reply_id);
+    void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
     void sendPhotoMessage(const QString &filepath, const QString &reply_id,
                           const QString &caption = "");
     void sendDocumentMessage(const QString &filepath, const QString &reply_id,
