@@ -12,7 +12,16 @@ ListItem {
     id: messageListItem
     width: parent.width
     contentHeight: columnWrapper.height + inlineView.height
-    property string settingsPath:  "/apps/depecher/ui/message"
+    property string settingsPath:  "/apps/depecher/ui/message"    
+    signal replyMessageClicked(int source_message_index,int replied_message_index)
+    highlighted: ListView.isCurrentItem
+
+    Timer {
+    id:highlightedTimer
+    interval: 1000
+    running: highlighted
+    onTriggered: messageListItem.highlighted = false
+    }
 
     ConfigurationValue {
         id:radiusValue
@@ -52,7 +61,9 @@ ListItem {
                  message_type != MessagingModel.CHAT_CREATED
         radius: radiusValue.value
         opacity: opacityValue.value
-        color:is_outgoing ? getColor(colorValue.value) : getColor(incomingColorValue.value)
+        color: messageListItem.ListView.isCurrentItem ? Theme.highlightColor
+                 :            is_outgoing ? getColor(colorValue.value)
+                          : getColor(incomingColorValue.value)
 
         function getColor(colorEnum) {
             if(typeof colorEnum == "number") {
@@ -103,13 +114,13 @@ ListItem {
               message_type != MessagingModel.CONTACT_REGISTERED &&
               message_type != MessagingModel.CHAT_CREATED ? 10 : 0
             width: Math.max(metaInfoRow.width,userAvatar.width + contentLoader.width + (userAvatar.width == 0 ? 0:spacing))
-            height: Math.max(userAvatar.height,contentLoader.height)
+            height: Math.max(userAvatar.height+replyBackgroundItem.height,contentLoader.height+replyBackgroundItem.height)
             layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
 
             CircleImage {
                 id: userAvatar
                 width: visible ? Theme.itemSizeExtraSmall : 0
-                anchors.top: contentLoader.top
+                anchors.top: messageContentWrapper.top
                 source: sender_photo ? "image://depecherDb/"+sender_photo : ""
                 fallbackText: author ? author.charAt(0) : ""
                 fallbackItemVisible: sender_photo ? false : true
@@ -121,6 +132,69 @@ ListItem {
                 messagingModel.chatType["type"] != TdlibState.Private &&
                 messagingModel.chatType["type"] != TdlibState.Secret
             }
+       Column {
+           id:messageContentWrapper
+           MouseArea {
+           id:replyBackgroundItem
+           height: replyZone.height
+           width: replyZone.width
+           onClicked: replyMessageClicked(index,reply_to_message_id)
+
+           Row {
+               id:replyZone
+               height: reply_to_message_id != index ? Theme.itemSizeExtraSmall : 0
+               visible: reply_to_message_id != index
+               Rectangle {
+                   width:5
+                   height: parent.height
+                   color: Theme.highlightColor
+               }
+               Item {
+               width:Theme.paddingMedium
+               height: parent.height
+               }
+               Column {
+                   id:replyContentColumn
+                   Label {
+                       id:replyAuthorLabel
+                       color: Theme.secondaryHighlightColor
+                       font.pixelSize: Theme.fontSizeSmall
+                       text:reply_author ? reply_author : ""
+                       elide: Text.ElideRight
+
+                   }
+                   Label {
+                       id:replyTextLabel
+
+                       color: Theme.secondaryColor
+                       font.pixelSize: Theme.fontSizeTiny
+                       text:reply_message ? reply_message : ""
+                       elide: Text.ElideRight
+                       states: [
+                               State {
+                                   name: "wide text"
+                                   when: replyTextLabel.text.length > 20
+                                   PropertyChanges {
+                                       target: replyTextLabel
+                                       width: contentLoader.width
+                                   }
+                               },
+                               State {
+                                   name: "not wide text"
+                                   when: replyTextLabel.text.length <= 20
+                                   PropertyChanges {
+                                       target: replyTextLabel
+                                       width: replyTextLabel.paintedWidth
+                                   }
+                               }
+                           ]
+                   }
+               }
+
+               }
+
+           }
+
             Column {
                 id: contentLoader
                 Row {
@@ -148,35 +222,6 @@ ListItem {
                     }
                 }
 
-                Row {
-                    id:replyZone
-                    height: reply_to_message_id != 0 ? Theme.itemSizeExtraSmall : 0
-                    visible: reply_to_message_id != 0
-                    Rectangle {
-                        width:5
-                        height: parent.height
-                        color: Theme.highlightColor
-                    }
-                    Item {
-                    width:Theme.paddingMedium
-                    height: parent.height
-                    }
-                    Column {
-                        id:replyContentColumn
-                        Label {
-                            id:replyAuthorLabel
-                            color: Theme.secondaryHighlightColor
-                            font.pixelSize: Theme.fontSizeSmall
-                            text:reply_author
-                        }
-                        Label {
-                            id:replyTextLabel
-                            color: Theme.secondaryColor
-                            font.pixelSize: Theme.fontSizeTiny
-                            text:reply_message
-                        }
-                    }
-                }
 
                 Loader {
                     sourceComponent: {
@@ -256,7 +301,9 @@ ListItem {
                     }
                 }
             }
-        }
+       }
+
+       }
     }
     ListView {
         id:inlineView

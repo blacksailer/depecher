@@ -88,6 +88,8 @@ class MessagingModel : public QAbstractListModel
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
     QSharedPointer<message> findMessageById(const qint64 messageId) const;
+    int findIndexById(const qint64 messageId) const;
+
     bool canFetchOlder();
 private slots:
     void chatActionCleanUp();
@@ -127,11 +129,11 @@ public slots:
     void setUserName(QString userName);
     void setPeerId(QString peerId);
     void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
-    void sendPhotoMessage(const QString &filepath, const QString &reply_id,
+    void sendPhotoMessage(const QString &filepath, const QString &reply_id  = "0",
                           const QString &caption = "");
-    void sendDocumentMessage(const QString &filepath, const QString &reply_id,
+    void sendDocumentMessage(const QString &filepath, const QString &reply_id  = "0",
                              const QString &caption = "");
-    void sendStickerMessage(const int &fileId, const QString &reply_id
+    void sendStickerMessage(const int &fileId, const QString &reply_id = "0"
                            );
     void getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType,
                                     const QString &payloadData);

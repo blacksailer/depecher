@@ -11,6 +11,7 @@ Page {
     id: page
     allowedOrientations: Orientation.All
     property alias chatId: messagingModel.peerId
+    property var arrayIndex: []
 
     Notification {
         id: notificationError
@@ -88,6 +89,7 @@ Page {
     WritingItem {
         id: writer
         rootPage: page
+
         Timer {
             //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)
@@ -100,12 +102,21 @@ Page {
             if(sendByEnter.value) {
                 //removing on enter clicked symbol - /n
                 var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
-sendText(messageText,writer.reply_id)
+                sendText(messageText,writer.reply_id)
             }
+        }
+        returnButtonItem.onClicked: {
+            if(arrayIndex.length>0)
+            {
+                messageList.currentIndex = arrayIndex.pop()
+                messageList.positionViewAtIndex(messageList.currentIndex,ListView.Center)
+
+            }
+            returnButtonEnabled = arrayIndex.length > 0
         }
         actionButton.onClicked:  {
             sendText(textArea.text,writer.reply_id)
-                    }
+        }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
             {
@@ -121,6 +132,7 @@ sendText(messageText,writer.reply_id)
                     messagingModel.sendStickerMessage(files[i].id,0)
             }
         }
+        HorizontalScrollDecorator{}
         BusyIndicator {
             id:placeholder
             running: true
@@ -176,7 +188,10 @@ sendText(messageText,writer.reply_id)
                         }
                     }
                 }
-                onFlickStarted: needToScroll = false
+                onFlickStarted: {
+                    needToScroll = false
+                    currentIndex = -1
+                }
                 onCountChanged: {
                     if(needToScroll)
                     {
@@ -276,7 +291,14 @@ sendText(messageText,writer.reply_id)
                 }
                 delegate: MessageItem {
                     id: myDelegate
-
+                    onReplyMessageClicked:
+                    {
+                        arrayIndex.push(source_message_index)
+                        writer.returnButtonEnabled = true
+                        //                        messageList.positionViewAtIndex(replied_message_index,ListView.Center)
+                        messageList.currentIndex = replied_message_index
+                        console.log(messageList.currentIndex,replied_message_index)
+                    }
                     RemorseItem {
                         id: remorseDelete
                     }

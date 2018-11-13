@@ -319,6 +319,34 @@ proxy server in settings via PulleyMenu</source>
         <source>get more</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">照片</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">文档</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>

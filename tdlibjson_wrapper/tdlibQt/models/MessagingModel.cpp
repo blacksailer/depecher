@@ -141,8 +141,13 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return messages[rowIndex]->date_;
     case EDIT_DATE:
         return messages[rowIndex]->edit_date_;
-    case REPLY_TO_MESSAGE_ID:  //int64
-        return QString::number(messages[rowIndex]->reply_to_message_id_);
+    case REPLY_TO_MESSAGE_ID: { //int64
+        if (messages[rowIndex]->reply_to_message_id_ == 0)
+            return rowIndex;
+
+
+        return findIndexById(messages[rowIndex]->reply_to_message_id_);
+    }
     case REPLY_AUTHOR: {
         if (messages[rowIndex]->reply_to_message_id_ == 0)
             return QVariant();
@@ -915,10 +920,23 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
 
 QSharedPointer<message> MessagingModel::findMessageById(const qint64 messageId) const
 {
-    QSharedPointer<message> result = nullptr;
+    QSharedPointer<message> result = QSharedPointer<message>(nullptr);
     for (int i = 0; i < messages.size(); i++) {
         if (messages[i]->id_ == messageId) {
             result = messages[i];
+            break;
+        }
+    }
+
+    return result;
+}
+
+int MessagingModel::findIndexById(const qint64 messageId) const
+{
+    int result = 0;
+    for (int i = 0; i < messages.size(); i++) {
+        if (messages[i]->id_ == messageId) {
+            result = i;
             break;
         }
     }
@@ -1132,8 +1150,11 @@ void MessagingModel::sendTextMessage(const QString &text,
     ptr->text_ = QSharedPointer<formattedText>(new formattedText);
     ptr->text_->text_ = text.toStdString();
 
-    if (reply_id != "0")
-        replyMessagesMap[reply_id.toLongLong()] = findMessageById(reply_id.toLongLong());
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
 
     sendMessageObject.store(json, "input_message_content");
     QVariantMap originalObject = json.doc["input_message_content"].toMap();
@@ -1163,6 +1184,11 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
 
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
 
     sendMessageObject.store(json, "input_message_content");
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
@@ -1192,6 +1218,12 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
 
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
+
     sendMessageObject.store(json, "input_message_content");
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
@@ -1218,6 +1250,12 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
     ptr->sticker_ = docPtr;
     ptr->width_ = 512;
     ptr->height_ = 512;
+
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
 
     sendMessageObject.store(json, "input_message_content");
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
