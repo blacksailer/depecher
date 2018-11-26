@@ -173,6 +173,7 @@ ListItem {
                        color: Theme.secondaryColor
                        font.pixelSize: Theme.fontSizeTiny
                        text:reply_message ? reply_message : ""
+                       maximumLineCount: 1
                        elide: Text.ElideRight
                        states: [
                                State {

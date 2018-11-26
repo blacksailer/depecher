@@ -33,10 +33,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = depecher1.0.0
-DISTDIR = /home/mersdk/share/Proyectos/depecher/depecher/build/release/depecher1.0.0
+DISTDIR = /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/build/release/depecher1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/usr/share/depecher/lib
-LIBS          = $(SUBLIBS) -L/home/mersdk/share/Proyectos/depecher/depecher/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv -lnemonotifications-qt5 -ltdjson -pie -rdynamic -lsailfishapp -lmdeclarativecache5 -lmlite5 -lQt5Multimedia -lQt5Quick -lQt5Gui -lQt5Sql -lQt5DBus -lQt5Qml -lQt5Network -lQt5Core -lGLESv2 -lpthread 
+LIBS          = $(SUBLIBS) -L/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv -lnemonotifications-qt5 -ltdjson -pie -rdynamic -lsailfishapp -lmdeclarativecache5 -lmlite5 -lQt5Multimedia -lQt5Quick -lQt5Gui -lQt5Sql -lQt5DBus -lQt5Qml -lQt5Network -lQt5Core -lGLESv2 -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -93,6 +93,8 @@ DIST          = qml/js/countries.js \
 		settings/DepecherAppSettings.qml \
 		qml/app.qml \
 		systemd/org.blacksailer.depecher.service \
+		qml/pages/items/delegates/VoiceNoteDelegate.qml \
+		qml/pages/items/delegates/AudioDelegate.qml \
 		/usr/share/qt5/mkspecs/features/spec_pre.prf \
 		/usr/share/qt5/mkspecs/common/unix.conf \
 		/usr/share/qt5/mkspecs/common/linux.conf \
@@ -486,23 +488,23 @@ compiler_moc_header_make_all: build/mocs/moc_FileWorker.cpp build/mocs/moc_Model
 compiler_moc_header_clean:
 	-$(DEL_FILE) build/mocs/moc_FileWorker.cpp build/mocs/moc_ModelTest.cpp build/mocs/moc_DBusAdaptor.cpp build/mocs/moc_DepecherAdaptor.cpp build/mocs/moc_PageAppStarter.cpp build/mocs/moc_DNSTXTLookup.cpp
 build/mocs/moc_FileWorker.cpp: src/FileWorker.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/FileWorker.hpp -o build/mocs/moc_FileWorker.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/FileWorker.hpp -o build/mocs/moc_FileWorker.cpp
 
 build/mocs/moc_ModelTest.cpp: ModelTest.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ModelTest.hpp -o build/mocs/moc_ModelTest.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include ModelTest.hpp -o build/mocs/moc_ModelTest.cpp
 
 build/mocs/moc_DBusAdaptor.cpp: dbus/DepecherAdaptor.hpp \
 		src/DBusAdaptor.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/DBusAdaptor.hpp -o build/mocs/moc_DBusAdaptor.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/DBusAdaptor.hpp -o build/mocs/moc_DBusAdaptor.cpp
 
 build/mocs/moc_DepecherAdaptor.cpp: dbus/DepecherAdaptor.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include dbus/DepecherAdaptor.hpp -o build/mocs/moc_DepecherAdaptor.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include dbus/DepecherAdaptor.hpp -o build/mocs/moc_DepecherAdaptor.cpp
 
 build/mocs/moc_PageAppStarter.cpp: src/singletons/PageAppStarter.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/singletons/PageAppStarter.hpp -o build/mocs/moc_PageAppStarter.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/singletons/PageAppStarter.hpp -o build/mocs/moc_PageAppStarter.cpp
 
 build/mocs/moc_DNSTXTLookup.cpp: src/singletons/DNSTXTLookup.hpp
-	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Proyectos/depecher/depecher -I/home/mersdk/share/Proyectos/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/singletons/DNSTXTLookup.hpp -o build/mocs/moc_DNSTXTLookup.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) -I/usr/share/qt5/mkspecs/linux-g++ -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher -I/home/mersdk/share/Documents/Projects/SailfishOS/depecher/tdlibjson_wrapper -I/usr/include/nemonotifications-qt5 -I/usr/include/td -I/usr/include/sailfishapp -I/usr/include/mdeclarativecache5 -I/usr/include/mlite5 -I/usr/include/qt5/QtDBus -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/sailfishapp -I/usr/include/qt5/QtMultimedia -I/usr/include/qt5/QtQuick -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtSql -I/usr/include/qt5/QtQml -I/usr/include/qt5/QtNetwork -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3 -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/armv7hl-meego-linux-gnueabi -I/opt/cross/armv7hl-meego-linux-gnueabi/include/c++/4.8.3/backward -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include -I/usr/local/include -I/opt/cross/lib/gcc/armv7hl-meego-linux-gnueabi/4.8.3/include-fixed -I/opt/cross/armv7hl-meego-linux-gnueabi/include -I/usr/include src/singletons/DNSTXTLookup.hpp -o build/mocs/moc_DNSTXTLookup.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -586,8 +588,7 @@ build/release/moc_DNSTXTLookup.o: build/mocs/moc_DNSTXTLookup.cpp
 
 install_webp: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats || mkdir -p $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats
-	-$(INSTALL_PROGRAM) /home/mersdk/share/Proyectos/depecher/webp-plugin/plugins/imageformats/libqwebp.so $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats/
-	-: $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats/libqwebp.so
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/webp-plugin/plugins/imageformats/libqwebp.so $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats/
 
 uninstall_webp: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/depecher/lib/imageformats/libqwebp.so
@@ -596,7 +597,7 @@ uninstall_webp: FORCE
 
 install_dbus: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/dbus-1/services || mkdir -p $(INSTALL_ROOT)/usr/share/dbus-1/services
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/dbus/org.blacksailer.depecher.service $(INSTALL_ROOT)/usr/share/dbus-1/services/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/dbus/org.blacksailer.depecher.service $(INSTALL_ROOT)/usr/share/dbus-1/services/
 
 uninstall_dbus: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/dbus-1/services/org.blacksailer.depecher.service
@@ -605,7 +606,7 @@ uninstall_dbus: FORCE
 
 install_dbus_interface: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/dbus-1/interfaces || mkdir -p $(INSTALL_ROOT)/usr/share/dbus-1/interfaces
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/dbus/org.blacksailer.depecher.xml $(INSTALL_ROOT)/usr/share/dbus-1/interfaces/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/dbus/org.blacksailer.depecher.xml $(INSTALL_ROOT)/usr/share/dbus-1/interfaces/
 
 uninstall_dbus_interface: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/dbus-1/interfaces/org.blacksailer.depecher.xml
@@ -614,7 +615,7 @@ uninstall_dbus_interface: FORCE
 
 install_systemd: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/lib/systemd/user || mkdir -p $(INSTALL_ROOT)/usr/lib/systemd/user
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/systemd/org.blacksailer.depecher.service $(INSTALL_ROOT)/usr/lib/systemd/user/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/systemd/org.blacksailer.depecher.service $(INSTALL_ROOT)/usr/lib/systemd/user/
 
 uninstall_systemd: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/lib/systemd/user/org.blacksailer.depecher.service
@@ -623,8 +624,8 @@ uninstall_systemd: FORCE
 
 install_notificationcategories: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories || mkdir -p $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/notificationcategories/x-depecher.im.conf $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/notificationcategories/x-depecher.im.fg.conf $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/notificationcategories/x-depecher.im.conf $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/notificationcategories/x-depecher.im.fg.conf $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories/
 
 uninstall_notificationcategories: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/lipstick/notificationcategories/x-depecher.im.fg.conf
@@ -634,9 +635,9 @@ uninstall_notificationcategories: FORCE
 
 install_events: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/ngfd/events.d || mkdir -p $(INSTALL_ROOT)/usr/share/ngfd/events.d
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/events/depecher_im.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/events/depecher_im_exists.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/events/depecher_im_fg.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/events/depecher_im.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/events/depecher_im_exists.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/events/depecher_im_fg.ini $(INSTALL_ROOT)/usr/share/ngfd/events.d/
 
 uninstall_events: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/ngfd/events.d/depecher_im_fg.ini
@@ -647,7 +648,7 @@ uninstall_events: FORCE
 
 install_settings_json: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/jolla-settings/entries/ || mkdir -p $(INSTALL_ROOT)/usr/share/jolla-settings/entries/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/settings/depecher.json $(INSTALL_ROOT)/usr/share/jolla-settings/entries/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/settings/depecher.json $(INSTALL_ROOT)/usr/share/jolla-settings/entries/
 
 uninstall_settings_json: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/jolla-settings/entries/depecher.json
@@ -656,7 +657,7 @@ uninstall_settings_json: FORCE
 
 install_settings_qml: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/depecher/settings/ || mkdir -p $(INSTALL_ROOT)/usr/share/depecher/settings/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/settings/DepecherAppSettings.qml $(INSTALL_ROOT)/usr/share/depecher/settings/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/settings/DepecherAppSettings.qml $(INSTALL_ROOT)/usr/share/depecher/settings/
 
 uninstall_settings_qml: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/depecher/settings/DepecherAppSettings.qml
@@ -665,12 +666,12 @@ uninstall_settings_qml: FORCE
 
 install_i18n: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/depecher/translations || mkdir -p $(INSTALL_ROOT)/usr/share/depecher/translations
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-de.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-es.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-hu.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-sv.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-zh_CN.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-de.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-es.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-hu.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-sv.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-zh_CN.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
 
 uninstall_i18n: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/depecher/translations/depecher.qm
@@ -684,13 +685,13 @@ uninstall_i18n: FORCE
 
 install_qm: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/depecher/translations || mkdir -p $(INSTALL_ROOT)/usr/share/depecher/translations
-	lupdate -noobsolete /home/mersdk/share/Proyectos/depecher/depecher/src /home/mersdk/share/Proyectos/depecher/depecher/qml -ts /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher.ts /home/mersdk/share/Proyectos/depecher/depecher/translations/*.ts && mkdir -p translations && [ "/home/mersdk/share/Proyectos/depecher/depecher" != "/home/mersdk/share/Proyectos/depecher/depecher" -a 1 -eq 1 ] && cp -af /home/mersdk/share/Proyectos/depecher/depecher/translations/*.ts /home/mersdk/share/Proyectos/depecher/depecher/translations || : ; [ 1 -eq 1 ] && lrelease -nounfinished /home/mersdk/share/Proyectos/depecher/depecher/translations/*.ts || :
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-de.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-es.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-hu.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-sv.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher-zh_CN.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/translations/depecher.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	lupdate -noobsolete /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/src /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/qml -ts /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher.ts /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/*.ts && mkdir -p translations && [ "/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher" != "/home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher" -a 1 -eq 1 ] && cp -af /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/*.ts /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations || : ; [ 1 -eq 1 ] && lrelease -nounfinished /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/*.ts || :
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-de.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-es.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-hu.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-sv.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher-zh_CN.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/translations/depecher.qm $(INSTALL_ROOT)/usr/share/depecher/translations/
 
 uninstall_qm: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/depecher/translations/depecher.qm
@@ -704,7 +705,7 @@ uninstall_qm: FORCE
 
 install_qml: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/depecher || mkdir -p $(INSTALL_ROOT)/usr/share/depecher
-	-$(INSTALL_DIR) /home/mersdk/share/Proyectos/depecher/depecher/qml $(INSTALL_ROOT)/usr/share/depecher/
+	-$(INSTALL_DIR) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/qml $(INSTALL_ROOT)/usr/share/depecher/
 
 uninstall_qml: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/depecher/qml
@@ -723,7 +724,7 @@ uninstall_target: FORCE
 
 install_desktop: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/applications || mkdir -p $(INSTALL_ROOT)/usr/share/applications
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/depecher.desktop $(INSTALL_ROOT)/usr/share/applications/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/depecher.desktop $(INSTALL_ROOT)/usr/share/applications/
 
 uninstall_desktop: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/applications/depecher.desktop
@@ -732,7 +733,7 @@ uninstall_desktop: FORCE
 
 install_icon86x86: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/icons/hicolor/86x86/apps || mkdir -p $(INSTALL_ROOT)/usr/share/icons/hicolor/86x86/apps
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/icons/86x86/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/86x86/apps/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/icons/86x86/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/86x86/apps/
 
 uninstall_icon86x86: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/icons/hicolor/86x86/apps/depecher.png
@@ -741,7 +742,7 @@ uninstall_icon86x86: FORCE
 
 install_icon108x108: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/icons/hicolor/108x108/apps || mkdir -p $(INSTALL_ROOT)/usr/share/icons/hicolor/108x108/apps
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/icons/108x108/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/108x108/apps/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/icons/108x108/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/108x108/apps/
 
 uninstall_icon108x108: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/icons/hicolor/108x108/apps/depecher.png
@@ -750,7 +751,7 @@ uninstall_icon108x108: FORCE
 
 install_icon128x128: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/icons/hicolor/128x128/apps || mkdir -p $(INSTALL_ROOT)/usr/share/icons/hicolor/128x128/apps
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/icons/128x128/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/128x128/apps/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/icons/128x128/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/128x128/apps/
 
 uninstall_icon128x128: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/icons/hicolor/128x128/apps/depecher.png
@@ -759,7 +760,7 @@ uninstall_icon128x128: FORCE
 
 install_icon256x256: first FORCE
 	@test -d $(INSTALL_ROOT)/usr/share/icons/hicolor/256x256/apps || mkdir -p $(INSTALL_ROOT)/usr/share/icons/hicolor/256x256/apps
-	-$(INSTALL_FILE) /home/mersdk/share/Proyectos/depecher/depecher/icons/256x256/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/256x256/apps/
+	-$(INSTALL_FILE) /home/mersdk/share/Documents/Projects/SailfishOS/depecher/depecher/icons/256x256/depecher.png $(INSTALL_ROOT)/usr/share/icons/hicolor/256x256/apps/
 
 uninstall_icon256x256: FORCE
 	-$(DEL_FILE) -r $(INSTALL_ROOT)/usr/share/icons/hicolor/256x256/apps/depecher.png

@@ -10,7 +10,7 @@ import depecherUtils 1.0
 
 
 Column{
-    property int maxWidth: Screen.width *2/3 - Theme.horizontalPageMargin * 2
+    property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
     width: maxWidth
 
     BackgroundItem {
@@ -27,7 +27,7 @@ Column{
                 fillMode: Image.PreserveAspectFit
                 source: progress.visible ? "image://theme/icon-m-clear"
                                          : file_downloading_completed ?
-                                               playMusic.playbackState == Audio.PlayingState
+                                               __depecher_audio.playbackState == Audio.PlayingState
                                                ? "image://theme/icon-m-pause"
                                                : "image://theme/icon-m-play"
                                                : "image://theme/icon-m-cloud-download"
@@ -53,8 +53,12 @@ Column{
                             else
                                 messagingModel.downloadDocument(index)
                         } else {
+                            if(__depecher_audio.playbackState == Audio.PlayingState)
+                                __depecher_audio.stop()
+                            else {
                             __depecher_audio.source =  "file://"+content
                             __depecher_audio.play()
+                            }
                         }
                     }
                 }

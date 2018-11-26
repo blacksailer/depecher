@@ -99,7 +99,7 @@
     </message>
     <message>
         <source>Thanks to:</source>
-        <translation >Tack till:</translation>
+        <translation>Tack till:</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
@@ -356,7 +356,7 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bild</translation>
     </message>
     <message>
         <source>Sticker</source>
@@ -364,7 +364,7 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokument</translation>
     </message>
     <message>
         <source>Animation</source>

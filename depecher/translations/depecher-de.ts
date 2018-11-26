@@ -11,7 +11,7 @@
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished">Link teilen</translation>
+        <translation>Link teilen</translation>
     </message>
 </context>
 <context>
@@ -101,11 +101,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This groups lives only because of community and by community around Sailfish OS.</source>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -202,7 +202,7 @@
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Sticker Vorschau-Modus</translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
 </context>
 <context>
@@ -259,8 +259,7 @@
     <message>
         <source>Unread 
  messages</source>
-        <translation>Ungelesene 
- Nachrichten</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -346,7 +345,7 @@
     </message>
     <message>
         <source>get more</source>
-        <translation type="unfinished"></translation>
+        <translation>aktualisiere</translation>
     </message>
     <message>
         <source>Reply</source>
@@ -407,7 +406,7 @@
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Sticker Vorschau-Modus</translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
@@ -578,8 +577,7 @@
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation>Wiederherstellungscode eingeben.
-  Merke! Danach wird die 2FA-Autorisierung deaktiviert</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -621,11 +619,11 @@
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>Warte Verschlüsselungsschlüssel</translation>
+        <translation>Warten auf Verschlüsselungsschlüssel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation>Warte Telefonnummer</translation>
+        <translation>Warten auf Telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
@@ -637,15 +635,15 @@
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>Warte ausloggen</translation>
+        <translation>Warte logge aus</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Warte schließt</translation>
+        <translation>Schließe</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Warte geschlossen</translation>
+        <translation>Geschlossen</translation>
     </message>
 </context>
 </TS>
