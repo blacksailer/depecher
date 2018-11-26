@@ -11,7 +11,7 @@
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished">Dela länk</translation>
+        <translation>Dela länk</translation>
     </message>
 </context>
 <context>
@@ -30,79 +30,81 @@
     </message>
     <message>
         <source>Error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel %1</translation>
     </message>
     <message>
         <source>Groups in Telegram</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupper i Telegram</translation>
     </message>
     <message>
         <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation type="unfinished"></translation>
+        <translation>Observera att du ansluter till chatten efter tryck. Att lämna chattar stöds inte för närvarande.</translation>
     </message>
     <message>
         <source>English speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Engelsktalande gemenskap</translation>
     </message>
     <message>
         <source>Joining chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå med i chatten</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel när inbjudningslänk skulle hämtas</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.
+        </translation>
     </message>
     <message>
         <source>Features:</source>
-        <translation type="unfinished"></translation>
+        <translation>Funktioner:</translation>
     </message>
     <message>
         <source>- Send/View/Delete messages</source>
-        <translation type="unfinished"></translation>
+        <translation>- Skicka/Visa/Ta bort meddelanden</translation>
     </message>
     <message>
         <source>- Mute/unmute chats</source>
-        <translation type="unfinished"></translation>
+        <translation>- Stäng av/Sätt på chattar</translation>
     </message>
     <message>
         <source>- View photos</source>
-        <translation type="unfinished"></translation>
+        <translation>- Visa bilder</translation>
     </message>
     <message>
         <source>- View animations (gifs)</source>
-        <translation type="unfinished"></translation>
+        <translation>- Visa animeringar (gif)</translation>
     </message>
     <message>
         <source>- View/Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>- Visa/Skicka stickers</translation>
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation type="unfinished"></translation>
+        <translation>- Hantera stickers från chatt</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
-        <translation type="unfinished"></translation>
+        <translation>- Ladd upp/ner bilder/dokument</translation>
     </message>
     <message>
         <source>- Receive notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>- Ta emot aviseringar</translation>
     </message>
     <message>
         <source>- 2FA authorization enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>- 2-faktors autentisering aktiverad</translation>
     </message>
     <message>
         <source>Thanks to:</source>
-        <translation type="unfinished"></translation>
+        <translation >Tack till:</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
+Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
@@ -113,31 +115,31 @@
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Utseende</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radie</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacitet</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Bakgrundsfärg för inkommande meddelanden</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Bakgrundsfärg för utgående meddelanden</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställ standardvärden</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimera namnplåten</translation>
     </message>
 </context>
 <context>
@@ -159,50 +161,50 @@
     <name>AttachComponent</name>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Hem</translation>
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Gå till hemkatalogen</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka ett dokument</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka</translation>
     </message>
     <message>
         <source>Files to send</source>
-        <translation type="unfinished"></translation>
+        <translation>Filer att skicka</translation>
     </message>
 </context>
 <context>
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker förhandsvisningsläge</translation>
     </message>
 </context>
 <context>
@@ -229,25 +231,25 @@
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>OBS! Om telegram blockeras i ditt land, måste du först konfigurera en proxyxerver i Inställningar via toppmenyn.</translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Beteende</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka meddelanden med returtangenten</translation>
     </message>
 </context>
 <context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skapade gruppen %2</translation>
     </message>
 </context>
 <context>
@@ -271,29 +273,29 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Inställningar</translation>
+        <translation>Inställningar</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Tysta inte</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Tysta</translation>
     </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 anslöt via inbjudningslänk</translation>
     </message>
 </context>
 <context>
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 anslöt till Telegram!</translation>
     </message>
 </context>
 <context>
@@ -307,23 +309,23 @@
     <name>MessageItem</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nya meddelanden</translation>
     </message>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>redigerad</translation>
     </message>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 anslöt via inbjudningslänk</translation>
     </message>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 anslöt till Telegram</translation>
     </message>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 skapade gruppen %2</translation>
     </message>
 </context>
 <context>
@@ -334,19 +336,19 @@
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort meddelande</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort för alla</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tar bort...</translation>
     </message>
     <message>
         <source>get more</source>
-        <translation type="unfinished"></translation>
+        <translation>hämta mer</translation>
     </message>
     <message>
         <source>Reply</source>
@@ -381,7 +383,7 @@
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nya meddelanden</translation>
     </message>
 </context>
 <context>
@@ -392,30 +394,30 @@
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild sparad i Galleri</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
-        <translation type="unfinished"></translation>
+        <translation>Delningsfunktion kommer snart här</translation>
     </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillbaka</translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker förhandsvisningsläge</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort %1 stickers</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till %1 stickers</translation>
     </message>
 </context>
 <context>
@@ -474,27 +476,27 @@
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Anslutningsstatus: </translation>
+        <translation>Anslutningsstatus: </translation>
     </message>
     <message>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Om appen</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation type="unfinished"></translation>
+        <translation>Tack och annat</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Utseende</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Beteende</translation>
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjänstinställningar</translation>
     </message>
 </context>
 <context>
@@ -525,60 +527,61 @@
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <source>Recover password</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställ lösenord</translation>
     </message>
     <message>
         <source>Email is sent</source>
-        <translation type="unfinished"></translation>
+        <translation>E-postmeddelande har skickats</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>återställningskod skickad till %1</translation>
     </message>
     <message>
         <source>Show hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa ledtråd</translation>
     </message>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange återställningskod.
+Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</translation>
     </message>
     <message>
         <source>Enter your password</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange ditt lösenord</translation>
     </message>
     <message>
         <source>Recovery code</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställningskod</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Lösenord</translation>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <source>Password hint</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösenordsledtråd</translation>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta på meddelandet via %1, som innehåller aktiveringskoden och tryck sedan %2</translation>
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange kod</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange lösenord</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentiseringsstatus</translation>
     </message>
 </context>
 <context>
@@ -592,27 +595,27 @@
     <name>utils</name>
     <message>
         <source>Waiting for network</source>
-        <translation type="unfinished"></translation>
+        <translation>Väntar på nätverk</translation>
     </message>
     <message>
         <source>Connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansluter</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansluter proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Uppdaterar...</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Klar</translation>
     </message>
     <message>
         <source>Uknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Okänd</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
