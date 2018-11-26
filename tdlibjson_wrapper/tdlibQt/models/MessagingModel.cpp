@@ -201,6 +201,16 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                        (messages[rowIndex]->content_.data());
             return QString::fromStdString(contentAnimationPtr->caption_->text_);
         }
+        if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+            auto contentVoicePtr = static_cast<messageAudio *>
+                                   (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentVoicePtr->caption_->text_);
+        }
+        if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+            auto contentAudioPtr = static_cast<messageAudio *>
+                                   (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAudioPtr->caption_->text_);
+        }
 
         return QVariant();
     }
@@ -224,6 +234,24 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
             auto contentDocumentPtr = static_cast<messageDocument *>
                                       (messages[rowIndex]->content_.data());
             return QString::fromStdString(contentDocumentPtr->document_->file_name_);
+        }
+        return QVariant();
+        break;
+    }
+    case VOICE_DURATION: {
+        if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+            auto contentVoicePtr = static_cast<messageVoice *>
+                                      (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentVoicePtr->voice_->duration_);
+        }
+        return QVariant();
+        break;
+    }
+    case AUDIO_DURATION: {
+        if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+            auto contentAudioPtr = static_cast<messageAudio *>
+                                      (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAudioPtr->audio_->duration_);
         }
         return QVariant();
         break;
@@ -256,6 +284,10 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
             return STICKER;
         if (messages[rowIndex]->content_->get_id() == messageDocument::ID)
             return DOCUMENT;
+        if (messages[rowIndex]->content_->get_id() == messageVoice::ID)
+            return VOICE;
+        if (messages[rowIndex]->content_->get_id() == messageAudio::ID)
+            return AUDIO;
         if (messages[rowIndex]->content_->get_id() == messageAnimation::ID)
             return ANIMATION;
         if (messages[rowIndex]->content_->get_id() == messageContact::ID)
@@ -381,6 +413,8 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[FILE_CAPTION] = "file_caption";
     roles[PHOTO_ASPECT] = "photo_aspect";
     roles[DOCUMENT_NAME] = "document_name";
+    roles[VOICE_DURATION] = "voice_duration";
+    roles[AUDIO_DURATION] = "audio_duration";
     roles[FILE_DOWNLOADED_SIZE] = "file_downloaded_size";
     roles[FILE_UPLOADED_SIZE] = "file_uploaded_size";
     roles[FILE_IS_DOWNLOADING] = "file_is_downloading";
@@ -823,6 +857,16 @@ QVariant MessagingModel::dataContent(const int rowIndex) const
             return QString::fromStdString(contentDocumentPtr->document_->document_->local_->path_);
 
         }
+        if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+            auto contentVoicePtr = static_cast<messageVoice *>
+                                      (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentVoicePtr->voice_->voice_->local_->path_);
+        }
+        if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+            auto contentAudioPtr = static_cast<messageAudio *>
+                                      (messages[rowIndex]->content_.data());
+            return QString::fromStdString(contentAudioPtr->audio_->audio_->local_->path_);
+        }
         if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
                                        (messages[rowIndex]->content_.data());
@@ -870,6 +914,16 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
         auto contentDocumentPtr = static_cast<messageDocument *>
                                   (messages[rowIndex]->content_.data());
         filePtr = contentDocumentPtr->document_->document_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+        auto contentVoicePtr = static_cast<messageVoice *>
+                                  (messages[rowIndex]->content_.data());
+        filePtr = contentVoicePtr->voice_->voice_.data();
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        auto contentAudioPtr = static_cast<messageAudio *>
+                                  (messages[rowIndex]->content_.data());
+        filePtr = contentAudioPtr->audio_->audio_.data();
     }
     if (messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
         auto contentAnimationPtr = static_cast<messageAnimation *>
@@ -1297,6 +1351,16 @@ void MessagingModel::downloadDocument(const int rowIndex)
                                   (messages[rowIndex]->content_.data());
         fileId = contentDocumentPtr->document_->document_->id_;
     }
+    if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+        auto contentDocumentPtr = static_cast<messageVoice *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->voice_->voice_->id_;
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        auto contentDocumentPtr = static_cast<messageAudio *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->audio_->audio_->id_;
+    }
     if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
         auto contentDocumentPtr = static_cast<messagePhoto *>
                                   (messages[rowIndex]->content_.data());
@@ -1321,6 +1385,16 @@ void MessagingModel::cancelDownload(const int rowIndex)
                                   (messages[rowIndex]->content_.data());
         fileId = contentDocumentPtr->document_->document_->id_;
     }
+    if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+        auto contentDocumentPtr = static_cast<messageVoice *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->voice_->voice_->id_;
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        auto contentDocumentPtr = static_cast<messageAudio *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->audio_->audio_->id_;
+    }
     if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
         auto contentDocumentPtr = static_cast<messagePhoto *>
                                   (messages[rowIndex]->content_.data());
@@ -1337,6 +1411,16 @@ void MessagingModel::cancelUpload(const int rowIndex)
         auto contentDocumentPtr = static_cast<messageDocument *>
                                   (messages[rowIndex]->content_.data());
         fileId = contentDocumentPtr->document_->document_->id_;
+    }
+    if (messages[rowIndex]->content_->get_id() == messageVoice::ID) {
+        auto contentDocumentPtr = static_cast<messageVoice *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->voice_->voice_->id_;
+    }
+    if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+        auto contentDocumentPtr = static_cast<messageAudio *>
+                                  (messages[rowIndex]->content_.data());
+        fileId = contentDocumentPtr->audio_->audio_->id_;
     }
     if (messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
         auto contentDocumentPtr = static_cast<messagePhoto *>
