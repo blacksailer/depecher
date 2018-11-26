@@ -14,8 +14,8 @@ Column{
             id:gifComponent
             AnimatedImage {
                 id:animationGif
-                property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: Screen.height/2
+                property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: page.height/2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit
@@ -108,8 +108,8 @@ Column{
             id:mp4Component
             VideoOutput {
                 id: animation
-                property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: Screen.height/2
+                property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: page.height/2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit

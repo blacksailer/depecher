@@ -13,8 +13,8 @@ Column{
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: Screen.height/2
+            property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: page.height/2
             width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit

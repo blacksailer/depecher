@@ -10,7 +10,7 @@ import depecherUtils 1.0
 
 
 Column{
-    property int maxWidth: Screen.width *2/3 - Theme.horizontalPageMargin * 2
+    property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
     width: maxWidth
 
     BackgroundItem {

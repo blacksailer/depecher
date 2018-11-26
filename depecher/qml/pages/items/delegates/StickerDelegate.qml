@@ -9,9 +9,9 @@ import QtQml.Models 2.3
 import depecherUtils 1.0
 
 Column {
-        width: stickerImage.width//messageListItem.width/4*3
-        property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-        
+    width: stickerImage.width//messageListItem.width/4*3
+    property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+
         Image {
             id:stickerImage
             asynchronous: true

@@ -9,7 +9,7 @@ import QtQml.Models 2.3
 import depecherUtils 1.0
 
 BackgroundItem {
-        property int maxWidth: Screen.width *2/3 - Theme.horizontalPageMargin * 2
+    property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
         width: maxWidth
         height: Theme.itemSizeMedium
         DBusInterface {
