@@ -677,13 +677,12 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return parseMessageText(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageSticker")
         return parseMessageSticker(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageAnimation") {
+    if (messageContentObject["@type"].toString() == "messageAnimation")
         return parseMessageAnimation(messageContentObject);
-    }
-    if (messageContentObject["@type"].toString() == "messageAudio") {
-        typeMessageText->text_->text_ = "Audio";
-        return typeMessageText;
-    }
+    if (messageContentObject["@type"].toString() == "messageVoiceNote")
+        return parseMessageVoiceNote(messageContentObject);
+    if (messageContentObject["@type"].toString() == "messageAudio")
+        return parseMessageAudio(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageContact") {
         if (messageContentObject["@type"].toString() != "messageContact")
             return QSharedPointer<messageContact>(new messageContact);
@@ -692,9 +691,8 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return resultMessage;
     }
 
-    if (messageContentObject["@type"].toString() == "messageDocument") {
+    if (messageContentObject["@type"].toString() == "messageDocument")
         return parseMessageDocument(messageContentObject);
-    }
     if (messageContentObject["@type"].toString() == "messageVideo") {
         typeMessageText->text_->text_ = "Video";
         return typeMessageText;
@@ -964,6 +962,49 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
 
     return resultAnimation;
 }
+QSharedPointer<messageVoiceNote> ParseObject::parseMessageVoiceNote(const QJsonObject
+        &messageVoiceNoteObject)
+{
+    if (messageVoiceNoteObject["@type"].toString() != "messageVoiceNote")
+        return QSharedPointer<messageVoiceNote>(new messageVoiceNote);
+
+    auto resultVoiceNote = QSharedPointer<messageVoiceNote>(new messageVoiceNote);
+
+    auto voiceNoteObject = messageVoiceNoteObject["voice_note"].toObject();
+    resultVoiceNote->voice_note_ = QSharedPointer<voiceNote>(new voiceNote);
+    resultVoiceNote->voice_note_->duration_ = voiceNoteObject["duration"].toInt();
+    resultVoiceNote->voice_note_->waveform_ = voiceNoteObject["waveform"].toString().toStdString();
+    resultVoiceNote->voice_note_->mime_type_ = voiceNoteObject["mime_type"].toString().toStdString();
+    resultVoiceNote->voice_note_->voice_ = parseFile(voiceNoteObject["voice"].toObject());
+
+    resultVoiceNote->caption_ = parseFormattedTextContent(messageVoiceNoteObject["caption"].toObject());
+    resultVoiceNote->is_listened_ = messageVoiceNoteObject["is_listened"].toBool();
+
+    return resultVoiceNote;
+}
+
+QSharedPointer<messageAudio> ParseObject::parseMessageAudio(const QJsonObject
+        &messageAudioObject)
+{
+    if (messageAudioObject["@type"].toString() != "messageAudio")
+        return QSharedPointer<messageAudio>(new messageAudio);
+
+    auto resultAudio = QSharedPointer<messageAudio>(new messageAudio);
+    auto audioObject = messageAudioObject["audio"].toObject();
+    resultAudio->audio_ = QSharedPointer<audio>(new audio);
+    resultAudio->audio_->duration_ = audioObject["duration"].toInt();
+    resultAudio->audio_->title_ = audioObject["title"].toString().toStdString();
+    resultAudio->audio_->performer_ = audioObject["performer"].toString().toStdString();
+    resultAudio->audio_->file_name_ = audioObject["file_name"].toString().toStdString();
+    resultAudio->audio_->mime_type_ = audioObject["mime_type"].toString().toStdString();
+    resultAudio->audio_->album_cover_thumbnail_ = parsePhotoSize(audioObject["album_cover_thumbnail"].toObject());
+    resultAudio->audio_->audio_ = parseFile(audioObject["audio"].toObject());
+
+    resultAudio->caption_ = parseFormattedTextContent(messageAudioObject["caption"].toObject());
+
+    return resultAudio;
+}
+
 QSharedPointer<messageSticker> ParseObject::parseMessageSticker(const QJsonObject
         &messageStikerObject)
 {

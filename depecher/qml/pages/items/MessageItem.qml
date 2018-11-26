@@ -8,6 +8,8 @@ import Nemo.DBus 2.0
 import QtQml.Models 2.3
 import depecherUtils 1.0
 import "../components"
+import "delegates"
+
 ListItem {
     id: messageListItem
     width: parent.width
@@ -218,36 +220,43 @@ ListItem {
 
 
                 Loader {
-                    sourceComponent: {
+                    source: {
                         if(message_type == MessagingModel.TEXT) {
-                            return textContent
+                            return "delegates/TextDelegate.qml"
                         }
                         else if(message_type == MessagingModel.PHOTO) {
-                            return imageContent
+                            return "delegates/ImageDelegate.qml"
                         }
                         else if(message_type == MessagingModel.STICKER) {
-                            return stickerContent
+                            return "delegates/StickerDelegate.qml"
                         }
                         else if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE) {
-                            return newMessageContent
+                            return "delegates/NewMessageDelegate.qml"
                         }
                         else if(message_type == MessagingModel.DOCUMENT) {
-                            return documentContent
+                            return "delegates/DocumentDelegate.qml"
                         }
                         else if(message_type == MessagingModel.ANIMATION) {
-                            return animationContent
+                            return "delegates/AnimationDelegate.qml"
+                        }
+                        else if(message_type == MessagingModel.AUDIO) {
+                            return "delegates/AudioDelegate.qml"
+                        }
+
+                        else if(message_type == MessagingModel.VOICE) {
+                            return "delegates/VoiceNoteDelegate.qml"
                         }
                         else if(message_type == MessagingModel.CONTACT) {
-                            return contactContent
+                            return "delegates/ContactDelegate.qml"
                         }
                         else if(message_type == MessagingModel.JOINBYLINK) {
-                            return joinByLinkContent
+                            return "delegates/JoinByLinkDelegate.qml"
                         }
                         else if(message_type == MessagingModel.CONTACT_REGISTERED) {
-                            return joinedContent
+                            return "delegates/JoinedDelegate.qml"
                         }
                         else if(message_type == MessagingModel.CHAT_CREATED) {
-                            return chatCreatedContent
+                            return "delegates/ChatCreatedDelegate.qml"
                         }
                         return undefined
                     }

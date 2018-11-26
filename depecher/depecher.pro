@@ -124,7 +124,9 @@ DISTFILES += \
     dbus/application.xml \
     settings/DepecherAppSettings.qml \
     qml/app.qml \
-    systemd/org.blacksailer.depecher.service
+    systemd/org.blacksailer.depecher.service \
+    qml/pages/items/delegates/VoiceNoteDelegate.qml \
+    qml/pages/items/delegates/AudioDelegate.qml
 
 HEADERS += \
     src/FileWorker.hpp \

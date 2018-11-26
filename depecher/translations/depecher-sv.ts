@@ -554,6 +554,13 @@ proxy server in settings via PulleyMenu</source>
     </message>
 </context>
 <context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>utils</name>
     <message>
         <source>Waiting for network</source>

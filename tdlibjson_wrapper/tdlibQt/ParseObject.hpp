@@ -86,6 +86,8 @@ public:
     static QSharedPointer<stickers> parseStickers(const QJsonObject
             &stickersObject);
     static QSharedPointer<messageBasicGroupChatCreate> parseMessageBasicGroupChatCreate(const QJsonObject &messageBasicGroupChatCreateObject);
+    static QSharedPointer<messageVoiceNote> parseMessageVoiceNote(const QJsonObject &messageVoiceNoteObject);
+    static QSharedPointer<messageAudio> parseMessageAudio(const QJsonObject &messageAudioObject);
 signals:
 
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
