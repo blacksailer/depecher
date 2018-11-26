@@ -21,11 +21,11 @@ MessagingModel::MessagingModel() :
      * 2.2 Parse response from getMessages to  fill replyMessagesMap +
      * 2.3 Modify data() to return replyMessage values +
      * 3. Test UI +
-     * 4. On click  append MessageId to queue of MessagesId to replyMessage
-     * 4.1 if in message array scroll to message
-     * 4.2 If not in message array, clear all, unconnect updates, and get messages with reply_id
-     * 5. highlight for two seconds replyId message
-     * 5. On return dequeue messageId
+     * 4.On click  append MessageId to queue of MessagesId to replyMessage +
+     * 4.1 if in message array scroll to message +
+     * 4.2 (if findMessageById == -1 )  If not in message array, clear all, unconnect updates, and get messages with reply_id
+     * 5. highlight for two seconds replyId message +
+     * 5. On return dequeue messageId +
      * 5.1 if in message array scroll to message
      * 5.2 If not in message array, clear all, unconnect updates, and get messages with messageId
      * 6.  highlight for two seconds messageId message
@@ -169,7 +169,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                                   (replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
                 if (contentPtr->text_.data() != nullptr)
                     return QString::fromStdString(contentPtr->text_->text_);
-                return QVariant();
+                return messageTypeToString(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
             } else
                 return messageTypeToString(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
         }
@@ -685,6 +685,8 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
 QString MessagingModel::messageTypeToString(MessageContent *messageContent) const
 {
     switch (messageContent->get_id()) {
+    case  messageText::ID:
+        return tr("Text");
     case  messagePhoto::ID:
         return tr("Photo");
     case  messageDocument::ID:
@@ -933,7 +935,7 @@ QSharedPointer<message> MessagingModel::findMessageById(const qint64 messageId) 
 
 int MessagingModel::findIndexById(const qint64 messageId) const
 {
-    int result = 0;
+    int result = -1;
     for (int i = 0; i < messages.size(); i++) {
         if (messages[i]->id_ == messageId) {
             result = i;
@@ -1573,6 +1575,21 @@ void MessagingModel::setIsActive(bool isActive)
 
     m_isActive = isActive;
     emit isActiveChanged(m_isActive);
+}
+
+void MessagingModel::loadAndRefreshRepliedByIndex(const int messageIndex)
+{
+    loadAndRefreshByMessageId(messages[messageIndex]->reply_to_message_id_);
+}
+
+void MessagingModel::loadAndRefreshByMessageId(const QVariant messageId)
+{
+    beginResetModel();
+    messages.clear();
+    fetchPending = true;
+    tdlibJson->getChatHistory(peerId().toLongLong(), messageId.toLongLong(), -10,
+                              MESSAGE_LIMIT, false);
+    endResetModel();
 }
 
 } //namespace tdlibQt

@@ -177,6 +177,12 @@ Page {
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
+                visibleArea.onYPositionChanged: {
+                if(visibleArea.yPosition <= 0.2) {
+                    if(!messagingModel.fetchOlderPending)
+                        messagingModel.fetchOlder()
+                }
+                }
 
                 Connections {
                     target: messagingModel
@@ -293,11 +299,15 @@ Page {
                     id: myDelegate
                     onReplyMessageClicked:
                     {
+                        console.log(source_message_index,replied_message_index)
+
+                       if(replied_message_index != -1) {
                         arrayIndex.push(source_message_index)
                         writer.returnButtonEnabled = true
-                        //                        messageList.positionViewAtIndex(replied_message_index,ListView.Center)
                         messageList.currentIndex = replied_message_index
-                        console.log(messageList.currentIndex,replied_message_index)
+                       } else {
+                           messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
+                       }
                     }
                     RemorseItem {
                         id: remorseDelete

@@ -125,7 +125,6 @@ public:
     MessagingModel();
     ~MessagingModel();
 public slots:
-
     void setUserName(QString userName);
     void setPeerId(QString peerId);
     void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
@@ -181,7 +180,8 @@ public slots:
         m_reachedHistoryEnd = reachedHistoryEnd;
         emit reachedHistoryEndChanged(m_reachedHistoryEnd);
     }
-
+    void loadAndRefreshRepliedByIndex(const int messageIndex);
+    void loadAndRefreshByMessageId(const QVariant messageId);
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);

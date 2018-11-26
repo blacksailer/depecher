@@ -113,7 +113,9 @@ ListItem {
               message_type != MessagingModel.JOINBYLINK &&
               message_type != MessagingModel.CONTACT_REGISTERED &&
               message_type != MessagingModel.CHAT_CREATED ? 10 : 0
-            width: Math.max(metaInfoRow.width,userAvatar.width + contentLoader.width + (userAvatar.width == 0 ? 0:spacing))
+            width: Math.max(metaInfoRow.width,replyRowWrapper.width,
+                            userAvatar.width + contentLoader.width +
+                            (userAvatar.width == 0 ? 0:spacing))
             height: Math.max(userAvatar.height+replyBackgroundItem.height,contentLoader.height+replyBackgroundItem.height)
             layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
 
@@ -136,12 +138,12 @@ ListItem {
            id:messageContentWrapper
            MouseArea {
            id:replyBackgroundItem
-           height: replyZone.height
-           width: replyZone.width
+           height: replyRowWrapper.height
+           width: replyRowWrapper.width
            onClicked: replyMessageClicked(index,reply_to_message_id)
 
            Row {
-               id:replyZone
+               id:replyRowWrapper
                height: reply_to_message_id != index ? Theme.itemSizeExtraSmall : 0
                visible: reply_to_message_id != index
                Rectangle {
@@ -173,18 +175,10 @@ ListItem {
                        states: [
                                State {
                                    name: "wide text"
-                                   when: replyTextLabel.text.length > 20
+                                   when: reply_message.length > 20
                                    PropertyChanges {
                                        target: replyTextLabel
                                        width: contentLoader.width
-                                   }
-                               },
-                               State {
-                                   name: "not wide text"
-                                   when: replyTextLabel.text.length <= 20
-                                   PropertyChanges {
-                                       target: replyTextLabel
-                                       width: replyTextLabel.paintedWidth
                                    }
                                }
                            ]
