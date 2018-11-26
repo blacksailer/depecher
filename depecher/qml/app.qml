@@ -9,6 +9,7 @@ ApplicationWindow
     property alias __depecher_audio: playMusic
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
+    _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
 
     ////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
