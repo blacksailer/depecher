@@ -148,8 +148,8 @@ Item {
                 asynchronous: true
                 // From org.nemomobile.thumbnailer
                 source:   "image://nemoThumbnail/"+url
-                sourceSize: Qt.size(Screen.width/3,Screen.width/3)
-                width: Screen.width/3
+                sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
+                width: thumbnailWrapper.width/3
                 height: width
 
                 Rectangle{

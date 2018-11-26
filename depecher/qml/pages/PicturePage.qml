@@ -48,7 +48,7 @@ Page {
                     fillMode: Image.PreserveAspectFit
                     cache: true
                     asynchronous: true
-                    sourceSize.width:  Screen.width;
+                    sourceSize.width:  root.width;
                     smooth: false
 
                     onScaleChanged: {

@@ -363,7 +363,7 @@ ListItem {
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 Component.onCompleted: {
-                    width = Math.min(width ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)
+                    width = Math.min(width ,messageListItem.width * 2 /3 - Theme.horizontalPageMargin * 2)
                 }
             }
         }
@@ -371,7 +371,7 @@ ListItem {
     Component {
         id: contactContent
         BackgroundItem {
-            property int maxWidth: Screen.width *2/3 - Theme.horizontalPageMargin * 2
+            property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
             width: maxWidth
             height: Theme.itemSizeMedium
             DBusInterface {
@@ -418,8 +418,8 @@ ListItem {
             Image {
                 id: image
                 asynchronous: true
-                property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: Screen.height/2
+                property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: page.height/2
                 width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: Image.PreserveAspectFit
@@ -478,7 +478,7 @@ ListItem {
         id: documentContent
 
         Column{
-            property int maxWidth: Screen.width *2/3 - Theme.horizontalPageMargin * 2
+            property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
             width: maxWidth
 
             BackgroundItem {
@@ -571,7 +571,7 @@ ListItem {
 
         Column {
             width: stickerImage.width//messageListItem.width/4*3
-            property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
 
             Image {
                 id:stickerImage
@@ -591,7 +591,7 @@ ListItem {
         id: newMessageContent
 
         Item {
-            width: Screen.width
+            width: messageListItem.width
             height: Theme.itemSizeSmall
             x:Theme.horizontalPageMargin/2
 
@@ -619,7 +619,7 @@ ListItem {
         id: joinByLinkContent
 
         Item {
-            width:  Screen.width
+            width:  messageListItem.width
             height: Theme.itemSizeSmall
             x:Theme.horizontalPageMargin/2
             Rectangle {
@@ -647,7 +647,7 @@ ListItem {
         id: joinedContent
 
         Item {
-            width: Screen.width
+            width: messageListItem.width
             height: Theme.itemSizeSmall
             x:Theme.horizontalPageMargin/2
 
@@ -675,7 +675,7 @@ ListItem {
         id: chatCreatedContent
 
         Item {
-            width: Screen.width
+            width: messageListItem.width
             height: Theme.itemSizeSmall
             x:Theme.horizontalPageMargin/2
 
@@ -706,8 +706,8 @@ ListItem {
                 id:gifComponent
                 AnimatedImage {
                     id:animationGif
-                    property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                    property int maxHeight: Screen.height/2
+                    property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                    property int maxHeight: page.height/2
                     width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                     height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                     fillMode: VideoOutput.PreserveAspectFit
@@ -800,8 +800,8 @@ ListItem {
                 id:mp4Component
                 VideoOutput {
                     id: animation
-                    property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                    property int maxHeight: Screen.height/2
+                    property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                    property int maxHeight: page.height/2
                     width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                     height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                     fillMode: VideoOutput.PreserveAspectFit

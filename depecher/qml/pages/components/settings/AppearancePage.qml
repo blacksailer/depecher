@@ -72,7 +72,7 @@ Page {
             }
             SilicaListView {
                 width: parent.width
-                height: Screen.height/2 + Theme.itemSizeMedium
+                height: root.height/2 + Theme.itemSizeMedium
                 clip:true
                 model:messagingModel
                 header: PageHeader {
