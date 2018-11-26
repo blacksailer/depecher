@@ -92,6 +92,13 @@ proxy server in settings via PulleyMenu")
                     width: font.pixelSize * 5
                     validator: RegExpValidator { regExp: /^\+[0-9]{1,}$/ }
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly
+                    onTextChanged: {
+                                          var countryCode = text.slice(1)
+                                          for(var i=0;i<CountryList.countries.length;i++) {
+                                              if (countryCode == CountryList.countries[i].code)
+                                                  cbxcountrycodes.currentIndex = i
+                                          }
+                  }
                     EnterKey.iconSource: "image://theme/icon-m-enter-next"
                     EnterKey.onClicked: tfphonenumber.focus = true
                 }
