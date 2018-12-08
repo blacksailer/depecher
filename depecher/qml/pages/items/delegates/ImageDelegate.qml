@@ -23,7 +23,7 @@ Column{
             MouseArea{
                 anchors.fill: parent
                 enabled: file_downloading_completed
-                onClicked: pageStack.push("../PicturePage.qml",{imagePath:content})
+                onClicked: pageStack.push("../../PicturePage.qml",{imagePath:content})
             }
             
             ProgressCircle {

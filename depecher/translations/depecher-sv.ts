@@ -378,6 +378,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>

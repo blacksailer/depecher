@@ -806,6 +806,13 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
                 }
         }
     if (!is_replaced) {
+        qint64 reply_id = messageItem->reply_to_message_id_;
+
+        if (reply_id != 0) {
+            QVector<qint64> message_ids;
+            message_ids << reply_id;
+            tdlibJson->getMessages(peerId().toLongLong(), message_ids, "getReplies");
+        }
         messages.append(messageItem);
         if (messagePhotoQueue.keys().size() > 0) {
             for (int key : messagePhotoQueue.keys())
@@ -1279,14 +1286,12 @@ void MessagingModel::sendTextMessage(const QString &text,
 void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &reply_id,
                                       const QString &caption)
 {
-    Q_UNUSED(reply_id)
-
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
     sendMessageObject.disable_notification_ = false;
     sendMessageObject.from_background_ = false;
-    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessagePhoto>(new inputMessagePhoto);
     inputMessagePhoto *ptr = static_cast<inputMessagePhoto *>
                              (sendMessageObject.input_message_content_.data());
@@ -1313,14 +1318,12 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
 void MessagingModel::sendDocumentMessage(const QString &filepath, const QString &reply_id,
         const QString &caption)
 {
-    Q_UNUSED(reply_id)
-
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
     sendMessageObject.disable_notification_ = false;
     sendMessageObject.from_background_ = false;
-    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageDocument>
             (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
@@ -1346,14 +1349,12 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
 
 void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_id)
 {
-    Q_UNUSED(reply_id)
-
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
     sendMessageObject.disable_notification_ = false;
     sendMessageObject.from_background_ = false;
-    sendMessageObject.reply_to_message_id_ = 0;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageSticker>
             (new inputMessageSticker);
     inputMessageSticker *ptr = static_cast<inputMessageSticker *>

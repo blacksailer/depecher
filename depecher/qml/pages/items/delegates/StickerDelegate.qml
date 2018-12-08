@@ -21,7 +21,7 @@ Column {
             source: content ? "image://depecherDb/" + content : ""
             MouseArea {
                 anchors.fill: parent
-                onClicked: pageStack.push(Qt.resolvedUrl("../components/PreviewStickerSetDialog.qml"),{set_id:sticker_set_id})
+                onClicked: pageStack.push(Qt.resolvedUrl("../../components/PreviewStickerSetDialog.qml"),{set_id:sticker_set_id})
             }
         }
     }

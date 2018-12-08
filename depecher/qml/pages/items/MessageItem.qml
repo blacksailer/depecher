@@ -138,59 +138,6 @@ ListItem {
             }
        Column {
            id:messageContentWrapper
-           MouseArea {
-           id:replyBackgroundItem
-           height: replyRowWrapper.height
-           width: replyRowWrapper.width
-           onClicked: replyMessageClicked(index,reply_to_message_id)
-
-           Row {
-               id:replyRowWrapper
-               height: reply_to_message_id != index ? Theme.itemSizeExtraSmall : 0
-               visible: reply_to_message_id != index
-               Rectangle {
-                   width:5
-                   height: parent.height
-                   color: Theme.highlightColor
-               }
-               Item {
-               width:Theme.paddingMedium
-               height: parent.height
-               }
-               Column {
-                   id:replyContentColumn
-                   Label {
-                       id:replyAuthorLabel
-                       color: Theme.secondaryHighlightColor
-                       font.pixelSize: Theme.fontSizeSmall
-                       text:reply_author ? reply_author : ""
-                       elide: Text.ElideRight
-
-                   }
-                   Label {
-                       id:replyTextLabel
-
-                       color: Theme.secondaryColor
-                       font.pixelSize: Theme.fontSizeTiny
-                       text:reply_message ? reply_message : ""
-                       maximumLineCount: 1
-                       elide: Text.ElideRight
-                       states: [
-                               State {
-                                   name: "wide text"
-                                   when: reply_message.length > 20
-                                   PropertyChanges {
-                                       target: replyTextLabel
-                                       width: contentLoader.width
-                                   }
-                               }
-                           ]
-                   }
-               }
-
-               }
-
-           }
 
             Column {
                 id: contentLoader
@@ -219,6 +166,59 @@ ListItem {
                     }
                 }
 
+                MouseArea {
+                id:replyBackgroundItem
+                height: replyRowWrapper.height
+                width: replyRowWrapper.width
+                onClicked: replyMessageClicked(index,reply_to_message_id)
+
+                Row {
+                    id:replyRowWrapper
+                    height: reply_to_message_id != index ? Theme.itemSizeExtraSmall : 0
+                    visible: reply_to_message_id != index
+                    Rectangle {
+                        width:5
+                        height: parent.height
+                        color: Theme.highlightColor
+                    }
+                    Item {
+                    width:Theme.paddingMedium
+                    height: parent.height
+                    }
+                    Column {
+                        id:replyContentColumn
+                        Label {
+                            id:replyAuthorLabel
+                            color: Theme.secondaryHighlightColor
+                            font.pixelSize: Theme.fontSizeSmall
+                            text:reply_author ? reply_author : ""
+                            elide: Text.ElideRight
+
+                        }
+                        Label {
+                            id:replyTextLabel
+
+                            color: Theme.secondaryColor
+                            font.pixelSize: Theme.fontSizeTiny
+                            text:reply_message ? reply_message : ""
+                            maximumLineCount: 1
+                            elide: Text.ElideRight
+                            states: [
+                                    State {
+                                        name: "wide text"
+                                        when: reply_message.length > 20
+                                        PropertyChanges {
+                                            target: replyTextLabel
+                                            width: contentLoader.width
+                                        }
+                                    }
+                                ]
+                        }
+                    }
+
+                    }
+
+                }
 
                 Loader {
                     source: {

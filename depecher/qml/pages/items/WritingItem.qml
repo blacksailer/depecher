@@ -20,6 +20,14 @@ Drawer {
     signal sendFiles(var files)
     signal setFocusToEdit()
 
+    function clearReplyArea() {
+        replyMessageAuthor = ""
+        replyMessageText = ""
+        reply_id = "0"
+        if(writer.state=="edit")
+            writer.state = "publish"
+
+    }
     onSetFocusToEdit: messageArea.focus = true
 
     states: [
@@ -89,6 +97,7 @@ Drawer {
                     id: authorsTextLabel
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
+                    maximumLineCount: 1
                     elide: TruncationMode.Fade
                     visible: authorsText != ""
                 }
@@ -101,11 +110,7 @@ Drawer {
                 anchors.rightMargin: Theme.paddingLarge
                 visible: parent.height!=0
                 onClicked: {
-                    replyMessageAuthor = ""
-                    replyMessageText = ""
-                    reply_id = 0
-                    if(writer.state=="edit")
-                        writer.state = "publish"
+                    clearReplyArea()
                 }
             }
         }

@@ -116,6 +116,7 @@ Page {
         }
         actionButton.onClicked:  {
             sendText(textArea.text,writer.reply_id)
+
         }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
@@ -125,11 +126,22 @@ Page {
                     fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-                    messagingModel.sendPhotoMessage(fileUrl, 0, "")
+{
+                    messagingModel.sendPhotoMessage(fileUrl, writer.reply_id, "")
+                    writer.clearReplyArea()
+}
                 if(files[i].type === TdlibState.Document)
-                    messagingModel.sendDocumentMessage(fileUrl,0,"")
+{
+                    messagingModel.sendDocumentMessage(fileUrl,writer.reply_id,"")
+                    writer.clearReplyArea()
+}
                 if(files[i].type === TdlibState.Sticker)
-                    messagingModel.sendStickerMessage(files[i].id,0)
+{
+                    console.log(writer.reply_id)
+                    messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
+                    writer.clearReplyArea()
+
+}
             }
         }
         HorizontalScrollDecorator{}
@@ -193,22 +205,6 @@ Page {
                             console.log("about to be inserted")
                         }
                     }
-                }
-                onFlickStarted: {
-                    needToScroll = false
-                    currentIndex = -1
-                }
-                onCountChanged: {
-                    if(needToScroll)
-                    {
-                        positionViewAtEnd()
-                    }
-                }
-                onCurrentIndexChanged:{
-                    console.log(currentIndex)
-                    //                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
-                    //                    if(currentIndex == 10)
-                    //                        messagingModel.fetchOlder()
                 }
                 state: "preparing"
                 states: [
@@ -321,7 +317,7 @@ Page {
                     menu: ContextMenu {
 
                         MenuItem {
-                            text: qsTr("Copy Text")
+                            text:message_type == MessagingModel.TEXT ? qsTr("Copy Text"):qsTr("Copy path")
                             onClicked: {
                                 if(message_type == MessagingModel.TEXT)
                                     Clipboard.text = content
@@ -337,7 +333,7 @@ Page {
                                 writer.reply_id = id
                                 writer.replyMessageAuthor = author
                                 writer.replyMessageText = replyMessageContent()
-
+                                console.log(writer.replyMessageText.length)
 
                             }
                             function replyMessageContent() {
@@ -394,8 +390,26 @@ Page {
                         messageList.state = "ready"
                     }
                 }
+                onFlickStarted: {
+                    needToScroll = false
+                    currentIndex = -1
+                }
+                onCountChanged: {
+                    if(needToScroll)
+                    {
+                        positionViewAtEnd()
+                    }
+                }
+                onCurrentIndexChanged:{
+                    console.log(currentIndex)
+                    //                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
+                    //                    if(currentIndex == 10)
+                    //                        messagingModel.fetchOlder()
+                }
 
                 Component.onCompleted: {
+                    if(messageList.count<50)
+                        messagingModel.fetchOlder()
                     centerTimer.start()
                 }
 
@@ -407,6 +421,7 @@ Page {
             buzz.play()
             textArea.text = ""
             restoreFocusTimer.start()
+            clearReplyArea()
         }
     }
 
