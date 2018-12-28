@@ -16,8 +16,6 @@ Page {
     Notification {
         id: notificationError
         appName: "Depecher"
-
-        //        icon: "image://theme/icon-lock-warning"
         expireTimeout: 1
     }
     ConfigurationValue {
@@ -183,29 +181,30 @@ Page {
             }
             SilicaListView {
                 id: messageList
+                cacheBuffer: 2 * Screen.height
                 property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
-                visibleArea.onYPositionChanged: {
-                if(visibleArea.yPosition <= 0.2) {
-                    if(!messagingModel.fetchOlderPending)
-                        messagingModel.fetchOlder()
-                }
-                }
+//                visibleArea.onYPositionChanged: {
+//                if(visibleArea.yPosition <= 0.2) {
+//                    if(!messagingModel.fetchOlderPending)
+//                        messagingModel.fetchOlder()
+//                }
+//                }
 
-                Connections {
-                    target: messagingModel
-                    onRowsAboutToBeInserted: {
-                        if(messageList.atYEnd)
-                        {
-                            messageList.needToScroll = true
-                            console.log("about to be inserted")
-                        }
-                    }
-                }
+//                Connections {
+//                    target: messagingModel
+//                    onRowsAboutToBeInserted: {
+//                        if(messageList.atYEnd)
+//                        {
+//                            messageList.needToScroll = true
+//                            console.log("about to be inserted")
+//                        }
+//                    }
+//                }
                 state: "preparing"
                 states: [
                     State {
@@ -295,15 +294,17 @@ Page {
                     id: myDelegate
                     onReplyMessageClicked:
                     {
-                        console.log(source_message_index,replied_message_index)
+                        console.log(source_message_index,replied_message_index,messagingModel.findIndexById(replied_message_index))
 
                        if(replied_message_index != -1) {
                         arrayIndex.push(source_message_index)
                         writer.returnButtonEnabled = true
-                        messageList.currentIndex = replied_message_index
-                       } else {
+
+                           messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index),ListView.Center)
+                                                   messageList.currentIndex =messagingModel.findIndexById(replied_message_index)
+                       }/* else {
                            messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
-                       }
+                       }*/
                     }
                     RemorseItem {
                         id: remorseDelete
@@ -317,12 +318,14 @@ Page {
                     menu: ContextMenu {
 
                         MenuItem {
-                            text:message_type == MessagingModel.TEXT ? qsTr("Copy Text"):qsTr("Copy path")
+                            text:message_type == MessagingModel.TEXT ? qsTr("Copy text") : qsTr("Copy path")
                             onClicked: {
                                 if(message_type == MessagingModel.TEXT)
                                     Clipboard.text = content
-                                else
+                                else if (file_caption)
                                     Clipboard.text = file_caption
+                                else
+                                 Clipboard.text = content
 
 
                             }
@@ -390,26 +393,19 @@ Page {
                         messageList.state = "ready"
                     }
                 }
-                onFlickStarted: {
-                    needToScroll = false
-                    currentIndex = -1
-                }
-                onCountChanged: {
-                    if(needToScroll)
-                    {
-                        positionViewAtEnd()
-                    }
-                }
-                onCurrentIndexChanged:{
-                    console.log(currentIndex)
-                    //                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
-                    //                    if(currentIndex == 10)
-                    //                        messagingModel.fetchOlder()
-                }
-
+//                onFlickStarted: {
+//                    needToScroll = false
+//                    currentIndex = -1
+//                }
+//                onCountChanged: {
+//                    if(needToScroll)
+//                    {
+//                        positionViewAtEnd()
+//                    }
+//                }
                 Component.onCompleted: {
-                    if(messageList.count<50)
-                        messagingModel.fetchOlder()
+//                    if(messageList.count<50)
+//                        messagingModel.fetchOlder()
                     centerTimer.start()
                 }
 

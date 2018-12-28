@@ -10,6 +10,7 @@ import depecherUtils 1.0
 
 Column{
         width: image.width
+        property alias textHeight: captionText.height
         Image {
             id: image
             asynchronous: true
@@ -59,6 +60,7 @@ Column{
         }
         
         LinkedLabel {
+            id:captionText
             width: parent.width
             plainText: file_caption
             color: pressed ? Theme.secondaryColor :Theme.primaryColor

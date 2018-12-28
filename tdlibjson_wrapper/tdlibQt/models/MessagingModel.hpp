@@ -94,6 +94,7 @@ class MessagingModel : public QAbstractListModel
     QVariant dataFileMeta(const int rowIndex, int role) const;
     QSharedPointer<message> findMessageById(const qint64 messageId) const;
     int findIndexById(const qint64 messageId) const;
+    void addRepliedMessage(const QJsonObject &messageObject);
 
     bool canFetchOlder();
 private slots:
@@ -187,6 +188,8 @@ public slots:
     }
     void loadAndRefreshRepliedByIndex(const int messageIndex);
     void loadAndRefreshByMessageId(const QVariant messageId);
+    int findIndexById(const QString &messageId) const;
+
 signals:
     void userNameChanged(QString userName);
     void peerIdChanged(QString peerId);

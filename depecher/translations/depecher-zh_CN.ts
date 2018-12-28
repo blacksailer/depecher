@@ -305,46 +305,22 @@
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>复制文本</translation>
-    </message>
-    <message>
-        <source>Delete Message</source>
-        <translation>上传消息</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>删除中...</translation>
-    </message>
-    <message>
-        <source>Delete for everyone</source>
-        <translation>删除所有人</translation>
-    </message>
-    <message>
         <source>get more</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -376,7 +352,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copy path</source>
+        <source>Delete Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

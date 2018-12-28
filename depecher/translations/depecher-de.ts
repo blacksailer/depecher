@@ -305,47 +305,23 @@
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation>Neue Nachrichten</translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Text kopieren</translation>
-    </message>
-    <message>
-        <source>Delete Message</source>
-        <translation>Nachricht löschen</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Lösche...</translation>
-    </message>
-    <message>
-        <source>Delete for everyone</source>
-        <translation>Für alle Löschen</translation>
-    </message>
-    <message>
         <source>get more</source>
-        <translation>aktualisiere</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reply</source>
@@ -376,7 +352,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copy path</source>
+        <source>Delete Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

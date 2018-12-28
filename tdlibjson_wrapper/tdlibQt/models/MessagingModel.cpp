@@ -142,10 +142,10 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case EDIT_DATE:
         return messages[rowIndex]->edit_date_;
     case REPLY_TO_MESSAGE_ID: { //int64
+        return QString::number(messages[rowIndex]->reply_to_message_id_);
+
         if (messages[rowIndex]->reply_to_message_id_ == 0)
             return rowIndex;
-
-
         return findIndexById(messages[rowIndex]->reply_to_message_id_);
     }
     case REPLY_AUTHOR: {
@@ -159,19 +159,20 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case REPLY_MESSAGE: {
-        if (messages[rowIndex]->reply_to_message_id_ == 0)
+        qint64 reply_id = messages[rowIndex]->reply_to_message_id_;
+        if (reply_id == 0)
             return QVariant();
         //А как оповестить потомка что появился реплай в мапе?
         // 1. Сигналом модели
-        if (replyMessagesMap.contains(messages[rowIndex]->reply_to_message_id_)) {
-            if (replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_->get_id() == messageText::ID) {
-                auto contentPtr = static_cast<messageText *>
-                                  (replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
-                if (contentPtr->text_.data() != nullptr)
-                    return QString::fromStdString(contentPtr->text_->text_);
-                return messageTypeToString(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
+        if (replyMessagesMap.contains(reply_id)) {
+            auto messagePtr = replyMessagesMap[reply_id]->content_;
+            if (messagePtr->get_id() == messageText::ID) {
+                messageText *contentPtr = static_cast<messageText *>
+                                  (messagePtr.data());
+                return QString::fromStdString(contentPtr->text_->text_);
+
             } else
-                return messageTypeToString(replyMessagesMap[messages[rowIndex]->reply_to_message_id_]->content_.data());
+                return messageTypeToString(messagePtr.data());
         }
         return QVariant();
     }
@@ -256,7 +257,6 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         return QVariant();
         break;
     }
-
     case AUDIO_DURATION: {
         if (messages[rowIndex]->content_->get_id() == messageAudio::ID) {
             auto contentAudioPtr = static_cast<messageAudio *>
@@ -685,16 +685,9 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
             }
             endInsertRows();
         } else if (extra == "getReplies") {
-            for (int i = 0; i < messagesArray.size(); i++) {
-                auto obj = messagesArray[i].toObject();
-                qint64 reply_message_id = ParseObject::getInt64(obj["id"]);
-                replyMessagesMap[reply_message_id] = ParseObject::parseMessage(obj);
-            }
 
-            QVector<int> roles;
-            roles.append(REPLY_AUTHOR);
-            roles.append(REPLY_MESSAGE);
-            emit dataChanged(index(0), index(messages.size() - 1), roles);
+        addRepliedMessage(messagesObject);
+
 
         } else {
             int indexToAppend = -1;
@@ -740,6 +733,7 @@ void MessagingModel::appendMessages(const QJsonObject &messagesObject)
         }
 
 
+        if(messagesIds.size() > 0)
         viewMessages(messagesIds);
         qDebug() << "Reply id size" << messageReplyIds.size();
 
@@ -1048,6 +1042,20 @@ int MessagingModel::findIndexById(const qint64 messageId) const
     }
 
     return result;
+}
+
+void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
+{
+    QJsonArray messagesArray = messageObject["messages"].toArray();
+    for (int i = 0; i < messagesArray.size(); i++) {
+        auto obj = messagesArray[i].toObject();
+        qint64 reply_message_id = ParseObject::getInt64(obj["id"]);
+        replyMessagesMap[reply_message_id] = ParseObject::parseMessage(obj);
+    }
+    QVector<int> roles;
+    roles.append(REPLY_AUTHOR);
+    roles.append(REPLY_MESSAGE);
+    emit dataChanged(index(0), index(messages.size() - 1), roles);
 }
 
 bool MessagingModel::canFetchOlder()
@@ -1732,6 +1740,11 @@ void MessagingModel::loadAndRefreshByMessageId(const QVariant messageId)
     tdlibJson->getChatHistory(peerId().toLongLong(), messageId.toLongLong(), -10,
                               MESSAGE_LIMIT, false);
     endResetModel();
+}
+
+int MessagingModel::findIndexById(const QString &messageId) const
+{
+    return findIndexById(messageId.toLongLong());
 }
 
 } //namespace tdlibQt

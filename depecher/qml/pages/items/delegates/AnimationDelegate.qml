@@ -10,6 +10,7 @@ import depecherUtils 1.0
 
 Column{
         width:animation.width
+        property alias textHeight: captionText.height
         Component {
             id:gifComponent
             AnimatedImage {
@@ -210,6 +211,7 @@ Column{
         }
         
         LinkedLabel {
+            id:captionText
             width: parent.width
             plainText:file_caption
             color: pressed ? Theme.secondaryColor :Theme.primaryColor

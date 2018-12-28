@@ -306,47 +306,23 @@
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation>Nuevos mensajes</translation>
-    </message>
-    <message>
         <source>edited</source>
         <translation>editado</translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation>%1 se unió con enlace de invitación</translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation>¡%1 se unió a Telegram!</translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
-        <translation>%1 ha creado el grupo %2</translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Copiar texto</translation>
-    </message>
-    <message>
-        <source>Delete Message</source>
-        <translation>Borrar mensaje</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Borrando...</translation>
-    </message>
-    <message>
-        <source>Delete for everyone</source>
-        <translation>Borrar para todos</translation>
-    </message>
-    <message>
         <source>get more</source>
-        <translation>ver más</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reply</source>
@@ -377,7 +353,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copy path</source>
+        <source>Delete Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete for everyone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
