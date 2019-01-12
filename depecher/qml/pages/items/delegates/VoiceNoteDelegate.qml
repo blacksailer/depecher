@@ -27,7 +27,7 @@ Column{
                 fillMode: Image.PreserveAspectFit
                 source: progress.visible ? "image://theme/icon-m-clear"
                                          : file_downloading_completed ?
-                                               __depecher_audio.playbackState == Audio.PlayingState
+                                               (__depecher_audio.source == "file://"+content && __depecher_audio.playbackState === Audio.PlayingState)
                                                ? "image://theme/icon-m-pause"
                                                : "image://theme/icon-m-play"
                                                : "image://theme/icon-m-cloud-download"
@@ -54,7 +54,7 @@ Column{
                             else
                                 messagingModel.downloadDocument(index)
                         } else {
-                            if(__depecher_audio.playbackState == Audio.PlayingState)
+                            if(__depecher_audio.playbackState === Audio.PlayingState)
                                 __depecher_audio.stop()
                             else {
                             __depecher_audio.source =  "file://"+content
@@ -67,7 +67,7 @@ Column{
             }
 
             Column {
-                width: parent.width - image.width - parent.spacing
+                width: parent.width - playIcon.width - parent.spacing
                 spacing: Theme.paddingSmall
                 anchors.verticalCenter: playIcon.verticalCenter
 

@@ -6,7 +6,6 @@ import tdlibQtEnums 1.0
 import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import "items"
-
 Page {
     id: page
     allowedOrientations: Orientation.All
@@ -64,7 +63,6 @@ Page {
                 notificationError.icon = "image://theme/icon-lock-information"
             notificationError.publish()
         }
-
         onErrorReceived: {
             notificationError.previewBody = error_code +"-" +error_message
             notificationError.icon = "image://theme/icon-lock-warning"
@@ -124,25 +122,25 @@ Page {
                     fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-{
+                {
                     messagingModel.sendPhotoMessage(fileUrl, writer.reply_id, "")
                     writer.clearReplyArea()
-}
+                }
                 if(files[i].type === TdlibState.Document)
-{
+                {
                     messagingModel.sendDocumentMessage(fileUrl,writer.reply_id,"")
                     writer.clearReplyArea()
-}
+                }
                 if(files[i].type === TdlibState.Sticker)
-{
+                {
                     console.log(writer.reply_id)
                     messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
                     writer.clearReplyArea()
 
-}
+                }
             }
         }
-        HorizontalScrollDecorator{}
+
         BusyIndicator {
             id:placeholder
             running: true
@@ -181,30 +179,33 @@ Page {
             }
             SilicaListView {
                 id: messageList
-                cacheBuffer: 2 * Screen.height
                 property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
-//                visibleArea.onYPositionChanged: {
-//                if(visibleArea.yPosition <= 0.2) {
-//                    if(!messagingModel.fetchOlderPending)
-//                        messagingModel.fetchOlder()
-//                }
-//                }
 
-//                Connections {
-//                    target: messagingModel
-//                    onRowsAboutToBeInserted: {
-//                        if(messageList.atYEnd)
-//                        {
-//                            messageList.needToScroll = true
-//                            console.log("about to be inserted")
-//                        }
-//                    }
-//                }
+                Timer {
+                    id:positionAtEndTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messageList.positionViewAtEnd()
+                }
+                Connections {
+                target: messagingModel
+                onRowsInserted:{
+                if(first == 0)
+                    for(var i = 0; i < arrayIndex.length;i ++)
+                        arrayIndex[i] = arrayIndex[i] + last + 1
+                if(messageList.needToScroll)
+                    positionAtEndTimer.start()
+                }
+                }
+                topMargin:  -1 * Theme.itemSizeExtraLarge
+                VerticalScrollDecorator {
+                    flickable: messageList
+                }
                 state: "preparing"
                 states: [
                     State {
@@ -272,66 +273,54 @@ Page {
                             messagingModel.fetchOlder()
                     }
                 }
-                PullDownMenu {
-                    quickSelect: true
-                    visible:!messagingModel.reachedHistoryEnd
-                    MenuItem{
-                        text:qsTr("get more")
-                        onClicked:
-                        {
-                            var pos = messageList.contentY;
-                            messageList.positionViewAtIndex(1,ListView.Beginning)
-                            messageList.currentIndex = 1
-                            var destPos = messageList.contentY;
-                            moveAnimation.from = pos;
-                            moveAnimation.to = destPos;
-                            moveAnimation.running = true;
-                        }
-                    }
-                    busy: messagingModel.fetchOlderPending
+                boundsBehavior: Flickable.DragOverBounds
+
+                Timer {
+                    id:fetchOlderTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messagingModel.fetchOlder()
                 }
-                delegate: MessageItem {
+
+                onContentYChanged: {
+                    if(atYBeginning &&  !messagingModel.reachedHistoryEnd) {
+                        //                                                                              messageList.positionViewAtIndex(1,ListView.Beginning)
+                        fetchOlderTimer.start()
+                    }
+                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
+
+                }
+                delegate:           MessageItem {
                     id: myDelegate
-                    onReplyMessageClicked:
-                    {
-                        console.log(source_message_index,replied_message_index,messagingModel.findIndexById(replied_message_index))
+                    onReplyMessageClicked:    {
+                        console.log(source_message_index,replied_message_index,messagingModel.findIndexById(replied_message_index) + 1)
 
-                       if(replied_message_index != -1) {
-                        arrayIndex.push(source_message_index)
-                        writer.returnButtonEnabled = true
+                        if(messagingModel.findIndexById(replied_message_index) !== -1) {
+                            arrayIndex.push(source_message_index)
+                            writer.returnButtonEnabled = true
 
-                           messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index),ListView.Center)
-                                                   messageList.currentIndex =messagingModel.findIndexById(replied_message_index)
-                       }/* else {
-                           messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
-                       }*/
+                            messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index)+ 1,ListView.Center)
+                            messageList.currentIndex =messagingModel.findIndexById(replied_message_index)+ 1
+                        }/* else {
+                                                                                  messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
+                                                                              }*/
+                    }
+
+                    ListView.onAdd: AddAnimation {
+                        target: myDelegate
                     }
                     RemorseItem {
                         id: remorseDelete
                     }
-                    //                    ListView.onAdd: AddAnimation {
-                    //                        target: myDelegate
-                    //                    }
                     ListView.onRemove: RemoveAnimation {
                         target: myDelegate
                     }
                     menu: ContextMenu {
-
-                        MenuItem {
-                            text:message_type == MessagingModel.TEXT ? qsTr("Copy text") : qsTr("Copy path")
-                            onClicked: {
-                                if(message_type == MessagingModel.TEXT)
-                                    Clipboard.text = content
-                                else if (file_caption)
-                                    Clipboard.text = file_caption
-                                else
-                                 Clipboard.text = content
-
-
-                            }
-                        }
                         MenuItem {
                             text: qsTr("Reply")
+                            visible:  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
+                                      messagingModel.chatType["type"] == TdlibState.BasicGroup ||
+                                      messagingModel.chatType["type"] == TdlibState.Private)
                             onClicked: {
                                 writer.reply_id = id
                                 writer.replyMessageAuthor = author
@@ -362,6 +351,19 @@ Page {
                             }
                         }
                         MenuItem {
+                            text:message_type == MessagingModel.TEXT || file_caption ? qsTr("Copy text") : qsTr("Copy path")
+                            onClicked: {
+                                if(message_type == MessagingModel.TEXT)
+                                    Clipboard.text = content
+                                else if (file_caption)
+                                    Clipboard.text = file_caption
+                                else
+                                    Clipboard.text = content
+
+
+                            }
+                        }
+                        MenuItem {
                             text: qsTr("Delete Message")
                             visible: can_be_deleted_only_for_yourself ? can_be_deleted_only_for_yourself : false
                             onClicked: {
@@ -377,35 +379,28 @@ Page {
                         }
                     }
                     function showRemorseDeleteToAll() {
-                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index,true) } )
+                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() {
+                            messagingModel.deleteMessage(index,true) }
+                        )
                     }
                     function showRemorseDelete() {
                         remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
                 }
 
+
+
                 Timer {
                     id:centerTimer
                     interval: 500
                     onTriggered: {
                         messageList.positionViewAtIndex(messagingModel.lastMessageIndex,ListView.Center)
-                        messageList.currentIndex = messagingModel.lastMessageIndex
+                        messageList.currentIndex = messagingModel.lastMessageIndex + 1
                         messageList.state = "ready"
                     }
                 }
-//                onFlickStarted: {
-//                    needToScroll = false
-//                    currentIndex = -1
-//                }
-//                onCountChanged: {
-//                    if(needToScroll)
-//                    {
-//                        positionViewAtEnd()
-//                    }
-//                }
+
                 Component.onCompleted: {
-//                    if(messageList.count<50)
-//                        messagingModel.fetchOlder()
                     centerTimer.start()
                 }
 
@@ -420,6 +415,5 @@ Page {
             clearReplyArea()
         }
     }
-
 }
 

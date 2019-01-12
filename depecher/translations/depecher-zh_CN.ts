@@ -139,6 +139,10 @@
         <source>Minimize nameplate</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -311,10 +315,6 @@
 </context>
 <context>
     <name>MessagingPage</name>
-    <message>
-        <source>get more</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Copy text</source>
         <translation type="unfinished"></translation>

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQml 2.2
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 
 Drawer {
     id: attachDrawer
@@ -20,6 +21,12 @@ Drawer {
     signal sendFiles(var files)
     signal setFocusToEdit()
 
+    property string settingsBehaviorPath:  "/apps/depecher/behavior"
+    ConfigurationValue {
+        id:sendByEnter
+        key:settingsBehaviorPath +"/sendByEnter"
+        defaultValue: false
+    }
     function clearReplyArea() {
         replyMessageAuthor = ""
         replyMessageText = ""
@@ -179,6 +186,7 @@ Drawer {
             anchors.bottom: messageArea.bottom
             anchors.right: parent.right
             anchors.bottomMargin: 25
+            visible: !sendByEnter.value
         }
     }
 
