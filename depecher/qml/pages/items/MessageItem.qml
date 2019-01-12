@@ -13,8 +13,10 @@ import "delegates"
 ListItem {
     id: messageListItem
     width: parent.width
-    contentHeight: columnWrapper.height
+    contentHeight:  columnWrapper.height + inlineView.height
     property string settingsPath:  "/apps/depecher/ui/message"
+    property int currentMessageType: message_type ? message_type : 0
+    onCurrentMessageTypeChanged: contentLoader.reload()
     signal replyMessageClicked(int source_message_index,string replied_message_index)
     highlighted: ListView.isCurrentItem
 
@@ -50,17 +52,24 @@ ListItem {
         key:settingsPath +"/timepoint"
         defaultValue: Formatter.Timepoint
     }
+    ConfigurationValue {
+        id:oneAligningValue
+        key:settingsPath +"/oneAlign"
+        defaultValue: false//Theme.highlightDimmerColor
+    }
     Rectangle {
         id:background
         width: columnWrapper.width
         height: columnWrapper.height
         x:columnWrapper.x
         y:columnWrapper.y
-        visible: message_type != MessagingModel.STICKER &&
-                 message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                 message_type != MessagingModel.JOINBYLINK &&
-                 message_type != MessagingModel.CONTACT_REGISTERED &&
-                 message_type != MessagingModel.CHAT_CREATED
+        visible: currentMessageType != MessagingModel.STICKER &&
+                 currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                 currentMessageType != MessagingModel.JOINBYLINK &&
+                 currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                 currentMessageType != MessagingModel.CHAT_CREATED &&
+                 index != 0
+
         radius: radiusValue.value
         opacity: opacityValue.value
         color: messageListItem.ListView.isCurrentItem ? Theme.highlightColor
@@ -91,18 +100,20 @@ ListItem {
     Column {
         id: columnWrapper
         width: contentWrapper.width + 20
-        anchors.right: is_outgoing ? parent.right : undefined
-        anchors.left: is_outgoing ? undefined : parent.left
-        anchors.rightMargin:message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                            message_type != MessagingModel.JOINBYLINK &&
-                            message_type != MessagingModel.CONTACT_REGISTERED &&
-                            message_type != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin
-                                                                        : 0
-        anchors.leftMargin:message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                           message_type != MessagingModel.JOINBYLINK &&
-                           message_type != MessagingModel.CONTACT_REGISTERED &&
-                           message_type != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin :
-                                                                         0
+        anchors.right: oneAligningValue.value ? undefined :
+                                          is_outgoing ? parent.right : undefined
+        anchors.left: oneAligningValue.value ? parent.left :
+                                         is_outgoing ? undefined : parent.left
+        anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                            currentMessageType != MessagingModel.JOINBYLINK &&
+                            currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                            currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin
+                                                                              : 0
+        anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                           currentMessageType != MessagingModel.JOINBYLINK &&
+                           currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                           currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin :
+                                                                               0
         Item {
             width: parent.width
             height:15
@@ -110,18 +121,20 @@ ListItem {
         Row {
             id: contentWrapper
             spacing: Theme.paddingMedium
-            x:message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-              message_type != MessagingModel.JOINBYLINK &&
-              message_type != MessagingModel.CONTACT_REGISTERED &&
-              message_type != MessagingModel.CHAT_CREATED ? 10 : 0
+            x:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+              currentMessageType != MessagingModel.JOINBYLINK &&
+              currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+              currentMessageType != MessagingModel.CHAT_CREATED ? 10 : 0
             width: Math.max(metaInfoRow.width,replyLoader.width,
-                            userAvatarLoader.width + contentLoader.width +
+                            userAvatarLoader.width + contentColumn.width +
                             (userAvatarLoader.width == 0 ? 0:spacing))
-//                        height: Math.max(userAvatarLoader.height+replyLoader.height,contentLoader.height+replyLoader.height)
-            layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
+            //                       height: Math.max(userAvatarLoader.height+replyLoader.height,contentLoader.height+replyLoader.height)
+            layoutDirection:oneAligningValue.value ?  Qt.LeftToRight :
+                                                     is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
             Loader {
                 id: userAvatarLoader
-                anchors.top: contentLoader.top
+                active: index != 0
+                anchors.top: contentColumn.top
                 sourceComponent: Component {
                     CircleImage {
                         id: userAvatar
@@ -129,20 +142,25 @@ ListItem {
                         source: sender_photo ? "image://depecherDb/"+sender_photo : ""
                         fallbackText: author ? author.charAt(0) : ""
                         fallbackItemVisible: sender_photo ? false : true
-                        visible: !is_outgoing && message_type != MessagingModel.SYSTEM_NEW_MESSAGE &&
-                                 message_type != MessagingModel.JOINBYLINK &&
-                                 message_type != MessagingModel.CONTACT_REGISTERED &&
-                                 message_type != MessagingModel.CHAT_CREATED  &&
-                                 !messagingModel.chatType["is_channel"]  &&
-                        messagingModel.chatType["type"] != TdlibState.Private &&
-                        messagingModel.chatType["type"] != TdlibState.Secret
+                        visible: oneAligningValue.value ? currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                                                          currentMessageType != MessagingModel.JOINBYLINK &&
+                                                          currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                                                          currentMessageType != MessagingModel.CHAT_CREATED  &&
+                                                          !messagingModel.chatType["is_channel"]
+                                                        : !is_outgoing && currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
+                                                         currentMessageType != MessagingModel.JOINBYLINK &&
+                                                         currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                                                         currentMessageType != MessagingModel.CHAT_CREATED  &&
+                                                         !messagingModel.chatType["is_channel"]  &&
+                                                         messagingModel.chatType["type"] != TdlibState.Private &&
+                                                         messagingModel.chatType["type"] != TdlibState.Secret
                     }
                 }
             }
 
 
             Column {
-                id: contentLoader
+                id: contentColumn
                 Row {
                     id: subInfoRow
                     Label {
@@ -152,10 +170,10 @@ ListItem {
                         font.pixelSize: Theme.fontSizeExtraSmall
                         truncationMode: TruncationMode.Fade
                         visible: {
-                            if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE ||
-                                    message_type == MessagingModel.JOINBYLINK ||
-                                    message_type == MessagingModel.CONTACT_REGISTERED ||
-                                    message_type == MessagingModel.CHAT_CREATED ) {
+                            if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
+                                    currentMessageType == MessagingModel.JOINBYLINK ||
+                                    currentMessageType == MessagingModel.CONTACT_REGISTERED ||
+                                    currentMessageType == MessagingModel.CHAT_CREATED ) {
                                 return false
                             }
                             else if(messagingModel.chatType["type"] == TdlibState.BasicGroup || (messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"])) {
@@ -169,7 +187,7 @@ ListItem {
 
                 Loader {
                     id:replyLoader
-                    active: reply_to_message_id != 0
+                    active: reply_to_message_id != 0 && index != 0
                     sourceComponent: Component {
                         MouseArea {
                             id:replyBackgroundItem
@@ -218,59 +236,59 @@ ListItem {
                 }
 
                 Loader {
-                    //  active: status == Loader.Ready
-                    onStatusChanged: {
-                        if(status == Loader.Ready) {
-                            if(message_type == MessagingModel.PHOTO || message_type == MessagingModel.ANIMATION) {
-                                height = height + item.textHeight
-                            }
-                        }
+                    id:contentLoader
+                    function reload() {
+                            source = ""
+                            source = setItem()
                     }
                     function setItem() {
-                        if(message_type == MessagingModel.TEXT) {
+                        if (index == 0) {
+                            return "delegates/TopMarginDelegate.qml"
+                        }
+                        if(currentMessageType == MessagingModel.TEXT) {
                             return "delegates/TextDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.PHOTO) {
-                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                            var maxHeight = page.height/2
-                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
-                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
+                        else if(currentMessageType == MessagingModel.PHOTO) {
+                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                            //                            var maxHeight = page.height/2
+                            //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
+                            //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                             return "delegates/ImageDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.STICKER) {
+                        else if(currentMessageType == MessagingModel.STICKER) {
                             width = 400
                             height = width
                             return "delegates/StickerDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.SYSTEM_NEW_MESSAGE) {
+                        else if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE) {
                             return "delegates/NewMessageDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.DOCUMENT) {
+                        else if(currentMessageType == MessagingModel.DOCUMENT) {
                             return "delegates/DocumentDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.ANIMATION) {
-                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                            var maxHeight = page.height/2
-                            width = photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
-                            height = photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
+                        else if(currentMessageType == MessagingModel.ANIMATION) {
+                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                            //                            var maxHeight = page.height/2
+                            //                            width = photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
+                            //                            height = photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                             return "delegates/AnimationDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.AUDIO) {
+                        else if(currentMessageType == MessagingModel.AUDIO) {
                             return "delegates/AudioDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.VOICE) {
+                        else if(currentMessageType == MessagingModel.VOICE) {
                             return "delegates/VoiceNoteDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.CONTACT) {
+                        else if(currentMessageType == MessagingModel.CONTACT) {
                             return "delegates/ContactDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.JOINBYLINK) {
+                        else if(currentMessageType == MessagingModel.JOINBYLINK) {
                             return "delegates/JoinByLinkDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.CONTACT_REGISTERED) {
+                        else if(currentMessageType == MessagingModel.CONTACT_REGISTERED) {
                             return "delegates/JoinedDelegate.qml"
                         }
-                        else if(message_type == MessagingModel.CHAT_CREATED) {
+                        else if(currentMessageType == MessagingModel.CHAT_CREATED) {
                             return "delegates/ChatCreatedDelegate.qml"
                         }
                         return undefined
@@ -282,10 +300,10 @@ ListItem {
 
                 Row {
                     id: metaInfoRow
-                    visible: message_type !== MessagingModel.SYSTEM_NEW_MESSAGE &&
-                             message_type != MessagingModel.JOINBYLINK &&
-                             message_type != MessagingModel.CONTACT_REGISTERED &&
-                             message_type != MessagingModel.CHAT_CREATED
+                    visible: currentMessageType !== MessagingModel.SYSTEM_NEW_MESSAGE &&
+                             currentMessageType != MessagingModel.JOINBYLINK &&
+                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
+                             currentMessageType != MessagingModel.CHAT_CREATED
 
                     layoutDirection: is_outgoing ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: Theme.paddingSmall
@@ -296,7 +314,7 @@ ListItem {
                         }
                         font.pixelSize: Theme.fontSizeTiny
                         color:pressed ? Theme.primaryColor : Theme.secondaryColor
-                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date)
+                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date) + ' ' + index
                     }
                     Label {
                         font.pixelSize: Theme.fontSizeTiny
@@ -322,49 +340,50 @@ ListItem {
 
 
         }
-        Loader {
-            active:reply_markup ? true : false
-            sourceComponent: Component {
-                ListView {
-                    id:inlineView
-                    anchors.top: columnWrapper.bottom
-                    x:Theme.horizontalPageMargin
-                    width:parent.width - 2 * x
-                    height:reply_markup ? Theme.itemSizeMedium * reply_markup.length : 0
-                    model:reply_markup ? reply_markup.length : 0
-                    delegate: Item {
-                        width: parent.width
-                        height:Theme.itemSizeSmall
-                        SilicaGridView {
-                            id:cellsGrid
-                            width: parent.width
-                            cellWidth: parent.width / count
-                            cellHeight: Theme.itemSizeSmall
+//        Loader {
+//            sourceComponent: Component {
+//            }
+//        }
+    }
+    ListView {
+        id:inlineView
+        anchors.top: columnWrapper.bottom
+        visible:reply_markup && index != 0 ? true : false
+        x:Theme.horizontalPageMargin
+        width:parent.width - 2 * x
+        height:reply_markup ? Theme.itemSizeMedium * reply_markup.length : 0
+        model:reply_markup ? reply_markup.length : 0
+        delegate: Item {
+            width: parent.width
+            height:Theme.itemSizeSmall
+            SilicaGridView {
+                id:cellsGrid
+                width: parent.width
+                cellWidth: parent.width / count
+                cellHeight: Theme.itemSizeSmall
 
-                            height:Theme.itemSizeSmall
-                            model:reply_markup[index]
-                            delegate:           Button {
-                                width: cellsGrid.cellWidth - Theme.paddingSmall * 2
-                                height: cellsGrid.cellHeight
-                                Label {
-                                    anchors.centerIn: parent
-                                    text:modelData.text
-                                    font.pixelSize: Theme.fontSizeSmall
-                                }
-                                onClicked: {
-                                    if(modelData.type["@type"] === "inlineKeyboardButtonTypeUrl") {
-                                        Qt.openUrlExternally(modelData.type["url"])
-                                    } else if (modelData.type["@type"] === "inlineKeyboardButtonTypeSwitchInline") {
+                height:Theme.itemSizeSmall
+                model:reply_markup[index]
+                delegate:           Button {
+                    width: cellsGrid.cellWidth - Theme.paddingSmall * 2
+                    height: cellsGrid.cellHeight
+                    Label {
+                        anchors.centerIn: parent
+                        text:modelData.text
+                        font.pixelSize: Theme.fontSizeSmall
+                    }
+                    onClicked: {
+                        if(modelData.type["@type"] === "inlineKeyboardButtonTypeUrl") {
+                            Qt.openUrlExternally(modelData.type["url"])
+                        } else if (modelData.type["@type"] === "inlineKeyboardButtonTypeSwitchInline") {
 
-                                    } else
-                                        messagingModel.getCallbackQueryAnswerFunc(id,modelData.type["@type"],modelData.type["data"])
-                                }
-                            }
-
-                        }
+                        } else
+                            messagingModel.getCallbackQueryAnswerFunc(id,modelData.type["@type"],modelData.type["data"])
                     }
                 }
+
             }
         }
     }
+
 }

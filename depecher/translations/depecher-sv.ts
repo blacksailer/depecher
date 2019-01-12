@@ -141,6 +141,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>Minimize nameplate</source>
         <translation>Minimera namnplåten</translation>
     </message>
+    <message>
+        <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -314,10 +318,6 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
 </context>
 <context>
     <name>MessagingPage</name>
-    <message>
-        <source>get more</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Copy text</source>
         <translation type="unfinished"></translation>
