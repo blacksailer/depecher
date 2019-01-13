@@ -54,8 +54,7 @@
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.
-        </translation>
+        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.</translation>
     </message>
     <message>
         <source>Features:</source>
@@ -103,12 +102,11 @@
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
-Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
+        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
     </message>
 </context>
 <context>
@@ -143,7 +141,7 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Aways align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>Justera alltid meddelanden åt vänster</translation>
     </message>
 </context>
 <context>
@@ -265,7 +263,7 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Unread 
  messages</source>
-        <translation> Olästa 
+        <translation>Olästa 
  meddelanden</translation>
     </message>
 </context>
@@ -320,51 +318,51 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera text</translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera sökväg</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svara</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished">Bild</translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Dokument</translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animation</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Meddelande</translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort meddelande</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort för alla</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tar bort...</translation>
     </message>
 </context>
 <context>
@@ -576,7 +574,7 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
-        <translation type="unfinished"></translation>
+        <translation>Röstnotering</translation>
     </message>
 </context>
 <context>
@@ -607,35 +605,35 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta lib-parametrar</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta krypteringsnyckel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta kod</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta lösenord</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta logga ut</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta stänger</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta stängd</translation>
     </message>
 </context>
 </TS>
