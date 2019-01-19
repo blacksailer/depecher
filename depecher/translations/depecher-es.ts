@@ -458,7 +458,7 @@
     </message>
     <message>
         <source>Address. Set empty to disable proxy</source>
-        <translation type="unfinished">Dirección. Deja en blanco para deshabilitar proxy</translation>
+        <translation>Dirección. Deja en blanco para deshabilitar proxy</translation>
     </message>
     <message>
         <source>Connection status: </source>
