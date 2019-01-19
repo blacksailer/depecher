@@ -140,6 +140,10 @@
         <source>Minimize nameplate</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -306,46 +310,58 @@
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Szöveg másolása</translation>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">Kép</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Dokumentum</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Üzenet törlése</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Törlés...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Törlés mindenkinek</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>get more</source>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -550,6 +566,13 @@
     </message>
     <message>
         <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

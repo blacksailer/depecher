@@ -6,17 +6,15 @@ import tdlibQtEnums 1.0
 import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import "items"
-
 Page {
     id: page
     allowedOrientations: Orientation.All
     property alias chatId: messagingModel.peerId
+    property var arrayIndex: []
 
     Notification {
         id: notificationError
         appName: "Depecher"
-
-        //        icon: "image://theme/icon-lock-warning"
         expireTimeout: 1
     }
     ConfigurationValue {
@@ -31,7 +29,7 @@ Page {
     }
     MessagingModel{
         id: messagingModel
-        isActive: page.status === PageStatus.Active
+        isActive: page.status === PageStatus.Active && Qt.application.active
         onChatTypeChanged: {
             if(chatType["type"] == TdlibState.Supergroup)
             {
@@ -65,7 +63,6 @@ Page {
                 notificationError.icon = "image://theme/icon-lock-information"
             notificationError.publish()
         }
-
         onErrorReceived: {
             notificationError.previewBody = error_code +"-" +error_message
             notificationError.icon = "image://theme/icon-lock-warning"
@@ -88,6 +85,7 @@ Page {
     WritingItem {
         id: writer
         rootPage: page
+
         Timer {
             //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)
@@ -100,19 +98,21 @@ Page {
             if(sendByEnter.value) {
                 //removing on enter clicked symbol - /n
                 var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
-
-                messagingModel.sendTextMessage(messageText,0)
-                buzz.play()
-                textArea.text = ""
-                restoreFocusTimer.start()
+                sendText(messageText,writer.reply_id)
             }
         }
-        actionButton.onClicked:
-        {
-            messagingModel.sendTextMessage(textArea.text,0)
-            buzz.play()
-            textArea.text = ""
-            restoreFocusTimer.start()
+        returnButtonItem.onClicked: {
+            if(arrayIndex.length>0)
+            {
+                messageList.currentIndex = arrayIndex.pop()
+                messageList.positionViewAtIndex(messageList.currentIndex,ListView.Center)
+
+            }
+            returnButtonEnabled = arrayIndex.length > 0
+        }
+        actionButton.onClicked:  {
+            sendText(textArea.text,writer.reply_id)
+
         }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
@@ -122,18 +122,34 @@ Page {
                     fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-                    messagingModel.sendPhotoMessage(fileUrl, 0, "")
+                {
+                    messagingModel.sendPhotoMessage(fileUrl, writer.reply_id, "")
+                    writer.clearReplyArea()
+                }
                 if(files[i].type === TdlibState.Document)
-                    messagingModel.sendDocumentMessage(fileUrl,0,"")
+                {
+                    messagingModel.sendDocumentMessage(fileUrl,writer.reply_id,"")
+                    writer.clearReplyArea()
+                }
                 if(files[i].type === TdlibState.Sticker)
-                    messagingModel.sendStickerMessage(files[i].id,0)
+                {
+                    console.log(writer.reply_id)
+                    messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
+                    writer.clearReplyArea()
+
+                }
             }
         }
+
         BusyIndicator {
             id:placeholder
             running: true
             size: BusyIndicatorSize.Large
             anchors.centerIn: messageList.parent
+        }
+
+        bottomArea.onFocusChanged: {
+            messageList.positionViewAtEnd()
         }
 
         Column {
@@ -163,16 +179,32 @@ Page {
             }
             SilicaListView {
                 id: messageList
+                property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
-                onCurrentIndexChanged:{
-                    console.log(currentIndex)
-//                    //Required - highlightRangeMode: ListView.StrictlyEnforceRange
-//                    if(currentIndex == 10)
-//                        messagingModel.fetchOlder()
+
+                Timer {
+                    id:positionAtEndTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messageList.positionViewAtEnd()
+                }
+                Connections {
+                target: messagingModel
+                onRowsInserted:{
+                if(first == 0)
+                    for(var i = 0; i < arrayIndex.length;i ++)
+                        arrayIndex[i] = arrayIndex[i] + last + 1
+                if(messageList.needToScroll)
+                    positionAtEndTimer.start()
+                }
+                }
+                topMargin:  -1 * Theme.itemSizeExtraLarge
+                VerticalScrollDecorator {
+                    flickable: messageList
                 }
                 state: "preparing"
                 states: [
@@ -241,44 +273,92 @@ Page {
                             messagingModel.fetchOlder()
                     }
                 }
-                PullDownMenu {
-                    quickSelect: true
-                    visible:!messagingModel.reachedHistoryEnd
-                    MenuItem{
-                        text:qsTr("get more")
-                        onClicked:
-                        {
-                            var pos = messageList.contentY;
-                            messageList.positionViewAtIndex(1,ListView.Beginning)
-                            messageList.currentIndex = 1
-                            var destPos = messageList.contentY;
-                            moveAnimation.from = pos;
-                            moveAnimation.to = destPos;
-                            moveAnimation.running = true;
-                        }
-                    }
-                    busy: messagingModel.fetchOlderPending
-                }
-                delegate: MessageItem {
-                    id: myDelegate
+                boundsBehavior: Flickable.DragOverBounds
 
+                Timer {
+                    id:fetchOlderTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messagingModel.fetchOlder()
+                }
+
+                onContentYChanged: {
+                    if(atYBeginning &&  !messagingModel.reachedHistoryEnd) {
+                        //                                                                              messageList.positionViewAtIndex(1,ListView.Beginning)
+                        fetchOlderTimer.start()
+                    }
+                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
+
+                }
+                delegate:           MessageItem {
+                    id: myDelegate
+                    onReplyMessageClicked:    {
+                        console.log(source_message_index,replied_message_index,messagingModel.findIndexById(replied_message_index) + 1)
+
+                        if(messagingModel.findIndexById(replied_message_index) !== -1) {
+                            arrayIndex.push(source_message_index)
+                            writer.returnButtonEnabled = true
+
+                            messageList.positionViewAtIndex(messagingModel.findIndexById(replied_message_index)+ 1,ListView.Center)
+                            messageList.currentIndex =messagingModel.findIndexById(replied_message_index)+ 1
+                        }/* else {
+                                                                                  messagingModel.loadAndRefreshRepliedByIndex(source_message_index)
+                                                                              }*/
+                    }
+
+                    ListView.onAdd: AddAnimation {
+                        target: myDelegate
+                    }
                     RemorseItem {
                         id: remorseDelete
                     }
-                    //                    ListView.onAdd: AddAnimation {
-                    //                        target: myDelegate
-                    //                    }
                     ListView.onRemove: RemoveAnimation {
                         target: myDelegate
                     }
                     menu: ContextMenu {
                         MenuItem {
-                            text: qsTr("Copy Text")
+                            text: qsTr("Reply")
+                            visible:  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
+                                      messagingModel.chatType["type"] == TdlibState.BasicGroup ||
+                                      messagingModel.chatType["type"] == TdlibState.Private)
+                            onClicked: {
+                                writer.reply_id = id
+                                writer.replyMessageAuthor = author
+                                writer.replyMessageText = replyMessageContent()
+                                console.log(writer.replyMessageText.length)
+
+                            }
+                            function replyMessageContent() {
+                                if(message_type == MessagingModel.TEXT) {
+                                    return content
+                                }
+                                else if(message_type == MessagingModel.PHOTO) {
+                                    return qsTr("Photo")
+                                }
+                                else if(message_type == MessagingModel.STICKER) {
+                                    return qsTr("Sticker")
+                                }
+                                else if(message_type == MessagingModel.DOCUMENT) {
+                                    return qsTr("Document")
+                                }
+                                else if(message_type == MessagingModel.ANIMATION) {
+                                    return qsTr("Animation")
+                                }
+                                else if(message_type == MessagingModel.CONTACT) {
+                                    return qsTr("Contact")
+                                }
+                                return qsTr("Message");
+                            }
+                        }
+                        MenuItem {
+                            text:message_type == MessagingModel.TEXT || file_caption ? qsTr("Copy text") : qsTr("Copy path")
                             onClicked: {
                                 if(message_type == MessagingModel.TEXT)
                                     Clipboard.text = content
-                                else
+                                else if (file_caption)
                                     Clipboard.text = file_caption
+                                else
+                                    Clipboard.text = content
 
 
                             }
@@ -299,19 +379,23 @@ Page {
                         }
                     }
                     function showRemorseDeleteToAll() {
-                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index,true) } )
+                        remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() {
+                            messagingModel.deleteMessage(index,true) }
+                        )
                     }
                     function showRemorseDelete() {
                         remorseDelete.execute(myDelegate, qsTr("Deleting..."), function() { messagingModel.deleteMessage(index) } )
                     }
                 }
 
+
+
                 Timer {
                     id:centerTimer
                     interval: 500
                     onTriggered: {
                         messageList.positionViewAtIndex(messagingModel.lastMessageIndex,ListView.Center)
-                        messageList.currentIndex = messagingModel.lastMessageIndex
+                        messageList.currentIndex = messagingModel.lastMessageIndex + 1
                         messageList.state = "ready"
                     }
                 }
@@ -322,7 +406,14 @@ Page {
 
             }
         }
-    }
 
+        function sendText(text,reply_id) {
+            messagingModel.sendTextMessage(text,reply_id)
+            buzz.play()
+            textArea.text = ""
+            restoreFocusTimer.start()
+            clearReplyArea()
+        }
+    }
 }
 

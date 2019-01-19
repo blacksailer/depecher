@@ -139,6 +139,10 @@
         <source>Minimize nameplate</source>
         <translation>Ocultar nombre del chat</translation>
     </message>
+    <message>
+        <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -306,47 +310,59 @@
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation>Nuevos mensajes</translation>
-    </message>
-    <message>
         <source>edited</source>
         <translation>editado</translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation>%1 se unió con enlace de invitación</translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation>¡%1 se unió a Telegram!</translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
-        <translation>%1 ha creado el grupo %2</translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Copiar texto</translation>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">Foto</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Documento</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Borrar mensaje</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Borrando...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Borrar para todos</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>get more</source>
-        <translation>ver más</translation>
+        <source>Deleting...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -552,6 +568,13 @@
     <message>
         <source>Authentication state</source>
         <translation>Estado de autenticación</translation>
+    </message>
+</context>
+<context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

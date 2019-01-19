@@ -30,6 +30,8 @@ Page {
                 property string userName: "Pavel Nurov"
                 property string action: "Pavel is typing"
                 ListElement {
+                }
+                ListElement {
                     is_outgoing: false
                     author: "Pavel Nurov"
                     sender_photo:false
@@ -70,12 +72,13 @@ Page {
                 key:settingsMessagePath +"/incomingColor"
                 defaultValue: 5//Theme.highlightDimmerColor
             }
-            SilicaListView {
-                width: parent.width
-                height: Screen.height/2 + Theme.itemSizeMedium
-                clip:true
-                model:messagingModel
-                header: PageHeader {
+            ConfigurationValue {
+                id:oneAligningValue
+                key:settingsMessagePath +"/oneAlign"
+                defaultValue: false//Theme.highlightDimmerColor
+            }
+
+                PageHeader {
                     id: nameplate
                     title: hideNameplate.value ? "" : messagingModel.userName
                     height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
@@ -96,15 +99,22 @@ Page {
                         truncationMode: TruncationMode.Fade
                     }
                 }
-
-                spacing: Theme.paddingSmall
-                delegate: MessageItem {
+                SilicaListView {
+                    width: parent.width
+                   height: root.height/2 + Theme.itemSizeMedium - nameplate.height
+                    clip:true
+                    model:messagingModel
+                    topMargin:  -1 * Theme.itemSizeExtraLarge
+                    spacing: Theme.paddingSmall
+                    delegate: MessageItem {
+                    }
                 }
+
+
+            Separator {
+                width: parent.width
+                color: Theme.secondaryColor
             }
-         Separator {
-         width: parent.width
-         color: Theme.secondaryColor
-         }
             Slider {
                 id:radiusSlider
                 width: parent.width
@@ -273,9 +283,18 @@ Page {
                     hideNameplate.value = !checked
                     hideNameplate.sync()
                 }
-
             }
-
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: oneAligningValue.value
+                automaticCheck: false
+                text: qsTr("Aways align messages to left")
+                onClicked: {
+                    oneAligningValue.value = !checked
+                    oneAligningValue.sync()
+                }
+            }
 
             Button {
                 width: Theme.buttonWidthMedium

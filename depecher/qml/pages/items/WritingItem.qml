@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQml 2.2
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 
 Drawer {
     id: attachDrawer
@@ -11,11 +12,29 @@ Drawer {
     property alias actionButton: sendButton
     property alias text: messageArea.text
     property alias textArea:messageArea
-    property int wall_id: 0
+    property alias replyMessageAuthor: authorsLabel.text
+    property alias replyMessageText: authorsTextLabel.text
+    property alias returnButtonItem: returnButton
+    property alias returnButtonEnabled: returnButton.enabled
+    property string reply_id: "0"
     property string typeWriter
     signal sendFiles(var files)
     signal setFocusToEdit()
 
+    property string settingsBehaviorPath:  "/apps/depecher/behavior"
+    ConfigurationValue {
+        id:sendByEnter
+        key:settingsBehaviorPath +"/sendByEnter"
+        defaultValue: false
+    }
+    function clearReplyArea() {
+        replyMessageAuthor = ""
+        replyMessageText = ""
+        reply_id = "0"
+        if(writer.state=="edit")
+            writer.state = "publish"
+
+    }
     onSetFocusToEdit: messageArea.focus = true
 
     states: [
@@ -35,13 +54,30 @@ Drawer {
         id: sendArea
         anchors.bottom: parent.bottom
         width: parent.width
-        height: replyArea.height + messageArea.height + Theme.paddingSmall
+        height: replyArea.height + messageArea.height + returnButton.height + Theme.paddingSmall
+
+        BackgroundItem {
+        id:returnButton
+        width: parent.width
+        height: enabled ? Theme.paddingLarge + Theme.paddingMedium : 0
+        anchors.bottom: replyArea.top
+        enabled: false
+        visible: enabled
+        Rectangle {
+            anchors.fill: parent
+            color: Theme.highlightColor
+        }
+        Image {
+             source: "image://theme/icon-s-low-importance"
+             anchors.centerIn: parent
+        }
+        }
 
         Item {
             id: replyArea
             width: parent.width
-            height: reply_id  ? Theme.itemSizeExtraSmall : 0
-
+            height: reply_id != "0" ? Theme.itemSizeExtraSmall : 0
+            anchors.bottom: messageArea.top
             Rectangle {
                 id: replyLine
                 width: 3
@@ -58,9 +94,9 @@ Drawer {
                 anchors.right: removeReplyButton.left
 
                 Label {
+                    id: authorsLabel
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text: author ? author : ""
                     elide: TruncationMode.Fade
                     height: authorsTextLabel.text == "" ? removeReplyButton.height : implicitHeight
                 }
@@ -68,7 +104,7 @@ Drawer {
                     id: authorsTextLabel
                     font.pixelSize: Theme.fontSizeExtraSmall
                     width: parent.width
-                    text: authorsText ? authorsText : ""
+                    maximumLineCount: 1
                     elide: TruncationMode.Fade
                     visible: authorsText != ""
                 }
@@ -81,11 +117,7 @@ Drawer {
                 anchors.rightMargin: Theme.paddingLarge
                 visible: parent.height!=0
                 onClicked: {
-                    author = ""
-                    authorsText = ""
-                    reply_id = -1
-                    if(writer.state=="edit")
-                        writer.state = "publish"
+                    clearReplyArea()
                 }
             }
         }
@@ -154,6 +186,7 @@ Drawer {
             anchors.bottom: messageArea.bottom
             anchors.right: parent.right
             anchors.bottomMargin: 25
+            visible: !sendByEnter.value
         }
     }
 

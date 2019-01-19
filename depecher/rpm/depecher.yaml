@@ -27,6 +27,7 @@ PkgConfigBR:
   - Qt5Quick
   - openssl
   - tdlibjson
+  - nemonotifications-qt5
 
 
 # Build dependencies without a pkgconfig setup can be listed here

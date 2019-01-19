@@ -7,6 +7,17 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Fri Jan 11 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-5
+- Scroll to get older messages
+- Option in appearnce to align to left side all messages
+- hide send button space when send by enter #76
+
+* Mon Nov 26 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-4
+- Voice and Audio messages added
+- Replies are visible
+- Fetching older messages on scroll
+- Added (finally) pull requests for translation,authorize, size of message
+
 * Tue Aug 14 2018 Ivan Chernenky <blacksailer@yandex.ru> 0.0.4-3
 - Telegram english group link configured to get from dns #78
 - Added option to close app without starting daemon #73
