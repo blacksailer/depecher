@@ -9,7 +9,7 @@ import QtQml.Models 2.3
 import depecherUtils 1.0
 
 Item {
-        width: Screen.width
+    width: messageListItem.width
         height: Theme.itemSizeSmall
         x:Theme.horizontalPageMargin/2
         

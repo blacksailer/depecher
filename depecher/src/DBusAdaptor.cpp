@@ -106,6 +106,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         view->setTitle("Depecher");
         view->rootContext()->setContextProperty("c_telegramWrapper", tdlibQt::TdlibJsonWrapper::instance());
         view->rootContext()->setContextProperty("c_PageStarter", pagesStarter);
+        view->rootContext()->setContextProperty("detectedCountry", QLocale::countryToString(QLocale::system().country()));
         view->engine()->addImageProvider(QLatin1String("depecherDb"), new tdlibQt::TelegramProfileProvider);
         view->setSource(SailfishApp::pathTo("qml/app.qml"));
         view->show();

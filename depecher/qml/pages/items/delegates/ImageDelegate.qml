@@ -10,11 +10,12 @@ import depecherUtils 1.0
 
 Column{
         width: image.width
+        property alias textHeight: captionText.height
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: Screen.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: Screen.height/2
+            property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: page.height/2
             width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
@@ -23,7 +24,7 @@ Column{
             MouseArea{
                 anchors.fill: parent
                 enabled: file_downloading_completed
-                onClicked: pageStack.push("../PicturePage.qml",{imagePath:content})
+                onClicked: pageStack.push("../../PicturePage.qml",{imagePath:content})
             }
             
             ProgressCircle {
@@ -59,6 +60,7 @@ Column{
         }
         
         LinkedLabel {
+            id:captionText
             width: parent.width
             plainText: file_caption
             color: pressed ? Theme.secondaryColor :Theme.primaryColor

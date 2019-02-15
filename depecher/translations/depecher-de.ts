@@ -11,7 +11,7 @@
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation type="unfinished">Link teilen</translation>
+        <translation>Link teilen</translation>
     </message>
 </context>
 <context>
@@ -53,30 +53,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
-
-Features:
-- Send/View/Delete messages
-- Mute/unmute chats
-- View photos
-- View animations (gifs)
-- View/Send stickers
-- Manage stickers from chat
-- Uploading/Downloading photos/docs
-- Receive notifications
-- 2FA authorization enabled
-
-Thanks to:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</source>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
-This groups lives only because of community and by community around Sailfish OS.</source>
+        <source>Features:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Send/View/Delete messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Mute/unmute chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View animations (gifs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View/Send stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Manage stickers from chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Uploading/Downloading photos/docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Receive notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- 2FA authorization enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thanks to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -108,6 +137,10 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
     <message>
         <source>Minimize nameplate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aways align messages to left</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -173,7 +206,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Sticker Vorschau-Modus</translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
 </context>
 <context>
@@ -199,8 +232,7 @@ This groups lives only because of community and by community around Sailfish OS.
         <translation>Willkommen</translation>
     </message>
     <message>
-        <source>Attention: If Telegram is blocked in your country, first setup
-proxy server in settings via PulleyMenu</source>
+        <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -231,8 +263,7 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Unread 
  messages</source>
-        <translation>Ungelesene 
- Nachrichten</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -278,46 +309,58 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation>Neue Nachrichten</translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Text kopieren</translation>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">Bild</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Dokument</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Nachricht löschen</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Lösche...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Für alle Löschen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>get more</source>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -351,7 +394,7 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Sticker Vorschau-Modus</translation>
+        <translation>Sticker-Vorschau-Modus</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
@@ -522,8 +565,14 @@ proxy server in settings via PulleyMenu</source>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation>Wiederherstellungscode eingeben.
-  Merke! Danach wird die 2FA-Autorisierung deaktiviert</translation>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -558,11 +607,11 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>Warte Verschlüsselungsschlüssel</translation>
+        <translation>Warten auf Verschlüsselungsschlüssel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation>Warte Telefonnummer</translation>
+        <translation>Warten auf Telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
@@ -574,15 +623,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>Warte ausloggen</translation>
+        <translation>Warte logge aus</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Warte schließt</translation>
+        <translation>Schließe</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Warte geschlossen</translation>
+        <translation>Geschlossen</translation>
     </message>
 </context>
 </TS>

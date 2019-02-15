@@ -14,7 +14,7 @@ Name:       depecher
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
 Version:    0.4
-Release:    3
+Release:    5
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
@@ -28,6 +28,7 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(tdlibjson)
+BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  desktop-file-utils
 
 %description
@@ -64,7 +65,7 @@ if /sbin/pidof depecher > /dev/null; then
 killall depecher || true
 fi
 
-systemctl-user restart mce.service
+systemctl restart mce.service
 systemctl-user restart ngfd.service
 #Moving db dir issue - #14
 if [ -d "/home/nemo/depecherDatabase" ]; then

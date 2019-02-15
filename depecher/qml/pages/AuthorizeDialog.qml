@@ -6,8 +6,6 @@ import tdlibQtEnums 1.0
 Dialog {
     id: authorizeDialog
 
-    anchors.fill: parent
-    allowedOrientations: Orientation.All
     acceptDestination: Qt.resolvedUrl("components/authorization/AreYouSureDialog.qml")
     canAccept: tfphonenumber.text.length>0 &tfcountrycode.text.length>1
     onAcceptPendingChanged: {
@@ -17,6 +15,8 @@ Dialog {
     }
     SilicaFlickable{
         anchors.fill: parent
+        contentHeight: phonenumber.height
+
         PullDownMenu{
             MenuItem{
                 text: qsTr("Settings")
@@ -28,16 +28,15 @@ Dialog {
         {
             id: phonenumber
             spacing: Theme.paddingLarge
-            width: parent.width
+            width: authorizeDialog.width
 
-           PageHeader { title: qsTr("Welcome") }
+            PageHeader { title: qsTr("Welcome") }
 
             Label{
                 anchors { left: parent.left; right: parent.right; leftMargin: Theme.paddingMedium; rightMargin: Theme.paddingMedium }
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
-                text:qsTr("Attention: If Telegram is blocked in your country, first setup
-proxy server in settings via PulleyMenu")
+                text:qsTr("Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu")
                 color:Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
             }
@@ -68,7 +67,16 @@ proxy server in settings via PulleyMenu")
                 }
 
                 onCurrentItemChanged: {
-                    tfcountrycode.text = "+" + CountryList.countries[currentIndex].code;
+                    tfcountrycode.text = "+" + CountryList.countries[currentIndex].code
+                    cbxcountrycodes.value = CountryList.countries[currentIndex].country
+                }
+                Component.onCompleted: {
+                    for (var i in CountryList.countries) {
+                        if (detectedCountry === CountryList.countries[i].country) {
+                            cbxcountrycodes.currentIndex = i
+                            break
+                        }
+                    }
                 }
             }
 
@@ -84,12 +92,12 @@ proxy server in settings via PulleyMenu")
                     validator: RegExpValidator { regExp: /^\+[0-9]{1,}$/ }
                     inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhNoPredictiveText | Qt.ImhDigitsOnly
                     onTextChanged: {
-                        var countryCode = text.slice(1)
-                        for(var i=0;i<CountryList.countries.length;i++) {
-                            if (countryCode == CountryList.countries[i].code)
-                                cbxcountrycodes.currentIndex = i
-                        }
-                    }
+                                          var countryCode = text.slice(1)
+                                          for(var i=0;i<CountryList.countries.length;i++) {
+                                              if (countryCode == CountryList.countries[i].code)
+                                                  cbxcountrycodes.currentIndex = i
+                                          }
+                  }
                     EnterKey.iconSource: "image://theme/icon-m-enter-next"
                     EnterKey.onClicked: tfphonenumber.focus = true
                 }

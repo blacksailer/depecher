@@ -43,25 +43,22 @@ Page {
                 x : Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
-                text:qsTr("Depecher - Another Telegram client for Sailfish OS based on tdlib.
-
-Features:
-- Send/View/Delete messages
-- Mute/unmute chats
-- View photos
-- View animations (gifs)
-- View/Send stickers
-- Manage stickers from chat
-- Uploading/Downloading photos/docs
-- Receive notifications
-- 2FA authorization enabled
-
-Thanks to:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-")
+                text: qsTr("Depecher - Another Telegram client for Sailfish OS based on tdlib.") + "<br><br>" +
+                      qsTr("Features:") + "<br>" +
+                      qsTr("- Send/View/Delete messages") + "<br>" +
+                      qsTr("- Mute/unmute chats") + "<br>" +
+                      qsTr("- View photos") + "<br>" +
+                      qsTr("- View animations (gifs)") + "<br>" +
+                      qsTr("- View/Send stickers") + "<br>" +
+                      qsTr("- Manage stickers from chat") + "<br>" +
+                      qsTr("- Uploading/Downloading photos/docs") + "<br>" +
+                      qsTr("- Receive notifications") + "<br>" +
+                      qsTr("- 2FA authorization enabled") + "<br><br>" +
+                      qsTr("Thanks to:") + "<br>" +
+                      "- @kaffeine" + "<br>" +
+                      "- @chuvilin" + "<br>" +
+                      "- @icoderus" + "<br>" +
+                      "- @aa13q"
             }
             SectionHeader{
                 text: qsTr("Sources")
@@ -103,8 +100,8 @@ Thanks to:
                 x: Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTr("Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
-This groups lives only because of community and by community around Sailfish OS.")
+                text: qsTr("Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.") + "<br>" +
+                      qsTr("This groups lives only because of community and by community around Sailfish OS.") +"</p>"
             }
             Label {
                 width: parent.width - 2 * x

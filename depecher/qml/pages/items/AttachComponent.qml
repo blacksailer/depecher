@@ -95,7 +95,9 @@ Item {
             currentIndex: -1 // otherwise currentItem will steal focus
             delegate: fileComponent
             clip: true
-            VerticalScrollDecorator {}
+            VerticalScrollDecorator {
+            flickable: parent
+            }
         }
     }
 
@@ -113,7 +115,6 @@ Item {
         SilicaGridView{
             id: thumbnailPhotos
             property var icons: ["image://theme/icon-l-image", "image://theme/icon-l-diagnostic", "image://theme/icon-l-document"]
-            width: parent.width
             anchors.fill: parent
             clip: true
             //anchors.fill: parent
@@ -148,8 +149,8 @@ Item {
                 asynchronous: true
                 // From org.nemomobile.thumbnailer
                 source:   "image://nemoThumbnail/"+url
-                sourceSize: Qt.size(Screen.width/3,Screen.width/3)
-                width: Screen.width/3
+                sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
+                width: thumbnailWrapper.width/3
                 height: width
 
                 Rectangle{
@@ -158,7 +159,7 @@ Item {
                     color: "transparent"
                     border.width: 2
                     radius: 90
-                    width:Theme.paddingLarge
+                    width:Theme.paddingLarge * 1.5
                     height: width
                     x:Theme.paddingLarge
                     y:Theme.paddingLarge

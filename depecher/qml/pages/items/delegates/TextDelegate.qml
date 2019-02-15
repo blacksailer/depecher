@@ -8,17 +8,14 @@ import Nemo.DBus 2.0
 import QtQml.Models 2.3
 import depecherUtils 1.0
 
-Column{
-        id: textColumn
-        width: textItem.width
-        
-        LinkedLabel {
-            id: textItem
-            width: Math.min(paintedWidth ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)//text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
-            plainText:content ? content : ""
-            color: pressed ? Theme.secondaryColor : Theme.primaryColor
-            linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-        }
+    LinkedLabel {
+        id: textItem
+        width: messageListItem.width * 2 / 3 - Theme.horizontalPageMargin * 2//Math.min(paintedWidth ,Screen.width * 2 /3 - Theme.horizontalPageMargin * 2)//text.length<32 ? paintedWidth : Screen.width * 2 /3 - Theme.horizontalPageMargin * 2
+        plainText:content ? content : ""
+        color: pressed ? Theme.secondaryColor : Theme.primaryColor
+        linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
+        font.pixelSize: Theme.fontSizeSmall
+        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+//            Component.onCompleted: console.log(content.length,18 * content.length/width,height,lineCount,'height/linecount')
     }
+

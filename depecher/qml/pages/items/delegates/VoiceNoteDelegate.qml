@@ -15,10 +15,7 @@ Column{
 
     BackgroundItem {
         width: parent.width
-        height: Theme.itemSizeMedium
-        enabled: file_downloading_completed && !file_is_uploading
-        onClicked: Qt.openUrlExternally("file://"+content)
-
+        height: Theme.itemSizeSmall
         Row {
             id: documentRowWrapper
             width: parent.width
@@ -26,9 +23,14 @@ Column{
             height: parent.height
 
             Image {
-                id: image
+                id: playIcon
                 fillMode: Image.PreserveAspectFit
-                source: "image://theme/icon-m-file-document"
+                source: progress.visible ? "image://theme/icon-m-clear"
+                                         : file_downloading_completed ?
+                                               (__depecher_audio.source == "file://"+content && __depecher_audio.playbackState === Audio.PlayingState)
+                                               ? "image://theme/icon-m-pause"
+                                               : "image://theme/icon-m-play"
+                                               : "image://theme/icon-m-cloud-download"
                 anchors.verticalCenter: parent.verticalCenter
 
                 ProgressCircle {
@@ -39,49 +41,47 @@ Column{
                                                 file_downloaded_size / file_uploaded_size
                 }
 
-                Image {
-                    id: downloadIcon
-                    visible: !file_downloading_completed || progress.visible
-                    source: progress.visible ? "image://theme/icon-s-clear-opaque-cross"
-                                             : "image://theme/icon-s-update"
-                    anchors.centerIn: parent
-                }
 
                 MouseArea {
-                    enabled: downloadIcon.visible
                     anchors.fill: parent
                     onClicked: {
-                        if(progress.visible)
-                            if(file_is_downloading)
-                                messagingModel.cancelDownload(index)
+                        if(!file_downloading_completed) {
+                            if(progress.visible)
+                                if(file_is_downloading)
+                                    messagingModel.cancelDownload(index)
+                                else
+                                    messagingModel.deleteMessage(index)
                             else
-                                messagingModel.deleteMessage(index)
-                        else
-                            messagingModel.downloadDocument(index)
+                                messagingModel.downloadDocument(index)
+                        } else {
+                            if(__depecher_audio.playbackState === Audio.PlayingState)
+                                __depecher_audio.stop()
+                            else {
+                            __depecher_audio.source =  "file://"+content
+                            __depecher_audio.play()
+                            }
+                        }
                     }
                 }
 
             }
 
             Column {
-                width: parent.width - image.width - parent.spacing
+                width: parent.width - playIcon.width - parent.spacing
                 spacing: Theme.paddingSmall
-                anchors.verticalCenter: image.verticalCenter
-
-                Label {
-                    width: parent.width
-                    elide: Text.ElideMiddle
-                    color: pressed ? Theme.secondaryColor : Theme.primaryColor
-                    font.pixelSize: Theme.fontSizeSmall
-                    text: document_name
-                }
+                anchors.verticalCenter: playIcon.verticalCenter
 
                 Label {
 
                     color: pressed ? Theme.primaryColor : Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeSmall
+                    text: qsTr("Voice note")
+}
+                Label {
+
+                    color: pressed ? Theme.primaryColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeTiny
-                    text: Format.formatFileSize(file_downloaded_size) + "/"
-                          + Format.formatFileSize(file_uploaded_size)
+                    text: Format.formatDuration(voice_duration,Formatter.DurationShort)
                 }
             }
         }

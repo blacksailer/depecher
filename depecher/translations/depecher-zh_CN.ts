@@ -50,84 +50,98 @@
     </message>
     <message>
         <source>Error to get invite link</source>
-        <translation>获取邀请链接错误</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
-
-Features:
-- Send/View/Delete messages
-- Mute/unmute chats
-- View photos
-- View animations (gifs)
-- View/Send stickers
-- Manage stickers from chat
-- Uploading/Downloading photos/docs
-- Receive notifications
-- 2FA authorization enabled
-
-Thanks to:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</source>
-        <translation>Depecher - 基于tdlib的另一个SailfishOS telegram客户端
-
-特性:
-- 发送/查询/删除 消息
-- 静音/取消静音 讨论
-- 查看图片
-- 查看动画(gifs)
-- 查看/发送 贴纸
-- 从讨论中管理贴纸
-- 上传/下载 图片/文档
-- 接收通知
-- 启用两步验证
-
-感谢:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</translation>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
-This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>这里列举了的群组，您可以在这里询问与Sailfish OS相关的任何问题（一般，开发等）。
-        这个群组为了Sailfish OS相关的社区而生。</translation>
+        <source>Features:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Send/View/Delete messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Mute/unmute chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View animations (gifs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View/Send stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Manage stickers from chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Uploading/Downloading photos/docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Receive notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- 2FA authorization enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thanks to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This groups lives only because of community and by community around Sailfish OS.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation>外观</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation>圆角</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation>不透明度</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation>接收的消息背景颜色</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation>发送的消息背景颜色</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation>重置为默认</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation>最小化名字</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -192,7 +206,7 @@ This groups lives only because of community and by community around Sailfish OS.
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>贴纸预览模式</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -218,27 +232,26 @@ This groups lives only because of community and by community around Sailfish OS.
         <translation>欢迎</translation>
     </message>
     <message>
-        <source>Attention: If Telegram is blocked in your country, first setup
-proxy server in settings via PulleyMenu</source>
-        <translation>注意：如果电报在你的国家被墙，首先通过下拉菜单设置代理服务器</translation>
+        <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation>行为</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation>按回车发送消息</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
-        <translation>%1创建了%2群组</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -265,25 +278,25 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Unmute</source>
-        <translation>取消静音</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation>静音</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
     <message>
         <source>%1 joined by invite link</source>
-        <translation>%1通过邀请链接加入了</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation>%1加入到了Telegram!</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -296,54 +309,66 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation>新消息</translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation>已修改</translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation>%1 通过邀请链接加入</translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation>%1 加入了Telegram!</translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
-        <translation>%1 创建了群组 %2</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>复制文本</translation>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">照片</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">文档</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>上传消息</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>删除中...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>删除所有人</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>get more</source>
-        <translation>获取更多</translation>
+        <source>Deleting...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
-        <translation>新消息</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -365,19 +390,19 @@ proxy server in settings via PulleyMenu</source>
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation>返回</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation>贴纸预览模式</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation>删除%1贴纸</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation>添加%1贴纸</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -448,15 +473,15 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Appearance</source>
-        <translation>外观</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation>行为</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation>后台模式设置</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -533,15 +558,22 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Enter code</source>
-        <translation>输入代码</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation>输入密码</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation>认证状态</translation>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -572,35 +604,35 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation>等待库参数</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>等待加密密钥</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation>等待手机号码</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation>等待代码</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation>等待密码</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>等待退出</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>等待关闭中</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>等待已关闭</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -54,30 +54,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.
-
-Features:
-- Send/View/Delete messages
-- Mute/unmute chats
-- View photos
-- View animations (gifs)
-- View/Send stickers
-- Manage stickers from chat
-- Uploading/Downloading photos/docs
-- Receive notifications
-- 2FA authorization enabled
-
-Thanks to:
-- @kaffeine
-- @chuvilin
-- @icoderus
-- @aa13q
-</source>
+        <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.
-This groups lives only because of community and by community around Sailfish OS.</source>
+        <source>Features:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Send/View/Delete messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Mute/unmute chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View animations (gifs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- View/Send stickers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Manage stickers from chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Uploading/Downloading photos/docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- Receive notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>- 2FA authorization enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Thanks to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -109,6 +138,10 @@ This groups lives only because of community and by community around Sailfish OS.
     </message>
     <message>
         <source>Minimize nameplate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aways align messages to left</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -200,8 +233,7 @@ This groups lives only because of community and by community around Sailfish OS.
         <translation>Üdv</translation>
     </message>
     <message>
-        <source>Attention: If Telegram is blocked in your country, first setup
-proxy server in settings via PulleyMenu</source>
+        <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -278,46 +310,58 @@ proxy server in settings via PulleyMenu</source>
 <context>
     <name>MessageItem</name>
     <message>
-        <source>New messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 created the group %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
-        <source>Copy Text</source>
-        <translation>Szöveg másolása</translation>
+        <source>Copy text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Photo</source>
+        <translation type="unfinished">Kép</translation>
+    </message>
+    <message>
+        <source>Sticker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished">Dokumentum</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Üzenet törlése</translation>
-    </message>
-    <message>
-        <source>Deleting...</source>
-        <translation>Törlés...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Törlés mindenkinek</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>get more</source>
+        <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -522,6 +566,13 @@ proxy server in settings via PulleyMenu</source>
     </message>
     <message>
         <source>Authentication state</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceNoteDelegate</name>
+    <message>
+        <source>Voice note</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
