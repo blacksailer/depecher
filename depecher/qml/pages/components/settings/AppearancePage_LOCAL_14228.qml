@@ -127,24 +127,14 @@ Page {
                 topMargin:  -1 * Theme.itemSizeExtraLarge
                 spacing: Theme.paddingSmall
                 delegate: MessageItem {
-}
-                SilicaListView {
-                    width: parent.width
-                   height: root.height/2 + Theme.itemSizeMedium - nameplate.height
-                    clip:true
-                    model:messagingModel
-                    topMargin:  -1 * Theme.itemSizeExtraLarge
-                    spacing: Theme.paddingSmall
-                    delegate: MessageItem {
-                    }
                 }
+            }
 
 
             Separator {
                 width: parent.width
                 color: Theme.secondaryColor
             }
-
             Slider {
                 id:radiusSlider
                 width: parent.width
@@ -397,7 +387,9 @@ Page {
                         }
                     }
                 }
+
             }
+
             Button {
                 width: Theme.buttonWidthMedium
                 text:qsTr("Reset to default")
@@ -423,5 +415,4 @@ Page {
         id: colorPickerPage
         ColorPickerPage {}
     }
-}
 }

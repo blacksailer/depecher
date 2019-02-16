@@ -1,0 +1,74 @@
+## Новые классы
+
+class date;
+class datedFile;
+class deepLinkInfo;
+class emailAddressAuthenticationCodeInfo;
+class encryptedCredentials;
+class encryptedPassportElement;
+class identityDocument;
+class inputIdentityDocument;
+class InputPassportElement;
+class inputPassportElementError;
+class InputPassportElementErrorSource;
+class inputPersonalDocument;
+class languagePackInfo;
+class languagePackString;
+class LanguagePackStringValue;
+class languagePackStrings;
+class localizationTargetInfo;
+class passportAuthorizationForm;
+class PassportElement;
+class passportElementError;
+class PassportElementErrorSource;
+class PassportElementType;
+class passportElements;
+class passportRequiredElement;
+class passportSuitableElement;
+class personalDetails;
+class personalDocument;
+class proxies;
+class proxy;
+class ProxyType;
+class scopeNotificationSettings;
+class seconds;
+class termsOfService;
+class chatNotificationSettings;
+class acceptTermsOfService;
+#### удаленные классы
+class notificationSettings; -> chatNotificationSettings;
+class passwordRecoveryInfo;
+class Proxy; -> proxy -> ProxyType
+class shippingAddress; ->  class address;
+class addProxy;
+class checkPhoneNumberConfirmationCode;
+class checkEmailAddressVerificationCode;
+class checkPhoneNumberVerificationCode;
+class disableProxy;
+class joinChat;
+class leaveChat;
+class resendEmailAddressVerificationCode;
+class resendPhoneNumberConfirmationCode;
+class resendPhoneNumberVerificationCode;
+class sendEmailAddressVerificationCode;
+class sendPhoneNumberConfirmationCode;
+class sendPhoneNumberVerificationCode;
+class toggleChatDefaultDisableNotification;
+class toggleChatIsMarkedAsUnread;
+
+### Модифицированные классы
+class authorizationStateWaitCode (+ termsOfService;)   (class acceptTermsOfService)
+class chat (+  bool is_marked_as_unread_;
++  bool is_sponsored_;
++  bool default_disable_notification_;
++  ptr chatNotificationSettings;
+- ptr ntificationSettings;
+class setNotificationSettings -> class setChatNotificationSettings
+class requestPasswordRecovery -> returns emailAddressAuthenticationCodeInfo
+)
+class contact (+ std::string vcard_;)
+updateUnreadChatCount(+  std::int32_t marked_as_unread_count_;
+ + std::int32_t marked_as_unread_unmuted_count_;
+)
+Рекавери пострадает (checkEmailAddressVerificationCode; class sendPhoneNumberVerificationCode; class sendPhoneNumberConfirmationCode; class sendEmailAddressVerificationCode; class resendEmailAddressVerificationCode; class resendPhoneNumberConfirmationCode; class resendPhoneNumberVerificationCode;)
+Прокси переписывать(class addProxy; class removeProxy; class disableProxy;class editProxy; class getProxies; class getProxyLink; class pingProxy; class seconds;)
