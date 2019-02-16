@@ -98,47 +98,50 @@ void ParseObject::parseResponse(const QByteArray &json)
                     (new  authorizationStateWaitCode);
             stateCode->is_registered_ =  obj["is_registered"].toBool();
             stateCode->code_info_ = QSharedPointer<authenticationCodeInfo>
-                                    (new  authenticationCodeInfo);
+                    (new  authenticationCodeInfo);
             QJsonObject objInfo = obj["code_info"].toObject();
             stateCode->code_info_->timeout_ = objInfo["timeout"].toBool();
             QJsonObject objTypeInfo = objInfo["type"].toObject();
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeCall")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeCall>
-                                                (new authenticationCodeTypeCall);
+                        (new authenticationCodeTypeCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeFlashCall")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeFlashCall>(new
-                                                authenticationCodeTypeFlashCall);
+                                                                                                authenticationCodeTypeFlashCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeSms")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeSms>
-                                                (new authenticationCodeTypeSms);
+                        (new authenticationCodeTypeSms);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeTelegramMessage")
                 stateCode->code_info_->type_ =  QSharedPointer<authenticationCodeTypeTelegramMessage>
-                                                (new authenticationCodeTypeTelegramMessage);
+                        (new authenticationCodeTypeTelegramMessage);
 
             objTypeInfo = objInfo["next_type"].toObject();
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeCall")
                 stateCode->code_info_->next_type_ =  QSharedPointer<authenticationCodeTypeCall>
-                                                     (new authenticationCodeTypeCall);
+                        (new authenticationCodeTypeCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeFlashCall")
                 stateCode->code_info_->next_type_ =  QSharedPointer<authenticationCodeTypeFlashCall>
-                                                     (new authenticationCodeTypeFlashCall);
+                        (new authenticationCodeTypeFlashCall);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeSms")
                 stateCode->code_info_->next_type_ =  QSharedPointer<authenticationCodeTypeSms>
-                                                     (new authenticationCodeTypeSms);
+                        (new authenticationCodeTypeSms);
             if (objTypeInfo["@type"].toString() == "authenticationCodeTypeTelegramMessage")
                 stateCode->code_info_->next_type_ =  QSharedPointer<authenticationCodeTypeTelegramMessage>
-                                                     (new authenticationCodeTypeTelegramMessage);
+                        (new authenticationCodeTypeTelegramMessage);
+
+            //          stateCode->terms_of_service_ =  obj["is_registered"].toBool();
+
             emit newAuthorizationState(stateCode);
         }
         if (authState == "authorizationStateWaitPassword") {
             auto authState =
-                QSharedPointer<authorizationStateWaitPassword>(new authorizationStateWaitPassword);
+                    QSharedPointer<authorizationStateWaitPassword>(new authorizationStateWaitPassword);
             authState->has_recovery_email_address_ =
-                doc.object()["authorization_state"].toObject()["has_recovery_email_address"].toBool();
+                    doc.object()["authorization_state"].toObject()["has_recovery_email_address"].toBool();
             authState->password_hint_ =
-                doc.object()["authorization_state"].toObject()["password_hint"].toString().toStdString();
+                    doc.object()["authorization_state"].toObject()["password_hint"].toString().toStdString();
             authState->recovery_email_address_pattern_ =
-                doc.object()["authorization_state"].toObject()["recovery_email_address_pattern"].toString().toStdString();
+                    doc.object()["authorization_state"].toObject()["recovery_email_address_pattern"].toString().toStdString();
             emit newAuthorizationState(authState);
             authorizationState = Enums::AuthorizationState::AuthorizationStateWaitPassword;
 
@@ -185,6 +188,11 @@ void ParseObject::parseResponse(const QByteArray &json)
         users_[user_id] = firstName + " " + lastName;
         emit updateNewUser(userObject);
     }
+    if (typeField == "seconds")
+        emit secondsReceived(doc.object());
+    if (typeField == "text")
+        emit textReceived(doc.object());
+
     if (typeField == "message")
         emit messageReceived(doc.object());
     if (typeField == "stickerSets")
@@ -261,11 +269,14 @@ void ParseObject::parseResponse(const QByteArray &json)
         if (userItem["@extra"].toString() == "getMe")
             emit meReceived(userItem);
     }
-    if (typeField == "proxyEmpty" || typeField == "proxySocks5") {
+    if (typeField == "proxies") {
+        auto proxyItem = doc.object();
+        emit proxiesReceived(proxyItem);
+    }
+    if (typeField == "proxy") {
         auto proxyItem = doc.object();
         emit proxyReceived(proxyItem);
     }
-
     if (typeField == "messages") {
         emit newMessages(doc.object());
     }
@@ -301,12 +312,12 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
     resultMessage->can_be_edited_ = messageObject["can_be_edited"].toBool();
     resultMessage->can_be_forwarded_ = messageObject["can_be_forwarded"].toBool();
     resultMessage->can_be_deleted_only_for_self_ =
-        messageObject["can_be_deleted_only_for_self"].toBool();
+            messageObject["can_be_deleted_only_for_self"].toBool();
     resultMessage->can_be_deleted_for_all_users_ =
-        messageObject["can_be_deleted_for_all_users"].toBool();
+            messageObject["can_be_deleted_for_all_users"].toBool();
     resultMessage->is_channel_post_ = messageObject["is_channel_post"].toBool();
     resultMessage->contains_unread_mention_ =
-        messageObject["contains_unread_mention"].toBool();
+            messageObject["contains_unread_mention"].toBool();
     resultMessage->date_ = messageObject["date"].toInt();
     resultMessage->edit_date_ = messageObject["edit_date"].toInt();
     resultMessage->reply_to_message_id_ = getInt64(messageObject["reply_to_message_id"]);
@@ -314,14 +325,14 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
     resultMessage->ttl_expires_in_ = getInt64(messageObject["ttl_expires_in"]);
     resultMessage->via_bot_user_id_ = messageObject["via_bot_user_id"].toInt();
     resultMessage->author_signature_ =
-        messageObject["author_signature"].toString().toStdString();
+            messageObject["author_signature"].toString().toStdString();
     resultMessage->views_ = messageObject["views"].toInt();
     resultMessage->media_album_id_ = getInt64(messageObject["media_album_id"]);
 
     resultMessage->content_ = parseMessageContent(messageObject["content"].toObject());
     resultMessage->reply_markup_ = parseReplyMarkup(messageObject["reply_markup"].toObject());
     resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>
-                                   (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
+            (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
     resultMessage->sending_state_ = parseMessageSendingState(messageObject["sending_state"].toObject());
 
     return resultMessage;
@@ -416,7 +427,7 @@ QSharedPointer<contact> ParseObject::parseContact(const QJsonObject &contactObje
     return contactResult;
 }
 QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const QJsonObject
-        &messageSendingStateObject)
+                                                                          &messageSendingStateObject)
 {
     if (messageSendingStateObject["@type"].toString() == "messageSendingStatePending")
         return QSharedPointer<MessageSendingState>(new messageSendingStatePending);
@@ -426,7 +437,7 @@ QSharedPointer<MessageSendingState> ParseObject::parseMessageSendingState(const 
 }
 
 QSharedPointer<messageDocument> ParseObject::parseMessageDocument(const QJsonObject
-        &messageDocumentObject)
+                                                                  &messageDocumentObject)
 {
     if (messageDocumentObject["@type"].toString() != "messageDocument")
         return QSharedPointer<messageDocument>(new messageDocument);
@@ -436,7 +447,7 @@ QSharedPointer<messageDocument> ParseObject::parseMessageDocument(const QJsonObj
     return resultDocument;
 }
 QSharedPointer<messageBasicGroupChatCreate> ParseObject::parseMessageBasicGroupChatCreate(const QJsonObject
-        &messageBasicGroupChatCreateObject)
+                                                                                          &messageBasicGroupChatCreateObject)
 {
     if (messageBasicGroupChatCreateObject["@type"].toString() != "messageBasicGroupChatCreate")
         return QSharedPointer<messageBasicGroupChatCreate>(new messageBasicGroupChatCreate);
@@ -463,7 +474,7 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
 {
     if (forwardObject["@type"].toString() == "messageForwardedFromUser") {
         auto resultMessageForwardedFromUser = QSharedPointer<messageForwardedFromUser>
-                                              (new messageForwardedFromUser);
+                (new messageForwardedFromUser);
         resultMessageForwardedFromUser->date_ = forwardObject["date"].toInt();
         resultMessageForwardedFromUser->forwarded_from_chat_id_ = getInt64(
                     forwardObject["forwarded_from_chat_id"]);
@@ -474,9 +485,9 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
     }
     if (forwardObject["@type"].toString() == "messageForwardedPost") {
         auto resultMessageForwardedPost = QSharedPointer<messageForwardedPost>
-                                          (new messageForwardedPost);
+                (new messageForwardedPost);
         resultMessageForwardedPost->author_signature_ =
-            forwardObject["author_signature"].toString().toStdString();
+                forwardObject["author_signature"].toString().toStdString();
         resultMessageForwardedPost->chat_id_ = getInt64(forwardObject["chat_id"]);
         resultMessageForwardedPost->date_ = forwardObject["date"].toInt();
         resultMessageForwardedPost->forwarded_from_chat_id_ = getInt64(
@@ -487,26 +498,26 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
 
     }
     return QSharedPointer<messageForwardedFromUser>
-           (new messageForwardedFromUser);
+            (new messageForwardedFromUser);
 }
 
 QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
 {
     if (typeObject["@type"].toString() == "chatTypeBasicGroup") {
         auto resultType = QSharedPointer<chatTypeBasicGroup>
-                          (new chatTypeBasicGroup);
+                (new chatTypeBasicGroup);
         resultType->basic_group_id_ = typeObject["basic_group_id"].toInt();
         return resultType;
     }
     if (typeObject["@type"].toString() == "chatTypePrivate") {
         auto resultType = QSharedPointer<chatTypePrivate>
-                          (new chatTypePrivate);
+                (new chatTypePrivate);
         resultType->user_id_ = typeObject["user_id"].toInt();
         return resultType;
     }
     if (typeObject["@type"].toString() == "chatTypeSupergroup") {
         auto resultType = QSharedPointer<chatTypeSupergroup>
-                          (new chatTypeSupergroup);
+                (new chatTypeSupergroup);
         resultType->is_channel_ = typeObject["is_channel"].toBool();
         resultType->supergroup_id_ = typeObject["supergroup_id"].toInt();
         return resultType;
@@ -514,14 +525,14 @@ QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
     }
     if (typeObject["@type"].toString() == "chatTypeSecret") {
         auto resultType = QSharedPointer<chatTypeSecret>
-                          (new chatTypeSecret);
+                (new chatTypeSecret);
         resultType->secret_chat_id_ = typeObject["secret_chat_id"].toInt();
         resultType->user_id_ = typeObject["user_id"].toInt();
         return resultType;
     }
 
     return QSharedPointer<chatTypePrivate>
-           (new chatTypePrivate);
+            (new chatTypePrivate);
 }
 
 QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &supergroupObject)
@@ -537,7 +548,7 @@ QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &super
     resultSupergroup->is_verified_   = supergroupObject["is_verified"].toBool();
     resultSupergroup->member_count_  = supergroupObject["member_count"].toInt();
     resultSupergroup->restriction_reason_ =
-        supergroupObject["restriction_reason"].toString().toStdString();
+            supergroupObject["restriction_reason"].toString().toStdString();
     resultSupergroup->sign_messages_  = supergroupObject["sign_messages_"].toBool();;
     resultSupergroup->username_ =        supergroupObject["username"].toString().toStdString();
 
@@ -545,11 +556,11 @@ QSharedPointer<supergroup> ParseObject::parseSupergroup(const QJsonObject &super
     return resultSupergroup;
 }
 QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonObject
-        &chatMemberStatusObject)
+                                                                    &chatMemberStatusObject)
 {
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusAdministrator") {
         auto resultStatus = QSharedPointer<chatMemberStatusAdministrator>(new
-                            chatMemberStatusAdministrator);
+                                                                          chatMemberStatusAdministrator);
         resultStatus->can_be_edited_ = chatMemberStatusObject["can_be_edited"].toBool();
         resultStatus->can_change_info_ = chatMemberStatusObject["can_change_info"].toBool();
         resultStatus->can_delete_messages_ = chatMemberStatusObject["can_delete_messages"].toBool();
@@ -579,7 +590,7 @@ QSharedPointer<ChatMemberStatus> ParseObject::parseChatMemberStatus(const QJsonO
     if (chatMemberStatusObject["@type"].toString() == "chatMemberStatusRestricted") {
         auto resultStatus = QSharedPointer<chatMemberStatusRestricted>(new chatMemberStatusRestricted);
         resultStatus->can_add_web_page_previews_ =
-            chatMemberStatusObject["can_add_web_page_previews"].toBool();
+                chatMemberStatusObject["can_add_web_page_previews"].toBool();
         resultStatus->can_send_media_messages_ = chatMemberStatusObject["can_send_media_messages"].toBool();
         resultStatus->can_send_messages_ = chatMemberStatusObject["can_send_messages"].toBool();
         resultStatus->can_send_other_messages_ = chatMemberStatusObject["can_send_other_messages"].toBool();
@@ -664,7 +675,7 @@ QSharedPointer<stickers> ParseObject::parseStickers(const QJsonObject &stickersO
     return resultStickers;
 }
 QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObject
-        &messageContentObject)
+                                                                &messageContentObject)
 {
 
     auto typeMessageText = parseMessageText(QJsonObject());
@@ -934,7 +945,7 @@ QSharedPointer<messageText> ParseObject::parseMessageText(const QJsonObject &mes
     return resultMessageContent;
 }
 QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonObject
-        &messageAnimationObject)
+                                                                    &messageAnimationObject)
 {
     if (messageAnimationObject["@type"].toString() != "messageAnimation")
         return QSharedPointer<messageAnimation>(new messageAnimation);
@@ -942,12 +953,12 @@ QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonO
     auto resultMessageContent = QSharedPointer<messageAnimation> (new messageAnimation);
     resultMessageContent->animation_  = parseAnimation(messageAnimationObject["animation"].toObject());
     resultMessageContent->caption_  = parseFormattedTextContent(
-                                          messageAnimationObject["caption"].toObject());
+                messageAnimationObject["caption"].toObject());
     resultMessageContent->is_secret_ = messageAnimationObject["is_secret"].toBool();
     return resultMessageContent;
 }
 QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
-        &animationObject)
+                                                      &animationObject)
 {
     if (animationObject["@type"].toString() != "animation")
         return QSharedPointer<animation>(new animation);
@@ -963,7 +974,7 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
     return resultAnimation;
 }
 QSharedPointer<messageVoiceNote> ParseObject::parseMessageVoiceNote(const QJsonObject
-        &messageVoiceNoteObject)
+                                                                    &messageVoiceNoteObject)
 {
     if (messageVoiceNoteObject["@type"].toString() != "messageVoiceNote")
         return QSharedPointer<messageVoiceNote>(new messageVoiceNote);
@@ -984,7 +995,7 @@ QSharedPointer<messageVoiceNote> ParseObject::parseMessageVoiceNote(const QJsonO
 }
 
 QSharedPointer<messageAudio> ParseObject::parseMessageAudio(const QJsonObject
-        &messageAudioObject)
+                                                            &messageAudioObject)
 {
     if (messageAudioObject["@type"].toString() != "messageAudio")
         return QSharedPointer<messageAudio>(new messageAudio);
@@ -1005,8 +1016,47 @@ QSharedPointer<messageAudio> ParseObject::parseMessageAudio(const QJsonObject
     return resultAudio;
 }
 
+QSharedPointer<proxy> ParseObject::parseProxy(const QJsonObject &proxyObject)
+{
+    if (proxyObject["@type"].toString() != "proxy")
+        return QSharedPointer<proxy>(new proxy);
+
+    auto proxyPtr = QSharedPointer<proxy>(new proxy);
+    proxyPtr->id_ = proxyObject["id"].toInt();
+    proxyPtr->is_enabled_ = proxyObject["is_enabled"].toBool();
+    proxyPtr->server_ = proxyObject["server"].toString().toStdString();
+    proxyPtr->port_ = proxyObject["port"].toInt();
+    proxyPtr->last_used_date_ = proxyObject["last_used_date"].toInt();
+    proxyPtr->type_ = parseProxyType(proxyObject["type"].toObject());
+
+    return proxyPtr;
+
+}
+
+QSharedPointer<ProxyType> ParseObject::parseProxyType(const QJsonObject &proxyTypeObject)
+{
+    if (proxyTypeObject["@type"].toString() == "proxyTypeSocks5") {
+        QSharedPointer<proxyTypeSocks5> proxyTypePtr = QSharedPointer<proxyTypeSocks5>(new proxyTypeSocks5);
+        proxyTypePtr->username_ = proxyTypeObject["username"].toString().toStdString();
+        proxyTypePtr->password_ = proxyTypeObject["password"].toString().toStdString();
+        return proxyTypePtr;
+    }
+    if (proxyTypeObject["@type"] == "proxyTypeHttp") {
+        QSharedPointer<proxyTypeHttp> proxyTypePtr = QSharedPointer<proxyTypeHttp>(new proxyTypeHttp);
+        proxyTypePtr->username_ = proxyTypeObject["username"].toString().toStdString();
+        proxyTypePtr->password_ = proxyTypeObject["password"].toString().toStdString();
+        proxyTypePtr->http_only_ = proxyTypeObject["http_only"].toBool();
+        return proxyTypePtr;
+    }
+    if (proxyTypeObject["@type"] == "proxyTypeMtproto") {
+        QSharedPointer<proxyTypeMtproto> proxyTypePtr = QSharedPointer<proxyTypeMtproto>(new proxyTypeMtproto);
+        proxyTypePtr->secret_ = proxyTypeObject["secret"].toString().toStdString();
+        return proxyTypePtr;
+    }
+}
+
 QSharedPointer<messageSticker> ParseObject::parseMessageSticker(const QJsonObject
-        &messageStikerObject)
+                                                                &messageStikerObject)
 {
     if (messageStikerObject["@type"].toString() != "messageSticker")
         return QSharedPointer<messageSticker>(new messageSticker);
@@ -1036,7 +1086,7 @@ QSharedPointer<sticker> ParseObject::parseSticker(const QJsonObject &stickerObje
 
 QSharedPointer<maskPosition> ParseObject::parseMaskPosition(const QJsonObject &maskPositionObject)
 {
-    QSharedPointer<maskPosition> maskPositionPtr =  QSharedPointer<maskPosition>(new maskPosition);
+    auto maskPositionPtr =  QSharedPointer<maskPosition>(new maskPosition);
     maskPositionPtr->x_shift_ = maskPositionObject["x_shift"].toDouble();
     maskPositionPtr->y_shift_ = maskPositionObject["y_shift"].toDouble();
     maskPositionPtr->scale_ = maskPositionObject["scale"].toDouble();
@@ -1051,13 +1101,17 @@ QSharedPointer<maskPosition> ParseObject::parseMaskPosition(const QJsonObject &m
     return maskPositionPtr;
 }
 
-QSharedPointer<notificationSettings> ParseObject::parseNotificationSettings(
-    const QJsonObject &notificationSettingsObject)
+QSharedPointer<chatNotificationSettings> ParseObject::parseNotificationSettings(
+        const QJsonObject &notificationSettingsObject)
 {
-    auto settingsResult = QSharedPointer<notificationSettings>(new notificationSettings);
+    auto settingsResult = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings);
     settingsResult->mute_for_ = notificationSettingsObject["mute_for"].toInt();
     settingsResult->sound_ = notificationSettingsObject["sound"].toString().toStdString();
     settingsResult->show_preview_ = notificationSettingsObject["show_preview"].toBool();
+
+    settingsResult->use_default_mute_for_= notificationSettingsObject["use_default_mute_for"].toBool();
+    settingsResult->use_default_sound_= notificationSettingsObject["use_default_sound"].toBool();
+    settingsResult->use_default_show_preview_= notificationSettingsObject["use_default_show_preview"].toBool();
     return settingsResult;
 }
 
@@ -1100,7 +1154,7 @@ QSharedPointer<photoSize> ParseObject::parsePhotoSize(const QJsonObject &photoSi
 }
 
 QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJsonObject
-        &formattedTextObject)
+                                                                     &formattedTextObject)
 {
     if (formattedTextObject["@type"].toString() != "formattedText")
         return QSharedPointer<formattedText>(new formattedText);
@@ -1140,30 +1194,30 @@ QSharedPointer<file> ParseObject::parseFile(const QJsonObject &fileObject)
     auto localFileObject = smallPhotoObject["local"].toObject();
     resultFile->local_->path_ = localFileObject["path"].toString().toStdString();
     resultFile->local_->can_be_downloaded_ =
-        localFileObject["can_be_downloaded"].toBool();
+            localFileObject["can_be_downloaded"].toBool();
     resultFile->local_->can_be_deleted_ = localFileObject["can_be_deleted"].toBool();
     resultFile->local_->is_downloading_active_ =
-        localFileObject["is_downloading_active"].toBool();
+            localFileObject["is_downloading_active"].toBool();
     resultFile->local_->is_downloading_completed_ =
-        localFileObject["is_downloading_completed"].toBool();
+            localFileObject["is_downloading_completed"].toBool();
     resultFile->local_->downloaded_prefix_size_ =
-        localFileObject["downloaded_prefix_size"].toInt();
+            localFileObject["downloaded_prefix_size"].toInt();
     resultFile->local_->downloaded_size_ = localFileObject["downloaded_size"].toInt();
 
     auto remoteFileObject = smallPhotoObject["remote"].toObject();
     resultFile->remote_->id_ = remoteFileObject["id"].toString().toStdString();
     resultFile->remote_->is_uploading_active_ =
-        remoteFileObject["is_uploading_active"].toBool();
+            remoteFileObject["is_uploading_active"].toBool();
     resultFile->remote_->is_uploading_completed_ =
-        remoteFileObject["is_uploading_completed"].toBool();
+            remoteFileObject["is_uploading_completed"].toBool();
     resultFile->remote_->uploaded_size_ =
-        remoteFileObject["uploaded_size"].toInt();
+            remoteFileObject["uploaded_size"].toInt();
 
     return resultFile;
 }
 
 QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObject
-        &chatActionObject)
+                                                                  &chatActionObject)
 {
     if (chatActionObject["@type"].toString() != "updateUserChatAction")
         return QSharedPointer<updateUserChatAction>(new updateUserChatAction);
@@ -1177,24 +1231,24 @@ QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObj
         resultChatAction->action_ = QSharedPointer<chatActionTyping>(new chatActionTyping);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionChoosingContact")
         resultChatAction->action_ = QSharedPointer<chatActionChoosingContact>(new
-                                    chatActionChoosingContact);
+                                                                              chatActionChoosingContact);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionRecordingVideo")
         resultChatAction->action_ = QSharedPointer<chatActionRecordingVideo>(new chatActionRecordingVideo);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionChoosingLocation")
         resultChatAction->action_ = QSharedPointer<chatActionChoosingLocation>
-                                    (new chatActionChoosingLocation);
+                (new chatActionChoosingLocation);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionRecordingVideoNote")
         resultChatAction->action_ = QSharedPointer<chatActionRecordingVideoNote>
-                                    (new chatActionRecordingVideoNote);
+                (new chatActionRecordingVideoNote);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionRecordingVoiceNote")
         resultChatAction->action_ = QSharedPointer<chatActionRecordingVoiceNote>
-                                    (new chatActionRecordingVoiceNote);
+                (new chatActionRecordingVoiceNote);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionStartPlayingGame")
         resultChatAction->action_ = QSharedPointer<chatActionStartPlayingGame>
-                                    (new chatActionStartPlayingGame);
+                (new chatActionStartPlayingGame);
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionUploadingDocument") {
         auto tempAction = QSharedPointer<chatActionUploadingDocument>
-                          (new chatActionUploadingDocument);
+                (new chatActionUploadingDocument);
         tempAction->progress_ = chatActionObject["action"].toObject()["progress"].toInt();
         resultChatAction->action_ = tempAction;
     }
@@ -1211,14 +1265,14 @@ QSharedPointer<updateUserChatAction> ParseObject::parseChatAction(const QJsonObj
     }
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionUploadingVideoNote") {
         auto tempAction = QSharedPointer<chatActionUploadingVideoNote>
-                          (new chatActionUploadingVideoNote);
+                (new chatActionUploadingVideoNote);
         tempAction->progress_ = chatActionObject["action"].toObject()["progress"].toInt();
         resultChatAction->action_ = tempAction;
 
     }
     if (chatActionObject["action"].toObject()["@type"].toString() == "chatActionUploadingVoiceNote") {
         auto tempAction = QSharedPointer<chatActionUploadingVoiceNote>
-                          (new chatActionUploadingVoiceNote);
+                (new chatActionUploadingVoiceNote);
         tempAction->progress_ = chatActionObject["action"].toObject()["progress"].toInt();
         resultChatAction->action_ = tempAction;
 
@@ -1248,7 +1302,7 @@ QSharedPointer<chat> ParseObject::parseChat(const QJsonObject &chatObject)
     chatItem->type_ = parseType(chatObject["type"].toObject());
     chatItem->photo_ = parseChatPhoto(chatObject["photo"].toObject());
     chatItem->notification_settings_ = parseNotificationSettings(
-                                           chatObject["notification_settings"].toObject());
+                chatObject["notification_settings"].toObject());
 
 #warning TODO draftMessage
     chatItem->draft_message_ = QSharedPointer<draftMessage>(nullptr);
@@ -1328,9 +1382,9 @@ QSharedPointer<UserType> ParseObject::parseUserType(const QJsonObject &userTypeO
         QSharedPointer<userTypeBot> resultTypeBot = QSharedPointer<userTypeBot>(new userTypeBot);
         resultTypeBot->can_join_groups_ = userTypeObject["can_join_groups"].toBool();
         resultTypeBot->can_read_all_group_messages_ =
-            userTypeObject["can_read_all_group_messages"].toBool();
+                userTypeObject["can_read_all_group_messages"].toBool();
         resultTypeBot->inline_query_placeholder_ =
-            userTypeObject["inline_query_placeholder"].toString().toStdString();
+                userTypeObject["inline_query_placeholder"].toString().toStdString();
         resultTypeBot->is_inline_ = userTypeObject["is_inline"].toBool();
         resultTypeBot->need_location_ = userTypeObject["need_location"].toBool();
         return resultTypeBot;

@@ -143,6 +143,26 @@
         <source>Aways align messages to left</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -406,6 +426,57 @@
     </message>
 </context>
 <context>
+    <name>ProxyDialog</name>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished">服务器地址</translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished">服务器端口</translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished">端口</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">用户名</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished">用户名</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">密码</translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -414,30 +485,6 @@
     <message>
         <source>Socks5 proxy</source>
         <translation>Socks5代理</translation>
-    </message>
-    <message>
-        <source>Server address</source>
-        <translation>服务器地址</translation>
-    </message>
-    <message>
-        <source>Server port</source>
-        <translation>服务器端口</translation>
-    </message>
-    <message>
-        <source>port</source>
-        <translation>端口</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>用户名</translation>
-    </message>
-    <message>
-        <source>username</source>
-        <translation>用户名</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>密码</translation>
     </message>
     <message>
         <source>General</source>
@@ -450,14 +497,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>代理可用</translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation>设置代理</translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation>地址，设置为空则禁用代理</translation>
     </message>
     <message>
         <source>Connection status: </source>
@@ -481,6 +520,30 @@
     </message>
     <message>
         <source>Daemon settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -143,6 +143,26 @@
         <source>Aways align messages to left</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -406,6 +426,57 @@
     </message>
 </context>
 <context>
+    <name>ProxyDialog</name>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished">Server-Adresse</translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished">Server-Port</translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished">Port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Benutzername</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished">Benutzername</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Passwort</translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -414,30 +485,6 @@
     <message>
         <source>Socks5 proxy</source>
         <translation>Socks5-Proxy</translation>
-    </message>
-    <message>
-        <source>Server address</source>
-        <translation>Server-Adresse</translation>
-    </message>
-    <message>
-        <source>Server port</source>
-        <translation>Server-Port</translation>
-    </message>
-    <message>
-        <source>port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Benutzername</translation>
-    </message>
-    <message>
-        <source>username</source>
-        <translation>Benutzername</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Passwort</translation>
     </message>
     <message>
         <source>General</source>
@@ -450,14 +497,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>Proxy ist bereit</translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation>Proxy einstellen</translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation>Leere Adresse zum Deaktivieren des Proxys setzen</translation>
     </message>
     <message>
         <source>Connection status: </source>
@@ -481,6 +520,30 @@
     </message>
     <message>
         <source>Daemon settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fehler</translation>
+    </message>
+    <message>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

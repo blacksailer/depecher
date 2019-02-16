@@ -4,7 +4,7 @@ import tdlibQtEnums 1.0
 import TelegramModels 1.0
 import "items"
 import "components"
-
+import Sailfish.Ambience 1.0
 
 Page {
     id: page

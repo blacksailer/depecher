@@ -76,6 +76,7 @@ signals:
     void newAuthorizationState(const QSharedPointer<AuthorizationState> authState);
     void connectionStateChanged(tdlibQt::Enums::ConnectionState connectionState);
     void newChatGenerated(const QJsonObject &chatObject);
+    void proxiesReceived(const QJsonObject &proxiesObject);
     void proxyReceived(const QJsonObject &proxyObject);
     void updateFile(const QJsonObject &fileObject);
     void updateSupergroup(const QJsonObject &updateSupergroupObject);
@@ -107,6 +108,8 @@ signals:
     void stickerSetsReceived(const QJsonObject &stickerSetsObject);
     void stickerSetReceived(const QJsonObject &stickerSetObject);
     void stickersReceived(const QJsonObject &stickersObject);
+    void secondsReceived(const QJsonObject &secondsObject);
+    void textReceived(const QJsonObject &textObject);
 
     void errorReceivedMap(const QVariantMap &errorObject);
     void totalUnreadCountChanged(int totalUnreadCount);
@@ -114,11 +117,17 @@ signals:
 public slots:
     void openChat(const QString &chat_id);
     void closeChat(const QString &chat_id);
-    void getProxy();
-    void setProxy(const QString &type = "proxyEmpty", const QString &address = "",
-                  const int port = 0, const QString &username = "",
-                  const QString &password = "");
+    void getProxies();
+    void addProxy(const QString &address, const int port,
+                  const bool &enabled, const QVariantMap &type);
+    void editProxy(const int id, const QString &address, const int port,
+                  const bool &enabled, const QVariantMap &type);
 
+    void disableProxy();
+    void enableProxy(const int id);
+    void removeProxy(const int id);
+    void pingProxy(const int id);
+    void getProxyLink(const int id);
 
     void setEncryptionKey(const QString &key = "");
     void setPhoneNumber(const QString &phone);

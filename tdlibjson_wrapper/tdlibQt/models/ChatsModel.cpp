@@ -149,12 +149,12 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
     qint64 chat_id = chatId.toLongLong(&ok, 10);
     if (!ok)
         return;
-    setNotificationSettings muteFunction;
-    muteFunction.scope_ = QSharedPointer<NotificationSettingsScope>(new notificationSettingsScopeChat(chat_id));
+    setChatNotificationSettings muteFunction;
+    muteFunction.chat_id_ = chat_id;
     if (mute)
-        muteFunction.notification_settings_ = QSharedPointer<notificationSettings>(new notificationSettings(std::numeric_limits<int>::max(), std::string(""), false));
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false));
     else
-        muteFunction.notification_settings_ = QSharedPointer<notificationSettings>(new notificationSettings(0, std::string(""), false));
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false));
 
     TlStorerToString jsonConverter;
     muteFunction.store(jsonConverter, "muteFunction");

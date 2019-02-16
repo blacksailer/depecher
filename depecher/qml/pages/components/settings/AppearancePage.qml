@@ -13,6 +13,26 @@ Page {
         key:settingsUiPath + "/hideNameplate"
         defaultValue: false
     }
+    ConfigurationValue {
+        id:nightMode
+        key:settingsUiPath + "/nightMode"
+        defaultValue: false
+    }
+    ConfigurationValue {
+        id:nightModeSchedule
+        key:settingsUiPath + "/nightModeSchedule"
+        defaultValue: false
+    }
+    ConfigurationValue {
+        id:nightModeFrom
+        key:settingsUiPath + "/nightModeFrom"
+        defaultValue: "1900-01-01T22:00:00"
+    }
+    ConfigurationValue {
+        id:nightModeTill
+        key:settingsUiPath + "/nightModeTill"
+        defaultValue: "1900-01-01T08:00:00"
+    }
     SilicaFlickable {
 
         anchors.fill: parent
@@ -78,37 +98,37 @@ Page {
                 defaultValue: false//Theme.highlightDimmerColor
             }
 
-                PageHeader {
-                    id: nameplate
-                    title: hideNameplate.value ? "" : messagingModel.userName
-                    height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
-                    Label {
-                        id: actionLabel
-                        width: parent.width - parent.leftMargin - parent.rightMargin
-                        anchors {
-                            top: hideNameplate.value ? parent.top : parent._titleItem.bottom
-                            topMargin: hideNameplate.value ? Theme.paddingSmall : 0
-                            right: parent.right
-                            rightMargin: parent.rightMargin
-                        }
-                        text: messagingModel.action
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.highlightColor
-                        opacity: 0.8
-                        horizontalAlignment: Text.AlignRight
-                        truncationMode: TruncationMode.Fade
+            PageHeader {
+                id: nameplate
+                title: hideNameplate.value ? "" : messagingModel.userName
+                height: hideNameplate.value ? actionLabel.height + Theme.paddingMedium : Math.max(_preferredHeight, _titleItem.y + _titleItem.height + actionLabel.height + Theme.paddingMedium)
+                Label {
+                    id: actionLabel
+                    width: parent.width - parent.leftMargin - parent.rightMargin
+                    anchors {
+                        top: hideNameplate.value ? parent.top : parent._titleItem.bottom
+                        topMargin: hideNameplate.value ? Theme.paddingSmall : 0
+                        right: parent.right
+                        rightMargin: parent.rightMargin
                     }
+                    text: messagingModel.action
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.highlightColor
+                    opacity: 0.8
+                    horizontalAlignment: Text.AlignRight
+                    truncationMode: TruncationMode.Fade
                 }
-                SilicaListView {
-                    width: parent.width
-                   height: root.height/2 + Theme.itemSizeMedium - nameplate.height
-                    clip:true
-                    model:messagingModel
-                    topMargin:  -1 * Theme.itemSizeExtraLarge
-                    spacing: Theme.paddingSmall
-                    delegate: MessageItem {
-                    }
+            }
+            SilicaListView {
+                width: parent.width
+                height: root.height/2 + Theme.itemSizeMedium - nameplate.height
+                clip:true
+                model:messagingModel
+                topMargin:  -1 * Theme.itemSizeExtraLarge
+                spacing: Theme.paddingSmall
+                delegate: MessageItem {
                 }
+            }
 
 
             Separator {
@@ -295,6 +315,80 @@ Page {
                     oneAligningValue.sync()
                 }
             }
+            ExpandingSectionGroup {
+                width: parent.width
+                ExpandingSection {
+                    id: section
+                    width: parent.width -2*x
+                    x:Theme.horizontalPageMargin
+                    title: qsTr("Night Mode")
+
+                    content.sourceComponent: Column {
+                        width: section.width
+                        TextSwitch {
+                            width: parent.width
+                            checked: nightMode.value
+                            automaticCheck: false
+                            enabled: !nightScheduleSwitch.checked
+                            text: qsTr("Enable night mode")
+                            onClicked: {
+                                nightMode.value = !checked
+                                nightMode.sync()
+                            }
+                        }
+                        TextSwitch {
+                            id:nightScheduleSwitch
+                            width: parent.width
+                            checked: nightModeSchedule.value
+                            automaticCheck: false
+                            text: qsTr("Enable schedule")
+                            onClicked: {
+                                nightModeSchedule.value = !checked
+                                nightModeSchedule.sync()
+                            }
+                        }
+
+                        Row {
+                            width: section.width
+                            ValueButton {
+                                function openTimeDialog() {
+                                    var dialog = pageStack.push("Sailfish.Silica.TimePickerDialog", {
+                                                                    hourMode: DateTime.TwentyFourHours
+                                                                })
+
+                                    dialog.accepted.connect(function() {
+                                        nightModeFrom.value = dialog.time
+                                        nightModeFrom.sync()
+                                    })
+                                }
+
+                                label: qsTr("From")
+                                value: Format.formatDate(nightModeFrom.value, Formatter.TimeValue)
+                                width: parent.width / 2
+                                onClicked: openTimeDialog()
+                            }
+                            ValueButton {
+                                function openTimeDialog() {
+                                    var dialog = pageStack.push("Sailfish.Silica.TimePickerDialog", {
+                                                                    hourMode: DateTime.TwentyFourHours
+                                                                })
+
+                                    dialog.accepted.connect(function() {
+                                        nightModeTill.value = dialog.time
+                                        nightModeTill.sync()
+                                    })
+                                }
+
+                                label:qsTr("Till")
+                                value: Format.formatDate(nightModeTill.value, Formatter.TimeValue)
+                                width: parent.width / 2
+                                onClicked: openTimeDialog()
+                            }
+                        }
+                    }
+                }
+
+            }
 
             Button {
                 width: Theme.buttonWidthMedium
@@ -306,7 +400,10 @@ Page {
                     colorValue.value = colorValue.defaultValue
                     incomingColorValue.value = incomingColorValue.defaultValue
                     hideNameplate.value = hideNameplate.defaultValue
-
+                    nightModeTill.value = nightModeTill.defaultValue
+                    nightModeFrom.value = nightModeFrom.defaultValue
+                    nightMode.value = nightMode.defaultValue
+                    nightModeSchedule.value = nightModeSchedule.defaultValue
                     radiusSlider.value = radiusValue.value
                     opacitySlider.value = opacityValue.value
                 }

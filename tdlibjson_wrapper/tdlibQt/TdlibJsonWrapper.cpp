@@ -195,6 +195,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateChatMention);
     connect(parseObject, &ParseObject::updateMentionRead,
             this, &TdlibJsonWrapper::updateMentionRead);
+    connect(parseObject, &ParseObject::proxiesReceived,
+            this, &TdlibJsonWrapper::proxiesReceived);
     connect(parseObject, &ParseObject::proxyReceived,
             this, &TdlibJsonWrapper::proxyReceived);
     connect(parseObject, &ParseObject::meReceived,
@@ -215,6 +217,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateMessageSendSucceeded);
     connect(parseObject, &ParseObject::updateSupergroup,
             this, &TdlibJsonWrapper::updateSupergroup);
+    connect(parseObject, &ParseObject::secondsReceived,
+            this, &TdlibJsonWrapper::secondsReceived);
+    connect(parseObject, &ParseObject::textReceived,
+            this, &TdlibJsonWrapper::textReceived);
 
     listenThread->start();
     parseThread->start();
@@ -329,31 +335,120 @@ void TdlibJsonWrapper::changeStickerSet(const qint64 set_id, const bool is_insta
 }
 
 
-void TdlibJsonWrapper::getProxy()
+void TdlibJsonWrapper::getProxies()
 {
-    QString getProxy = "{\"@type\":\"getProxy\"}";
-    td_json_client_send(client, getProxy.toStdString().c_str());
+    QString getProxies = "{\"@type\":\"getProxies\"}";
+    td_json_client_send(client, getProxies.toStdString().c_str());
 }
 
-void TdlibJsonWrapper::setProxy(const QString &type, const QString &address, const int port,
-                                const QString &username, const QString &password)
+void TdlibJsonWrapper::addProxy(const QString &address, const int port,
+                                const bool &enabled, const QVariantMap &type)
 {
-    QString proxy = "{\"@type\":\"setProxy\","
-                    "\"proxy\":{\"@type\":\"proxyEmpty\"}"
-                    "}";
-    if (type == "proxySocks5")
-        proxy = "{\"@type\":\"setProxy\","
-                "\"proxy\":"
-                "{\"@type\":\"proxySocks5\","
-                "\"server\":\"" + address + "\","
-                "\"port\":" + QString::number(port) + ","
-                "\"username\":\"" + username + "\","
-                "\"password\":\"" + password + "\""
-                "}"
-                "}";
 
-    td_json_client_send(client, proxy.toStdString().c_str());
+    QString proxyType;
+ if (type["@type"] == "proxyTypeSocks5")
+     proxyType = "{\"@type\":\"proxyTypeSocks5\","
+                 "\"username\":\"" + type["username"].toString() + "\","
+             "\"password\":\"" + type["password"].toString() + "\""
+             "}";
+ else if(type["@type"] == "proxyTypeHttp")
+ {
+     proxyType = "{\"@type\":\"proxyTypeHttp\","
+                 "\"username\":\"%1\","
+                 "\"password\":\"%2\","
+                 "\"http_only\":%3"
+                 "}";
+     proxyType = proxyType.arg(type["username"].toString(),type["password"].toString(),type["http_only"].toBool() ? QString("true") : QString("false"));
+ }
+ else if(type["@type"] == "proxyTypeMtproto")
+     proxyType = "{\"@type\":\"proxyTypeMtproto\","
+             "\"secret\":\"" + type["secret"].toString() + "\""
+             "}";
+ QString proxy = "{\"@type\":\"addProxy\","
+                 "\"server\":\"%1\","
+                 "\"port\":%2,"
+         "\"enable\":%3,"
+                "\"type\":%4"
+              "}";
+  proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType );
+qDebug() << proxy;
+ td_json_client_send(client, proxy.toStdString().c_str());
+}
 
+void TdlibJsonWrapper::editProxy(const int id, const QString &address, const int port, const bool &enabled, const QVariantMap &type)
+{
+    QString proxyType;
+ if (type["@type"] == "proxyTypeSocks5")
+     proxyType = "{\"@type\":\"proxyTypeSocks5\","
+                 "\"username\":\"" + type["username"].toString() + "\","
+             "\"password\":\"" + type["password"].toString() + "\""
+             "}";
+ else if(type["@type"] == "proxyTypeHttp")
+ {
+     proxyType = "{\"@type\":\"proxyTypeHttp\","
+                 "\"username\":\"%1\","
+                 "\"password\":\"%2\","
+                 "\"http_only\":%3"
+                 "}";
+     proxyType = proxyType.arg(type["username"].toString(),type["password"].toString(),type["http_only"].toBool() ? QString("true") : QString("false"));
+ }
+ else if(type["@type"] == "proxyTypeMtproto")
+     proxyType = "{\"@type\":\"proxyTypeMtproto\","
+             "\"secret\":\"" + type["secret"].toString() + "\""
+             "}";
+
+ QString proxy = "{\"@type\":\"addProxy\","
+                 "\"server\":\"%1\","
+                 "\"port\":%2,"
+         "\"enable\":%3,"
+                "\"type\":%4,"
+                 "\"proxy_id\":%5"
+              "}";
+  proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType,QString::number(id) );
+
+ td_json_client_send(client, proxy.toStdString().c_str());
+
+}
+
+void TdlibJsonWrapper::disableProxy()
+{
+    QString str = "{\"@type\":\"disableProxy\"}";
+    td_json_client_send(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::enableProxy(const int id)
+{
+    QString str = "{\"@type\":\"enableProxy\","
+                  "\"proxy_id\":%1,"
+                  "\"@extra\":\"%2\"}";
+
+    str = str.arg(QString::number(id),"enableProxy_"+QString::number(id));
+    td_json_client_send(client, str.toStdString().c_str());
+}
+void TdlibJsonWrapper::getProxyLink(const int id)
+{
+    QString str = "{\"@type\":\"getProxyLink\","
+                  "\"proxy_id\":%1,"
+                  "\"@extra\":\"%2\"}";
+    str = str.arg(QString::number(id),"getProxyLink_"+QString::number(id));
+
+    td_json_client_send(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::removeProxy(const int id)
+{
+    QString str = "{\"@type\":\"removeProxy\","
+                  "\"proxy_id\":" + QString::number(id) + "}";
+    td_json_client_send(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::pingProxy(const int id)
+{
+    QString str = "{\"@type\":\"pingProxy\","
+                  "\"proxy_id\":%1,"
+                  "\"@extra\":\"%2\"}";
+    str = str.arg(QString::number(id),"pingProxy_"+QString::number(id));
+    td_json_client_send(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setEncryptionKey(const QString &key)
@@ -533,18 +628,18 @@ void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id,
     QString viewMessageStr = "{\"@type\":\"getMessage\","
                              "\"chat_id\":\"%1\","
                              "\"message_id\":\"%2\"}";
-    viewMessageStr.arg(chat_id, message_id);
+    viewMessageStr = viewMessageStr.arg(chat_id, message_id);
     if (extra == "") {
         viewMessageStr = "{\"@type\":\"getMessage\","
                          "\"chat_id\":\"%1\","
                          "\"message_id\":\"%2\"}";
-        viewMessageStr.arg(chat_id, message_id);
+        viewMessageStr = viewMessageStr.arg(chat_id, message_id);
     } else {
         viewMessageStr = "{\"@type\":\"getMessage\","
                          "\"chat_id\":\"%1\","
                          "\"message_id\":\"%2\","
                          "\"extra\":\"%3\"}";
-        viewMessageStr.arg(QString::number(chat_id), QString::number(message_id), extra);
+        viewMessageStr = viewMessageStr.arg(QString::number(chat_id), QString::number(message_id), extra);
     }
     td_json_client_send(client, viewMessageStr.toStdString().c_str());
 }
