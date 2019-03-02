@@ -184,7 +184,20 @@ ListItem {
                         }
                     }
                 }
-
+                Row {
+                    id: forwardRow
+                    Label {
+                        id: forwardInfoLabel
+                        visible: forward_info ? true : false
+                        text: forward_info ? qsTr("Forwarded from") + " " + forward_info : ""
+                        width: contentLoader.width
+                        color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        font.bold: true
+                        truncationMode: TruncationMode.Fade
+                        wrapMode: Text.WrapAnywhere
+                    }
+                }
                 Loader {
                     id:replyLoader
                     active: reply_to_message_id != 0 && index != 0
@@ -254,6 +267,13 @@ ListItem {
                             //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
                             //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                             return "delegates/ImageDelegate.qml"
+                        }
+                        else if(currentMessageType == MessagingModel.VIDEO) {
+                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                            //                            var maxHeight = page.height/2
+                            //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
+                            //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
+                            return "delegates/VideoDelegate.qml"
                         }
                         else if(currentMessageType == MessagingModel.STICKER) {
                             width = 400

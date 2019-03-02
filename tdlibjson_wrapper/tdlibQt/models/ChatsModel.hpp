@@ -13,7 +13,7 @@ class ChatsModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(int totalUnreadCount READ totalUnreadCount NOTIFY
                totalUnreadCountChanged)
-    QList<QSharedPointer<chat>> chats;
+    QList<QSharedPointer<chat>> m_chats;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionMap;
     QVector<int> chatActionIndices;
     QTimer chatActionTimer;
@@ -42,6 +42,8 @@ class ChatsModel : public QAbstractListModel
     };
     TdlibJsonWrapper *tdlibJson;
     void changeChatOrder(qint64 chatId, qint64 order);
+    const int indexByOrder(const qint64 order);
+    bool isContains(const QSharedPointer<chat> &chat);
     bool fetchPending = false;
 public:
     explicit ChatsModel(QObject *parent = 0);
@@ -58,7 +60,7 @@ public:
     int totalUnreadCount() const
     {
         int result = 0;
-        for (auto item : chats) {
+        for (auto item : m_chats) {
             result += item->unread_mention_count_;
             if (item->notification_settings_->mute_for_ == 0)
                 result += item->unread_count_;

@@ -4,26 +4,33 @@ import tdlibQtEnums 1.0
 import TelegramModels 1.0
 import "items"
 import "components"
-import Sailfish.Ambience 1.0
 
 Page {
     id: page
     allowedOrientations: Orientation.All
-    ChatsModel{
-        id:chatsModel
-    }
 
     property string titleHeader: "Depecher"
     //for search in pageStack
     property bool __chat_page: true
     property string _opened_chat_id: ""
+    Connections {
+        target: c_telegramWrapper
+        onErrorReceivedMap:{
+            if(errorObject["code"] === 401)
+                pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
+        }
+    }
 
     SilicaListView {
         anchors.fill: parent
-        model:chatsModel
+        model:   ChatsModel {
+            id:chatsModel
+        }
+
         header:  PageHeader {
             title: titleHeader
         }
+
 
         PullDownMenu {
             MenuItem {
@@ -67,13 +74,6 @@ Page {
             }
         }
     }
-
-
-    Connections {
-        target: c_telegramWrapper
-        onErrorReceivedMap:{
-            if(errorObject["code"] === 401)
-                pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
-        }
-    }
 }
+
+

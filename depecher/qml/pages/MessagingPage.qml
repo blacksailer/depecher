@@ -10,6 +10,7 @@ Page {
     id: page
     allowedOrientations: Orientation.All
     property alias chatId: messagingModel.peerId
+    property var forwardMessages: ({})
     property var arrayIndex: []
 
     Notification {
@@ -71,6 +72,11 @@ Page {
         }
     }
     Component.onCompleted: {
+        if (Object.keys(forwardMessages).length !== 0) {
+            writer.reply_id = "-1"
+        writer.replyMessageAuthor = qsTr("Forwarded messages")
+        writer.replyMessageText = forwardMessages.messages.length + " " + qsTr("messages")
+        }
         c_telegramWrapper.openChat(messagingModel.peerId)
     }
     Component.onDestruction: {
@@ -85,7 +91,7 @@ Page {
     WritingItem {
         id: writer
         rootPage: page
-
+        anchors.fill: parent
         Timer {
             //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)
@@ -140,7 +146,9 @@ Page {
                 }
             }
         }
-
+    onReplyAreaCleared: {
+    forwardMessages = {}
+    }
         BusyIndicator {
             id:placeholder
             running: true
@@ -148,14 +156,16 @@ Page {
             anchors.centerIn: messageList.parent
         }
 
-        bottomArea.onFocusChanged: {
-            messageList.positionViewAtEnd()
-        }
+//        bottomArea.onFocusChanged: {
+//            messageList.positionViewAtEnd()
+//        }
 
         Column {
             width: page.width
-            height: parent.height - writer.sendAreaHeight
-
+//            height: parent.height - writer.sendAreaHeight
+            anchors.top:parent.top
+            anchors.bottom:parent.bottom
+            anchors.bottomMargin: writer.sendAreaHeight
             PageHeader {
                 id: nameplate
                 title: hideNameplate.value ? "" : messagingModel.userName
@@ -181,26 +191,30 @@ Page {
                 id: messageList
                 property bool needToScroll: false
                 width: parent.width
+//                anchors.top:nameplate.bottom
+//                anchors.bottom:writer.bottomArea.top
                 height: parent.height - nameplate.height
+                onAtYEndChanged: console.log(atYEnd)
+
+                onHeightChanged: {
+//                    console.log(messageList.indexAt(100,height+contentY),count)
+                    if(messageList.indexAt(width/2,height+contentY) === count - 1)
+                        messageList.positionViewAtEnd()
+                }
+
                 clip: true
                 spacing: Theme.paddingSmall
                 model: messagingModel
 
-                Timer {
-                    id:positionAtEndTimer
-                    interval: 500
-                    repeat: false
-                    onTriggered: messageList.positionViewAtEnd()
-                }
                 Connections {
-                target: messagingModel
-                onRowsInserted:{
-                if(first == 0)
-                    for(var i = 0; i < arrayIndex.length;i ++)
-                        arrayIndex[i] = arrayIndex[i] + last + 1
-                if(messageList.needToScroll)
-                    positionAtEndTimer.start()
-                }
+                    target: messagingModel
+                    onRowsInserted: {
+                    if(first == 0)
+                        for(var i = 0; i < arrayIndex.length;i ++)
+                            arrayIndex[i] = arrayIndex[i] + last + 1
+                    if(messageList.atYEnd && messageList.state !== "preparing")
+                        positionAtEndTimer.start()
+                    }
                 }
                 topMargin:  -1 * Theme.itemSizeExtraLarge
                 VerticalScrollDecorator {
@@ -275,19 +289,12 @@ Page {
                 }
                 boundsBehavior: Flickable.DragOverBounds
 
-                Timer {
-                    id:fetchOlderTimer
-                    interval: 500
-                    repeat: false
-                    onTriggered: messagingModel.fetchOlder()
-                }
-
                 onContentYChanged: {
+
                     if(atYBeginning &&  !messagingModel.reachedHistoryEnd) {
-                        //                                                                              messageList.positionViewAtIndex(1,ListView.Beginning)
                         fetchOlderTimer.start()
                     }
-                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
+//                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
 
                 }
                 delegate:           MessageItem {
@@ -351,6 +358,13 @@ Page {
                             }
                         }
                         MenuItem {
+                            text: qsTr("Forward")
+                            onClicked: {
+                                pageStack.push("SelectChatDialog.qml",{"from_chat_id": chatId,
+                                                    "messages": [id]})
+                            }
+                        }
+                        MenuItem {
                             text:message_type == MessagingModel.TEXT || file_caption ? qsTr("Copy text") : qsTr("Copy path")
                             onClicked: {
                                 if(message_type == MessagingModel.TEXT)
@@ -359,8 +373,6 @@ Page {
                                     Clipboard.text = file_caption
                                 else
                                     Clipboard.text = content
-
-
                             }
                         }
                         MenuItem {
@@ -388,16 +400,30 @@ Page {
                     }
                 }
 
-
-
                 Timer {
                     id:centerTimer
-                    interval: 500
+                    interval: 800
                     onTriggered: {
-                        messageList.positionViewAtIndex(messagingModel.lastMessageIndex,ListView.Center)
+                        messageList.positionViewAtIndex(messagingModel.lastMessageIndex + 1,ListView.Beginning)
                         messageList.currentIndex = messagingModel.lastMessageIndex + 1
+                        messagingModel.fetchOlder()
                         messageList.state = "ready"
                     }
+                }
+                Timer {
+                    id:fetchOlderTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered:{
+                        if(messageList.state == "ready")
+                        messagingModel.fetchOlder()
+                    }
+                }
+                Timer {
+                    id:positionAtEndTimer
+                    interval: 500
+                    repeat: false
+                    onTriggered: messageList.positionViewAtEnd()
                 }
 
                 Component.onCompleted: {
@@ -408,7 +434,10 @@ Page {
         }
 
         function sendText(text,reply_id) {
-            messagingModel.sendTextMessage(text,reply_id)
+            if(text.trim().length > 0)
+                messagingModel.sendTextMessage(text,reply_id)
+            if(reply_id == -1)
+                messagingModel.sendForwardMessages(chatId,forwardMessages.from_chat_id,forwardMessages.messages)
             buzz.play()
             textArea.text = ""
             restoreFocusTimer.start()

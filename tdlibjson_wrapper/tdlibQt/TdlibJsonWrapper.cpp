@@ -623,6 +623,32 @@ void TdlibJsonWrapper::sendMessage(const QString &json)
     td_json_client_send(client, jsonStr.toStdString().c_str());
 }
 
+void TdlibJsonWrapper::forwardMessage(const qint64 chat_id, const qint64 from_chat_id, const QVector<qint64> message_ids, const bool disable_notification, const bool from_background, const bool as_album)
+{
+    QString ids = "";
+    for (auto id : message_ids)
+        ids.append(QString::number(id) + ",");
+
+    ids = ids.remove(ids.length() - 1, 1);
+
+    QString forwardMessagesStr = "{\"@type\":\"forwardMessages\","
+                             "\"chat_id\":\"%1\","
+                             "\"from_chat_id\":\"%2\","
+                             "\"message_ids\":[%3],"
+                             "\"disable_notification\":%4,"
+                             "\"from_background\":%5,"
+                             "\"as_album\":%6,"
+                                 "\"@extra\":\"forwardMessagesExtra\"}";
+    forwardMessagesStr = forwardMessagesStr.arg(QString::number(chat_id),
+                                                QString::number(from_chat_id),
+                                                ids,
+                                                disable_notification ? QString("true") : QString("false"),
+                                                from_background ? QString("true") : QString("false"),
+                                                as_album ? QString("true") : QString("false"));
+
+    td_json_client_send(client, forwardMessagesStr.toStdString().c_str());
+}
+
 void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id, const QString extra)
 {
     QString viewMessageStr = "{\"@type\":\"getMessage\","
@@ -660,8 +686,6 @@ void TdlibJsonWrapper::getMessages(const qint64 chat_id, QVector<qint64> message
             messagesIds += ",\"" + QString::number(message_ids[i]) + "\"";
 
     getMessagesStr = getMessagesStr.arg(QString::number(chat_id), messageIdsStr.arg(messagesIds), extra);
-
-    qDebug() << getMessagesStr;
 
     td_json_client_send(client, getMessagesStr.toStdString().c_str());
 }

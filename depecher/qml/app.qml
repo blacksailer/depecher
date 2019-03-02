@@ -1,9 +1,10 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import Sailfish.Silica 1.0 
 import tdlibQtEnums 1.0
 import TelegramModels 1.0
 import QtMultimedia 5.6
 import Nemo.Configuration 1.0
+
 
 ApplicationWindow
 {
@@ -21,7 +22,7 @@ ApplicationWindow
     //    }
 
     Component.onCompleted: {
-        var component = Qt.createComponent("DepecherTheme.qml");
+        var component = Qt.createComponent("Background.qml");
         var wallpaper = component.createObject(rootWindow._wallpaperItem,{});
 
         if (wallpaper == null) {

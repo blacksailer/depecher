@@ -86,7 +86,7 @@ Column{
 
                     color: pressed ? Theme.primaryColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeTiny
-                    text: Format.formatDuration(audio_duration,Formatter.DurationShort)
+                    text: Format.formatDuration(duration,Formatter.DurationShort)
                 }
             }
         }

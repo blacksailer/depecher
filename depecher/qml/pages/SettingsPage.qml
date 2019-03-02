@@ -366,9 +366,14 @@ RemorseItem{id:remorseDelete}
                 text:qsTr("Log out")
                 visible:isLogoutVisible
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                RemorsePopup {
+                id:remorseLogout
+                }
                 onClicked: {
-                    c_telegramWrapper.logOut()
-                    pageStack.replaceAbove(null,Qt.resolvedUrl("AuthorizeDialog.qml"));
+                    remorseLogout.execute(qsTr("Logging out"),function() { c_telegramWrapper.logOut();
+                        pageStack.replaceAbove(null,Qt.resolvedUrl("AuthorizeDialog.qml")) })
+
                 }
             }
             Item {

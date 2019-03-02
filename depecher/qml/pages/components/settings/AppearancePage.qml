@@ -4,6 +4,8 @@ import Nemo.Configuration 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
 import "../../items"
+import "../../../ThemePlugin"
+
 Page {
     id:root
     property string settingsUiPath:  "/apps/depecher/ui"
@@ -127,17 +129,8 @@ Page {
                 topMargin:  -1 * Theme.itemSizeExtraLarge
                 spacing: Theme.paddingSmall
                 delegate: MessageItem {
-}
-                SilicaListView {
-                    width: parent.width
-                   height: root.height/2 + Theme.itemSizeMedium - nameplate.height
-                    clip:true
-                    model:messagingModel
-                    topMargin:  -1 * Theme.itemSizeExtraLarge
-                    spacing: Theme.paddingSmall
-                    delegate: MessageItem {
-                    }
                 }
+            }
 
 
             Separator {
@@ -424,4 +417,4 @@ Page {
         ColorPickerPage {}
     }
 }
-}
+

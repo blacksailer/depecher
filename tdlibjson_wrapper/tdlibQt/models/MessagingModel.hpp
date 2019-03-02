@@ -87,7 +87,7 @@ class MessagingModel : public QAbstractListModel
         FILE_CAPTION,
         PHOTO_ASPECT,
         DOCUMENT_NAME,
-        VOICE_DURATION,
+        DURATION,
         WAVEFORM,
         AUDIO_DURATION,
         AUDIO_TITLE,
@@ -150,6 +150,15 @@ public:
 public slots:
     void setUserName(QString userName);
     void setPeerId(QString peerId);
+    void sendForwardMessages(const QString &chat_id,
+                             const QString &from_chat_id,
+                             const QVariantList message_ids);
+    void sendForwardMessages(const qint64 chat_id,
+                             const qint64 from_chat_id,
+                             const QVariantList message_ids,
+                             const bool disable_notification,
+                             const bool from_background = false,
+                             const bool as_album = false);
     void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
     void sendPhotoMessage(const QString &filepath, const QString &reply_id  = "0",
                           const QString &caption = "");
@@ -176,6 +185,7 @@ public slots:
     void setLastOutboxId(double lastOutboxId);
 
     void setIsActive(bool isActive);
+
 
     void setLastMessageIndex(int lastMessageIndex)
     {
@@ -256,6 +266,7 @@ public:
         DOCUMENT,
         VOICE,
         AUDIO,
+        VIDEO,
         ANIMATION,
         SYSTEM_NEW_MESSAGE,
         CONTACT,

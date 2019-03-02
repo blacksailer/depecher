@@ -335,6 +335,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>edited</source>
         <translation>redigerad</translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
@@ -384,6 +388,18 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Deleting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -480,6 +496,13 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
 </context>
 <context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -547,6 +570,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logging out</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -332,6 +332,10 @@
         <source>edited</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
@@ -381,6 +385,18 @@
     </message>
     <message>
         <source>Deleting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -477,6 +493,13 @@
     </message>
 </context>
 <context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
@@ -544,6 +567,10 @@
     </message>
     <message>
         <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logging out</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

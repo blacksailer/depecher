@@ -126,7 +126,9 @@ DISTFILES += \
     qml/app.qml \
     systemd/org.blacksailer.depecher.service \
     qml/pages/items/delegates/VoiceNoteDelegate.qml \
-    qml/pages/items/delegates/AudioDelegate.qml
+    qml/pages/items/delegates/AudioDelegate.qml \
+    qml/Background.qml \
+    qml/pages/items/delegates/VideoDelegate.qml
 
 HEADERS += \
     src/FileWorker.hpp \

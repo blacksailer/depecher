@@ -90,6 +90,9 @@ public:
     static QSharedPointer<messageAudio> parseMessageAudio(const QJsonObject &messageAudioObject);
     static QSharedPointer<proxy> parseProxy(const QJsonObject &proxyObject);
     static QSharedPointer<ProxyType> parseProxyType(const QJsonObject &proxyTypeObject);
+    static QSharedPointer<messageVideo> parseMessageVideo(const QJsonObject &messageVideoObject);
+    static QSharedPointer<video> parseVideo(const QJsonObject &videoObject);
+
 signals:
 
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);

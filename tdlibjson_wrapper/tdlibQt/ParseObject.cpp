@@ -42,7 +42,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateChatDraftMessage":
     //    case "updateChatIsPinned":
     //    case "updateChatPhoto":
-    //    case "updateChatReadOutbox":
     //    case "updateChatReplyMarkup":
     //    case "updateChatTitle":
     //    case "updateFavoriteStickers":
@@ -50,13 +49,9 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateFileGenerationStop":
     //    case "updateInstalledStickerSets":
     //    case "updateMessageContentOpened":
-    //    case "updateMessageMentionRead":
     //    case "updateMessageSendAcknowledged":
-    //    case "updateMessageSendFailed":
-    //    case "updateMessageSendSucceeded":
     //    case "updateMessageViews":
     //    case "updateNewCallbackQuery":
-    //    case "updateNewChat":
     //    case "updateNewChosenInlineResult":
     //    case "updateNewCustomEvent":
     //    case "updateNewCustomQuery":
@@ -69,11 +64,8 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateSavedAnimations":
     //    case "updateSecretChat":
     //    case "updateServiceNotification":
-    //    case "updateSupergroup":
     //    case "updateSupergroupFullInfo":
     //    case "updateTrendingStickerSets":
-    //    case "updateUser":
-    //    case "updateUserChatAction":
     //    case "updateUserFullInfo":
     //    case "updateUserPrivacySettingRules":
     //    case "updateUserStatus":
@@ -177,7 +169,6 @@ void ParseObject::parseResponse(const QByteArray &json)
         qint64 chat_id = getInt64(chatObject["id"]);
         chat_title_[chat_id] = chatObject["title"].toString();
         emit updateNewChat(chatObject);
-
     }
     if (typeField == "updateUser") {
         auto userObject = doc.object()["user"].toObject();
@@ -331,8 +322,7 @@ QSharedPointer<message> ParseObject::parseMessage(const QJsonObject &messageObje
 
     resultMessage->content_ = parseMessageContent(messageObject["content"].toObject());
     resultMessage->reply_markup_ = parseReplyMarkup(messageObject["reply_markup"].toObject());
-    resultMessage->forward_info_ = QSharedPointer<MessageForwardInfo>
-            (nullptr);//parseForwardInfo(messageObject["forward_info"].toObject());
+    resultMessage->forward_info_ =parseForwardInfo(messageObject["forward_info"].toObject());
     resultMessage->sending_state_ = parseMessageSendingState(messageObject["sending_state"].toObject());
 
     return resultMessage;
@@ -480,7 +470,7 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
                     forwardObject["forwarded_from_chat_id"]);
         resultMessageForwardedFromUser->forwarded_from_message_id_ = getInt64(
                     forwardObject["forwarded_from_message_id"]);
-        resultMessageForwardedFromUser->sender_user_id_ = getInt64(forwardObject["sender_user_id"]);
+        resultMessageForwardedFromUser->sender_user_id_ = forwardObject["sender_user_id"].toInt();
         return resultMessageForwardedFromUser;
     }
     if (forwardObject["@type"].toString() == "messageForwardedPost") {
@@ -494,11 +484,14 @@ QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObje
                     forwardObject["forwarded_from_chat_id"]);
         resultMessageForwardedPost->forwarded_from_message_id_ = getInt64(
                     forwardObject["forwarded_from_message_id"]);
+        resultMessageForwardedPost->message_id_ = getInt64(
+                    forwardObject["message_id"]);
+
         return resultMessageForwardedPost;
 
     }
     return QSharedPointer<messageForwardedFromUser>
-            (new messageForwardedFromUser);
+            (nullptr);
 }
 
 QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
@@ -704,10 +697,8 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
 
     if (messageContentObject["@type"].toString() == "messageDocument")
         return parseMessageDocument(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageVideo") {
-        typeMessageText->text_->text_ = "Video";
-        return typeMessageText;
-    }
+    if (messageContentObject["@type"].toString() == "messageVideo")
+        return parseMessageVideo(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageChatJoinByLink") {
         if (messageContentObject["@type"].toString() != "messageChatJoinByLink")
             return QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);
@@ -972,6 +963,43 @@ QSharedPointer<animation> ParseObject::parseAnimation(const QJsonObject
     resultAnimation->thumbnail_ = parsePhotoSize(animationObject["thumbnail"].toObject());
 
     return resultAnimation;
+}
+QSharedPointer<messageVideo> ParseObject::parseMessageVideo(const QJsonObject
+                                                                    &messageVideoObject)
+{
+    if (messageVideoObject["@type"].toString() != "messageVideo")
+        return QSharedPointer<messageVideo>(new messageVideo);
+
+    auto resultVideo = QSharedPointer<messageVideo>(new messageVideo);
+
+
+    resultVideo->caption_ = parseFormattedTextContent(messageVideoObject["caption"].toObject());
+    resultVideo->is_secret_ = messageVideoObject["is_secret"].toBool();
+    resultVideo->video_ = parseVideo(messageVideoObject["video"].toObject());
+
+
+    return resultVideo;
+
+}
+
+QSharedPointer<video> ParseObject::parseVideo(const QJsonObject &videoObject)
+{
+    if (videoObject["@type"].toString() != "video")
+        return QSharedPointer<video>(new video);
+
+    auto resultVideo = QSharedPointer<video>(new video);
+
+    resultVideo->duration_ = videoObject["duration"].toInt();
+    resultVideo->file_name_ = videoObject["file_name"].toString().toStdString();
+    resultVideo->has_stickers_ = videoObject["has_stickers"].toBool();
+    resultVideo->height_ = videoObject["height"].toInt();
+    resultVideo->mime_type_ = videoObject["mime_type"].toString().toStdString();
+    resultVideo->supports_streaming_ = videoObject["supports_streaming"].toBool();
+    resultVideo->thumbnail_ = parsePhotoSize(videoObject["thumbnail"].toObject());
+    resultVideo->video_ = parseFile(videoObject["video"].toObject());
+    resultVideo->width_ = videoObject["width"].toInt();
+
+    return resultVideo;
 }
 QSharedPointer<messageVoiceNote> ParseObject::parseMessageVoiceNote(const QJsonObject
                                                                     &messageVoiceNoteObject)
