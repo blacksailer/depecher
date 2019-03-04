@@ -16,6 +16,5 @@ import depecherUtils 1.0
         linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
         font.pixelSize: Theme.fontSizeSmall
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-//            Component.onCompleted: console.log(content.length,18 * content.length/width,height,lineCount,'height/linecount')
     }
 

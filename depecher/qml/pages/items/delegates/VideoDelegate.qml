@@ -26,7 +26,6 @@ Column{
                 anchors.fill: parent
                 enabled: file_downloading_completed
                 onClicked:{
-                    console.log(content)
                     pageStack.push("../../VideoPage.qml",{source:content,thumbnail:media_preview})}
             }
 

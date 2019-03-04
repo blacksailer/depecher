@@ -64,6 +64,7 @@ ListItem {
         x:columnWrapper.x
         y:columnWrapper.y
         visible: currentMessageType != MessagingModel.STICKER &&
+                 currentMessageType != MessagingModel.VIDEO_NOTE &&
                  currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                  currentMessageType != MessagingModel.JOINBYLINK &&
                  currentMessageType != MessagingModel.CONTACT_REGISTERED &&
@@ -337,7 +338,7 @@ ListItem {
                         }
                         font.pixelSize: Theme.fontSizeTiny
                         color:pressed ? Theme.primaryColor : Theme.secondaryColor
-                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date) + ' ' + index
+                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date) // + ' ' + index
                     }
                     Label {
                         font.pixelSize: Theme.fontSizeTiny

@@ -4,7 +4,6 @@ import Nemo.Configuration 1.0
 import TelegramModels 1.0
 import tdlibQtEnums 1.0
 import "../../items"
-import "../../../ThemePlugin"
 
 Page {
     id:root
@@ -52,6 +51,7 @@ Page {
                 property string userName: "Pavel Nurov"
                 property string action: "Pavel is typing"
                 ListElement {
+
                 }
                 ListElement {
                     is_outgoing: false
@@ -126,7 +126,8 @@ Page {
                 height: root.height/2 + Theme.itemSizeMedium - nameplate.height
                 clip:true
                 model:messagingModel
-                topMargin:  -1 * Theme.itemSizeExtraLarge
+                topMargin:  -1 * (Theme.itemSizeExtraLarge )
+                currentIndex: 1
                 spacing: Theme.paddingSmall
                 delegate: MessageItem {
                 }
@@ -322,12 +323,13 @@ Page {
                 width: parent.width
                 ExpandingSection {
                     id: section
-                    width: parent.width -2*x
-                    x:Theme.horizontalPageMargin
+                    width: parent.width
                     title: qsTr("Night Mode")
 
                     content.sourceComponent: Column {
-                        width: section.width
+                        width: section.width -2*x
+                        x:Theme.horizontalPageMargin
+
                         TextSwitch {
                             width: parent.width
                             checked: nightMode.value
@@ -411,10 +413,6 @@ Page {
             }
 
         }
-    }
-    Component {
-        id: colorPickerPage
-        ColorPickerPage {}
     }
 }
 

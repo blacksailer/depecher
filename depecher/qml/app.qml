@@ -15,6 +15,7 @@ ApplicationWindow
     _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
 
+
     ////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)
     ////            pageStack.push(Qt.resolvedUrl("pages/AuthorizeDialog.qml"))
     ////        else
@@ -48,6 +49,7 @@ ApplicationWindow
                 });
                 if(pageStack.depth > 1)
                     pageStack.popAttached(page,PageStackAction.Immediate)
+                page._opened_chat_id = listPages[0].pageParam
                 pageStack.pushAttached(page_dialog,{chatId:listPages[0].pageParam})
                 pageStack.navigateForward()
             }

@@ -108,6 +108,10 @@
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish OS.</translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -492,12 +496,48 @@
         <source>secret</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
         <translation type="unfinished">El Proxy está listo</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">Estado conexión: </translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -514,10 +554,6 @@
         <translation>Ajustes</translation>
     </message>
     <message>
-        <source>Socks5 proxy</source>
-        <translation>Proxy Socks5</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>General</translation>
     </message>
@@ -528,10 +564,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>El Proxy está listo</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>Estado de la conexión: </translation>
     </message>
     <message>
         <source>About program</source>
@@ -554,31 +586,11 @@
         <translation>Ajustes de daemon</translation>
     </message>
     <message>
-        <source>Add proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished">Error</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

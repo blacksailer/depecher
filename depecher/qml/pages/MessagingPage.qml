@@ -139,7 +139,6 @@ Page {
                 }
                 if(files[i].type === TdlibState.Sticker)
                 {
-                    console.log(writer.reply_id)
                     messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
                     writer.clearReplyArea()
 
@@ -192,11 +191,12 @@ Page {
                 property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
-                onAtYEndChanged: console.log(atYEnd)
 
                 onHeightChanged: {
-                    if(messageList.indexAt(width/2,height+contentY) === count - 1)
+                    if(messageList.indexAt(width/2,height+contentY) >= count - 2)
+{
                         messageList.positionViewAtEnd()
+}
                 }
 
                 clip: true
@@ -297,8 +297,6 @@ Page {
                 delegate:           MessageItem {
                     id: myDelegate
                     onReplyMessageClicked:    {
-                        console.log(source_message_index,replied_message_index,messagingModel.findIndexById(replied_message_index) + 1)
-
                         if(messagingModel.findIndexById(replied_message_index) !== -1) {
                             arrayIndex.push(source_message_index)
                             writer.returnButtonEnabled = true
@@ -329,8 +327,6 @@ Page {
                                 writer.reply_id = id
                                 writer.replyMessageAuthor = author
                                 writer.replyMessageText = replyMessageContent()
-                                console.log(writer.replyMessageText.length)
-
                             }
                             function replyMessageContent() {
                                 if(message_type == MessagingModel.TEXT) {

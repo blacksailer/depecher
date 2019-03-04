@@ -63,8 +63,11 @@ void ProxyDAO::disableProxy()
     emit dataChanged(index(0),index(m_proxies.size()-1),role);
 }
 
-void ProxyDAO::editProxy()
+void ProxyDAO::editProxy(const int proxy_index, const QString &address, const int port,
+                         const bool &enabled, const QVariantMap &type)
 {
+    int proxy_id = data(index(proxy_index),ID).toInt();
+    m_client->editProxy(proxy_id,address,port,enabled,type);
 //    std::int32_t proxy_id_;
 //    std::string server_;
 //    std::int32_t port_;

@@ -61,7 +61,6 @@ Page {
         showMenu: false
         Component.onCompleted: showControls()
         onSliderReleased: {
-            console.log(value)
             mediaPlayer.seek(value * 1000)
         }
         onPreviousClicked: mediaPlayer.seek(0)

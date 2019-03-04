@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 Dialog {
     id:root
+    property int proxyIndex: -1
     property string address:""
     property string port:""
     property string username:""
@@ -14,7 +15,7 @@ Dialog {
 Column {
 width: parent.width
 DialogHeader {
-    acceptText: qsTr("Add proxy")
+    acceptText: proxyIndex > -1 ? qsTr("Edit proxy") : qsTr("Add proxy")
 }
 
 ComboBox {

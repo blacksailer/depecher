@@ -14,7 +14,9 @@ TARGET = depecher
 
 QT += sql dbus multimedia network
 
-
+##Application must be also changel in depecher.yaml file
+VERSION = 0.5.0
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
 CONFIG += c++11

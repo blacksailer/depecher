@@ -397,7 +397,7 @@ void TdlibJsonWrapper::editProxy(const int id, const QString &address, const int
              "\"secret\":\"" + type["secret"].toString() + "\""
              "}";
 
- QString proxy = "{\"@type\":\"addProxy\","
+ QString proxy = "{\"@type\":\"editProxy\","
                  "\"server\":\"%1\","
                  "\"port\":%2,"
          "\"enable\":%3,"

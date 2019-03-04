@@ -60,6 +60,15 @@ Page {
                       "- @icoderus" + "<br>" +
                       "- @aa13q"
             }
+            Label
+            {
+                width: parent.width - 2 * x
+                x : Theme.horizontalPageMargin
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeSmall
+                text: qsTr("Version") + "-" + Qt.application.version
+
+            }
             SectionHeader{
                 text: qsTr("Sources")
             }

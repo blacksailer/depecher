@@ -86,7 +86,8 @@ public slots:
     void addProxy(const QString &address, const int port, const bool &enabled, const QVariantMap &type);
     void enableProxy(const int id);
     void disableProxy();
-    void editProxy();
+    void editProxy(const int proxy_index, const QString &address, const int port,
+                   const bool &enabled, const QVariantMap &type);
     void pingProxy(const int id);
     void getProxyLink(const int id);
     void removeProxy(const int id);

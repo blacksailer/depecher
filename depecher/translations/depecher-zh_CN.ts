@@ -108,6 +108,10 @@
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -491,12 +495,48 @@
         <source>secret</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
         <translation type="unfinished">代理可用</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">错误</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">连接状态：</translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -513,10 +553,6 @@
         <translation>设置</translation>
     </message>
     <message>
-        <source>Socks5 proxy</source>
-        <translation>Socks5代理</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>通用</translation>
     </message>
@@ -527,10 +563,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>代理可用</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>连接状态：</translation>
     </message>
     <message>
         <source>About program</source>
@@ -553,31 +585,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished">错误</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

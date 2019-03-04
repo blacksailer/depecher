@@ -16,7 +16,7 @@ Column{
             asynchronous: true
             property int maxWidth: getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
             property int maxHeight: getHeight()/2
-            width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
+            width: photo_aspect >= 1 ? maxWidth *3/4 : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
             source: "image://depecherDb/"+content

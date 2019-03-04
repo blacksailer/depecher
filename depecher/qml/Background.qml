@@ -1,13 +1,8 @@
 import QtQuick 2.1
 import QtQuick.Window 2.1 as QtQuick
 import Sailfish.Silica 1.0 
-import "ThemePlugin"
 import Sailfish.Silica.private 1.0
 import Nemo.Configuration 1.0
-//Rectangle {
-//anchors.fill: parent
-//color: "#121617"
-//}
 
 Wallpaper {
     id: wallpaper
@@ -29,7 +24,6 @@ Wallpaper {
     anchors.fill: parent
     rotation: parent.rotation
     state: rotation
-//    source: Qt.resolvedUrl('file:///home/nemo/Pictures/Depecher/250821999_404787.jpg')
 
     states: [
         State {

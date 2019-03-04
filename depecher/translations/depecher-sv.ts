@@ -110,6 +110,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -494,12 +498,48 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>secret</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
         <translation type="unfinished">Proxyn är redo</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">Anslutningsstatus: </translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -516,10 +556,6 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <translation>Inställningar</translation>
     </message>
     <message>
-        <source>Socks5 proxy</source>
-        <translation>Socks5 proxy</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Allmänt</translation>
     </message>
@@ -530,10 +566,6 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Proxy is ready</source>
         <translation>Proxyn är redo</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>Anslutningsstatus: </translation>
     </message>
     <message>
         <source>About program</source>
@@ -556,31 +588,11 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <translation>Tjänstinställningar</translation>
     </message>
     <message>
-        <source>Add proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished">Fel</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
