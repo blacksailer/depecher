@@ -14,8 +14,8 @@ Column{
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: page.height/2
+            property int maxWidth: getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: getHeight()/2
             width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
@@ -56,7 +56,29 @@ Column{
                     }
                 }
             }
-            
+            function getWidth() {
+                switch(page.orientation) {
+                case Orientation.Portrait:
+                case Orientation.PortraitInverted:
+                    return Screen.width
+                case Orientation.Landscape:
+                case Orientation.LandscapeInverted:
+                    return Screen.height
+
+                }
+            }
+            function getHeight() {
+                switch(page.orientation) {
+                case Orientation.Portrait:
+                case Orientation.PortraitInverted:
+                    return Screen.height
+                case Orientation.Landscape:
+                case Orientation.LandscapeInverted:
+                    return Screen.width
+
+                }
+            }
+
         }
         
         LinkedLabel {

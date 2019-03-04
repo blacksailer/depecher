@@ -4,6 +4,7 @@
 #include "../ParseObject.hpp"
 #include "../TdlibJsonWrapper.hpp"
 #include "tdlibQt/include/TdlibNamespace.hpp"
+#include "MessagingModel.hpp"
 namespace tdlibQt {
 ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     tdlibJson(TdlibJsonWrapper::instance())
@@ -227,15 +228,9 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
                         return QString::fromStdString(contentPtr->text_->text_);
                     }
                 }
-                if (m_chats[rowIndex]->last_message_->content_->get_id() == messagePhoto::ID)
-                    return tr("Photo");
-                if (m_chats[rowIndex]->last_message_->content_->get_id() == messageDocument::ID)
-                    return tr("Document");
 
-                if (m_chats[rowIndex]->last_message_->content_->get_id() == messageSticker::ID)
-                    return tr("Sticker");
-                if (m_chats[rowIndex]->last_message_->content_->get_id() == messageAnimation::ID)
-                    return tr("Animation");
+                return MessagingModel::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
+
                 return QVariant();
             }
         }

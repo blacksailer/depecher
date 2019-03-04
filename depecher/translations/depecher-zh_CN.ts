@@ -493,6 +493,13 @@
     </message>
 </context>
 <context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished">代理可用</translation>
+    </message>
+</context>
+<context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>

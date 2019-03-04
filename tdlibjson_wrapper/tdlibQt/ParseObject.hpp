@@ -92,6 +92,8 @@ public:
     static QSharedPointer<ProxyType> parseProxyType(const QJsonObject &proxyTypeObject);
     static QSharedPointer<messageVideo> parseMessageVideo(const QJsonObject &messageVideoObject);
     static QSharedPointer<video> parseVideo(const QJsonObject &videoObject);
+    static QSharedPointer<videoNote> parseVideoNote(const QJsonObject &videoNoteObject);
+    static QSharedPointer<messageVideoNote> parseMessageVideoNote(const QJsonObject  &messageVideoNoteObject);
 
 signals:
 

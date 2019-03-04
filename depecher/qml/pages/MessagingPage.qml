@@ -191,13 +191,10 @@ Page {
                 id: messageList
                 property bool needToScroll: false
                 width: parent.width
-//                anchors.top:nameplate.bottom
-//                anchors.bottom:writer.bottomArea.top
                 height: parent.height - nameplate.height
                 onAtYEndChanged: console.log(atYEnd)
 
                 onHeightChanged: {
-//                    console.log(messageList.indexAt(100,height+contentY),count)
                     if(messageList.indexAt(width/2,height+contentY) === count - 1)
                         messageList.positionViewAtEnd()
                 }

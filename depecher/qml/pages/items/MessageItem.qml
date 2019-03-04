@@ -195,7 +195,7 @@ ListItem {
                         font.pixelSize: Theme.fontSizeSmall
                         font.bold: true
                         truncationMode: TruncationMode.Fade
-                        wrapMode: Text.WrapAnywhere
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                     }
                 }
                 Loader {
@@ -274,6 +274,9 @@ ListItem {
                             //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
                             //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                             return "delegates/VideoDelegate.qml"
+                        }
+                        else if(currentMessageType == MessagingModel.VIDEO_NOTE) {
+                            return "delegates/VideoNoteDelegate.qml"
                         }
                         else if(currentMessageType == MessagingModel.STICKER) {
                             width = 400

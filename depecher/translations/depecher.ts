@@ -493,6 +493,13 @@
     </message>
 </context>
 <context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>

@@ -496,6 +496,13 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
 </context>
 <context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished">Proxyn är redo</translation>
+    </message>
+</context>
+<context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>

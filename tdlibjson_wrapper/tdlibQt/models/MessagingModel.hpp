@@ -105,7 +105,6 @@ class MessagingModel : public QAbstractListModel
         MESSAGE_TYPE //Custom
     };
 
-    QString messageTypeToString(MessageContent *messageContent) const;
     void appendMessage(const QJsonObject &messageObject);
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
@@ -137,16 +136,7 @@ private slots:
     void onMessageDeleted(const QJsonObject &updateDeleteMessagesObject);
     void onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject);
 
-    // QAbstractItemModel interface
-public:
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QHash<int, QByteArray> roleNames() const;
-    QString userName() const;
-    QString peerId() const;
 
-    MessagingModel();
-    ~MessagingModel();
 public slots:
     void setUserName(QString userName);
     void setPeerId(QString peerId);
@@ -252,6 +242,17 @@ signals:
 
 
 public:
+    static QString messageTypeToString(const int  messageTypeId);
+    // QAbstractItemModel interface
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+    QString userName() const;
+    QString peerId() const;
+
+    MessagingModel();
+    ~MessagingModel();
+
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
     QVariantMap chatType() const;
@@ -265,6 +266,7 @@ public:
         STICKER,
         DOCUMENT,
         VOICE,
+        VIDEO_NOTE,
         AUDIO,
         VIDEO,
         ANIMATION,

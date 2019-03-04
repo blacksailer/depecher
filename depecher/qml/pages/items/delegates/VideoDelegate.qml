@@ -15,8 +15,8 @@ Column{
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: page.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: page.height/2
+            property int maxWidth: getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: getHeight()/2
             width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
@@ -39,11 +39,37 @@ Column{
             }
 
             Label {
+                id:durationText
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
+                anchors.rightMargin:  Theme.paddingSmall
+                anchors.bottomMargin: Theme.paddingSmall
+
                 color: pressed ? Theme.primaryColor : Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeTiny
                 text: Format.formatDuration(duration,Formatter.DurationShort)
+                z:1
+            }
+            Rectangle {
+                id:dimmedPlayColor
+                anchors.fill: image
+                opacity: 0.5
+                color:"black"
+                visible: file_downloading_completed
+            }
+            Image {
+                id: playIcon
+                visible: file_downloading_completed
+                source:  "image://theme/icon-m-play"
+                anchors.centerIn: dimmedPlayColor
+            }
+            Rectangle {
+            width: durationText.width + Theme.paddingSmall
+            height: durationText.height
+            anchors.centerIn: durationText
+            radius: 10
+            color:Theme.rgba(Theme.secondaryHighlightColor,0.5)
+            z:0
             }
 
             Image {
@@ -67,7 +93,28 @@ Column{
                     }
                 }
             }
+            function getWidth() {
+                switch(page.orientation) {
+                case Orientation.Portrait:
+                case Orientation.PortraitInverted:
+                    return Screen.width
+                case Orientation.Landscape:
+                case Orientation.LandscapeInverted:
+                    return Screen.height
 
+                }
+            }
+            function getHeight() {
+                switch(page.orientation) {
+                case Orientation.Portrait:
+                case Orientation.PortraitInverted:
+                    return Screen.height
+                case Orientation.Landscape:
+                case Orientation.LandscapeInverted:
+                    return Screen.width
+
+                }
+            }
         }
 
         LinkedLabel {

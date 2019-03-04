@@ -683,8 +683,6 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return parseMessageSticker(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAnimation")
         return parseMessageAnimation(messageContentObject);
-    if (messageContentObject["@type"].toString() == "messageVoiceNote")
-        return parseMessageVoiceNote(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageAudio")
         return parseMessageAudio(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageContact") {
@@ -699,6 +697,8 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return parseMessageDocument(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageVideo")
         return parseMessageVideo(messageContentObject);
+    if (messageContentObject["@type"].toString() == "messageVideoNote")
+        return parseMessageVideoNote(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageChatJoinByLink") {
         if (messageContentObject["@type"].toString() != "messageChatJoinByLink")
             return QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);
@@ -902,26 +902,7 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
 #warning "TODO venue"
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageVideoNote") {
-        if (messageContentObject["@type"].toString() != "messageVideoNote")
-            return QSharedPointer<messageVideoNote>(new messageVideoNote);
-        auto resultMessage = QSharedPointer<messageVideoNote>(new messageVideoNote);
-        resultMessage->video_note_ = QSharedPointer<videoNote>(nullptr);
-#warning "TODO video_note_"
-        resultMessage->is_viewed_ = messageContentObject["is_viewed"].toBool();
-        resultMessage->is_secret_ = messageContentObject["is_viewed"].toBool();
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageVoiceNote") {
-        if (messageContentObject["@type"].toString() != "messageVoiceNote")
-            return QSharedPointer<messageVoiceNote>(new messageVoiceNote);
-        auto resultMessage = QSharedPointer<messageVoiceNote>(new messageVoiceNote);
-        resultMessage->voice_note_ = QSharedPointer<voiceNote>(nullptr);
-#warning "TODO voice_note_"
-        resultMessage->caption_ = parseFormattedTextContent(messageContentObject["caption"].toObject());
-        resultMessage->is_listened_ = messageContentObject["is_listened"].toBool();
-        return resultMessage;
-    }
+
     return typeMessageText;
 }
 
@@ -1001,6 +982,36 @@ QSharedPointer<video> ParseObject::parseVideo(const QJsonObject &videoObject)
 
     return resultVideo;
 }
+
+QSharedPointer<videoNote> ParseObject::parseVideoNote(const QJsonObject &videoNoteObject)
+{
+    if (videoNoteObject["@type"].toString() != "videoNote")
+        return QSharedPointer<videoNote>(new videoNote);
+
+    auto resultVideoNote = QSharedPointer<videoNote>(new videoNote);
+
+    resultVideoNote->duration_  = videoNoteObject["duration"].toInt();
+    resultVideoNote->length_  = videoNoteObject["length"].toInt();
+    resultVideoNote->thumbnail_ = parsePhotoSize( videoNoteObject["thumbnail"].toObject());
+    resultVideoNote->video_ = parseFile(videoNoteObject["video"].toObject());
+
+
+    return resultVideoNote;
+}
+QSharedPointer<messageVideoNote> ParseObject::parseMessageVideoNote(const QJsonObject
+                                                                    &messageVideoNoteObject)
+{
+    if (messageVideoNoteObject["@type"].toString() != "messageVideoNote")
+        return QSharedPointer<messageVideoNote>(new messageVideoNote);
+
+    auto resultVideoNote = QSharedPointer<messageVideoNote>(new messageVideoNote);
+    resultVideoNote->is_secret_ = messageVideoNoteObject["is_secret"].toBool();
+    resultVideoNote->is_viewed_ = messageVideoNoteObject["is_viewed"].toBool();
+    resultVideoNote->video_note_ = parseVideoNote(messageVideoNoteObject["video_note"].toObject());
+
+    return resultVideoNote;
+}
+
 QSharedPointer<messageVoiceNote> ParseObject::parseMessageVoiceNote(const QJsonObject
                                                                     &messageVoiceNoteObject)
 {
