@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import TelegramModels 1.0
+import QtMultimedia 5.6
 import "../js/utils.js" as Utils
 CoverBackground {
     Connections {
@@ -55,8 +56,11 @@ CoverBackground {
         id: coverAction
         enabled: rootWindow.__depecher_audio.hasAudio
         CoverAction {
-            iconSource: "image://theme/icon-cover-play"
-            onTriggered: rootWindow.__depecher_audio.play()
+            iconSource: rootWindow.__depecher_audio.playbackState === Audio.PlayingState ? "image://theme/icon-cover-pause"
+                                                                                        : "image://theme/icon-cover-play"
+            onTriggered:rootWindow.__depecher_audio.playbackState === Audio.PlayingState ?
+                            rootWindow.__depecher_audio.pause()
+                          : rootWindow.__depecher_audio.play()
         }
 }
 

@@ -9,6 +9,8 @@
 # - Summary of changes
 * Tue Mar 05 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-1
 - Fixing voice note unsupported issue
+- Spanish\Chinese\Sweden translations
+- Added button to cover to pause\continue audio play
 
 * Mon Mar 04 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-0
 - Scrolling fix on writing messages
