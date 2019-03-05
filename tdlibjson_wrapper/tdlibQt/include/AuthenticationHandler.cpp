@@ -17,6 +17,8 @@ tdlibQt::AuthenticationHandler::AuthenticationHandler(QObject *parent) :
             this, &AuthenticationHandler::setOk);
 
     m_authorizationState = QSharedPointer<AuthorizationState>(nullptr);
+    if(m_client->authorizationState() == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
+        m_client->setEncryptionKey();
 
 }
 

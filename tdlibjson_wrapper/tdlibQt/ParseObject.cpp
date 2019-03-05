@@ -699,6 +699,8 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         return parseMessageVideo(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageVideoNote")
         return parseMessageVideoNote(messageContentObject);
+    if (messageContentObject["@type"].toString() == "messageVoiceNote")
+        return parseMessageVoiceNote(messageContentObject);
     if (messageContentObject["@type"].toString() == "messageChatJoinByLink") {
         if (messageContentObject["@type"].toString() != "messageChatJoinByLink")
             return QSharedPointer<messageChatJoinByLink>(new messageChatJoinByLink);

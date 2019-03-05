@@ -25,34 +25,13 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
         filesDirectory.set("");
     else {
-        //Disable directory for being tracked by tracker
+        //Disable directory from being tracked by tracker
         QFile file(filesDirectory.value("").toString() + "/.nomedia");
         if (!file.exists()) {
             file.open(QIODevice::WriteOnly);
             file.close();
         }
     }
-
-    QString tdlibParameters = "{\"@type\":\"setTdlibParameters\",\"parameters\":{"
-                              "\"database_directory\":\"/home/nemo/.local/share/harbour-depecher\","
-                              "\"files_directory\":\"" + filesDirectory.value("").toString() + "\","
-                              "\"api_id\":" + tdlibQt::appid + ","
-                              "\"api_hash\":\"" + tdlibQt::apphash + "\","
-                              "\"system_language_code\":\""
-                              + QLocale::languageToString(QLocale::system().language()) + "\","
-                              "\"device_model\":\"" + QSysInfo::prettyProductName() + "\","
-                              "\"system_version\":\"" + QSysInfo::productVersion() + "\","
-                              "\"application_version\":\"0.4\","
-                              "\"use_file_database\":" + (useFileDatabase.value(true).toBool() ?
-                                      "true" : "false") + ","
-                              "\"use_chat_info_database\":" + (useChatInfoDatabase.value(true).toBool() ?
-                                      "true" : "false") + ","
-                              "\"use_message_database\":" + (useMessageDatabase.value(true).toBool() ?
-                                      "true" : "false") + ","
-                              "\"use_secret_chats\":false,"
-                              "\"enable_storage_optimizer\":" + (enableStorageOptimizer.value(true).toBool() ?
-                                      "true" : "false") +
-                              "}}";
 
     QVariantMap parametersObject;
     parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
@@ -62,18 +41,29 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
     parametersObject["device_model"] = QSysInfo::prettyProductName();
     parametersObject["system_version"] = QSysInfo::productVersion();
-    parametersObject["application_version"] = "0.4";
+    parametersObject["application_version"] = APP_VERSION;
     parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
     parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
     parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
     parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
     parametersObject["use_secret_chats"] = false;
+#ifdef QT_DEBUG
+    parametersObject["use_test_dc"] = true;
+#endif
 
     QVariantMap rootObject;
     rootObject["@type"] = "setTdlibParameters";
     rootObject["parameters"] = parametersObject;
-    td_json_client_send(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
+    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
+}
+
+void TdlibJsonWrapper::sendToTelegram(void *Client, const char* str)
+{
+#ifdef QT_DEBUG
+    qDebug() << QString::fromLatin1(str);
+#endif
+    td_json_client_send(Client, str);
 }
 
 TdlibJsonWrapper *TdlibJsonWrapper::instance()
@@ -248,7 +238,7 @@ void TdlibJsonWrapper::openChat(const QString &chat_id)
 {
     std::string openChat = "{\"@type\":\"openChat\","
                            "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
-    td_json_client_send(client, openChat.c_str());
+    sendToTelegram(client, openChat.c_str());
 
 }
 
@@ -256,20 +246,20 @@ void TdlibJsonWrapper::closeChat(const QString &chat_id)
 {
     std::string closeChat = "{\"@type\":\"closeChat\","
                             "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
-    td_json_client_send(client, closeChat.c_str());
+    sendToTelegram(client, closeChat.c_str());
 }
 
 void TdlibJsonWrapper::getMe()
 {
     QString getMe = "{\"@type\":\"getMe\",\"@extra\":\"getMe\"}";
-    td_json_client_send(client, getMe.toStdString().c_str());
+    sendToTelegram(client, getMe.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::requestAuthenticationPasswordRecovery()
 {
     QString requestAuthenticationPasswordRecovery =
         "{\"@type\":\"requestAuthenticationPasswordRecovery\"}";
-    td_json_client_send(client, requestAuthenticationPasswordRecovery.toStdString().c_str());
+    sendToTelegram(client, requestAuthenticationPasswordRecovery.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::recoverAuthenticationPassword(const QString &recoveryCode)
@@ -278,7 +268,7 @@ void TdlibJsonWrapper::recoverAuthenticationPassword(const QString &recoveryCode
         "{\"@type\":\"recoverAuthenticationPassword\","
         "\"recovery_code\":\"" + recoveryCode + "\","
         "\"@extra\":\"auth\"}";
-    td_json_client_send(client, recoverAuthenticationPassword.toStdString().c_str());
+    sendToTelegram(client, recoverAuthenticationPassword.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::cancelDownloadFile(int fileId, bool only_if_pending)
@@ -289,7 +279,7 @@ void TdlibJsonWrapper::cancelDownloadFile(int fileId, bool only_if_pending)
         "{\"@type\":\"cancelDownloadFile\","
         "\"file_id\":" + QString::number(fileId) + ","
         "\"only_if_pending\":" + Pending + "}";
-    td_json_client_send(client, cancelDownloadFile.toStdString().c_str());
+    sendToTelegram(client, cancelDownloadFile.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::cancelUploadFile(int fileId)
@@ -297,7 +287,7 @@ void TdlibJsonWrapper::cancelUploadFile(int fileId)
     QString cancelUploadFile =
         "{\"@type\":\"cancelUploadFile\","
         "\"file_id\":" + QString::number(fileId)  + "}";
-    td_json_client_send(client, cancelUploadFile.toStdString().c_str());
+    sendToTelegram(client, cancelUploadFile.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &extra)
@@ -310,7 +300,7 @@ void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &
         joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}");
     }
 
-    td_json_client_send(client, joinChatByInviteLink.toStdString().c_str());
+    sendToTelegram(client, joinChatByInviteLink.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
@@ -331,14 +321,14 @@ void TdlibJsonWrapper::changeStickerSet(const qint64 set_id, const bool is_insta
                                "\"set_id\":\"" + QString::number(set_id) + "\","
                                "\"is_installed\":" + isInstalled + ","
                                "\"is_archived\":" + isArchived + "}";
-    td_json_client_send(client, changeStickerSet.toStdString().c_str());
+    sendToTelegram(client, changeStickerSet.toStdString().c_str());
 }
 
 
 void TdlibJsonWrapper::getProxies()
 {
     QString getProxies = "{\"@type\":\"getProxies\"}";
-    td_json_client_send(client, getProxies.toStdString().c_str());
+    sendToTelegram(client, getProxies.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::addProxy(const QString &address, const int port,
@@ -372,7 +362,7 @@ void TdlibJsonWrapper::addProxy(const QString &address, const int port,
               "}";
   proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType );
 qDebug() << proxy;
- td_json_client_send(client, proxy.toStdString().c_str());
+ sendToTelegram(client, proxy.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::editProxy(const int id, const QString &address, const int port, const bool &enabled, const QVariantMap &type)
@@ -406,14 +396,14 @@ void TdlibJsonWrapper::editProxy(const int id, const QString &address, const int
               "}";
   proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType,QString::number(id) );
 
- td_json_client_send(client, proxy.toStdString().c_str());
+ sendToTelegram(client, proxy.toStdString().c_str());
 
 }
 
 void TdlibJsonWrapper::disableProxy()
 {
     QString str = "{\"@type\":\"disableProxy\"}";
-    td_json_client_send(client, str.toStdString().c_str());
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::enableProxy(const int id)
@@ -423,7 +413,7 @@ void TdlibJsonWrapper::enableProxy(const int id)
                   "\"@extra\":\"%2\"}";
 
     str = str.arg(QString::number(id),"enableProxy_"+QString::number(id));
-    td_json_client_send(client, str.toStdString().c_str());
+    sendToTelegram(client, str.toStdString().c_str());
 }
 void TdlibJsonWrapper::getProxyLink(const int id)
 {
@@ -432,14 +422,14 @@ void TdlibJsonWrapper::getProxyLink(const int id)
                   "\"@extra\":\"%2\"}";
     str = str.arg(QString::number(id),"getProxyLink_"+QString::number(id));
 
-    td_json_client_send(client, str.toStdString().c_str());
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::removeProxy(const int id)
 {
     QString str = "{\"@type\":\"removeProxy\","
                   "\"proxy_id\":" + QString::number(id) + "}";
-    td_json_client_send(client, str.toStdString().c_str());
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::pingProxy(const int id)
@@ -448,7 +438,7 @@ void TdlibJsonWrapper::pingProxy(const int id)
                   "\"proxy_id\":%1,"
                   "\"@extra\":\"%2\"}";
     str = str.arg(QString::number(id),"pingProxy_"+QString::number(id));
-    td_json_client_send(client, str.toStdString().c_str());
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setEncryptionKey(const QString &key)
@@ -456,7 +446,7 @@ void TdlibJsonWrapper::setEncryptionKey(const QString &key)
     std::string setDatabaseKey =
         "{\"@type\":\"setDatabaseEncryptionKey\","
         "\"new_encryption_key\":\"" + key.toStdString() + "\"}";
-    td_json_client_send(client, setDatabaseKey.c_str());
+    sendToTelegram(client, setDatabaseKey.c_str());
     //Debug answer - Sending result for request 1: ok {}
 }
 
@@ -465,8 +455,9 @@ void TdlibJsonWrapper::setPhoneNumber(const QString &phone)
     std::string setAuthenticationPhoneNumber =
         "{\"@type\":\"setAuthenticationPhoneNumber\","
         "\"phone_number\":\"" + phone.toStdString() + "\","
-        "\"allow_flash_call\":false}";
-    td_json_client_send(client, setAuthenticationPhoneNumber.c_str());
+        "\"allow_flash_call\":false,"
+        "\"is_current_phone_number\":false}";
+    sendToTelegram(client, setAuthenticationPhoneNumber.c_str());
 
 }
 
@@ -477,7 +468,7 @@ void TdlibJsonWrapper::checkCode(const QString &code)
         "\"code\":\"" + code.toStdString() + "\","
         "\"@extra\":\"checkCode\"}";
 
-    td_json_client_send(client, setAuthenticationCode.c_str());
+    sendToTelegram(client, setAuthenticationCode.c_str());
 
 }
 
@@ -488,7 +479,7 @@ void TdlibJsonWrapper::checkPassword(const QString &password)
         "\"password\":\"" + password.toStdString() + "\","
         "\"@extra\":\"checkPassword\"}";
 
-    td_json_client_send(client, setAuthenticationPassword.c_str());
+    sendToTelegram(client, setAuthenticationPassword.c_str());
 }
 void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
                                         const QString &lastName)
@@ -499,7 +490,7 @@ void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firs
         "\"first_name\":\"" + firstName.toStdString() + "\","
         "\"last_name\":\"" + lastName.toStdString() + "\"}";
 
-    td_json_client_send(client, AuthCodeIfNewUser.c_str());
+    sendToTelegram(client, AuthCodeIfNewUser.c_str());
 
 }
 void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset_order,
@@ -511,7 +502,7 @@ void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset
         "\"offset_order\":\"" + max_order + "\","
         "\"offset_chat_id\":\"" + std::to_string(offset_chat_id) + "\","
         "\"limit\":" + std::to_string(limit) + "}";
-    td_json_client_send(client, getChats.c_str());
+    sendToTelegram(client, getChats.c_str());
 }
 
 void TdlibJsonWrapper::getChat(const qint64 chatId)
@@ -519,7 +510,7 @@ void TdlibJsonWrapper::getChat(const qint64 chatId)
     std::string getChat = "{\"@type\":\"getChat\","
                           "\"chat_id\":\"" + std::to_string(chatId) + "\""
                           "}";
-    td_json_client_send(client, getChat.c_str());
+    sendToTelegram(client, getChat.c_str());
 
 }
 
@@ -537,7 +528,7 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}");
     }
-    td_json_client_send(client, getFile.toUtf8().constData());
+    sendToTelegram(client, getFile.toUtf8().constData());
 }
 
 void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
@@ -557,7 +548,7 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
     if (extra != "")
         getChatHistory.append(",\"@extra\": \"" + extra + "\"");
     getChatHistory.append("}");
-    td_json_client_send(client, getChatHistory.toStdString().c_str());
+    sendToTelegram(client, getChatHistory.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
@@ -565,13 +556,13 @@ void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
     QString getAttachedStickerSetsStr = "{\"@type\":\"getAttachedStickerSets\","
                                         "\"file_id\":" + QString::number(file_id) +
                                         ",\"@extra\": \"getAttachedStickerSets\"}";
-    td_json_client_send(client, getAttachedStickerSetsStr.toStdString().c_str());
+    sendToTelegram(client, getAttachedStickerSetsStr.toStdString().c_str());
 }
 void TdlibJsonWrapper::getStickerSet(const qint64 set_id)
 {
     QString getStickerSetStr = "{\"@type\":\"getStickerSet\","
                                "\"set_id\":" + QString::number(set_id) + "}";
-    td_json_client_send(client, getStickerSetStr.toStdString().c_str());
+    sendToTelegram(client, getStickerSetStr.toStdString().c_str());
 }
 void TdlibJsonWrapper::getInstalledStickerSets(const bool is_masks)
 {
@@ -582,19 +573,19 @@ void TdlibJsonWrapper::getInstalledStickerSets(const bool is_masks)
     else
         getInstalledStickerSetsStr.append("false");
     getInstalledStickerSetsStr.append(",\"@extra\": \"getInstalledStickerSets\"}");
-    td_json_client_send(client, getInstalledStickerSetsStr.toStdString().c_str());
+    sendToTelegram(client, getInstalledStickerSetsStr.toStdString().c_str());
 }
 void TdlibJsonWrapper::getTrendingStickerSets()
 {
     QString getTrendingStickerSetsStr = QString("{\"@type\":\"getTrendingStickerSets\","
                                         "\"@extra\": \"getTrendingStickerSets\"}");
-    td_json_client_send(client, getTrendingStickerSetsStr.toStdString().c_str());
+    sendToTelegram(client, getTrendingStickerSetsStr.toStdString().c_str());
 }
 void TdlibJsonWrapper::getFavoriteStickers()
 {
     QString getFavoriteStickersStr = "{\"@type\":\"getFavoriteStickers\""
                                      ",\"@extra\": \"getFavoriteStickers\"}";
-    td_json_client_send(client, getFavoriteStickersStr.toStdString().c_str());
+    sendToTelegram(client, getFavoriteStickersStr.toStdString().c_str());
 }
 void TdlibJsonWrapper::getRecentStickers(const bool is_attached)
 {
@@ -605,13 +596,13 @@ void TdlibJsonWrapper::getRecentStickers(const bool is_attached)
     else
         getRecentStickersStr.append("false");
     getRecentStickersStr.append(",\"@extra\": \"getRecentStickers\"}");
-    td_json_client_send(client, getRecentStickersStr.toStdString().c_str());
+    sendToTelegram(client, getRecentStickersStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::logOut()
 {
     std::string logOut = "{\"@type\":\"logOut\"}";
-    td_json_client_send(client, logOut.c_str());
+    sendToTelegram(client, logOut.c_str());
 }
 
 void TdlibJsonWrapper::sendMessage(const QString &json)
@@ -620,7 +611,7 @@ void TdlibJsonWrapper::sendMessage(const QString &json)
     //Bug in TDLib
     while (jsonStr.at(jsonStr.length() - 1) == '\n')
         jsonStr = jsonStr.remove(jsonStr.length() - 1, 1);
-    td_json_client_send(client, jsonStr.toStdString().c_str());
+    sendToTelegram(client, jsonStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::forwardMessage(const qint64 chat_id, const qint64 from_chat_id, const QVector<qint64> message_ids, const bool disable_notification, const bool from_background, const bool as_album)
@@ -646,7 +637,7 @@ void TdlibJsonWrapper::forwardMessage(const qint64 chat_id, const qint64 from_ch
                                                 from_background ? QString("true") : QString("false"),
                                                 as_album ? QString("true") : QString("false"));
 
-    td_json_client_send(client, forwardMessagesStr.toStdString().c_str());
+    sendToTelegram(client, forwardMessagesStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id, const QString extra)
@@ -667,7 +658,7 @@ void TdlibJsonWrapper::getMessage(const qint64 chat_id, const qint64 message_id,
                          "\"extra\":\"%3\"}";
         viewMessageStr = viewMessageStr.arg(QString::number(chat_id), QString::number(message_id), extra);
     }
-    td_json_client_send(client, viewMessageStr.toStdString().c_str());
+    sendToTelegram(client, viewMessageStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getMessages(const qint64 chat_id, QVector<qint64> message_ids, const QString &extra)
@@ -687,7 +678,7 @@ void TdlibJsonWrapper::getMessages(const qint64 chat_id, QVector<qint64> message
 
     getMessagesStr = getMessagesStr.arg(QString::number(chat_id), messageIdsStr.arg(messagesIds), extra);
 
-    td_json_client_send(client, getMessagesStr.toStdString().c_str());
+    sendToTelegram(client, getMessagesStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &messageIds,
@@ -704,7 +695,7 @@ void TdlibJsonWrapper::viewMessages(const QString &chat_id, const QVariantList &
                              "\"chat_id\":\"" + chat_id + "\","
                              "\"forceRead\":" + force_readStr + ","
                              "\"message_ids\":[" + ids + "]}";
-    td_json_client_send(client, viewMessageStr.toStdString().c_str());
+    sendToTelegram(client, viewMessageStr.toStdString().c_str());
 
 
 }
@@ -723,7 +714,7 @@ void TdlibJsonWrapper::deleteMessages(const qint64 chat_id, const QVector<qint64
                                 "\"chat_id\":\"" + QString::number(chat_id) + "\","
                                 "\"revoke\":" + revokeStr + ","
                                 "\"message_ids\":[" + ids + "]}";
-    td_json_client_send(client, deleteMessagesStr.toStdString().c_str());
+    sendToTelegram(client, deleteMessagesStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_id,
@@ -733,7 +724,7 @@ void TdlibJsonWrapper::setChatMemberStatus(const qint64 chat_id, const int user_
                                      "\"chat_id\":\"" + QString::number(chat_id) + "\","
                                      "\"user_id\":" + QString::number(user_id) + ","
                                      "\"status\":\"" + status + "\"}";
-    td_json_client_send(client, setChatMemberStatusStr.toStdString().c_str());
+    sendToTelegram(client, setChatMemberStatusStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)

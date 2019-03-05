@@ -15,7 +15,7 @@ Page {
     property string _opened_chat_id: ""
     Connections {
         target: c_telegramWrapper
-        onErrorReceivedMap:{
+        onErrorReceivedMap: {
             if(errorObject["code"] === 401)
                 pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
         }

@@ -1,6 +1,10 @@
 APPID = $$fromfile(api_secret.pri,APPID)#To build you have to create file api_secret.pri with app_id, or replace with your app_id
 APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file api_secret.pri app_hash, or replace with your app_hash
 
+
+VERSION = 0.5.1
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
+
 TEMPLATE = lib
 TARGET = tdlibjson_wrapper
 CONFIG += staticlib

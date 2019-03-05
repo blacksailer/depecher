@@ -44,6 +44,7 @@ class TdlibJsonWrapper : public QObject
     explicit TdlibJsonWrapper(QObject *parent = 0);
 
     int m_totalUnreadCount;
+    void sendToTelegram(void *Client, const char *str);
 
 public:
     ParseObject *parseObject;

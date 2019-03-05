@@ -51,16 +51,14 @@ CoverBackground {
 }
 
     }
-//    CoverActionList {
-//        id: coverAction
+    CoverActionList {
+        id: coverAction
+        enabled: rootWindow.__depecher_audio.hasAudio
+        CoverAction {
+            iconSource: "image://theme/icon-cover-play"
+            onTriggered: rootWindow.__depecher_audio.play()
+        }
+}
 
-//        CoverAction {
-//            iconSource: "image://theme/icon-cover-next"
-//        }
-
-//        CoverAction {
-//            iconSource: "image://theme/icon-cover-pause"
-//        }
-//    }
 }
 
