@@ -50,63 +50,63 @@
     </message>
     <message>
         <source>Error to get invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>获取邀请链接出错</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - 基于tdlib的另一个SailfishOS telegram客户端</translation>
     </message>
     <message>
         <source>Features:</source>
-        <translation type="unfinished"></translation>
+        <translation>特性：</translation>
     </message>
     <message>
         <source>- Send/View/Delete messages</source>
-        <translation type="unfinished"></translation>
+        <translation>- 发送/查询/删除 消息</translation>
     </message>
     <message>
         <source>- Mute/unmute chats</source>
-        <translation type="unfinished"></translation>
+        <translation>- 静音/取消静音</translation>
     </message>
     <message>
         <source>- View photos</source>
-        <translation type="unfinished"></translation>
+        <translation>- 查看图片</translation>
     </message>
     <message>
         <source>- View animations (gifs)</source>
-        <translation type="unfinished"></translation>
+        <translation>- 查看动画(gifs)</translation>
     </message>
     <message>
         <source>- View/Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>- 查看/发送 贴纸</translation>
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation type="unfinished"></translation>
+        <translation>- 在讨论中管理贴纸</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
-        <translation type="unfinished"></translation>
+        <translation>- 上传/下载 图片/文档</translation>
     </message>
     <message>
         <source>- Receive notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>- 接收通知</translation>
     </message>
     <message>
         <source>- 2FA authorization enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>- 启用两步验证</translation>
     </message>
     <message>
         <source>Thanks to:</source>
-        <translation type="unfinished"></translation>
+        <translation>感谢：</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>这里列举了的群组，您可以在这里询问与Sailfish OS相关的任何问题（一般，开发等）。</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>这个群组生于社区，服务于Sailfish OS相关的社区。</translation>
     </message>
     <message>
         <source>Version</source>
@@ -117,35 +117,35 @@
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>外观</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>圆角度</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明度</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>接收的消息背景颜色</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>发送的消息背景颜色</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>重置为默认</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>最小化名字</translation>
     </message>
     <message>
         <source>Aways align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>始终将消息对齐到左侧</translation>
     </message>
     <message>
         <source>Enable night mode</source>
@@ -230,7 +230,7 @@
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸预览模式</translation>
     </message>
 </context>
 <context>
@@ -257,25 +257,25 @@
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>注意：如果电报在你的国家被墙，请先通过下拉菜单设置代理服务器</translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>表现</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>按回车发送消息</translation>
     </message>
 </context>
 <context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 创建了群组 %2</translation>
     </message>
 </context>
 <context>
@@ -287,7 +287,8 @@
     <message>
         <source>Unread 
  messages</source>
-        <translation>未读消息</translation>
+        <translation>未读
+消息</translation>
     </message>
 </context>
 <context>
@@ -302,25 +303,25 @@
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>取消静音</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>静音</translation>
     </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 通过邀请链接加入了此群组</translation>
     </message>
 </context>
 <context>
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 加入了电报</translation>
     </message>
 </context>
 <context>
@@ -334,7 +335,7 @@
     <name>MessageItem</name>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>已编辑</translation>
     </message>
     <message>
         <source>Forwarded from</source>
@@ -345,51 +346,51 @@
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation type="unfinished"></translation>
+        <translation>复制文本</translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>复制路径</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>回复</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished">照片</translation>
+        <translation>照片</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">文档</translation>
+        <translation>文档</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>动画</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>联系人</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>删除消息</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>为所有人删除此消息</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>删除中...</translation>
     </message>
     <message>
         <source>Forward</source>
@@ -408,7 +409,7 @@
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished"></translation>
+        <translation>新消息</translation>
     </message>
 </context>
 <context>
@@ -430,19 +431,19 @@
     <name>PreviewStickerSetDialog</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>返回</translation>
     </message>
     <message>
         <source>Sticker preview mode</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸预览模式</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>删除%1贴纸</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>添加%1贴纸</translation>
     </message>
 </context>
 <context>
@@ -570,19 +571,19 @@
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation>学分之类的</translation>
+        <translation>归功于的工作</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>外观</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>表现</translation>
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation type="unfinished"></translation>
+        <translation>守护进程设置</translation>
     </message>
     <message>
         <source>Logging out</source>
@@ -647,7 +648,7 @@
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
         <translation>输入恢复码。
-记住！这样会禁用两步验证</translation>
+请记住！这样之后两步验证会被禁用</translation>
     </message>
     <message>
         <source>Recovery code</source>
@@ -667,22 +668,22 @@
     </message>
     <message>
         <source>Enter code</source>
-        <translation type="unfinished"></translation>
+        <translation>输入代码</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation type="unfinished"></translation>
+        <translation>输入密码</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation type="unfinished"></translation>
+        <translation>认证状态</translation>
     </message>
 </context>
 <context>
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
-        <translation type="unfinished"></translation>
+        <translation>语音留言</translation>
     </message>
 </context>
 <context>
@@ -713,35 +714,35 @@
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>等待库文件参数</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>等待加密密钥</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>等待手机号码</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>等待代码</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>等待密码</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>等待退出种</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>等待关闭中</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>等待已关闭</translation>
     </message>
 </context>
 </TS>
