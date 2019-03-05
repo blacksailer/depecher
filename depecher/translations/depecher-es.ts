@@ -108,6 +108,10 @@
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish OS.</translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -141,7 +145,27 @@
     </message>
     <message>
         <source>Aways align messages to left</source>
-        <translation>Alinear todo a la izquierda</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -313,56 +337,72 @@
         <source>edited</source>
         <translation>editado</translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation>Copiar texto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation>Copiar ruta</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation>Responder</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation>Foto</translation>
+        <translation type="unfinished">Foto</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation>Sticker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Document</source>
-        <translation>Documento</translation>
+        <translation type="unfinished">Documento</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation>Animación</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation>Contacto</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Mensaje</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Borrar mensaje</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Borrar para todos</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation>Borrando...</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -407,38 +447,111 @@
     </message>
 </context>
 <context>
+    <name>ProxyDialog</name>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished">Dirección del servidor</translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished">Puerto del servidor</translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished">puerto</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Nombre de usuario</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished">nombre de usuario</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Contraseña</translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished">El Proxy está listo</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">Estado conexión: </translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
         <translation>Ajustes</translation>
-    </message>
-    <message>
-        <source>Socks5 proxy</source>
-        <translation>Proxy Socks5</translation>
-    </message>
-    <message>
-        <source>Server address</source>
-        <translation>Dirección del servidor</translation>
-    </message>
-    <message>
-        <source>Server port</source>
-        <translation>Puerto del servidor</translation>
-    </message>
-    <message>
-        <source>port</source>
-        <translation>puerto</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Nombre de usuario</translation>
-    </message>
-    <message>
-        <source>username</source>
-        <translation>nombre de usuario</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Contraseña</translation>
     </message>
     <message>
         <source>General</source>
@@ -451,18 +564,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>El Proxy está listo</translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation>Configurar proxy</translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation>Dirección. Deja en blanco para deshabilitar proxy</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>Estado de la conexión: </translation>
     </message>
     <message>
         <source>About program</source>
@@ -483,6 +584,14 @@
     <message>
         <source>Daemon settings</source>
         <translation>Ajustes de daemon</translation>
+    </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -574,7 +683,7 @@
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
-        <translation>Nota de voz</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
