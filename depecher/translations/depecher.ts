@@ -108,6 +108,10 @@
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -141,6 +145,26 @@
     </message>
     <message>
         <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -312,6 +336,10 @@
         <source>edited</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
@@ -363,6 +391,18 @@
         <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>
@@ -406,15 +446,7 @@
     </message>
 </context>
 <context>
-    <name>SettingsPage</name>
-    <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Socks5 proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
+    <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
         <translation type="unfinished"></translation>
@@ -440,6 +472,87 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SettingsPage</name>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,18 +562,6 @@
     </message>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -481,6 +582,14 @@
     </message>
     <message>
         <source>Daemon settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

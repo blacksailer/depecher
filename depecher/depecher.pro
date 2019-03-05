@@ -14,7 +14,9 @@ TARGET = depecher
 
 QT += sql dbus multimedia network
 
-
+##Application must be also changel in depecher.yaml file
+VERSION = 0.5.0
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
 CONFIG += c++11
@@ -126,7 +128,10 @@ DISTFILES += \
     qml/app.qml \
     systemd/org.blacksailer.depecher.service \
     qml/pages/items/delegates/VoiceNoteDelegate.qml \
-    qml/pages/items/delegates/AudioDelegate.qml
+    qml/pages/items/delegates/AudioDelegate.qml \
+    qml/Background.qml \
+    qml/pages/items/delegates/VideoDelegate.qml \
+    qml/pages/items/delegates/VideoNoteDelegate.qml
 
 HEADERS += \
     src/FileWorker.hpp \

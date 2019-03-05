@@ -13,3 +13,15 @@ app.depends = lib
 # build the project sequentially as listed in SUBDIRS !
 CONFIG += ordered
 
+DISTFILES += \
+    depecher/qml/DepecherTheme.qml \
+    depecher/qml/pages/components/settings/ProxyDialog.qml \
+    depecher/qml/Thm.qml \
+    depecher/qml/ThemePlugin/qmldir \
+    depecher/qml/pages/SelectChatDialog.qml \
+    depecher/qml/pages/VideoPage.qml \
+    depecher/qml/pages/components/settings/ProxyPage.qml
+
+RESOURCES += \
+    depecher/qml/pages/components/settings/proxypage.qrc
+

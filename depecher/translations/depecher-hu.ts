@@ -109,6 +109,10 @@
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -142,6 +146,26 @@
     </message>
     <message>
         <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -313,6 +337,10 @@
         <source>edited</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
@@ -364,6 +392,18 @@
         <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>
@@ -407,38 +447,111 @@
     </message>
 </context>
 <context>
+    <name>ProxyDialog</name>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished">Kiszolgáló címe</translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished">Kiszolgáló port</translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished">port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Felhasználónév</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished">felhasználónév</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Jelszó</translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished">A proxy kész</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Hiba</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">Kapcsolat állapota: </translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
         <translation>Beállítások</translation>
-    </message>
-    <message>
-        <source>Socks5 proxy</source>
-        <translation>Socks5 proxy</translation>
-    </message>
-    <message>
-        <source>Server address</source>
-        <translation>Kiszolgáló címe</translation>
-    </message>
-    <message>
-        <source>Server port</source>
-        <translation>Kiszolgáló port</translation>
-    </message>
-    <message>
-        <source>port</source>
-        <translation>port</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Felhasználónév</translation>
-    </message>
-    <message>
-        <source>username</source>
-        <translation>felhasználónév</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Jelszó</translation>
     </message>
     <message>
         <source>General</source>
@@ -451,18 +564,6 @@
     <message>
         <source>Proxy is ready</source>
         <translation>A proxy kész</translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation>Proxy beállítása</translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation>Cím. Állítsd üresre a proxy kikapcsolásához</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>Kapcsolat állapota: </translation>
     </message>
     <message>
         <source>About program</source>
@@ -482,6 +583,14 @@
     </message>
     <message>
         <source>Daemon settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

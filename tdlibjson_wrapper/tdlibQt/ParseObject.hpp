@@ -48,7 +48,7 @@ public:
     static QSharedPointer<sticker> parseSticker(const QJsonObject &stikerObject);
 
     static QSharedPointer<maskPosition> parseMaskPosition(const QJsonObject &maskPositionObject);
-    static QSharedPointer<notificationSettings> parseNotificationSettings(
+    static QSharedPointer<chatNotificationSettings> parseNotificationSettings(
         const QJsonObject &notificationSettingsObject);
     static QSharedPointer<messagePhoto> parseMessagePhoto(const QJsonObject &messagePhotoObject);
     static QSharedPointer<photo> parsePhoto(const QJsonObject &photoObject);
@@ -88,6 +88,13 @@ public:
     static QSharedPointer<messageBasicGroupChatCreate> parseMessageBasicGroupChatCreate(const QJsonObject &messageBasicGroupChatCreateObject);
     static QSharedPointer<messageVoiceNote> parseMessageVoiceNote(const QJsonObject &messageVoiceNoteObject);
     static QSharedPointer<messageAudio> parseMessageAudio(const QJsonObject &messageAudioObject);
+    static QSharedPointer<proxy> parseProxy(const QJsonObject &proxyObject);
+    static QSharedPointer<ProxyType> parseProxyType(const QJsonObject &proxyTypeObject);
+    static QSharedPointer<messageVideo> parseMessageVideo(const QJsonObject &messageVideoObject);
+    static QSharedPointer<video> parseVideo(const QJsonObject &videoObject);
+    static QSharedPointer<videoNote> parseVideoNote(const QJsonObject &videoNoteObject);
+    static QSharedPointer<messageVideoNote> parseMessageVideoNote(const QJsonObject  &messageVideoNoteObject);
+
 signals:
 
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
@@ -123,7 +130,9 @@ signals:
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);
     void updateTotalCount(int totalCount);
+    void proxiesReceived(const QJsonObject &proxiesObject);
     void proxyReceived(const QJsonObject &proxyObject);
+
     void errorReceived(const QJsonObject &errorObject);
     void okReceived(const QJsonObject &okObject);
     void fileReceived(const QJsonObject &fileObject);
@@ -131,6 +140,9 @@ signals:
     void stickerSetsReceived(const QJsonObject &stickerSetsObject);
     void stickerSetReceived(const QJsonObject &stickerSetObject);
     void stickersReceived(const QJsonObject &stickersObject);
+
+    void secondsReceived(const QJsonObject &secondsObject);
+    void textReceived(const QJsonObject &textObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

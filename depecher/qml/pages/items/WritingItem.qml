@@ -7,7 +7,7 @@ Drawer {
     id: attachDrawer
     state: "publish"
     property Page rootPage
-    property int sendAreaHeight: sendArea.height
+    property alias sendAreaHeight: sendArea.height
     property alias bottomArea: sendArea
     property alias actionButton: sendButton
     property alias text: messageArea.text
@@ -20,6 +20,7 @@ Drawer {
     property string typeWriter
     signal sendFiles(var files)
     signal setFocusToEdit()
+    signal replyAreaCleared()
 
     property string settingsBehaviorPath:  "/apps/depecher/behavior"
     ConfigurationValue {
@@ -118,6 +119,7 @@ Drawer {
                 visible: parent.height!=0
                 onClicked: {
                     clearReplyArea()
+                    replyAreaCleared()
                 }
             }
         }
@@ -186,7 +188,7 @@ Drawer {
             anchors.bottom: messageArea.bottom
             anchors.right: parent.right
             anchors.bottomMargin: 25
-            visible: !sendByEnter.value
+            visible: !sendByEnter.value || reply_id == "-1"
         }
     }
 

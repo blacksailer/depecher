@@ -110,6 +110,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -143,6 +147,26 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Aways align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable night mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Night Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Till</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -315,6 +339,10 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>edited</source>
         <translation>redigerad</translation>
     </message>
+    <message>
+        <source>Forwarded from</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MessagingPage</name>
@@ -366,6 +394,18 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
         <source>Deleting...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forwarded messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>messages</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>
@@ -409,38 +449,111 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
 </context>
 <context>
+    <name>ProxyDialog</name>
+    <message>
+        <source>Server address</source>
+        <translation type="unfinished">Serveradress</translation>
+    </message>
+    <message>
+        <source>Server port</source>
+        <translation type="unfinished">Serverport</translation>
+    </message>
+    <message>
+        <source>port</source>
+        <translation type="unfinished">Port</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Användarnamn</translation>
+    </message>
+    <message>
+        <source>username</source>
+        <translation type="unfinished">Användarnamn</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Lösenord</translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>secret</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyPage</name>
+    <message>
+        <source>Proxy is ready</source>
+        <translation type="unfinished">Proxyn är redo</translation>
+    </message>
+    <message>
+        <source>Link copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Fel</translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection status: </source>
+        <translation type="unfinished">Anslutningsstatus: </translation>
+    </message>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectChatDialog</name>
+    <message>
+        <source>Select chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
         <translation>Inställningar</translation>
-    </message>
-    <message>
-        <source>Socks5 proxy</source>
-        <translation>Socks5 proxy</translation>
-    </message>
-    <message>
-        <source>Server address</source>
-        <translation>Serveradress</translation>
-    </message>
-    <message>
-        <source>Server port</source>
-        <translation>Serverport</translation>
-    </message>
-    <message>
-        <source>port</source>
-        <translation>Port</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Användarnamn</translation>
-    </message>
-    <message>
-        <source>username</source>
-        <translation>Användarnamn</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation>Lösenord</translation>
     </message>
     <message>
         <source>General</source>
@@ -453,18 +566,6 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Proxy is ready</source>
         <translation>Proxyn är redo</translation>
-    </message>
-    <message>
-        <source>Set proxy</source>
-        <translation>Tillämpa</translation>
-    </message>
-    <message>
-        <source>Address. Set empty to disable proxy</source>
-        <translation>Adress. Lämnas tom för att inaktivera proxy</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation>Anslutningsstatus: </translation>
     </message>
     <message>
         <source>About program</source>
@@ -485,6 +586,14 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Daemon settings</source>
         <translation>Tjänstinställningar</translation>
+    </message>
+    <message>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

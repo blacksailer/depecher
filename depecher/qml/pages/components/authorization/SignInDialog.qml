@@ -31,6 +31,7 @@ Dialog {
                     pageStack.replaceAbove(null,Qt.resolvedUrl("../../DialogsPage.qml"))
                 }
             }
+
             onErrorChanged: {
                 notificationPanel.showTextWithTimer(qsTr("Error"),"code:" + error["code"] +"\n" + error["message"])
             }

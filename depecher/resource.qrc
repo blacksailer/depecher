@@ -6,5 +6,6 @@
         <file>qml/assets/icons/check.svg</file>
         <file>qml/assets/icons/en_sailfish.jpg</file>
         <file>qml/assets/icons/ru_sailfish.jpg</file>
+        <file>qml/assets/background/dark.jpg</file>
     </qresource>
 </RCC>

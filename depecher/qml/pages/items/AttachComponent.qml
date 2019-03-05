@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import Sailfish.Silica 1.0 
 import QtDocGallery 5.0
 import Sailfish.Pickers 1.0
 import org.nemomobile.thumbnailer 1.0
@@ -96,7 +96,7 @@ Item {
             delegate: fileComponent
             clip: true
             VerticalScrollDecorator {
-            flickable: parent
+                flickable: parent
             }
         }
     }
@@ -144,64 +144,50 @@ Item {
 
 
     Component{
-            id:imageComponent
-            Image {
-                asynchronous: true
-                // From org.nemomobile.thumbnailer
-                source:   "image://nemoThumbnail/"+url
-                sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
-                width: thumbnailWrapper.width/3
+        id:imageComponent
+        Image {
+            asynchronous: true
+            // From org.nemomobile.thumbnailer
+            source:   "image://nemoThumbnail/"+url
+            sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
+            width: thumbnailWrapper.width/3
+            height: width
+
+            Rectangle{
+                id:selectedCircle
+                color: "transparent"
+                opacity:0.5
+                width:parent.width
                 height: width
+            }
 
-                Rectangle{
-                    id:selectedCircle
-                    border.color: Theme.primaryColor
-                    color: "transparent"
-                    border.width: 2
-                    radius: 90
-                    width:Theme.paddingLarge * 1.5
-                    height: width
-                    x:Theme.paddingLarge
-                    y:Theme.paddingLarge
-                }
-
-                MouseArea {
-                    id:selectionArea
-                    x:0
-                    y:0
-                    width:Theme.paddingLarge * 2
-                    height: width
-                    onClicked:
+            MouseArea {
+                anchors.fill:parent
+                onClicked: {
+                    if(!selectedContainsAndRemove(index,files.currentIndex))
                     {
-                        if(!selectedContainsAndRemove(index,files.currentIndex))
-                        {
-                            selectedCircle.color = Theme.secondaryHighlightColor;
-                            thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
-                            countItems++;
-                        }
-                        else
-                        {
-                            selectedCircle.color = "transparent";
-                            countItems--;
-                        }
+                        selectedCircle.color = Theme.secondaryHighlightColor;
+                        thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
+                        countItems++;
+                    }
+                    else
+                    {
+                        selectedCircle.color = "transparent";
+                        countItems--;
                     }
                 }
+                onPressAndHold: {
+                    var fileUrl = galleryModel.get(index).url.toString()
+                    //                        if(fileUrl.slice(0,4) === "file")
+                    //                            fileUrl = fileUrl.slice(7, fileUrl.length)
 
-                MouseArea {
-                    anchors.top: selectionArea.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    onClicked:{
-                        var fileUrl = galleryModel.get(index).url.toString()
-//                        if(fileUrl.slice(0,4) === "file")
-//                            fileUrl = fileUrl.slice(7, fileUrl.length)
-
-                        pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
+                    pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
                 }
-                    }
 
             }
+        }
+
+
 
     }
 

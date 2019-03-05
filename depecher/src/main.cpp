@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
+    app->setApplicationVersion(APP_VERSION);
 
 
     QTranslator translator;

@@ -87,7 +87,7 @@ class MessagingModel : public QAbstractListModel
         FILE_CAPTION,
         PHOTO_ASPECT,
         DOCUMENT_NAME,
-        VOICE_DURATION,
+        DURATION,
         WAVEFORM,
         AUDIO_DURATION,
         AUDIO_TITLE,
@@ -105,7 +105,6 @@ class MessagingModel : public QAbstractListModel
         MESSAGE_TYPE //Custom
     };
 
-    QString messageTypeToString(MessageContent *messageContent) const;
     void appendMessage(const QJsonObject &messageObject);
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
@@ -137,19 +136,19 @@ private slots:
     void onMessageDeleted(const QJsonObject &updateDeleteMessagesObject);
     void onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject);
 
-    // QAbstractItemModel interface
-public:
-    int rowCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QHash<int, QByteArray> roleNames() const;
-    QString userName() const;
-    QString peerId() const;
 
-    MessagingModel();
-    ~MessagingModel();
 public slots:
     void setUserName(QString userName);
     void setPeerId(QString peerId);
+    void sendForwardMessages(const QString &chat_id,
+                             const QString &from_chat_id,
+                             const QVariantList message_ids);
+    void sendForwardMessages(const qint64 chat_id,
+                             const qint64 from_chat_id,
+                             const QVariantList message_ids,
+                             const bool disable_notification,
+                             const bool from_background = false,
+                             const bool as_album = false);
     void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
     void sendPhotoMessage(const QString &filepath, const QString &reply_id  = "0",
                           const QString &caption = "");
@@ -176,6 +175,7 @@ public slots:
     void setLastOutboxId(double lastOutboxId);
 
     void setIsActive(bool isActive);
+
 
     void setLastMessageIndex(int lastMessageIndex)
     {
@@ -242,6 +242,17 @@ signals:
 
 
 public:
+    static QString messageTypeToString(const int  messageTypeId);
+    // QAbstractItemModel interface
+    int rowCount(const QModelIndex &parent) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QHash<int, QByteArray> roleNames() const;
+    QString userName() const;
+    QString peerId() const;
+
+    MessagingModel();
+    ~MessagingModel();
+
     void fetchMore(const QModelIndex &parent) override;
     bool canFetchMore(const QModelIndex &parent) const override;
     QVariantMap chatType() const;
@@ -255,7 +266,9 @@ public:
         STICKER,
         DOCUMENT,
         VOICE,
+        VIDEO_NOTE,
         AUDIO,
+        VIDEO,
         ANIMATION,
         SYSTEM_NEW_MESSAGE,
         CONTACT,

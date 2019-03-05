@@ -64,6 +64,7 @@ ListItem {
         x:columnWrapper.x
         y:columnWrapper.y
         visible: currentMessageType != MessagingModel.STICKER &&
+                 currentMessageType != MessagingModel.VIDEO_NOTE &&
                  currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                  currentMessageType != MessagingModel.JOINBYLINK &&
                  currentMessageType != MessagingModel.CONTACT_REGISTERED &&
@@ -184,7 +185,20 @@ ListItem {
                         }
                     }
                 }
-
+                Row {
+                    id: forwardRow
+                    Label {
+                        id: forwardInfoLabel
+                        visible: forward_info ? true : false
+                        text: forward_info ? qsTr("Forwarded from") + " " + forward_info : ""
+                        width: contentLoader.width
+                        color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
+                        font.pixelSize: Theme.fontSizeSmall
+                        font.bold: true
+                        truncationMode: TruncationMode.Fade
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    }
+                }
                 Loader {
                     id:replyLoader
                     active: reply_to_message_id != 0 && index != 0
@@ -255,6 +269,16 @@ ListItem {
                             //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
                             return "delegates/ImageDelegate.qml"
                         }
+                        else if(currentMessageType == MessagingModel.VIDEO) {
+                            //                            var maxWidth = messageListItem.width-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                            //                            var maxHeight = page.height/2
+                            //                            width = photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
+                            //                            height = photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
+                            return "delegates/VideoDelegate.qml"
+                        }
+                        else if(currentMessageType == MessagingModel.VIDEO_NOTE) {
+                            return "delegates/VideoNoteDelegate.qml"
+                        }
                         else if(currentMessageType == MessagingModel.STICKER) {
                             width = 400
                             height = width
@@ -314,7 +338,7 @@ ListItem {
                         }
                         font.pixelSize: Theme.fontSizeTiny
                         color:pressed ? Theme.primaryColor : Theme.secondaryColor
-                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date) + ' ' + index
+                        text:edit_date ? qsTr("edited") + " " + timestamp(edit_date) : timestamp(date) // + ' ' + index
                     }
                     Label {
                         font.pixelSize: Theme.fontSizeTiny

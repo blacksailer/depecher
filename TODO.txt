@@ -1,3 +1,0 @@
-https://www.gnupg.org/documentation/manuals/gcrypt/Key-Derivation.html#Key-Derivation
-https://stackoverflow.com/questions/14583733/key-derivation-using-libgcrypt-in-c
-https://github.com/sailfishos/sailfish-secrets
