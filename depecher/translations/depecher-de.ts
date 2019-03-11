@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.0" language="de_DE">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation>Keine Konten zum teilen verfügbar. Du kannst Konten in den Einstellungen hinzufügen</translation>
+        <translation>Keine Konten zum teilen verfügbar. Sie kannst Konten in den Einstellungen hinzufügen</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
@@ -50,122 +50,122 @@
     </message>
     <message>
         <source>Error to get invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler Einladungslink zu erhalten</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation type="unfinished"></translation>
+        <translation>Depecher - Ein weiterer Telegramclient für Sailfish OS basierend auf tdlib. </translation>
     </message>
     <message>
         <source>Features:</source>
-        <translation type="unfinished"></translation>
+        <translation>Funktionen:</translation>
     </message>
     <message>
         <source>- Send/View/Delete messages</source>
-        <translation type="unfinished"></translation>
+        <translation>- Senden/Anzeigen/Löschen von Mitteilungen </translation>
     </message>
     <message>
         <source>- Mute/unmute chats</source>
-        <translation type="unfinished"></translation>
+        <translation>- Stummschalten von Chats</translation>
     </message>
     <message>
         <source>- View photos</source>
-        <translation type="unfinished"></translation>
+        <translation>- Fotos anzeigen</translation>
     </message>
     <message>
         <source>- View animations (gifs)</source>
-        <translation type="unfinished"></translation>
+        <translation>- Animationen anzeigen (GIFS)</translation>
     </message>
     <message>
         <source>- View/Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>- Anzeigen/Senden von Stickern</translation>
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation type="unfinished"></translation>
+        <translation>- Sticker vom Chat verwalten</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
-        <translation type="unfinished"></translation>
+        <translation>- Hoch-/Herunterladen von Fotos und Dokumenten</translation>
     </message>
     <message>
         <source>- Receive notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>- Echtzeitmeldungen empfangen</translation>
     </message>
     <message>
         <source>- 2FA authorization enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>- 2FA Autorisation möglich </translation>
     </message>
     <message>
         <source>Thanks to:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dank an:</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Gruppen gibt es nur wegen der Gemeinsachaft und der Gemeinschaft rund um Sailfish OS. </translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bei den hier genannten Gruppen können Sie jede Frage stellen (Grundsätzliches, Entwicklung usw.) in Bezug zu Sailfish OS.</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
 </context>
 <context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation type="unfinished"></translation>
+        <translation>Radius</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Deckkraft</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe eingehender Nachrichten </translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe ausgehender Nachrichten</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen zurücksetzen</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation type="unfinished"></translation>
+        <translation>Namensschild minimieren</translation>
     </message>
     <message>
         <source>Aways align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten immer linksbündig ausrichten</translation>
     </message>
     <message>
         <source>Enable night mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachtmodus aktivieren</translation>
     </message>
     <message>
         <source>Night Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachtmodus</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeitplan aktivieren</translation>
     </message>
     <message>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Von</translation>
     </message>
     <message>
         <source>Till</source>
-        <translation type="unfinished"></translation>
+        <translation>Bis</translation>
     </message>
 </context>
 <context>
@@ -180,7 +180,7 @@
     </message>
     <message>
         <source>To continue connection to Telegram is needed</source>
-        <translation>Um fortzufahren, benötigen sie eine Verbindung zu den Telegram Servern.</translation>
+        <translation>Um fortzufahren, benötigen Sie eine Verbindung zu den Telegram Servern.</translation>
     </message>
 </context>
 <context>
@@ -257,25 +257,25 @@
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung: Wenn Telegram in deinem Land geblockt ist, richte zuerst über das PulleyMenu einen Proxyserver ein.</translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Nachricht bei Enter</translation>
     </message>
 </context>
 <context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 erstellte die Gruppe %2</translation>
     </message>
 </context>
 <context>
@@ -287,7 +287,7 @@
     <message>
         <source>Unread 
  messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungelesene Nachrichten</translation>
     </message>
 </context>
 <context>
@@ -302,11 +302,11 @@
     </message>
     <message>
         <source>Unmute</source>
-        <translation type="unfinished"></translation>
+        <translation>Laut stellen</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>Stumm stellen</translation>
     </message>
     <message>
         <source>Mark as read</source>
@@ -321,14 +321,14 @@
     <name>JoinByLinkDelegate</name>
     <message>
         <source>%1 joined by invite link</source>
-        <translation type="unfinished"></translation>
+        <translation>%1trat bei durch einen Einladungslink </translation>
     </message>
 </context>
 <context>
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat jetzt Telegram!</translation>
     </message>
 </context>
 <context>
@@ -342,74 +342,74 @@
     <name>MessageItem</name>
     <message>
         <source>edited</source>
-        <translation type="unfinished"></translation>
+        <translation>bearbeitet</translation>
     </message>
     <message>
         <source>Forwarded from</source>
-        <translation type="unfinished"></translation>
+        <translation>weitergeleitet von</translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiere Text</translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiere Pfad</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Antworten</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished">Bild</translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Dokument</translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animation</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht</translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche Nachricht</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche für jeden</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche...</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Weiterleiten</translation>
     </message>
     <message>
         <source>Forwarded messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Weitergeleitete Nachrichten</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -420,7 +420,7 @@
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
-        <translation type="unfinished">Neue Nachrichten</translation>
+        <translation>Neue Nachrichten</translation>
     </message>
 </context>
 <context>
@@ -461,101 +461,101 @@
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation type="unfinished">Server-Adresse</translation>
+        <translation>Server-Adresse</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished">Server-Port</translation>
+        <translation>Server-Port</translation>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished">Port</translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">Benutzername</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished">Benutzername</translation>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Passwort</translation>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy hinzufügen</translation>
     </message>
     <message>
         <source>Proxy type</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy-Typ</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <source>HTTP only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur HTTP</translation>
     </message>
     <message>
         <source>Secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel</translation>
     </message>
     <message>
         <source>secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel</translation>
     </message>
     <message>
         <source>Edit proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy bearbeiten</translation>
     </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished">Proxy ist bereit</translation>
+        <translation>Proxy ist bereit</translation>
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Link in Zwischenablage kopiert</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Verbindungsstatus:</translation>
+        <translation>Verbindungsstatus:</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviert</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy hinzufügen</translation>
     </message>
 </context>
 <context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat auswählen</translation>
     </message>
 </context>
 <context>
@@ -586,23 +586,23 @@
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrunddienst Einstellungen</translation>
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Abmelden</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
 </context>
 <context>
@@ -686,14 +686,15 @@
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellungscode eingeben. 
+Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
     </message>
 </context>
 <context>
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprachnotiz</translation>
     </message>
 </context>
 <context>
