@@ -309,6 +309,14 @@
         <source>Mute</source>
         <translation>Tysta</translation>
     </message>
+    <message>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
@@ -403,6 +411,10 @@
     <message>
         <source>messages</source>
         <translation>meddelanden</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -684,6 +696,17 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <message>
         <source>Voice note</source>
         <translation>Röstnotering</translation>
+    </message>
+</context>
+<context>
+    <name>WritingItem</name>
+    <message>
+        <source>Edit text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit caption</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

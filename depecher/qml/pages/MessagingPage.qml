@@ -351,7 +351,53 @@ Page {
                             }
                         }
                         MenuItem {
+                        text:qsTr("Edit")
+                        visible: can_be_edited && (message_type == MessagingModel.TEXT
+                        || message_type == MessagingModel.PHOTO
+                        || message_type == MessagingModel.VIDEO
+                        || message_type == MessagingModel.DOCUMENT
+                         || message_type == MessagingModel.ANIMATION
+                         || message_type == MessagingModel.VOICE
+                         || message_type == MessagingModel.AUDIO)
+
+
+
+                        onClicked: {
+                            if(message_type == MessagingModel.TEXT)
+                            writer.state = "editText"
+                            else
+                            writer.state = "editCaption"
+
+                            writer.edit_message_id = id
+                            writer.replyMessageText = replyMessageContent()
+                            writer.text = message_type == MessagingModel.TEXT ? content : file_caption
+                            function replyMessageContent() {
+                                if(message_type == MessagingModel.TEXT) {
+                                    return content
+                                }
+                                else if(message_type == MessagingModel.PHOTO) {
+                                    return qsTr("Photo")
+                                }
+                                else if(message_type == MessagingModel.STICKER) {
+                                    return qsTr("Sticker")
+                                }
+                                else if(message_type == MessagingModel.DOCUMENT) {
+                                    return qsTr("Document")
+                                }
+                                else if(message_type == MessagingModel.ANIMATION) {
+                                    return qsTr("Animation")
+                                }
+                                else if(message_type == MessagingModel.CONTACT) {
+                                    return qsTr("Contact")
+                                }
+                                return qsTr("Message");
+                            }
+
+                        }
+                        }
+                        MenuItem {
                             text: qsTr("Forward")
+                            visible: can_be_forwarded
                             onClicked: {
                                 pageStack.push("SelectChatDialog.qml",{"from_chat_id": chatId,
                                                     "messages": [id]})
@@ -427,10 +473,20 @@ Page {
         }
 
         function sendText(text,reply_id) {
+            if(writer.state == "publish")
+{
             if(text.trim().length > 0)
                 messagingModel.sendTextMessage(text,reply_id)
             if(reply_id == -1)
                 messagingModel.sendForwardMessages(chatId,forwardMessages.from_chat_id,forwardMessages.messages)
+} else if (writer.state == "editText") {
+                messagingModel.sendEditTextMessage(writer.edit_message_id,text)
+            }
+            else if (writer.state == "editCaption") {
+                messagingModel.sendEditCaptionMessage(writer.edit_message_id,text)
+
+            }
+
             buzz.play()
             textArea.text = ""
             restoreFocusTimer.start()

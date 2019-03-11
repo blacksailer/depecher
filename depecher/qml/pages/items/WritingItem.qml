@@ -17,6 +17,8 @@ Drawer {
     property alias returnButtonItem: returnButton
     property alias returnButtonEnabled: returnButton.enabled
     property string reply_id: "0"
+    property string edit_message_id: "0"
+
     property string typeWriter
     signal sendFiles(var files)
     signal setFocusToEdit()
@@ -29,16 +31,36 @@ Drawer {
         defaultValue: false
     }
     function clearReplyArea() {
+        if(attachDrawer.state == "editText" || attachDrawer.state == "editCaption") {
+            messageArea.text = ""
+            attachDrawer.state = "publish"
+        }
+
+        edit_message_id =  "0"
         replyMessageAuthor = ""
         replyMessageText = ""
         reply_id = "0"
-        if(writer.state=="edit")
-            writer.state = "publish"
+        if(attachDrawer.state=="edit")
+            attachDrawer.state = "publish"
 
     }
     onSetFocusToEdit: messageArea.focus = true
 
     states: [
+        State {
+        name:"editText"
+        PropertyChanges {
+            target: attachDrawer
+            replyMessageAuthor: qsTr("Edit text")
+        }
+        },
+        State {
+            name: "editCaption"
+            PropertyChanges {
+                target: attachDrawer
+                replyMessageAuthor: qsTr("Edit caption")
+            }
+        },
         State{
             name:"publish"
         },
@@ -77,7 +99,7 @@ Drawer {
         Item {
             id: replyArea
             width: parent.width
-            height: reply_id != "0" ? Theme.itemSizeExtraSmall : 0
+            height: reply_id != "0" ||  edit_message_id != "0"  ? Theme.itemSizeExtraSmall : 0
             anchors.bottom: messageArea.top
             Rectangle {
                 id: replyLine

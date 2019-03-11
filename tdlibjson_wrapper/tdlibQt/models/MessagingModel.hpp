@@ -149,6 +149,8 @@ public slots:
                              const bool disable_notification,
                              const bool from_background = false,
                              const bool as_album = false);
+    void sendEditCaptionMessage(const QString &message_id, const QString &caption);
+    void sendEditTextMessage(const QString &message_id, const QString &text);
     void sendTextMessage(const QString &text = "", const QString &reply_id = "0");
     void sendPhotoMessage(const QString &filepath, const QString &reply_id  = "0",
                           const QString &caption = "");

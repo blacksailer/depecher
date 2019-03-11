@@ -7,6 +7,11 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Mon Mar 11 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-2
+- Edit messages and captions of media
+- Added is_sponsored, is_marked_is_unread flags to chat list
+- Ability to mark chats as unread
+
 * Tue Mar 05 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-1
 - Fixing voice note unsupported issue
 - Spanish\Chinese\Sweden translations

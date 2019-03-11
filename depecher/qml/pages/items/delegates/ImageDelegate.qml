@@ -19,12 +19,15 @@ Column{
             width: photo_aspect >= 1 ? maxWidth *3/4 : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
-            source: "image://depecherDb/"+content
+            source: content
             
             MouseArea{
                 anchors.fill: parent
                 enabled: file_downloading_completed
-                onClicked: pageStack.push("../../PicturePage.qml",{imagePath:content})
+                onClicked: {
+                    pageStack.push("../../PicturePage.qml",{imagePath:content})
+
+                }
             }
             
             ProgressCircle {

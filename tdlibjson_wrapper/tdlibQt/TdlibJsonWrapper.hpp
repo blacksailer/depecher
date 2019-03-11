@@ -97,6 +97,7 @@ signals:
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void updateUserChatAction(const QJsonObject &chatAction);
     void updateChatMention(const QJsonObject &chatAction);
+    void updateChatIsMarkedAsUnread(const QJsonObject &chatOrderObject);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void meReceived(const QJsonObject &meObject);
     void errorReceived(const QJsonObject &errorObject);
@@ -122,7 +123,7 @@ public slots:
     void addProxy(const QString &address, const int port,
                   const bool &enabled, const QVariantMap &type);
     void editProxy(const int id, const QString &address, const int port,
-                  const bool &enabled, const QVariantMap &type);
+                   const bool &enabled, const QVariantMap &type);
 
     void disableProxy();
     void enableProxy(const int id);
@@ -138,6 +139,7 @@ public slots:
     void getChats(const qint64 offset_chat_id = 0,
                   const qint64 offset_order = std::numeric_limits<std::int64_t>::max(), const int limit = 100);
     void getChat(const qint64 chatId);
+    void markChatUnread(const qint64 chatId, const bool flag);
     void downloadFile(int fileId, int priority = 1, const QString &extra = "");
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,
                         bool only_local = false, const QString &extra = "");

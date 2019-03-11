@@ -308,6 +308,14 @@
         <source>Mute</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
@@ -401,6 +409,10 @@
     </message>
     <message>
         <source>messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -681,6 +693,17 @@
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WritingItem</name>
+    <message>
+        <source>Edit text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit caption</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

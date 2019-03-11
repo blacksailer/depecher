@@ -32,6 +32,8 @@ class ChatsModel : public QAbstractListModel
         LAST_MESSAGE_OUTBOX_ID,
         ORDER,
         IS_PINNED,
+        IS_SPONSORED,
+        IS_MARKED_UNREAD,
         UNREAD_COUNT,
         UNREAD_MENTION_COUNT,
         NOTIFICATION_SETTINGS,
@@ -81,12 +83,14 @@ private slots:
     void updateChatMentionCount(const QJsonObject &chatMentionCountObject);
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject);
+    void updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject);
 signals:
 
     void totalUnreadCountChanged(int totalUnreadCount);
 
 public slots:
     void changeNotificationSettings(const QString &chatId, bool mute);
+    void markAsUnread(const QString &chatId, bool unread);
     void reset();
 };
 } // namespace tdlibQt

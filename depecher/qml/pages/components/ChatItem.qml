@@ -63,6 +63,19 @@ ListItem {
                             truncationMode: TruncationMode.Fade
                         }
                         Image {
+                            id: iconSponsored
+                            source: mute_for > 0  ? "image://theme/icon-m-favorite?"
+                                                    + (pressed
+                                                       ? Theme.secondaryHighlightColor
+                                                       : "gray") :
+                                                    ""
+                            visible: is_sponsored
+                            height: Theme.fontSizeSmall
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: visible ? implicitWidth : 0
+                            fillMode: Image.PreserveAspectFit
+                        }
+                        Image {
                             id: iconMute
                             source: mute_for > 0  ? "image://theme/icon-m-speaker-mute?"
                                                     + (pressed
@@ -180,10 +193,10 @@ ListItem {
 
                             width: visible ? Math.max(50,counter.width+Theme.paddingSmall*2) : 0
                             height: parent.height
-                            visible: unread_count > 0
+                            visible: unread_count > 0 || is_marked_unread
                             Label{
                                 id:counter
-                                text:unread_count
+                                text:is_marked_unread ? "" : unread_count
                                 anchors.centerIn: parent
                                 font.pixelSize: Theme.fontSizeTiny
                                 color: Theme.primaryColor
