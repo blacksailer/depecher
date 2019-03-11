@@ -320,11 +320,11 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkitse luetuksi</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkitse lukemattomaksi</translation>
     </message>
     <message>
         <source>Contacts</source>
@@ -428,7 +428,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa</translation>
     </message>
 </context>
 <context>
@@ -718,11 +718,11 @@
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa teksti??</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa kuvateksti??</translation>
     </message>
 </context>
 <context>
