@@ -149,23 +149,23 @@
     </message>
     <message>
         <source>Enable night mode</source>
-        <translation type="unfinished"></translation>
+        <translation>启用夜间模式</translation>
     </message>
     <message>
         <source>Night Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>夜间模式</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>启用时间</translation>
     </message>
     <message>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>从</translation>
     </message>
     <message>
         <source>Till</source>
-        <translation type="unfinished"></translation>
+        <translation>至</translation>
     </message>
 </context>
 <context>
@@ -311,11 +311,11 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>标记为已读</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>标记为未读</translation>
     </message>
 </context>
 <context>
@@ -347,7 +347,7 @@
     </message>
     <message>
         <source>Forwarded from</source>
-        <translation type="unfinished"></translation>
+        <translation>转发自</translation>
     </message>
 </context>
 <context>
@@ -402,19 +402,19 @@
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>转发</translation>
     </message>
     <message>
         <source>Forwarded messages</source>
-        <translation type="unfinished"></translation>
+        <translation>转发消息</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation type="unfinished"></translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
 </context>
 <context>
@@ -462,101 +462,101 @@
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation type="unfinished">服务器地址</translation>
+        <translation>服务器地址</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished">服务器端口</translation>
+        <translation>服务器端口</translation>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished">端口</translation>
+        <translation>端口</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">用户名</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished">用户名</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">密码</translation>
+        <translation>密码</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>添加代理</translation>
     </message>
     <message>
         <source>Proxy type</source>
-        <translation type="unfinished"></translation>
+        <translation>代理类型</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>HTTP only</source>
-        <translation type="unfinished"></translation>
+        <translation>仅 HTTP</translation>
     </message>
     <message>
         <source>Secret</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>secret</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>Edit proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑代理</translation>
     </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished">代理可用</translation>
+        <translation>代理可用</translation>
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>链接已复制到剪贴板</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>代理</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">连接状态：</translation>
+        <translation>连接状态：</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已启用</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已禁用</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>添加代理</translation>
     </message>
 </context>
 <context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation type="unfinished"></translation>
+        <translation>选择对话</translation>
     </message>
 </context>
 <context>
@@ -583,7 +583,7 @@
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation>归功于的工作</translation>
+        <translation>荣誉和工作</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -599,11 +599,11 @@
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>正在登出</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>代理</translation>
     </message>
 </context>
 <context>
@@ -672,7 +672,7 @@
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation>恢复码发送到%1</translation>
+        <translation>恢复码发送到 %1</translation>
     </message>
     <message>
         <source>Password hint</source>
@@ -702,11 +702,11 @@
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑文本</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑说明文字</translation>
     </message>
 </context>
 <context>
@@ -757,7 +757,7 @@
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>等待退出种</translation>
+        <translation>正在等待退出</translation>
     </message>
     <message>
         <source>Wait closing</source>
