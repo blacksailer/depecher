@@ -320,11 +320,11 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera som l??st</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera som ol??st</translation>
     </message>
     <message>
         <source>Contacts</source>
@@ -427,7 +427,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera</translation>
     </message>
 </context>
 <context>
@@ -715,11 +715,11 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera text</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera bildtext</translation>
     </message>
 </context>
 <context>
