@@ -115,6 +115,7 @@ signals:
     void updateFile(const QJsonObject &fileObject);
     void meReceived(const QJsonObject &meObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
+    void updateChatIsMarkedAsUnread(const QJsonObject &chatOrderObject);
     void updateChatLastMessage(const QJsonObject &chatLastMessage);
     void updateChatReadInbox(const QJsonObject &chatReadInbox);
     void updateChatReadOutbox(const QJsonObject &chatReadOutbox);

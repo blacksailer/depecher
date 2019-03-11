@@ -47,7 +47,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
     parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
     parametersObject["use_secret_chats"] = false;
-#ifdef QT_DEBUG
+#ifdef TEST_DC
     parametersObject["use_test_dc"] = true;
 #endif
 
@@ -58,7 +58,7 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
     //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
 
-void TdlibJsonWrapper::sendToTelegram(void *Client, const char* str)
+void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
 {
 #ifdef QT_DEBUG
     qDebug() << QString::fromLatin1(str);
@@ -173,6 +173,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateChatOrder);
     connect(parseObject, &ParseObject::updateChatLastMessage,
             this, &TdlibJsonWrapper::updateChatLastMessage);
+    connect(parseObject, &ParseObject::updateChatIsMarkedAsUnread,
+            this, &TdlibJsonWrapper::updateChatIsMarkedAsUnread);
     connect(parseObject, &ParseObject::updateChatReadInbox,
             this, &TdlibJsonWrapper::updateChatReadInbox);
     connect(parseObject, &ParseObject::updateChatReadOutbox,
@@ -336,67 +338,63 @@ void TdlibJsonWrapper::addProxy(const QString &address, const int port,
 {
 
     QString proxyType;
- if (type["@type"] == "proxyTypeSocks5")
-     proxyType = "{\"@type\":\"proxyTypeSocks5\","
-                 "\"username\":\"" + type["username"].toString() + "\","
-             "\"password\":\"" + type["password"].toString() + "\""
-             "}";
- else if(type["@type"] == "proxyTypeHttp")
- {
-     proxyType = "{\"@type\":\"proxyTypeHttp\","
-                 "\"username\":\"%1\","
-                 "\"password\":\"%2\","
-                 "\"http_only\":%3"
-                 "}";
-     proxyType = proxyType.arg(type["username"].toString(),type["password"].toString(),type["http_only"].toBool() ? QString("true") : QString("false"));
- }
- else if(type["@type"] == "proxyTypeMtproto")
-     proxyType = "{\"@type\":\"proxyTypeMtproto\","
-             "\"secret\":\"" + type["secret"].toString() + "\""
-             "}";
- QString proxy = "{\"@type\":\"addProxy\","
-                 "\"server\":\"%1\","
-                 "\"port\":%2,"
-         "\"enable\":%3,"
-                "\"type\":%4"
-              "}";
-  proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType );
-qDebug() << proxy;
- sendToTelegram(client, proxy.toStdString().c_str());
+    if (type["@type"] == "proxyTypeSocks5")
+        proxyType = "{\"@type\":\"proxyTypeSocks5\","
+                    "\"username\":\"" + type["username"].toString() + "\","
+                    "\"password\":\"" + type["password"].toString() + "\""
+                    "}";
+    else if (type["@type"] == "proxyTypeHttp") {
+        proxyType = "{\"@type\":\"proxyTypeHttp\","
+                    "\"username\":\"%1\","
+                    "\"password\":\"%2\","
+                    "\"http_only\":%3"
+                    "}";
+        proxyType = proxyType.arg(type["username"].toString(), type["password"].toString(), type["http_only"].toBool() ? QString("true") : QString("false"));
+    } else if (type["@type"] == "proxyTypeMtproto")
+        proxyType = "{\"@type\":\"proxyTypeMtproto\","
+                    "\"secret\":\"" + type["secret"].toString() + "\""
+                    "}";
+    QString proxy = "{\"@type\":\"addProxy\","
+                    "\"server\":\"%1\","
+                    "\"port\":%2,"
+                    "\"enable\":%3,"
+                    "\"type\":%4"
+                    "}";
+    proxy = proxy.arg(address, QString::number(port), enabled ? QString("true") : QString("false"), proxyType);
+    qDebug() << proxy;
+    sendToTelegram(client, proxy.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::editProxy(const int id, const QString &address, const int port, const bool &enabled, const QVariantMap &type)
 {
     QString proxyType;
- if (type["@type"] == "proxyTypeSocks5")
-     proxyType = "{\"@type\":\"proxyTypeSocks5\","
-                 "\"username\":\"" + type["username"].toString() + "\","
-             "\"password\":\"" + type["password"].toString() + "\""
-             "}";
- else if(type["@type"] == "proxyTypeHttp")
- {
-     proxyType = "{\"@type\":\"proxyTypeHttp\","
-                 "\"username\":\"%1\","
-                 "\"password\":\"%2\","
-                 "\"http_only\":%3"
-                 "}";
-     proxyType = proxyType.arg(type["username"].toString(),type["password"].toString(),type["http_only"].toBool() ? QString("true") : QString("false"));
- }
- else if(type["@type"] == "proxyTypeMtproto")
-     proxyType = "{\"@type\":\"proxyTypeMtproto\","
-             "\"secret\":\"" + type["secret"].toString() + "\""
-             "}";
+    if (type["@type"] == "proxyTypeSocks5")
+        proxyType = "{\"@type\":\"proxyTypeSocks5\","
+                    "\"username\":\"" + type["username"].toString() + "\","
+                    "\"password\":\"" + type["password"].toString() + "\""
+                    "}";
+    else if (type["@type"] == "proxyTypeHttp") {
+        proxyType = "{\"@type\":\"proxyTypeHttp\","
+                    "\"username\":\"%1\","
+                    "\"password\":\"%2\","
+                    "\"http_only\":%3"
+                    "}";
+        proxyType = proxyType.arg(type["username"].toString(), type["password"].toString(), type["http_only"].toBool() ? QString("true") : QString("false"));
+    } else if (type["@type"] == "proxyTypeMtproto")
+        proxyType = "{\"@type\":\"proxyTypeMtproto\","
+                    "\"secret\":\"" + type["secret"].toString() + "\""
+                    "}";
 
- QString proxy = "{\"@type\":\"editProxy\","
-                 "\"server\":\"%1\","
-                 "\"port\":%2,"
-         "\"enable\":%3,"
-                "\"type\":%4,"
-                 "\"proxy_id\":%5"
-              "}";
-  proxy = proxy.arg(address,QString::number(port),enabled ? QString("true") : QString("false"),proxyType,QString::number(id) );
+    QString proxy = "{\"@type\":\"editProxy\","
+                    "\"server\":\"%1\","
+                    "\"port\":%2,"
+                    "\"enable\":%3,"
+                    "\"type\":%4,"
+                    "\"proxy_id\":%5"
+                    "}";
+    proxy = proxy.arg(address, QString::number(port), enabled ? QString("true") : QString("false"), proxyType, QString::number(id));
 
- sendToTelegram(client, proxy.toStdString().c_str());
+    sendToTelegram(client, proxy.toStdString().c_str());
 
 }
 
@@ -412,7 +410,7 @@ void TdlibJsonWrapper::enableProxy(const int id)
                   "\"proxy_id\":%1,"
                   "\"@extra\":\"%2\"}";
 
-    str = str.arg(QString::number(id),"enableProxy_"+QString::number(id));
+    str = str.arg(QString::number(id), "enableProxy_" + QString::number(id));
     sendToTelegram(client, str.toStdString().c_str());
 }
 void TdlibJsonWrapper::getProxyLink(const int id)
@@ -420,7 +418,7 @@ void TdlibJsonWrapper::getProxyLink(const int id)
     QString str = "{\"@type\":\"getProxyLink\","
                   "\"proxy_id\":%1,"
                   "\"@extra\":\"%2\"}";
-    str = str.arg(QString::number(id),"getProxyLink_"+QString::number(id));
+    str = str.arg(QString::number(id), "getProxyLink_" + QString::number(id));
 
     sendToTelegram(client, str.toStdString().c_str());
 }
@@ -437,7 +435,7 @@ void TdlibJsonWrapper::pingProxy(const int id)
     QString str = "{\"@type\":\"pingProxy\","
                   "\"proxy_id\":%1,"
                   "\"@extra\":\"%2\"}";
-    str = str.arg(QString::number(id),"pingProxy_"+QString::number(id));
+    str = str.arg(QString::number(id), "pingProxy_" + QString::number(id));
     sendToTelegram(client, str.toStdString().c_str());
 }
 
@@ -511,6 +509,17 @@ void TdlibJsonWrapper::getChat(const qint64 chatId)
                           "\"chat_id\":\"" + std::to_string(chatId) + "\""
                           "}";
     sendToTelegram(client, getChat.c_str());
+
+}
+
+void TdlibJsonWrapper::markChatUnread(const qint64 chatId, const bool flag)
+{
+    QString str = "{\"@type\":\"toggleChatIsMarkedAsUnread\","
+                  "\"chat_id\":\"%1\","
+                  "\"is_marked_as_unread\":%2}";
+
+    str = str.arg(QString::number(chatId), flag ? "true" : "false");
+    sendToTelegram(client, str.toStdString().c_str());
 
 }
 
@@ -623,19 +632,19 @@ void TdlibJsonWrapper::forwardMessage(const qint64 chat_id, const qint64 from_ch
     ids = ids.remove(ids.length() - 1, 1);
 
     QString forwardMessagesStr = "{\"@type\":\"forwardMessages\","
-                             "\"chat_id\":\"%1\","
-                             "\"from_chat_id\":\"%2\","
-                             "\"message_ids\":[%3],"
-                             "\"disable_notification\":%4,"
-                             "\"from_background\":%5,"
-                             "\"as_album\":%6,"
+                                 "\"chat_id\":\"%1\","
+                                 "\"from_chat_id\":\"%2\","
+                                 "\"message_ids\":[%3],"
+                                 "\"disable_notification\":%4,"
+                                 "\"from_background\":%5,"
+                                 "\"as_album\":%6,"
                                  "\"@extra\":\"forwardMessagesExtra\"}";
     forwardMessagesStr = forwardMessagesStr.arg(QString::number(chat_id),
-                                                QString::number(from_chat_id),
-                                                ids,
-                                                disable_notification ? QString("true") : QString("false"),
-                                                from_background ? QString("true") : QString("false"),
-                                                as_album ? QString("true") : QString("false"));
+                         QString::number(from_chat_id),
+                         ids,
+                         disable_notification ? QString("true") : QString("false"),
+                         from_background ? QString("true") : QString("false"),
+                         as_album ? QString("true") : QString("false"));
 
     sendToTelegram(client, forwardMessagesStr.toStdString().c_str());
 }
