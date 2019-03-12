@@ -287,7 +287,8 @@
     <message>
         <source>Unread 
  messages</source>
-        <translation>Ungelesene Nachrichten</translation>
+        <translation>Ungelesene 
+Nachrichten</translation>
     </message>
 </context>
 <context>
