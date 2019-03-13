@@ -8,6 +8,7 @@ class AboutMeDAO : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged)
+    Q_PROPERTY(bool disableGetMe READ disableGetMe WRITE setDisableGetMe NOTIFY disableGetMeChanged)
     Q_PROPERTY(QString firstName READ firstName WRITE setFirstName NOTIFY firstNameChanged)
     Q_PROPERTY(QString lastName READ lastName WRITE setLastName NOTIFY lastNameChanged)
     Q_PROPERTY(QString fullName READ fullName WRITE setFullName NOTIFY fullNameChanged)
@@ -31,6 +32,8 @@ class AboutMeDAO : public QObject
 
     QString m_last_message_id;
 
+    bool m_disableGetMe;
+
 public:
     explicit AboutMeDAO(QObject *parent = 0);
 
@@ -44,10 +47,9 @@ public:
 
     QString photoPath() const;
 
-    QString id() const
-    {
-        return m_id;
-    }
+    QString id() const;
+
+    bool disableGetMe() const;
 
 signals:
 
@@ -63,6 +65,8 @@ signals:
 
     void idChanged(QString id);
 
+    void disableGetMeChanged(bool disableGetMe);
+
 public slots:
     void setInfo(const QJsonObject &meObject);
     void setFirstName(QString firstName);
@@ -72,6 +76,7 @@ public slots:
     void setPhotoPath(QString photoPath);
     void setId(QString id);
 
+    void setDisableGetMe(bool disableGetMe);
 };
 } //namespace tdlibQt
 

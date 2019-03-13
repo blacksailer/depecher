@@ -15,7 +15,7 @@ Page {
     property string _opened_chat_id: ""
     Connections {
         target: c_telegramWrapper
-        onErrorReceivedMap:{
+        onErrorReceivedMap: {
             if(errorObject["code"] === 401)
                 pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
         }
@@ -51,6 +51,10 @@ Page {
                     text: mute_for > 0 ? qsTr("Unmute") : qsTr("Mute")
                     onClicked: chatsModel.changeNotificationSettings(id,!(mute_for > 0))
                 }
+                MenuItem {
+                    text: is_marked_unread ? qsTr("Mark as read") : qsTr("Mark as unread")
+                    onClicked: chatsModel.markAsUnread(id,!is_marked_unread)
+                }
             }
 
             ListView.onAdd: AddAnimation {
@@ -68,6 +72,8 @@ Page {
                 if(_opened_chat_id !== id)
                 {
                     _opened_chat_id = id
+                    if(is_marked_unread)
+                        chatsModel.markAsUnread(id,false)
                     pageStack.pushAttached("MessagingPage.qml",{chatId:id})
                 }
                 pageStack.navigateForward()

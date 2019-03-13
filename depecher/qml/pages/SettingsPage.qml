@@ -81,6 +81,7 @@ Page {
                 }
                 AboutMeDAO{
                     id:aboutMe
+                    disableGetMe:!isLogoutVisible
                 }
                 Row{
                     width:parent.width

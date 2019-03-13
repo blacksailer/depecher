@@ -24,7 +24,8 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
             this, &tdlibQt::ChatsModel::updateChatReadInbox);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &tdlibQt::ChatsModel::updateChatReadOutbox);
-
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatIsMarkedAsUnread,
+            this, &tdlibQt::ChatsModel::updateChatIsMarkedAsUnread);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateNotificationSettingsReceived,
             this, &tdlibQt::ChatsModel::updateNotificationSettings);
 
@@ -62,8 +63,8 @@ const int ChatsModel::indexByOrder(const qint64 order)
 
 bool ChatsModel::isContains(const QSharedPointer<chat> &chat)
 {
-    for(int i = 0; i < m_chats.size();i++)
-        if(m_chats[i]->id_ == chat->id_)
+    for (int i = 0; i < m_chats.size(); i++)
+        if (m_chats[i]->id_ == chat->id_)
             return true;
 
     return false;
@@ -129,6 +130,27 @@ void ChatsModel::updateNotificationSettings(const QJsonObject &updateNotificatio
     }
 }
 
+void ChatsModel::updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject)
+{
+    if (updateChatIsMarkedAsUnreadObject["@type"] == "updateChatIsMarkedAsUnread") {
+        bool flagUnread = updateChatIsMarkedAsUnreadObject["is_marked_as_unread"].toBool();
+        qint64 chatId = ParseObject::getInt64(updateChatIsMarkedAsUnreadObject["chat_id"]);
+        int rowIndex = -1;
+        for (int i = 0; i < m_chats.size(); i++) {
+            if (m_chats[i]->id_ == chatId) {
+                rowIndex = i;
+                m_chats[i]->is_marked_as_unread_ = flagUnread;
+                break;
+            }
+        }
+        if (rowIndex > -1) {
+            QVector<int> roles;
+            roles.append(IS_MARKED_UNREAD);
+            emit dataChanged(index(rowIndex), index(rowIndex), roles);
+        }
+    }
+}
+
 void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
 {
     bool ok = false;
@@ -149,6 +171,11 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
 
     qDebug() << jsonString;
     tdlibJson->sendMessage(jsonString);
+}
+
+void ChatsModel::markAsUnread(const QString &chatId, bool unread)
+{
+    tdlibJson->markChatUnread(chatId.toLongLong(), unread);
 }
 
 int ChatsModel::rowCount(const QModelIndex &parent) const
@@ -176,6 +203,10 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
 
     case IS_PINNED:
         return m_chats[rowIndex]->is_pinned_;
+    case IS_SPONSORED:
+        return m_chats[rowIndex]->is_sponsored_;
+    case IS_MARKED_UNREAD:
+        return m_chats[rowIndex]->is_marked_as_unread_;
     case TYPE:
         switch (m_chats[rowIndex]->type_->get_id()) {
         case chatTypeBasicGroup::ID: {
@@ -309,6 +340,8 @@ QHash<int, QByteArray> ChatsModel::roleNames() const
     roles[LAST_MESSAGE_INBOX_ID] = "last_message_inbox_id";
     roles[LAST_MESSAGE_OUTBOX_ID] = "last_message_outbox_id";
     roles[IS_PINNED] = "is_pinned";
+    roles[IS_SPONSORED] = "is_sponsored";
+    roles[IS_MARKED_UNREAD] = "is_marked_unread";
     roles[UNREAD_COUNT] = "unread_count";
     roles[UNREAD_MENTION_COUNT] = "unread_mention_count";
     roles[NOTIFICATION_SETTINGS] = "notification_settings";
@@ -349,7 +382,7 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
     fetchPending = false;
 
     QSharedPointer<chat> chatItem = ParseObject::parseChat(chatObject);
-    if(isContains(chatItem))
+    if (isContains(chatItem))
         return;
     int chatIndex = indexByOrder(chatItem->order_);
     if (chatItem->last_message_->get_id() == messagePhoto::ID) {
@@ -369,14 +402,13 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
 
     //    if (chatItem->notification_settings_->mute_for_ == 0)
     //        emit totalUnreadCountChanged(totalUnreadCount());
-    if(chatIndex == -1)
-    {
+    if (chatIndex == -1) {
         beginInsertRows(QModelIndex(), m_chats.size(), m_chats.size());
         m_chats.append(chatItem);
         endInsertRows();
     } else {
         beginInsertRows(QModelIndex(), chatIndex, chatIndex);
-        m_chats.insert(chatIndex,chatItem);
+        m_chats.insert(chatIndex, chatItem);
         endInsertRows();
     }
 

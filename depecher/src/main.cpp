@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     auto NotificationManager = tdlibQt::NotificationManager::instance();
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
+    //used in authenticationhandler too.
     tdlib->setEncryptionKey();
 
     if (quitOnCloseUi.value(false).toBool()) {

@@ -19,7 +19,6 @@ AboutMeDAO::AboutMeDAO(QObject *parent) : QObject(parent),
             }
         }
     });
-    m_client->getMe();
 }
 
 QString AboutMeDAO::firstName() const
@@ -45,6 +44,16 @@ QString AboutMeDAO::phoneNumber() const
 QString AboutMeDAO::photoPath() const
 {
     return m_photoPath;
+}
+
+QString AboutMeDAO::id() const
+{
+    return m_id;
+}
+
+bool AboutMeDAO::disableGetMe() const
+{
+    return m_disableGetMe;
 }
 
 void AboutMeDAO::setInfo(const QJsonObject &meObject)
@@ -118,5 +127,17 @@ void AboutMeDAO::setId(QString id)
 
     m_id = id;
     emit idChanged(id);
+}
+
+void AboutMeDAO::setDisableGetMe(bool disableGetMe)
+{
+    if (m_disableGetMe == disableGetMe)
+        return;
+
+    m_disableGetMe = disableGetMe;
+    if(!m_disableGetMe)
+        m_client->getMe();
+
+    emit disableGetMeChanged(m_disableGetMe);
 }
 } //namespace tdlibQt

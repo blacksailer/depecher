@@ -54,8 +54,7 @@
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.
-        </translation>
+        <translation>Depecher - En Telegram-klient för Sailfish OS, baserad på tdlib.</translation>
     </message>
     <message>
         <source>Features:</source>
@@ -103,16 +102,15 @@
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.
-Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
+        <translation>Här är ett antal grupper där du kan ställa frågor (allmänt, utveckling etc.) relaterade till Sailfish OS.</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
 </context>
 <context>
@@ -147,27 +145,27 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Aways align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>Justera alltid meddelanden åt vänster</translation>
     </message>
     <message>
         <source>Enable night mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivera nattläge</translation>
     </message>
     <message>
         <source>Night Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Nattläge</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivera schema</translation>
     </message>
     <message>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Från</translation>
     </message>
     <message>
         <source>Till</source>
-        <translation type="unfinished"></translation>
+        <translation>Till</translation>
     </message>
 </context>
 <context>
@@ -289,7 +287,7 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Unread 
  messages</source>
-        <translation> Olästa 
+        <translation>Olästa 
  meddelanden</translation>
     </message>
 </context>
@@ -310,6 +308,14 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <message>
         <source>Mute</source>
         <translation>Tysta</translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -341,69 +347,73 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Forwarded from</source>
-        <translation type="unfinished"></translation>
+        <translation>Skickat från</translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera text</translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera sökväg</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Svara</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation type="unfinished">Bild</translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <source>Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation type="unfinished">Dokument</translation>
+        <translation>Dokument</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animation</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Meddelande</translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort meddelande</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort för alla</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tar bort...</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka</translation>
     </message>
     <message>
         <source>Forwarded messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Skickade meddelanden</translation>
     </message>
     <message>
         <source>messages</source>
+        <translation>meddelanden</translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -452,101 +462,101 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation type="unfinished">Serveradress</translation>
+        <translation>Serveradress</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished">Serverport</translation>
+        <translation>Serverport</translation>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished">Port</translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">Användarnamn</translation>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished">Användarnamn</translation>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Lösenord</translation>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till Proxy</translation>
     </message>
     <message>
         <source>Proxy type</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxytyp</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adress</translation>
     </message>
     <message>
         <source>HTTP only</source>
-        <translation type="unfinished"></translation>
+        <translation>Endast HTTP</translation>
     </message>
     <message>
         <source>Secret</source>
-        <translation type="unfinished"></translation>
+        <translation>Hemlighet</translation>
     </message>
     <message>
         <source>secret</source>
-        <translation type="unfinished"></translation>
+        <translation>hemlighet</translation>
     </message>
     <message>
         <source>Edit proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera proxy</translation>
     </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished">Proxyn är redo</translation>
+        <translation>Proxyn är redo</translation>
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Länk kopierad till urklipp</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Fel</translation>
+        <translation>Fel</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Anslutningsstatus: </translation>
+        <translation>Anslutningsstatus: </translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiverad</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Inaktiverad</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till proxy</translation>
     </message>
 </context>
 <context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj chatt</translation>
     </message>
 </context>
 <context>
@@ -589,11 +599,11 @@ Dessa grupper finns bara till på grund av gemenskapen runt Sailfish OS.</transl
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Loggar ut</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
 </context>
 <context>
@@ -685,6 +695,17 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <name>VoiceNoteDelegate</name>
     <message>
         <source>Voice note</source>
+        <translation>Röstnotering</translation>
+    </message>
+</context>
+<context>
+    <name>WritingItem</name>
+    <message>
+        <source>Edit text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit caption</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -716,35 +737,35 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta lib-parametrar</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta krypteringsnyckel</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta telefonnummer</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta kod</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta lösenord</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta logga ut</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta stänger</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation type="unfinished"></translation>
+        <translation>Vänta stängd</translation>
     </message>
 </context>
 </TS>
