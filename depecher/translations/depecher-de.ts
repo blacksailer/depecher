@@ -691,13 +691,6 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation>Sprachnotiz</translation>
-    </message>
-</context>
-<context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>

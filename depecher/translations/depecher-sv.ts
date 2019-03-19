@@ -692,13 +692,6 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation>Röstnotering</translation>
-    </message>
-</context>
-<context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>

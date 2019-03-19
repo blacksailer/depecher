@@ -158,6 +158,8 @@ public slots:
                              const QString &caption = "");
     void sendStickerMessage(const int &fileId, const QString &reply_id = "0"
                            );
+    void sendVoiceMessage(const QString &filepath, const int secDuration, const QString &reply_id  = "0",
+                          const QString &caption = "");
     void getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType,
                                     const QString &payloadData);
 

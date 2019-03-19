@@ -120,6 +120,10 @@ Page {
             sendText(textArea.text,writer.reply_id)
 
         }
+        onSendVoice:{
+            messagingModel.sendVoiceMessage(location,duration,writer.reply_id, "")
+
+        }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
             {

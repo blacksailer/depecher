@@ -1594,6 +1594,41 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
 
 }
 
+void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDuration,
+                                      const QString &reply_id, const QString &caption)
+{
+    TlStorerToString json;
+    sendMessage sendMessageObject;
+    sendMessageObject.chat_id_ = m_peerId.toLongLong();
+    sendMessageObject.disable_notification_ = false;
+    sendMessageObject.from_background_ = false;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
+    sendMessageObject.input_message_content_ = QSharedPointer<inputMessageVoiceNote>
+            (new inputMessageVoiceNote);
+    inputMessageVoiceNote *ptr = static_cast<inputMessageVoiceNote *>
+                                (sendMessageObject.input_message_content_.data());
+    auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
+    docPtr->path_ = filepath.toStdString();
+    ptr->voice_note_ = docPtr;
+    ptr->duration_ = secDuration;
+    ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
+    ptr->caption_->text_ = caption.toStdString();
+    //https://github.com/DrKLO/Telegram/blob/e397bd9afdfd9315bf099f78a903f8754d297d7a/TMessagesProj/jni/audio.c#L603
+    ptr->waveform_ =  caption.toStdString();
+
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
+
+    sendMessageObject.store(json, "input_message_content");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    tdlibJson->sendMessage(jsonString);
+}
+
 void MessagingModel::getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType, const QString &payloadData)
 {
     getCallbackQueryAnswer obj;

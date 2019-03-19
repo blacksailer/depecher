@@ -692,13 +692,6 @@
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation>Nota de voz</translation>
-    </message>
-</context>
-<context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>

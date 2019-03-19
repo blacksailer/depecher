@@ -20,7 +20,6 @@ Column{
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
             source: content
-            
             MouseArea{
                 anchors.fill: parent
                 enabled: file_downloading_completed

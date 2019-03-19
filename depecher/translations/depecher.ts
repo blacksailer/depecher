@@ -690,13 +690,6 @@
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>

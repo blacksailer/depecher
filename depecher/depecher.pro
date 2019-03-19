@@ -81,7 +81,8 @@ SOURCES += \
     src/DBusAdaptor.cpp \
     dbus/DepecherAdaptor.cpp \
     src/singletons/PageAppStarter.cpp \
-    src/singletons/DNSTXTLookup.cpp
+    src/singletons/DNSTXTLookup.cpp \
+    src/components/audiorecorder.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -139,4 +140,5 @@ HEADERS += \
     src/DBusAdaptor.hpp \
     dbus/DepecherAdaptor.hpp \
     src/singletons/PageAppStarter.hpp \
-    src/singletons/DNSTXTLookup.hpp
+    src/singletons/DNSTXTLookup.hpp \
+    src/components/audiorecorder.h

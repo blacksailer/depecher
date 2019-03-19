@@ -202,6 +202,7 @@ ListItem {
                 Loader {
                     id:replyLoader
                     active: reply_to_message_id != 0 && index != 0
+
                     sourceComponent: Component {
                         MouseArea {
                             id:replyBackgroundItem
@@ -251,6 +252,8 @@ ListItem {
 
                 Loader {
                     id:contentLoader
+                    z:0
+
                     function reload() {
                             source = ""
                             source = setItem()
