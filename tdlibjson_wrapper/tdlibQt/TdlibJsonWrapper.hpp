@@ -70,8 +70,8 @@ public:
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateNewUser(const QJsonObject &updateNewUserObject);
-
-
+    void updateFileGenerationStartReceived(const QJsonObject &updateFileGenerationStartObject);
+    void updateFileGenerationStopReceived(const QJsonObject &updateFileGenerationStopObject);
     void isCredentialsEmptyChanged(bool isCredentialsEmpty);
     void authorizationStateChanged(tdlibQt::Enums::AuthorizationState authorizationState);
     void newAuthorizationState(const QSharedPointer<AuthorizationState> authState);
@@ -138,7 +138,9 @@ public slots:
                           const QString &lastName); /*TODO check for numbers only and escape characters*/
     void getChats(const qint64 offset_chat_id = 0,
                   const qint64 offset_order = std::numeric_limits<std::int64_t>::max(), const int limit = 100);
-    void getChat(const qint64 chatId);
+    void getChat(const qint64 chatId, const QString &extra);
+    void searchChatsOnServer(const QString &query, const int limit);
+    void searchChats(const QString &query, const int limit);
     void markChatUnread(const qint64 chatId, const bool flag);
     void downloadFile(int fileId, int priority = 1, const QString &extra = "");
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,

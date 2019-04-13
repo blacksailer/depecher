@@ -10,8 +10,9 @@ class AudioRecorder : public QAudioRecorder
 {
     Q_OBJECT
     Q_PROPERTY(QString location READ location NOTIFY locationChanged)
+    Q_PROPERTY(bool autoRemove READ autoRemove WRITE setAutoRemove NOTIFY autoRemoveChanged)
     Q_PROPERTY(AudioRecorder::AudioCodec codec READ codec WRITE setCodec NOTIFY codecChanged)
-
+    Q_PROPERTY(bool recording READ recording NOTIFY recordingChanged)
 
 public:
     explicit AudioRecorder(QObject *parent = nullptr);
@@ -28,6 +29,10 @@ public:
 
     QString location() const;
     AudioRecorder::AudioCodec codec() const;
+
+    bool autoRemove() const;
+
+    bool recording() const;
 
 private:
     struct CodecSetting
@@ -47,16 +52,25 @@ private:
 
 
 
+    bool m_autoRemove  = false;
+
+    bool m_recording;
+
 public slots:
 void setCodec(AudioRecorder::AudioCodec codec);
 void startRecording();
 void stopRecording();
+void deleteRecording();
+void setAutoRemove(bool autoRemove);
+QString getWaveform();
 
 signals:
 
     void locationChanged(QString location);
     void codecChanged(AudioRecorder::AudioCodec codec);
 
+    void autoRemoveChanged(bool autoRemove);
+    void recordingChanged(bool recording);
 };
 
 #endif // AUDIORECORDER_H

@@ -49,7 +49,9 @@ Column{
                     anchors.fill: parent
                     onClicked: {
                         if(progress.visible)
-                            if(file_is_downloading)
+                            if(file_is_uploading)
+                                messagingModel.deleteMessage(index)
+                            else if(file_is_downloading)
                                 messagingModel.cancelDownload(index)
                             else
                                 messagingModel.deleteMessage(index)

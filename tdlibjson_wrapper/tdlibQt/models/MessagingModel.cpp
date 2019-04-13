@@ -1510,8 +1510,10 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessagePhoto>(new inputMessagePhoto);
     inputMessagePhoto *ptr = static_cast<inputMessagePhoto *>
                              (sendMessageObject.input_message_content_.data());
-    auto photoPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    photoPtr->path_ = filepath.toStdString();
+    auto photoPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    photoPtr->original_path_ = filepath.toStdString();
+     photoPtr->conversion_ = "copy";
+    photoPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->photo_ = photoPtr;
 
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
@@ -1543,8 +1545,10 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
             (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
                                 (sendMessageObject.input_message_content_.data());
-    auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    docPtr->path_ = filepath.toStdString();
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->document_ = docPtr;
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
@@ -1595,7 +1599,8 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
 }
 
 void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDuration,
-                                      const QString &reply_id, const QString &caption)
+                                      const QString &reply_id, const QString &caption,
+                                      const QString &waveform)
 {
     TlStorerToString json;
     sendMessage sendMessageObject;
@@ -1607,14 +1612,15 @@ void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDura
             (new inputMessageVoiceNote);
     inputMessageVoiceNote *ptr = static_cast<inputMessageVoiceNote *>
                                 (sendMessageObject.input_message_content_.data());
-    auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    docPtr->path_ = filepath.toStdString();
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->voice_note_ = docPtr;
     ptr->duration_ = secDuration;
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
-    //https://github.com/DrKLO/Telegram/blob/e397bd9afdfd9315bf099f78a903f8754d297d7a/TMessagesProj/jni/audio.c#L603
-    ptr->waveform_ =  caption.toStdString();
+    ptr->waveform_ =  waveform.toLatin1().toBase64().toStdString();
 
     if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
         auto repliedMessage = findMessageById(reply_id.toLongLong());
@@ -1827,8 +1833,6 @@ void MessagingModel::viewMessages(const QVariantList &ids)
         emit viewMessagesChanged(peerId().toLongLong());
     }
 }
-
-
 
 void MessagingModel::setChatType(const QVariantMap &chatType)
 {

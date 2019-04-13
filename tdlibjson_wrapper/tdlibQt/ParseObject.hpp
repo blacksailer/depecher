@@ -111,7 +111,8 @@ signals:
     void updateMessageContent(const QJsonObject &updateMessageContentObject);
     void callbackQueryAnswerReceived(const QJsonObject &callbackQueryAnswerObject);
     void updateSupergroup(const QJsonObject &updateSupergroupObject);
-
+    void updateFileGenerationStartReceived(const QJsonObject &updateFileGenerationStartObject);
+    void updateFileGenerationStopReceived(const QJsonObject &updateFileGenerationStopObject);
     void updateFile(const QJsonObject &fileObject);
     void meReceived(const QJsonObject &meObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
@@ -126,7 +127,7 @@ signals:
     void updateMessageSendFailed(const QJsonObject &updateMessageSendFailedObject);
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void chatIds(const QVariantList &ids);
-    void getChat(const qint64 id);
+    void getChat(const qint64 id, const QString &extra);
     void newChatReceived(const QJsonObject &chatItem);
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);

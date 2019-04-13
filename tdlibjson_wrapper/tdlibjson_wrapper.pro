@@ -2,7 +2,7 @@ APPID = $$fromfile(api_secret.pri,APPID)#To build you have to create file api_se
 APP_HASH = $$fromfile(api_secret.pri,APP_HASH)#To build you have to create file api_secret.pri app_hash, or replace with your app_hash
 
 
-VERSION = 0.5.2
+VERSION =  0.5.3
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 TEMPLATE = lib
@@ -39,10 +39,9 @@ HEADERS += \
     tdlibQt/items/ProxyDAO.hpp \
     tdlibQt/items/AboutMeDAO.hpp \
     tdlibQt/models/singletons/UsersModel.hpp \
-    tdlibQt/models/singletons/FileManager.hpp \
     tdlibQt/models/StickerModel.hpp \
-    tdlibQt/NotificationManager.hpp
-
+    tdlibQt/NotificationManager.hpp \
+    tdlibQt/models/SearchChatsModel.hpp
 SOURCES += \
     tdlibQt/TdlibJsonWrapper.cpp \
     tdlibQt/ListenObject.cpp \
@@ -57,9 +56,9 @@ SOURCES += \
     tdlibQt/items/ProxyDAO.cpp \
     tdlibQt/items/AboutMeDAO.cpp \
     tdlibQt/models/singletons/UsersModel.cpp \
-    tdlibQt/models/singletons/FileManager.cpp \
     tdlibQt/models/StickerModel.cpp \
-    tdlibQt/NotificationManager.cpp
+    tdlibQt/NotificationManager.cpp \
+    tdlibQt/models/SearchChatsModel.cpp
 
 info_file.input = $$PWD/tdlibQt/include/AppApiInfo.hpp.in
 info_file.output = $$PWD/tdlibQt/include/AppApiInfo.hpp

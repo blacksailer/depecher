@@ -1,7 +1,7 @@
 #include "DBusAdaptor.hpp"
 #include "singletons/PageAppStarter.hpp"
 #include "FileWorker.hpp"
-#include "components/audiorecorder.h"
+#include "components/AudioRecorder.hpp"
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"

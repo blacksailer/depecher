@@ -12,7 +12,7 @@ import depecherUtils 1.0
 Column{
     property int maxWidth: messageListItem.width *2/3 - Theme.horizontalPageMargin * 2
     width: maxWidth
-    function drawWaveform(ctx,width,height,waveformBytes) {
+    function drawWaveform(ctx,width,height,waveformBytes,position,duration) {
         //https://github.com/DrKLO/Telegram/blob/a724d96e9c008b609fe188d122aa2922e40de5fc/TMessagesProj/src/main/java/org/telegram/ui/Components/SeekBarWaveform.java
         var samplesCount = (waveform.length * 8 / 5);
         var totalBarsCount = width / 3;
@@ -24,7 +24,8 @@ Column{
         var barNum = 0;
         var lastBarNum;
         var drawBarCount;
-        var thumbX = 0;
+        var thumbX = parseInt(position/duration * width,10);
+        ctx.clearRect(0, 0, width, height);
         for (var a = 0; a < samplesCount; a++) {
             if (a != nextBarNum) {
                 continue;
@@ -50,21 +51,18 @@ Column{
             for (var b = 0; b < drawBarCount; b++) {
                 var x = barNum * 3;
                 if (x < thumbX && x + 2 < thumbX) {
-                    ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
+                    ctx.fillStyle = Theme.highlightColor;
                     ctx.fillRect(x, y + barHeight - Math.max(1, barHeight * value / 31.0), 2, Math.max(1, barHeight * value / 31.0));
                 } else {
-                    ctx.fillStyle = Theme.highlightColor;
-                    console.log(x +" " + y + " " + Math.max(1, barHeight * value / 31.0))
+                    ctx.fillStyle = Theme.secondaryHighlightColor;
                     ctx.fillRect(x, y + barHeight - Math.max(1, barHeight * value / 31.0), 2, Math.max(1, barHeight * value / 31.0));
-                    if (x < thumbX) {
-                        ctx.fillStyle = Qt.rgba(1, 1, 0, 1);
-                        ctx.fillRect(x, y + 14 - Math.max(1, barHeight * value / 31.0), thumbX, Math.max(1, barHeight * value / 31.0));
-                    }
+//                    if (x < thumbX) {
+//                        ctx.fillStyle = Theme.highlightColor;
+//                        ctx.fillRect(x, y + 14 - Math.max(1, barHeight * value / 31.0), thumbX, Math.max(1, barHeight * value / 31.0));
+//                    }
                 }
                 barNum++;
             }
-            console.log("drawingdone")
-
         }
 
     }
@@ -112,7 +110,7 @@ Column{
                             if(__depecher_audio.playbackState === Audio.PlayingState)
                                 __depecher_audio.stop()
                             else {
-                                __depecher_audio.source =  "file://"+content
+                                __depecher_audio.source =  Qt.resolvedUrl(content)
                                 __depecher_audio.play()
                             }
                         }
@@ -138,8 +136,23 @@ Column{
                     id: mycanvas
                     width: parent.width
                     height: Theme.itemSizeSmall / 2
+                    Connections {
+                    target:__depecher_audio
+                    onPositionChanged:
+                        mycanvas.requestPaint()
+                    }
+                    Connections {
+                    target: Qt.application
+                    onActiveChanged:
+                        //from cover canvas must be repainted
+                        if(active)
+                            mycanvas.requestPaint()
+                    }
                     onPaint: {
-                        drawWaveform(getContext("2d"),width,height,waveform)
+ if(__depecher_audio.playbackState == Audio.PlayingState && __depecher_audio.source == Qt.resolvedUrl(content))
+     drawWaveform(getContext("2d"),width,height,waveform,__depecher_audio.position,__depecher_audio.duration)
+ else
+     drawWaveform(getContext("2d"),width,height,waveform,0,duration)
                     }
                 }
                 Label {

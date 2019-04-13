@@ -45,8 +45,7 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateChatReplyMarkup":
     //    case "updateChatTitle":
     //    case "updateFavoriteStickers":
-    //    case "updateFileGenerationStart":
-    //    case "updateFileGenerationStop":
+
     //    case "updateInstalledStickerSets":
     //    case "updateMessageContentOpened":
     //    case "updateMessageSendAcknowledged":
@@ -186,7 +185,6 @@ void ParseObject::parseResponse(const QByteArray &json)
         emit secondsReceived(doc.object());
     if (typeField == "text")
         emit textReceived(doc.object());
-
     if (typeField == "message")
         emit messageReceived(doc.object());
     if (typeField == "stickerSets")
@@ -203,6 +201,11 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField ==  "updateNotificationSettings") {
         emit updateNotificationSettingsReceived(doc.object());
     }
+    if (typeField == "updateFileGenerationStart")
+        emit updateFileGenerationStartReceived(doc.object());
+    if (typeField == "updateFileGenerationStop")
+        emit updateFileGenerationStopReceived(doc.object());
+
     if (typeField == "updateChatOrder") {
         emit updateChatOrder(doc.object());
     }
@@ -249,10 +252,12 @@ void ParseObject::parseResponse(const QByteArray &json)
 
     if (typeField == "chats") {
         QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
+        QString extra = "";
+        if(doc.object().contains("@extra"))
+            extra =  doc.object()["@extra"].toString();
         for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
-            emit getChat(getInt64(*it));
+            emit getChat(getInt64(*it),extra);
         }
-        emit chatIds(chat_ids.toVariantList());
     }
     if (typeField == "chat") {
         auto chatItem = doc.object();

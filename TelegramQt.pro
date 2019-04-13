@@ -20,7 +20,8 @@ DISTFILES += \
     depecher/qml/ThemePlugin/qmldir \
     depecher/qml/pages/SelectChatDialog.qml \
     depecher/qml/pages/VideoPage.qml \
-    depecher/qml/pages/components/settings/ProxyPage.qml
+    depecher/qml/pages/components/settings/ProxyPage.qml \
+    depecher/qml/pages/items/VoiceButton.qml
 
 RESOURCES += \
     depecher/qml/pages/components/settings/proxypage.qrc

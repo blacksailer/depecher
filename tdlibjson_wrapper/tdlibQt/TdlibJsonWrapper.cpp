@@ -213,7 +213,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::secondsReceived);
     connect(parseObject, &ParseObject::textReceived,
             this, &TdlibJsonWrapper::textReceived);
-
+    connect(parseObject, &ParseObject::updateFileGenerationStartReceived,
+            this, &TdlibJsonWrapper::updateFileGenerationStartReceived);
+    connect(parseObject, &ParseObject::updateFileGenerationStopReceived,
+            this, &TdlibJsonWrapper::updateFileGenerationStopReceived);
     listenThread->start();
     parseThread->start();
 
@@ -503,13 +506,50 @@ void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset
     sendToTelegram(client, getChats.c_str());
 }
 
-void TdlibJsonWrapper::getChat(const qint64 chatId)
+void TdlibJsonWrapper::getChat(const qint64 chatId, const QString &extra)
 {
-    std::string getChat = "{\"@type\":\"getChat\","
-                          "\"chat_id\":\"" + std::to_string(chatId) + "\""
-                          "}";
-    sendToTelegram(client, getChat.c_str());
+    QString str;
+    if(extra != "")
+    {
+        str = "{\"@type\":\"getChat\","
+              "\"chat_id\":\"%1\","
+              "\"@extra\":\"%2\""
+              "}";
+        str = str.arg(QString::number(chatId),extra);
+    }
+    else
+    {
+        str = "{\"@type\":\"getChat\","
+              "\"chat_id\":\"%1\"}";
+        str = str.arg(QString::number(chatId));
+    }
 
+    sendToTelegram(client, str.toStdString().c_str());
+
+}
+
+void TdlibJsonWrapper::searchChatsOnServer(const QString &query, const int limit)
+{
+    QString str = "{\"@type\":\"searchChatsOnServer\","
+                  "\"query\":\"%1\","
+                  "\"limit\":%2,"
+                  "\"@extra\":\"searchChatsOnServer\""
+                  "}";
+
+    str = str.arg(query,QString::number(limit));
+    sendToTelegram(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::searchChats(const QString &query, const int limit)
+{
+    QString str = "{\"@type\":\"searchChats\","
+                  "\"query\":\"%1\","
+                  "\"limit\":%2,"
+                  "\"@extra\":\"searchChats\""
+                  "}";
+
+    str = str.arg(query,QString::number(limit));
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::markChatUnread(const qint64 chatId, const bool flag)
