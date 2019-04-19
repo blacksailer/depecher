@@ -44,6 +44,7 @@ public slots:
     void notifyPreview(const qint64 timestamp, const QString &summary, const QString &body,
                        const qint64 chatId, const qint64 unreadCount = 0);
     void onViewMessages(const qint64 peerId);
+    void removeAll();
 
 };
 }// tdlibQt

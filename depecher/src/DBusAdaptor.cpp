@@ -1,12 +1,15 @@
 #include "DBusAdaptor.hpp"
 #include "singletons/PageAppStarter.hpp"
 #include "FileWorker.hpp"
+#include "components/AudioRecorder.hpp"
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ChatsModel.hpp"
 #include "tdlibQt/models/MessagingModel.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
+#include "tdlibQt/models/ContactsModel.hpp"
+#include "tdlibQt/models/FilterContactsModel.hpp"
 #include "tdlibQt/TelegramProfileProvider.hpp"
 #include "tdlibQt/include/AuthenticationHandler.hpp"
 #include "tdlibQt/items/ProxyDAO.hpp"
@@ -95,11 +98,14 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         });
 
         qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
+        qmlRegisterType<AudioRecorder>("depecherUtils", 1, 0, "AudioRecorder");
         qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
         qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
         qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");
         qmlRegisterType<tdlibQt::ChatsModel>("TelegramModels", 1, 0, "ChatsModel");
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
+        qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
+        qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");
 
         qmlRegisterType<tdlibQt::AuthenticationHandler>("TelegramAuthentication", 1, 0,
                 "TelegramAuthenticationHandler");

@@ -15,7 +15,7 @@ TARGET = depecher
 QT += sql dbus multimedia network
 
 ##Application must be also changel in depecher.yaml file
-VERSION = 0.5.2
+VERSION = 0.6.0
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -23,6 +23,7 @@ CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
 PKGCONFIG += sailfishapp mlite5
+PKGCONFIG += vorbisfile
 
 
 LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv
@@ -81,7 +82,10 @@ SOURCES += \
     src/DBusAdaptor.cpp \
     dbus/DepecherAdaptor.cpp \
     src/singletons/PageAppStarter.cpp \
-    src/singletons/DNSTXTLookup.cpp
+    src/singletons/DNSTXTLookup.cpp \
+    src/fileGeneratedHandlers/FileGeneratedHandler.cpp \
+    src/fileGeneratedHandlers/CopyFileConversion.cpp \
+    src/components/AudioRecorder.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -131,7 +135,8 @@ DISTFILES += \
     qml/pages/items/delegates/AudioDelegate.qml \
     qml/Background.qml \
     qml/pages/items/delegates/VideoDelegate.qml \
-    qml/pages/items/delegates/VideoNoteDelegate.qml
+    qml/pages/items/delegates/VideoNoteDelegate.qml \
+    qml/pages/components/ChatItemShare.qml
 
 HEADERS += \
     src/FileWorker.hpp \
@@ -139,4 +144,8 @@ HEADERS += \
     src/DBusAdaptor.hpp \
     dbus/DepecherAdaptor.hpp \
     src/singletons/PageAppStarter.hpp \
-    src/singletons/DNSTXTLookup.hpp
+    src/singletons/DNSTXTLookup.hpp \
+    src/fileGeneratedHandlers/FileGeneratedHandler.hpp \
+    src/fileGeneratedHandlers/FileGeneratedInterface.hpp \
+    src/fileGeneratedHandlers/CopyFileConversion.hpp \
+    src/components/AudioRecorder.hpp

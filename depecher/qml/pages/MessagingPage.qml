@@ -120,6 +120,10 @@ Page {
             sendText(textArea.text,writer.reply_id)
 
         }
+        onSendVoice: {
+            messagingModel.sendVoiceMessage(location,duration,writer.reply_id, "",waveform)
+            writer.clearReplyArea()
+        }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
             {
@@ -128,22 +132,14 @@ Page {
                     fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-                {
                     messagingModel.sendPhotoMessage(fileUrl, writer.reply_id, "")
-                    writer.clearReplyArea()
-                }
                 if(files[i].type === TdlibState.Document)
-                {
                     messagingModel.sendDocumentMessage(fileUrl,writer.reply_id,"")
-                    writer.clearReplyArea()
-                }
                 if(files[i].type === TdlibState.Sticker)
-                {
                     messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
-                    writer.clearReplyArea()
-
-                }
             }
+            writer.clearReplyArea()
+
         }
     onReplyAreaCleared: {
     forwardMessages = {}
@@ -154,11 +150,6 @@ Page {
             size: BusyIndicatorSize.Large
             anchors.centerIn: messageList.parent
         }
-
-//        bottomArea.onFocusChanged: {
-//            messageList.positionViewAtEnd()
-//        }
-
         Column {
             width: page.width
 //            height: parent.height - writer.sendAreaHeight

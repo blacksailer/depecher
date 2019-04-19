@@ -83,7 +83,10 @@ MessagingModel::MessagingModel() :
     m_NotificationsManager->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
-
+    userStatusTimer.setInterval(60 * 1000);
+    connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::updateStatus);
+    connect(UsersModel::instance(), &UsersModel::userStatusChanged, this, &MessagingModel::updateStatus);
+    userStatusTimer.start();
     //Adding empty item. fetchOlder issue
     beginInsertRows(QModelIndex(), 0, 0);
     endInsertRows();
@@ -668,9 +671,9 @@ void MessagingModel::chatActionCleanUp()
 {
     chatActionUserMap.clear();
     chatActionTimer.stop();
-    setAction("");
+    userStatusTimer.start();
+    updateStatus();
 }
-
 void MessagingModel::getFile(const int fileId, const int priority, const int indexItem)
 {
     tdlibJson->downloadFile(fileId, priority);
@@ -1182,6 +1185,7 @@ void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
     emit dataChanged(index(1), index(m_messages.size()), roles);
 }
 
+
 bool MessagingModel::canFetchOlder()
 {
     return !reachedHistoryEnd();
@@ -1369,6 +1373,7 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
     chatActionUserMap[action->user_id_] = action;
     if (chatActionUserMap.size() == 1) {
         chatActionTimer.start();
+        userStatusTimer.stop();
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
         setAction(userName + " is typing");
     } else
@@ -1407,7 +1412,7 @@ void MessagingModel::setPeerId(QString peerId)
     setLastInbox(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
     setUserName(UsersModel::instance()->getChatTitle(m_peerId.toLongLong()));
     setChatType(UsersModel::instance()->getChatType(m_peerId.toLongLong()));
-
+    updateStatus();
     if (m_messages.size() > 0)
         emit firstIdChanged();
     emit peerIdChanged(peerId);
@@ -1510,8 +1515,10 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessagePhoto>(new inputMessagePhoto);
     inputMessagePhoto *ptr = static_cast<inputMessagePhoto *>
                              (sendMessageObject.input_message_content_.data());
-    auto photoPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    photoPtr->path_ = filepath.toStdString();
+    auto photoPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    photoPtr->original_path_ = filepath.toStdString();
+    photoPtr->conversion_ = "copy";
+    photoPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->photo_ = photoPtr;
 
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
@@ -1543,8 +1550,10 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
             (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
                                 (sendMessageObject.input_message_content_.data());
-    auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    docPtr->path_ = filepath.toStdString();
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->document_ = docPtr;
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
@@ -1592,6 +1601,43 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
 
     tdlibJson->sendMessage(jsonString);
 
+}
+
+void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDuration,
+                                      const QString &reply_id, const QString &caption,
+                                      const QString &waveform)
+{
+    TlStorerToString json;
+    sendMessage sendMessageObject;
+    sendMessageObject.chat_id_ = m_peerId.toLongLong();
+    sendMessageObject.disable_notification_ = false;
+    sendMessageObject.from_background_ = false;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
+    sendMessageObject.input_message_content_ = QSharedPointer<inputMessageVoiceNote>
+            (new inputMessageVoiceNote);
+    inputMessageVoiceNote *ptr = static_cast<inputMessageVoiceNote *>
+                                 (sendMessageObject.input_message_content_.data());
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
+    ptr->voice_note_ = docPtr;
+    ptr->duration_ = secDuration;
+    ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
+    ptr->caption_->text_ = caption.toStdString();
+    ptr->waveform_ =  waveform.toLatin1().toBase64().toStdString();
+
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
+
+    sendMessageObject.store(json, "input_message_content");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType, const QString &payloadData)
@@ -1793,8 +1839,6 @@ void MessagingModel::viewMessages(const QVariantList &ids)
     }
 }
 
-
-
 void MessagingModel::setChatType(const QVariantMap &chatType)
 {
     if (m_chatType == chatType)
@@ -1915,6 +1959,18 @@ void MessagingModel::onCallbackAnswerReceived(const QJsonObject &callbackAnswerO
     emit callbackQueryAnswerShow(callbackAnswerObject["text"].toString(), callbackAnswerObject["show_alert"].toBool());
 }
 
+void MessagingModel::updateStatus()
+{
+    auto chatType = static_cast<tdlibQt::Enums::ChatType>(m_chatType["type"].toInt());
+    if (chatType == tdlibQt::Enums::ChatType::Private ||
+            chatType == tdlibQt::Enums::ChatType::Secret) {
+        auto userStatus = UsersModel::instance()->getUserStatus(m_peerId.toInt());
+        setAction(UsersModel::getUserStatusAsString(userStatus));
+    } else
+        setAction("");
+
+}
+
 void MessagingModel::setLastInbox(const QString &currentMessage)
 {
     if (m_lastMessageInbox == currentMessage)
@@ -1981,4 +2037,5 @@ int MessagingModel::findIndexById(const QString &messageId) const
     return findIndexById(messageId.toLongLong());
 }
 
-} //namespace tdlibQt
+}//namespace tdlibQt
+

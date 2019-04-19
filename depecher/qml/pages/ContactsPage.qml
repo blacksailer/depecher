@@ -1,32 +1,113 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import Sailfish.Silica 1.0
+import TelegramModels 1.0
+import "items"
 
 Page {
     id:root
-    SilicaListView{
-        id:list
+    SilicaFlickable {
         anchors.fill: parent
-        model:c_telegramWrapper.contactsModel
-        delegate:ListItem{
-            width: parent.width
-            height:Theme.itemSizeMedium
-            Column{
-                id:data
-                x:Theme.horizontalPageMargin
-                width:parent.width-2*x
-                Label{
-                    text:fullName
-                }
-                Label{
-                    text:status
-                }
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Search")
+                onClicked: list.showSearch = true
+            }
+        }
+
+        Column {
+            id:header
+            width:parent.width
+            PageHeader {
+                title: qsTr("Contacts")
             }
 
-            onClicked:{
-                c_telegramWrapper.chatId=peerId
-                //peerType 0 - is User
-                    c_telegramWrapper.requestHistory(c_telegramWrapper.chatId,0, 20,0);
-                        pageStack.replace("MessagingPage.qml",{peerType:0})
+            SearchField {
+                id:searchField
+                width: parent.width
+                height: list.showSearch ? implicitHeight : 0
+                opacity: list.showSearch ? 1 : 0
+                onTextChanged: {
+                    filterModel.setFilterFixedString(text)
+                }
+
+                Connections {
+                    target: list
+                    onShowSearchChanged: {
+                        searchField.forceActiveFocus()
+                    }
+                }
+
+                Behavior on height {
+                    NumberAnimation { duration: 300 }
+                }
+                Behavior on opacity {
+                    NumberAnimation { duration: 300 }
+                }
+            }
+        }
+        SilicaListView {
+            id:list
+            width: parent.width
+            anchors.top: header.bottom
+            anchors.bottom: parent.bottom
+            property bool showSearch: false
+            clip:true
+            model:FilterContactsModel {
+                id:filterModel
+                sortRole:2
+                source:ContactsModel {
+
+                }
+
+                Component.onCompleted: sortModel(Qt.AscendingOrder)
+            }
+            delegate:ListItem {
+                width: parent.width
+                contentHeight:Theme.itemSizeMedium
+                Row {
+                    width:parent.width-2*x
+                    x:Theme.horizontalPageMargin
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    CircleImage {
+                        id:avatar
+                        width: parent.height - 2 * Theme.paddingSmall
+                        source: photo ? photo : ""
+                        fallbackText: last_name == ""? first_name.charAt(0) :last_name.charAt(0)
+                        fallbackItemVisible: photo ? false : true
+                        anchors.verticalCenter: parent.verticalCenter
+
+
+                    }
+                    Item {
+                        width:Theme.paddingMedium
+                        height:1
+                    }
+                    Column{
+                        id:data
+                        width:parent.width-avatar.width
+                        anchors.verticalCenter: avatar.verticalCenter
+                        Label{
+                            id:text
+                            width:parent.width
+                            elide: Text.ElideRight
+                            text:last_name + " "  + first_name
+                            color: pressed?Theme.secondaryHighlightColor:Theme.highlightColor
+                            font.pixelSize: Theme.fontSizeSmall
+                        }
+                        Label{
+                            text:status
+                            color: Theme.secondaryColor
+                            font.pixelSize: Theme.fontSizeExtraSmall
+
+                        }
+                    }
+                }
+
+                onClicked: {
+                    pageStack.replace("MessagingPage.qml",{chatId:user_id})
+
+                }
             }
         }
     }

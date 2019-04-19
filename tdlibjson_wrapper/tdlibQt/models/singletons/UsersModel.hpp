@@ -12,7 +12,7 @@ class UsersModel : public QObject
     TdlibJsonWrapper *m_client;
     QMap<qint64, QSharedPointer<chat>> m_chats;
     QMap<qint64, QSharedPointer<supergroup>> m_supergroups;
-    QMap<qint64, QSharedPointer<user>> m_users;
+    QMap<int, QSharedPointer<user>> m_users;
     UsersModel(QObject *parent = 0);
 public:
     static UsersModel *instance();
@@ -25,14 +25,21 @@ public:
     qint64 getLastMessageOutbox(const qint64 chatId);
     qint64 getLastMessageId(const qint64 chatId);
     QVariantMap getChatType(const qint64 chatId);
-    QSharedPointer<profilePhoto> getUserPhoto(const qint64 userId);
-    QString getUserFullName(const qint64 userId);
+    QString getUserFullName(const int userId);
     void setSmallAvatar(qint64 id, QSharedPointer<file> small);
+    QSharedPointer<profilePhoto> getUserPhoto(const qint64 userId);
     QSharedPointer<ChatMemberStatus> getGroupStatus(qint64 group_id);
+    QSharedPointer<user> getUser(const int userId);
+    QSharedPointer<UserStatus> getUserStatus(const int userId);
+    static QString getUserStatusAsString(const QSharedPointer<UserStatus> &userStatus);
+
+signals:
+    void userStatusChanged(const int userId);
 private slots:
     void updateChatLastMessage(const QJsonObject &chatLastMessageObject);
     void updateChatReadInbox(const QJsonObject &chatReadInboxObject);
     void updateChatReadOutbox(const QJsonObject &chatReadOutboxObject);
+    void updateUserStatus(const QJsonObject &updateUserStatusObject);
 public slots:
     void getUpdateNewChat(const QJsonObject &updateNewChatObject);
     void getUpdateNewUser(const QJsonObject &updateNewUserObject);

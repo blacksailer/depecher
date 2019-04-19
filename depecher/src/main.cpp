@@ -10,7 +10,7 @@
 #include "tdlibQt/NotificationManager.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "DBusAdaptor.hpp"
-
+#include "src/fileGeneratedHandlers/FileGeneratedHandler.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -52,12 +52,16 @@ int main(int argc, char *argv[])
     tdlib->startListen();
     //used in authenticationhandler too.
     tdlib->setEncryptionKey();
+    FileGeneratedHandler generationHandler(app);
 
     if (quitOnCloseUi.value(false).toBool()) {
         app->setQuitOnLastWindowClosed(true);
         DBusAdaptor::raiseApp();
-    } else
+    } else {
         app->setQuitOnLastWindowClosed(false);
+        QObject::connect(app, &QGuiApplication::aboutToQuit,
+                         NotificationManager, &tdlibQt::NotificationManager::removeAll);
+    }
 
     return app->exec();
 }

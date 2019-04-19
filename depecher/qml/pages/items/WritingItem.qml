@@ -2,11 +2,15 @@ import QtQuick 2.0
 import QtQml 2.2
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
+import QtGraphicalEffects 1.0
+import depecherUtils 1.0
+import QtMultimedia 5.6
 
 Drawer {
     id: attachDrawer
     state: "publish"
     property Page rootPage
+    //    property var audioRec: null
     property alias sendAreaHeight: sendArea.height
     property alias bottomArea: sendArea
     property alias actionButton: sendButton
@@ -20,6 +24,7 @@ Drawer {
     property string edit_message_id: "0"
 
     property string typeWriter
+    signal sendVoice(var location,var duration, var waveform)
     signal sendFiles(var files)
     signal setFocusToEdit()
     signal replyAreaCleared()
@@ -48,11 +53,11 @@ Drawer {
 
     states: [
         State {
-        name:"editText"
-        PropertyChanges {
-            target: attachDrawer
-            replyMessageAuthor: qsTr("Edit text")
-        }
+            name:"editText"
+            PropertyChanges {
+                target: attachDrawer
+                replyMessageAuthor: qsTr("Edit text")
+            }
         },
         State {
             name: "editCaption"
@@ -76,156 +81,351 @@ Drawer {
     Item {
         id: sendArea
         anchors.bottom: parent.bottom
+        z:1
         width: parent.width
-        height: replyArea.height + messageArea.height + returnButton.height + Theme.paddingSmall
+        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
 
         BackgroundItem {
-        id:returnButton
-        width: parent.width
-        height: enabled ? Theme.paddingLarge + Theme.paddingMedium : 0
-        anchors.bottom: replyArea.top
-        enabled: false
-        visible: enabled
-        Rectangle {
-            anchors.fill: parent
-            color: Theme.highlightColor
+            id:returnButton
+            width: parent.width
+            height: enabled ? Theme.paddingLarge + Theme.paddingMedium : 0
+            anchors.bottom: replyArea.top
+            enabled: false
+            visible: enabled
+            Rectangle {
+                anchors.fill: parent
+                color: Theme.highlightColor
+            }
+            Image {
+                source: "image://theme/icon-s-low-importance"
+                anchors.centerIn: parent
+            }
         }
-        Image {
-             source: "image://theme/icon-s-low-importance"
-             anchors.centerIn: parent
-        }
-        }
-
         Item {
             id: replyArea
             width: parent.width
             height: reply_id != "0" ||  edit_message_id != "0"  ? Theme.itemSizeExtraSmall : 0
             anchors.bottom: messageArea.top
-            Rectangle {
-                id: replyLine
-                width: 3
-                height: parent.height
-                color: Theme.secondaryHighlightColor
-                anchors.left: parent.left
-                anchors.leftMargin: 8
-            }
-
-            Column {
-                id: data
-                anchors.left: replyLine.right
-                anchors.leftMargin: Theme.paddingLarge
-                anchors.right: removeReplyButton.left
-
-                Label {
-                    id: authorsLabel
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    width: parent.width
-                    elide: TruncationMode.Fade
-                    height: authorsTextLabel.text == "" ? removeReplyButton.height : implicitHeight
+            Row {
+                width: parent.width
+                height:parent.height
+                spacing: Theme.paddingSmall
+                IconButton{
+                    id: removeReplyButton
+                    icon.source: "image://theme/icon-s-clear-opaque-cross?"+Theme.highlightColor
+                    visible: parent.height!=0
+                    onClicked: {
+                        clearReplyArea()
+                        replyAreaCleared()
+                    }
                 }
-                Label {
-                    id: authorsTextLabel
-                    font.pixelSize: Theme.fontSizeExtraSmall
-                    width: parent.width
-                    maximumLineCount: 1
-                    elide: TruncationMode.Fade
-                    visible: authorsText != ""
-                }
-            }
 
-            IconButton{
-                id: removeReplyButton
-                icon.source: "image://theme/icon-s-clear-opaque-cross?"+Theme.highlightColor
-                anchors.right: parent.right
-                anchors.rightMargin: Theme.paddingLarge
-                visible: parent.height!=0
-                onClicked: {
-                    clearReplyArea()
-                    replyAreaCleared()
+                Rectangle {
+                    id: replyLine
+                    width: 3
+                    height: parent.height
+                    color: Theme.secondaryHighlightColor
                 }
+                Item {
+                    width: 1
+                    height:parent.height
+                }
+                Column {
+                    id: data
+                    width: parent.width - replyLine.width - removeReplyButton.width - 2 * parent.spacing - Theme.horizontalPageMargin
+                    height:parent.height
+                    Label {
+                        id: authorsLabel
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        width: parent.width
+                        elide: TruncationMode.Fade
+                        height: authorsTextLabel.text == "" ? removeReplyButton.height : implicitHeight
+                    }
+                    Label {
+                        id: authorsTextLabel
+                        font.pixelSize: Theme.fontSizeExtraSmall
+                        width: parent.width
+                        maximumLineCount: 1
+                        elide: TruncationMode.Fade
+                        visible: authorsText != ""
+                    }
+                }
+
+
             }
         }
+        Row {
+            id:row
+            width:parent.width
+            height: messageArea.height
+            anchors.bottom: labelTime.top
+            Row  {
+                id:rowArea
+                height: messageArea.height
+                width: row.width - mic.width - sendButton.width
+                IconButton {
+                    id: skrepkaWizard
+                    icon.source: "image://theme/icon-m-attach"
+                    width: visible ? stickerButton.width : 0
+                    highlighted: false
+                    onClicked: {
+                        attachLoader.setSource("AttachComponent.qml")
+                        attachDrawer.open=true
+                    }
+                    visible: messageArea.text.length == 0
 
-        IconButton {
-            id: skrepkaWizard
-            icon.source: "image://theme/icon-m-attach"
-            width: visible ? stickerButton.width : 0
-            highlighted: false
-            anchors.bottom: messageArea.bottom
-            anchors.left:parent.left
-            anchors.bottomMargin: 25
-            onClicked: {
-                attachLoader.setSource("AttachComponent.qml")
-                attachDrawer.open=true
-            }
-            visible: messageArea.text.length == 0
-        }
-        IconButton {
-            id:stickerButton
-            icon.source: "image://theme/icon-m-other"
-            highlighted: false
-            anchors.bottom: messageArea.bottom
-            anchors.left:skrepkaWizard.right
-            anchors.bottomMargin: 25
-            onClicked: {
-                if(!attachDrawer.opened)
-                attachLoader.setSource("AttachSticker.qml",{previewView:foregroundItem,rootPage:rootPage})
-                attachDrawer.open=!attachDrawer.open
-            }
-        }
+                    anchors.bottom: parent.bottom
 
-        TextArea {
-            id: messageArea
-            onTextChanged: {
-                if(text === "")
-                    messageArea.forceActiveFocus()
+                }
+                IconButton {
+                    id:stickerButton
+                    icon.source: "image://theme/icon-m-other"
+                    highlighted: false
+                    onClicked: {
+                        if(!attachDrawer.opened)
+                            attachLoader.setSource("AttachSticker.qml",{previewView:foregroundItem,rootPage:rootPage})
+                        attachDrawer.open=!attachDrawer.open
+                    }
+                    anchors.bottom: parent.bottom
+
+                }
+                TextArea {
+                    id: messageArea
+                    onTextChanged: {
+                        if(text === "")
+                        {
+                            state ="text"
+                            messageArea.forceActiveFocus()
+                        }
+                        if(text != "")
+                            state ="typing"
+                    }
+
+                    height: Math.min(Theme.itemSizeHuge ,implicitHeight)
+                    font.pixelSize: Theme.fontSizeMedium
+                    //Hiding last line of text. Bug of Silica?
+                    labelVisible: false
+
+                    Component.onCompleted: {
+                        var date = new Date()
+                        labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                    }
+                    state:"text"
+                    states:[
+                        State {
+                            name:"text"
+                            PropertyChanges {
+                                target:messageArea
+                                width :rowArea.width - skrepkaWizard.width - stickerButton.width
+                                opacity:1
+                            }
+                            PropertyChanges {
+                                target:stickerButton
+                                visible:true
+                            }
+                            PropertyChanges {
+                                target:skrepkaWizard
+                                visible:true
+                            }
+                            PropertyChanges {
+                                target:mic
+                                visible:true
+                                y:stickerButton.y
+                            }
+                            PropertyChanges {
+                                target:sendButton
+                                visible:!sendByEnter.value || reply_id == "-1"
+                            }
+                        },
+                        State {
+                            name:"typing"
+                            PropertyChanges {
+                                target:messageArea
+                                width :row.width - sendButton.width
+                                opacity:1
+                            }
+                            PropertyChanges {
+                                target:stickerButton
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:skrepkaWizard
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:mic
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:sendButton
+                                visible:!sendByEnter.value || reply_id == "-1"
+                            }
+                        },
+                        State  {
+                            name:"voice"
+                            PropertyChanges {
+                                target:rowArea
+                                width:0
+                                opacity:0
+                            }
+                            PropertyChanges {
+                                target:mic
+                                width: row.width  - sendButton.width
+                            }
+                            PropertyChanges {
+                                target:stickerButton
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:skrepkaWizard
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:mic
+                                visible:true
+                            }
+
+                            PropertyChanges {
+                                target:sendButton
+                                visible:!sendByEnter.value || reply_id == "-1"
+                            }
+
+                        }, State  {
+                            name:"voice-fixed"
+                            PropertyChanges {
+                                target:rowArea
+                                width:0
+                                opacity:0
+                            }
+                            PropertyChanges {
+                                target:mic
+                                visible:true
+                            }
+
+                            PropertyChanges {
+                                target:mic
+                                width: row.width  - sendButton.width
+                            }
+                            PropertyChanges {
+                                target:stickerButton
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:skrepkaWizard
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:sendButton
+                                visible:false
+                            }
+
+                        },  State  {
+                            name:"voice-validation"
+                            PropertyChanges {
+                                target:mic
+                                width: row.width  - sendButton.width
+                            }
+                            PropertyChanges {
+                                target:rowArea
+                                width:0
+                                opacity:0
+                            }
+                            PropertyChanges {
+                                target:stickerButton
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:mic
+                                visible:true
+                            }
+
+                            PropertyChanges {
+                                target:skrepkaWizard
+                                visible:false
+                            }
+                            PropertyChanges {
+                                target:sendButton
+                                visible:false
+                            }
+                        }
+                    ]
+                    transitions: [
+                        Transition {
+                            from:"text"
+                            to:"voice"
+                            NumberAnimation {
+                                target:rowArea
+                                properties:"width"
+                                duration:200
+                            }
+                            NumberAnimation  {
+                                target: mic
+                                properties :"width"
+                                duration :200
+                            }
+                        }
+                    ]
+                }
             }
-            anchors.left: stickerButton.right
+            VoiceButton {
+                id:mic
+                height: rowArea.height
+                width: visible ? buttonWidth : 0
+                onStateChanged: {
+                    if(state == "default")
+                        messageArea.state = "text"
+                    else if (state == "voice-validation")
+                        messageArea.state = "voice-validation"
+                    else if (state == "fixed")
+                        messageArea.state = "voice-fixed"
+                    else
+                        messageArea.state = "voice"
+                }
+            }
+            IconButton {
+                id: sendButton
+                icon.source: "image://theme/icon-m-message"
+                highlighted: false
+                width: visible ? Theme.itemSizeMedium : 0
+                visible: !sendByEnter.value || reply_id == "-1"
+                anchors.bottom: parent.bottom
+            }
+        }
+        Label {
+            id:labelTime
+            property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
+            property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
+            height: Theme.fontSizeTiny
+            font: Theme.fontSizeTiny
+
+            x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin
+            anchors.leftMargin: Theme.horizontalPageMargin
             anchors.bottom: parent.bottom
-            anchors.right: sendButton.left
-            height:  Math.min(Theme.itemSizeHuge,implicitHeight)
-            width:parent.width - sendButton.width - skrepkaWizard.width - stickerButton.width
-            _labelItem.opacity: 1
-            _labelItem.font.pixelSize: Theme.fontSizeTiny
-
+            anchors.bottomMargin: Theme.paddingMedium
+            visible: messageArea.visible
             Timer {
                 interval: 60*1000
                 repeat: true
                 running: true
                 onTriggered: {
                     var date = new Date()
-                    messageArea.label =  Format.formatDate(date, Formatter.TimeValue)
+                    labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
                 }
             }
-            Component.onCompleted: {
-                var date = new Date()
-                label =  Format.formatDate(date, Formatter.TimeValue)
-            }
-        }
-
-        IconButton {
-            id: sendButton
-            icon.source: "image://theme/icon-m-message"
-            highlighted: false
-            anchors.bottom: messageArea.bottom
-            anchors.right: parent.right
-            anchors.bottomMargin: 25
-            visible: !sendByEnter.value || reply_id == "-1"
         }
     }
 
     MouseArea {
         enabled: attachDrawer.open
         anchors.fill: parent
+        z:10
         onClicked: attachDrawer.open = false
     }
 
     Connections {
         target: attachLoader.item
-        onSendUrlItems:
-        {
-            sendFiles(items)
-        }
+        onSendUrlItems: sendFiles(items)
+
     }
 
     background: Loader {

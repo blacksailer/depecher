@@ -279,15 +279,25 @@
     </message>
 </context>
 <context>
+    <name>ContactsPage</name>
+    <message>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
         <translation>Depecher</translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translation>Ungelesene Nachrichten</translation>
+        <source>Unread messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -314,6 +324,10 @@
     </message>
     <message>
         <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -606,6 +620,13 @@
     </message>
 </context>
 <context>
+    <name>ShareUI</name>
+    <message>
+        <source>Share with</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -688,13 +709,6 @@
  Remember! After that 2FA authorization will be disabled</source>
         <translation>Wiederherstellungscode eingeben. 
 Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
-    </message>
-</context>
-<context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation>Sprachnotiz</translation>
     </message>
 </context>
 <context>
