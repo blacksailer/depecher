@@ -15,7 +15,7 @@ TARGET = depecher
 QT += sql dbus multimedia network
 
 ##Application must be also changel in depecher.yaml file
-VERSION = 0.5.3
+VERSION = 0.6.0
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -135,7 +135,8 @@ DISTFILES += \
     qml/pages/items/delegates/AudioDelegate.qml \
     qml/Background.qml \
     qml/pages/items/delegates/VideoDelegate.qml \
-    qml/pages/items/delegates/VideoNoteDelegate.qml
+    qml/pages/items/delegates/VideoNoteDelegate.qml \
+    qml/pages/components/ChatItemShare.qml
 
 HEADERS += \
     src/FileWorker.hpp \

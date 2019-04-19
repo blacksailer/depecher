@@ -83,7 +83,10 @@ MessagingModel::MessagingModel() :
     m_NotificationsManager->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
-
+    userStatusTimer.setInterval(60 * 1000);
+    connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::updateStatus);
+    connect(UsersModel::instance(), &UsersModel::userStatusChanged, this, &MessagingModel::updateStatus);
+    userStatusTimer.start();
     //Adding empty item. fetchOlder issue
     beginInsertRows(QModelIndex(), 0, 0);
     endInsertRows();
@@ -668,9 +671,9 @@ void MessagingModel::chatActionCleanUp()
 {
     chatActionUserMap.clear();
     chatActionTimer.stop();
-    setAction("");
+    userStatusTimer.start();
+    updateStatus();
 }
-
 void MessagingModel::getFile(const int fileId, const int priority, const int indexItem)
 {
     tdlibJson->downloadFile(fileId, priority);
@@ -1182,6 +1185,7 @@ void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
     emit dataChanged(index(1), index(m_messages.size()), roles);
 }
 
+
 bool MessagingModel::canFetchOlder()
 {
     return !reachedHistoryEnd();
@@ -1369,6 +1373,7 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
     chatActionUserMap[action->user_id_] = action;
     if (chatActionUserMap.size() == 1) {
         chatActionTimer.start();
+        userStatusTimer.stop();
         QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
         setAction(userName + " is typing");
     } else
@@ -1407,7 +1412,7 @@ void MessagingModel::setPeerId(QString peerId)
     setLastInbox(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
     setUserName(UsersModel::instance()->getChatTitle(m_peerId.toLongLong()));
     setChatType(UsersModel::instance()->getChatType(m_peerId.toLongLong()));
-
+    updateStatus();
     if (m_messages.size() > 0)
         emit firstIdChanged();
     emit peerIdChanged(peerId);
@@ -1512,7 +1517,7 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
                              (sendMessageObject.input_message_content_.data());
     auto photoPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
     photoPtr->original_path_ = filepath.toStdString();
-     photoPtr->conversion_ = "copy";
+    photoPtr->conversion_ = "copy";
     photoPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->photo_ = photoPtr;
 
@@ -1611,7 +1616,7 @@ void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDura
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessageVoiceNote>
             (new inputMessageVoiceNote);
     inputMessageVoiceNote *ptr = static_cast<inputMessageVoiceNote *>
-                                (sendMessageObject.input_message_content_.data());
+                                 (sendMessageObject.input_message_content_.data());
     auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
     docPtr->original_path_ = filepath.toStdString();
     docPtr->conversion_ = "copy";
@@ -1954,6 +1959,18 @@ void MessagingModel::onCallbackAnswerReceived(const QJsonObject &callbackAnswerO
     emit callbackQueryAnswerShow(callbackAnswerObject["text"].toString(), callbackAnswerObject["show_alert"].toBool());
 }
 
+void MessagingModel::updateStatus()
+{
+    auto chatType = static_cast<tdlibQt::Enums::ChatType>(m_chatType["type"].toInt());
+    if (chatType == tdlibQt::Enums::ChatType::Private ||
+            chatType == tdlibQt::Enums::ChatType::Secret) {
+        auto userStatus = UsersModel::instance()->getUserStatus(m_peerId.toInt());
+        setAction(UsersModel::getUserStatusAsString(userStatus));
+    } else
+        setAction("");
+
+}
+
 void MessagingModel::setLastInbox(const QString &currentMessage)
 {
     if (m_lastMessageInbox == currentMessage)
@@ -2020,4 +2037,5 @@ int MessagingModel::findIndexById(const QString &messageId) const
     return findIndexById(messageId.toLongLong());
 }
 
-} //namespace tdlibQt
+}//namespace tdlibQt
+

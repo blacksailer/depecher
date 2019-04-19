@@ -91,6 +91,14 @@ void NotificationManager::removeNotification(qint64 chatId)
     }
 }
 
+void NotificationManager::removeAll()
+{
+    foreach (auto key, m_chatIdsPublished.keys()) {
+        m_chatIdsPublished[key]->close();
+        m_chatIdsPublished.remove(key);
+    }
+}
+
 void NotificationManager::getUpdateChatOutbox(const QJsonObject &chatReadOutbox)
 {
     qint64 chat_id = ParseObject::getInt64(chatReadOutbox["chat_id"]);

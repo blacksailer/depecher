@@ -150,11 +150,6 @@ Page {
             size: BusyIndicatorSize.Large
             anchors.centerIn: messageList.parent
         }
-
-//        bottomArea.onFocusChanged: {
-//            messageList.positionViewAtEnd()
-//        }
-
         Column {
             width: page.width
 //            height: parent.height - writer.sendAreaHeight

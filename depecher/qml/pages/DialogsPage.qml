@@ -33,6 +33,7 @@ Page {
 
 
         PullDownMenu {
+
             MenuItem {
                 text:qsTr("Reset dialogs")
                 onClicked: chatsModel.reset()
@@ -40,6 +41,10 @@ Page {
             MenuItem {
                 text:qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+            }
+            MenuItem {
+                text:qsTr("Contacts")
+                onClicked: pageStack.push(Qt.resolvedUrl("ContactsPage.qml"))
             }
         }
 

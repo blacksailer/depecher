@@ -217,9 +217,14 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateFileGenerationStartReceived);
     connect(parseObject, &ParseObject::updateFileGenerationStopReceived,
             this, &TdlibJsonWrapper::updateFileGenerationStopReceived);
+    connect(parseObject, &ParseObject::usersReceived,
+            this, &TdlibJsonWrapper::usersReceived);
+    connect(parseObject, &ParseObject::userReceived,
+            this, &TdlibJsonWrapper::userReceived);
+    connect(parseObject, &ParseObject::updateUserStatusReceived,
+            this, &TdlibJsonWrapper::updateUserStatusReceived);
     listenThread->start();
     parseThread->start();
-
 
 
 }
@@ -252,6 +257,41 @@ void TdlibJsonWrapper::closeChat(const QString &chat_id)
     std::string closeChat = "{\"@type\":\"closeChat\","
                             "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
     sendToTelegram(client, closeChat.c_str());
+}
+
+void TdlibJsonWrapper::getContacts()
+{
+    std::string getContactsStr = "{\"@type\":\"getContacts\","
+                                 "\"@extra\":\"getContacts\"}";
+    sendToTelegram(client, getContactsStr.c_str());
+}
+
+void TdlibJsonWrapper::getUser(const qint64 chatId, const QString &extra)
+{
+    QString getContactStr;
+    if (extra != "") {
+        getContactStr = "{\"@type\":\"getUser\","
+                        "\"user_id\":\"%1\","
+                        "\"@extra\":\"%2\"}";
+        getContactStr = getContactStr.arg(QString::number(chatId), extra);
+    } else {
+        {
+            getContactStr = "{\"@type\":\"getUser\","
+                            "\"user_id\":\"%1\"}";
+            getContactStr = getContactStr.arg(QString::number(chatId));
+        }
+    }
+    sendToTelegram(client, getContactStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::searchContacts(const QString &query, const int limit)
+{
+    QString searchContactsStr = "{\"@type\":\"searchContacts\","
+                                "\"query\":\"%1\","
+                                "\"limit\":%2,"
+                                "\@extra\":\"searchContacts\"}";
+    searchContactsStr.arg(query, QString::number(limit));
+    sendToTelegram(client, searchContactsStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getMe()
@@ -509,16 +549,13 @@ void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset
 void TdlibJsonWrapper::getChat(const qint64 chatId, const QString &extra)
 {
     QString str;
-    if(extra != "")
-    {
+    if (extra != "") {
         str = "{\"@type\":\"getChat\","
               "\"chat_id\":\"%1\","
               "\"@extra\":\"%2\""
               "}";
-        str = str.arg(QString::number(chatId),extra);
-    }
-    else
-    {
+        str = str.arg(QString::number(chatId), extra);
+    } else {
         str = "{\"@type\":\"getChat\","
               "\"chat_id\":\"%1\"}";
         str = str.arg(QString::number(chatId));
@@ -536,7 +573,7 @@ void TdlibJsonWrapper::searchChatsOnServer(const QString &query, const int limit
                   "\"@extra\":\"searchChatsOnServer\""
                   "}";
 
-    str = str.arg(query,QString::number(limit));
+    str = str.arg(query, QString::number(limit));
     sendToTelegram(client, str.toStdString().c_str());
 }
 
@@ -548,7 +585,7 @@ void TdlibJsonWrapper::searchChats(const QString &query, const int limit)
                   "\"@extra\":\"searchChats\""
                   "}";
 
-    str = str.arg(query,QString::number(limit));
+    str = str.arg(query, QString::number(limit));
     sendToTelegram(client, str.toStdString().c_str());
 }
 

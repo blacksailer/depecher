@@ -18,6 +18,9 @@ UsersModel::UsersModel(QObject *parent) : QObject(parent),
             this, &tdlibQt::UsersModel::updateChatReadInbox);
     connect(m_client, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &tdlibQt::UsersModel::updateChatReadOutbox);
+    connect(m_client, &tdlibQt::TdlibJsonWrapper::updateUserStatusReceived,
+            this, &tdlibQt::UsersModel::updateUserStatus);
+
 }
 
 UsersModel *UsersModel::instance()
@@ -101,7 +104,7 @@ QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const qint64 userId)
     return m_users[userId]->profile_photo_;
 }
 
-QString UsersModel::getUserFullName(const qint64 userId)
+QString UsersModel::getUserFullName(const int userId)
 {
     if (!m_users.contains(userId))
         return tr("Uknown user");
@@ -161,6 +164,68 @@ QSharedPointer<ChatMemberStatus> UsersModel::getGroupStatus(qint64 group_id)
 
 }
 
+QSharedPointer<user> UsersModel::getUser(const int userId)
+{
+    if (!m_users.contains(userId))
+        return QSharedPointer<user>(nullptr);
+    return m_users[userId];
+}
+
+QSharedPointer<UserStatus> UsersModel::getUserStatus(const int userId)
+{
+    if (!m_users.contains(userId))
+        return QSharedPointer<UserStatus>(new userStatusEmpty);
+    return m_users[userId]->status_;
+}
+
+QString UsersModel::getUserStatusAsString(const QSharedPointer<UserStatus> &userStatus)
+{
+    switch (userStatus->get_id()) {
+    case userStatusLastMonth::ID:
+        return tr("last seen within a month");
+    case userStatusLastWeek::ID:
+        return tr("last seen a week ago");
+    case userStatusRecently::ID:
+        return tr("last seen recently");
+    case userStatusOffline::ID: {
+        QDateTime currentDate = QDateTime::currentDateTime();
+        qint64 timestamp = static_cast<userStatusOffline *>(userStatus.data())-> was_online_;
+        QDateTime lastSeen =  QDateTime::fromMSecsSinceEpoch(timestamp * 1000);
+        qint64 diff = currentDate.toMSecsSinceEpoch() - timestamp * 1000;
+        QDateTime diffDateTime = QDateTime::fromMSecsSinceEpoch(diff).toUTC();
+        qDebug() << currentDate.toString(Qt::DefaultLocaleLongDate)
+                 << diffDateTime.toString(Qt::DateFormat::DefaultLocaleLongDate)
+                 << QDateTime::fromMSecsSinceEpoch(0).toString(Qt::DateFormat::DefaultLocaleLongDate);
+        qint64 diffDays = QDateTime::fromMSecsSinceEpoch(0).toUTC().daysTo(diffDateTime);
+        int hour = diffDateTime.time().hour();
+        int minute = diffDateTime.time().minute();
+        if (diffDays >= 7)
+            return tr("last seen") + " " + lastSeen.toString(Qt::DateFormat::DefaultLocaleShortDate);
+        else if (diffDays >= 1 && diffDays < 7)
+            return tr("last seen %1 days ago").arg(diffDays);
+        else {
+            if (hour > 1)
+                return tr("last seen %1 hours ago").arg(hour);
+            else if (hour == 1)
+                return tr("last seen %1 hour ago").arg(hour);
+            else {
+                if (minute > 1)
+                    return tr("last seen %1 minutes ago").arg(minute);
+                else
+                    return tr("last seen %1 minute ago").arg(minute);
+            }
+        }
+    }
+    case userStatusOnline::ID:
+        return tr("online");
+        break;
+    case userStatusEmpty::ID:
+    default:
+        return "";
+    }
+
+}
+
 void UsersModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)
 {
     qint64 chatId = chatLastMessageObject["chat_id"].toVariant().toString().toLongLong();
@@ -190,5 +255,14 @@ void UsersModel::updateChatReadOutbox(const QJsonObject &chatReadOutboxObject)
     if (!m_chats.contains(chatId))
         return;
     m_chats[chatId]->last_read_outbox_message_id_ = lastOutboxId;
+}
+
+void UsersModel::updateUserStatus(const QJsonObject &updateUserStatusObject)
+{
+    int userId = updateUserStatusObject["user_id"].toInt();
+    if (m_users.contains(userId)) {
+        m_users[userId]->status_ = ParseObject::parseUserStatus(updateUserStatusObject["status"].toObject());
+        emit userStatusChanged(userId);
+    }
 }
 } //tdlibQt

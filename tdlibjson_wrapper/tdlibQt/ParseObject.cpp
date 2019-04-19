@@ -67,7 +67,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateTrendingStickerSets":
     //    case "updateUserFullInfo":
     //    case "updateUserPrivacySettingRules":
-    //    case "updateUserStatus":
     //        break;
     if (typeField == "error") {
         emit errorReceived(doc.object());
@@ -75,6 +74,9 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "ok") {
         emit okReceived(doc.object());
     }
+    if (typeField == "updateUserStatus")
+        emit updateUserStatusReceived(doc.object());
+
     if (typeField == "updateChatIsMarkedAsUnread") {
         emit updateChatIsMarkedAsUnread(doc.object());
     }
@@ -185,6 +187,8 @@ void ParseObject::parseResponse(const QByteArray &json)
         emit secondsReceived(doc.object());
     if (typeField == "text")
         emit textReceived(doc.object());
+    if (typeField == "users")
+        emit usersReceived(doc.object());
     if (typeField == "message")
         emit messageReceived(doc.object());
     if (typeField == "stickerSets")
@@ -253,10 +257,10 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "chats") {
         QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
         QString extra = "";
-        if(doc.object().contains("@extra"))
+        if (doc.object().contains("@extra"))
             extra =  doc.object()["@extra"].toString();
         for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
-            emit getChat(getInt64(*it),extra);
+            emit getChat(getInt64(*it), extra);
         }
     }
     if (typeField == "chat") {
@@ -267,6 +271,8 @@ void ParseObject::parseResponse(const QByteArray &json)
         auto userItem = doc.object();
         if (userItem["@extra"].toString() == "getMe")
             emit meReceived(userItem);
+        else
+            emit userReceived(userItem);
     }
     if (typeField == "proxies") {
         auto proxyItem = doc.object();
@@ -731,7 +737,30 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageBasicGroupChatCreate") {
         return parseMessageBasicGroupChatCreate(messageContentObject);
     }
+
+#warning parseMessageEndsHere
     return typeMessageText;
+    if (messageContentObject["@type"].toString() == "messageChatChangePhoto") {
+        if (messageContentObject["@type"].toString() != "messageChatChangePhoto")
+            return QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
+        auto resultMessage = QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
+        resultMessage->photo_ = parsePhoto(messageContentObject["photo"].toObject());
+        return resultMessage;
+    }
+    if (messageContentObject["@type"].toString() == "messageChatChangeTitle") {
+        if (messageContentObject["@type"].toString() != "messageChatChangeTitle")
+            return QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
+        auto resultMessage = QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
+        resultMessage->title_ = messageContentObject["title"].toString().toStdString();
+        return resultMessage;
+    }
+    if (messageContentObject["@type"].toString() == "messageUnsupported") {
+        if (messageContentObject["@type"].toString() != "messageUnsupported")
+            return QSharedPointer<messageUnsupported>(new messageUnsupported);
+        auto resultMessage = QSharedPointer<messageUnsupported>(new messageUnsupported);
+        return resultMessage;
+    }
+
     if (messageContentObject["@type"].toString() == "messageCall") {
         if (messageContentObject["@type"].toString() != "messageCall")
             return QSharedPointer<messageCall>(new messageCall);
@@ -747,20 +776,6 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         auto resultMessage = QSharedPointer<messageChatAddMembers>(new messageChatAddMembers);
         for (auto val : messageContentObject["member_user_ids"].toArray())
             resultMessage->member_user_ids_.push_back(val.toInt());
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageChatChangePhoto") {
-        if (messageContentObject["@type"].toString() != "messageChatChangePhoto")
-            return QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
-        auto resultMessage = QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
-        resultMessage->photo_ = parsePhoto(messageContentObject["photo"].toObject());
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageChatChangeTitle") {
-        if (messageContentObject["@type"].toString() != "messageChatChangeTitle")
-            return QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
-        auto resultMessage = QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
-        resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         return resultMessage;
     }
     if (messageContentObject["@type"].toString() == "messageChatDeleteMember") {
@@ -896,12 +911,6 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         if (messageContentObject["@type"].toString() != "messageScreenshotTaken")
             return QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
         auto resultMessage = QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageUnsupported") {
-        if (messageContentObject["@type"].toString() != "messageUnsupported")
-            return QSharedPointer<messageUnsupported>(new messageUnsupported);
-        auto resultMessage = QSharedPointer<messageUnsupported>(new messageUnsupported);
         return resultMessage;
     }
     if (messageContentObject["@type"].toString() == "messageVenue") {
@@ -1372,7 +1381,7 @@ QSharedPointer<user> ParseObject::parseUser(const QJsonObject &userObject)
         return QSharedPointer<user>(new user);
 
     QSharedPointer<user> resultUser =  QSharedPointer<user>(new user);
-    resultUser->id_ = getInt64(userObject["id"]);
+    resultUser->id_ = userObject["id"].toInt();
     resultUser->first_name_ = userObject["first_name"].toString().toStdString();
     resultUser->have_access_ = userObject["have_access"].toBool();
     resultUser->incoming_link_ = parseLinkState(userObject["incoming_link"].toObject());

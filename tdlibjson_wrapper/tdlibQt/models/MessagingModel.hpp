@@ -33,6 +33,7 @@ class MessagingModel : public QAbstractListModel
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QMap<qint64, QSharedPointer<message>> replyMessagesMap;
     QTimer chatActionTimer;
+    QTimer userStatusTimer;
     TdlibJsonWrapper *tdlibJson;
     NotificationManager *m_NotificationsManager;
     bool isUpdateConnected = false;
@@ -135,7 +136,7 @@ private slots:
     void onMessageEdited(const QJsonObject &updateMessageEditedObject);
     void onMessageDeleted(const QJsonObject &updateDeleteMessagesObject);
     void onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject);
-
+    void updateStatus();
 
 public slots:
     void setUserName(QString userName);

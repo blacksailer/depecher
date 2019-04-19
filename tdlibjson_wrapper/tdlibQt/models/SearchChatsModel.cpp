@@ -1,5 +1,6 @@
 #include "SearchChatsModel.hpp"
 #include "../TdlibJsonWrapper.hpp"
+#include "tdlibQt/ParseObject.hpp"
 namespace tdlibQt {
 
 constexpr int SEARCH_LIMIT = 10;
@@ -140,10 +141,10 @@ void SearchChatsModel::addChat(const QJsonObject &chatObject)
 
 }
 
-void SearchChatsModel::updateChatPhoto(const QJsonObject &fileObject)
+void SearchChatsModel::updateChatPhoto(const QJsonObject &updateFileObject)
 {
-    if (chatObject["@type"].toString() == "updateFile") {
-        auto fileObject = chatObject["file"].toObject();
+    if (updateFileObject["@type"].toString() == "updateFile") {
+        auto fileObject = updateFileObject["file"].toObject();
         for (int i = 0; i < m_localResult.size(); i++) {
             if (m_localResult[i]->photo_.data() != nullptr) {
                 if (m_localResult[i]->photo_->small_.data() != nullptr)

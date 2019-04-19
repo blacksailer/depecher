@@ -50,6 +50,7 @@ Item {
             target: recordButton
             source: "image://theme/icon-m-acknowledge"
             y:Theme.paddingSmall
+
         }
         PropertyChanges {
             target:stick
@@ -104,11 +105,15 @@ Row {
         id:voiceLabel
         property int secondsElapsed: 0
         height:parent.height
-        width:rootItem.width == buttonWidth ? 0  : rootItem.width - mic.width
+        width:rootItem.width == buttonWidth ? 0  : rootItem.width - mic.width - Theme.horizontalPageMargin
         Row {
             width: parent.width
             anchors.bottom: rootItem.bottom
             visible: voiceLabel.width > 0
+            Item {
+            width: Theme.horizontalPageMargin
+            height: 1
+            }
             IconButton {
                 id:clearButton
                 anchors.baseline: parent.baseline
@@ -141,6 +146,10 @@ Row {
                         __depecher_audio.stop()
                     }
                 }
+            }
+            Item {
+            width: Theme.paddingMedium
+            height: 1
             }
             Label {
                 anchors.verticalCenter:  parent.verticalCenter
@@ -261,6 +270,10 @@ Row {
             }
 
         }
+    }
+    Item {
+        width: Theme.horizontalPageMargin
+        height:parent.height
     }
 }
 }

@@ -83,7 +83,7 @@ Drawer {
         anchors.bottom: parent.bottom
         z:1
         width: parent.width
-        height: replyArea.height + messageArea.height + returnButton.height + Theme.paddingSmall
+        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + Theme.paddingSmall
 
         BackgroundItem {
             id:returnButton
@@ -126,10 +126,10 @@ Drawer {
                     height: parent.height
                     color: Theme.secondaryHighlightColor
                 }
-Item {
-    width: 1
-    height:parent.height
-}
+                Item {
+                    width: 1
+                    height:parent.height
+                }
                 Column {
                     id: data
                     width: parent.width - replyLine.width - removeReplyButton.width - 2 * parent.spacing - Theme.horizontalPageMargin
@@ -158,7 +158,7 @@ Item {
             id:row
             width:parent.width
             height: messageArea.height
-            anchors.bottom: parent.bottom
+            anchors.bottom: labelTime.top
             Row  {
                 id:rowArea
                 height: messageArea.height
@@ -174,6 +174,7 @@ Item {
                     }
                     visible: messageArea.text.length == 0
 
+                    anchors.bottom: parent.bottom
 
                 }
                 IconButton {
@@ -185,35 +186,29 @@ Item {
                             attachLoader.setSource("AttachSticker.qml",{previewView:foregroundItem,rootPage:rootPage})
                         attachDrawer.open=!attachDrawer.open
                     }
+                    anchors.bottom: parent.bottom
+
                 }
                 TextArea {
                     id: messageArea
                     onTextChanged: {
                         if(text === "")
-{
-                              state ="text"
+                        {
+                            state ="text"
                             messageArea.forceActiveFocus()
-}
+                        }
                         if(text != "")
                             state ="typing"
                     }
-                    height:  Math.min(Theme.itemSizeHuge,implicitHeight)
-                    _labelItem.opacity: 1
-                    _labelItem.font.pixelSize: Theme.fontSizeTiny
 
-                    Timer {
-                        interval: 60*1000
-                        repeat: true
-                        running: true
-                        onTriggered: {
-                            var date = new Date()
-                            messageArea.label =  Format.formatDate(date, Formatter.TimeValue)
-                        }
-                    }
+                    height: Math.min(Theme.itemSizeHuge ,implicitHeight)
+                    font.pixelSize: Theme.fontSizeMedium
+                    //Hiding last line of text. Bug of Silica?
+                    labelVisible: false
 
                     Component.onCompleted: {
                         var date = new Date()
-                        label =  Format.formatDate(date, Formatter.TimeValue)
+                        labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
                     }
                     state:"text"
                     states:[
@@ -235,6 +230,7 @@ Item {
                             PropertyChanges {
                                 target:mic
                                 visible:true
+                                y:stickerButton.y
                             }
                             PropertyChanges {
                                 target:sendButton
@@ -372,19 +368,19 @@ Item {
                 }
             }
             VoiceButton {
-            id:mic
-            height: rowArea.height
-            width: visible ? buttonWidth : 0
-            onStateChanged: {
-            if(state == "default")
-                messageArea.state = "text"
-             else if (state == "voice-validation")
-                messageArea.state = "voice-validation"
-             else if (state == "fixed")
-                messageArea.state = "voice-fixed"
-             else
-                messageArea.state = "voice"
-            }
+                id:mic
+                height: rowArea.height
+                width: visible ? buttonWidth : 0
+                onStateChanged: {
+                    if(state == "default")
+                        messageArea.state = "text"
+                    else if (state == "voice-validation")
+                        messageArea.state = "voice-validation"
+                    else if (state == "fixed")
+                        messageArea.state = "voice-fixed"
+                    else
+                        messageArea.state = "voice"
+                }
             }
             IconButton {
                 id: sendButton
@@ -392,6 +388,29 @@ Item {
                 highlighted: false
                 width: visible ? Theme.itemSizeMedium : 0
                 visible: !sendByEnter.value || reply_id == "-1"
+                anchors.bottom: parent.bottom
+            }
+        }
+        Label {
+            id:labelTime
+            property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
+            property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
+
+            height: Theme.fontSizeTiny
+            font: Theme.fontSizeTiny
+
+            x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin
+            anchors.leftMargin: Theme.horizontalPageMargin
+            anchors.bottom: parent.bottom
+            visible: messageArea.visible
+            Timer {
+                interval: 60*1000
+                repeat: true
+                running: true
+                onTriggered: {
+                    var date = new Date()
+                    labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                }
             }
         }
     }

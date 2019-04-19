@@ -144,7 +144,7 @@ Item {
                         if(name == "Recent")
                             return "image://theme/icon-m-clock"
 
-                        return "image://depecherDb/"+set_thumbnail+".webp"
+                        return "image://depecherDb/"+set_thumbnail //+".webp"
                     }
                 }
                 onClicked: listView.currentIndex = index

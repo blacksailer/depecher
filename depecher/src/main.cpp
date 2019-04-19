@@ -57,8 +57,11 @@ int main(int argc, char *argv[])
     if (quitOnCloseUi.value(false).toBool()) {
         app->setQuitOnLastWindowClosed(true);
         DBusAdaptor::raiseApp();
-    } else
+    } else {
         app->setQuitOnLastWindowClosed(false);
+        QObject::connect(app, &QGuiApplication::aboutToQuit,
+                         NotificationManager, &tdlibQt::NotificationManager::removeAll);
+    }
 
     return app->exec();
 }

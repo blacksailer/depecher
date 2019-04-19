@@ -12,8 +12,8 @@ class chat;
 class SearchChatsModel : public QAbstractItemModel
 {
     Q_OBJECT
-    QList<chat> m_localResult;
-    QList<chat> m_globalResult;
+    QList<QSharedPointer<chat>> m_localResult;
+    QList<QSharedPointer<chat>> m_globalResult;
     QSharedPointer<chat> rootLocal;
     QSharedPointer<chat> rootGlobal;
 
@@ -34,7 +34,7 @@ signals:
 private slots:
 
     void addChat(const QJsonObject &chatObject);
-    void updateChatPhoto(const QJsonObject &fileObject);
+    void updateChatPhoto(const QJsonObject &updateFileObject);
 
 public slots:
     void searchChats(const QString &query);

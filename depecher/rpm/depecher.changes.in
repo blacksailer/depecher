@@ -7,6 +7,16 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+
+* Fri Apr 19 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6-0
+- Фикс бага с текстом
+- Список контактов (без синхронизации с телефоном)
+- Показывает статус пользователя при личной переписке Show user status in MessagingPage #54
+- (из прошлого пакета) Запись аудиосообщения
+- Отправка файлов через inputFileGenerated (https://github.com/tdlib/td/issues/126)
+- waveform of audioMessage is visible
+- Remove notification on app exit if daemon is disabled #103
+
 * Mon Mar 11 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-2
 - Edit messages and captions of media
 - Added is_sponsored, is_marked_is_unread flags to chat list

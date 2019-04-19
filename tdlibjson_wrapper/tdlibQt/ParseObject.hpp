@@ -134,7 +134,7 @@ signals:
     void updateTotalCount(int totalCount);
     void proxiesReceived(const QJsonObject &proxiesObject);
     void proxyReceived(const QJsonObject &proxyObject);
-
+    void usersReceived(const QJsonObject &usersObject);
     void errorReceived(const QJsonObject &errorObject);
     void okReceived(const QJsonObject &okObject);
     void fileReceived(const QJsonObject &fileObject);
@@ -142,9 +142,10 @@ signals:
     void stickerSetsReceived(const QJsonObject &stickerSetsObject);
     void stickerSetReceived(const QJsonObject &stickerSetObject);
     void stickersReceived(const QJsonObject &stickersObject);
-
+    void updateUserStatusReceived(const QJsonObject &updateUserStatusObject);
     void secondsReceived(const QJsonObject &secondsObject);
     void textReceived(const QJsonObject &textObject);
+    void userReceived(const QJsonObject &userObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

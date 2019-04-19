@@ -14,7 +14,7 @@ CoverBackground {
         width:parent.width
         anchors.centerIn: parent
         Item{
-            width:captionUnread.width+counter.width
+            width:label.width+counter.width
             height: counter.height
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -24,15 +24,22 @@ CoverBackground {
             text:c_telegramWrapper.totalUnreadCount
             color: Theme.primaryColor
             font.pixelSize: Theme.fontSizeExtraLarge*3/2
+//            Rectangle {
+//            color:"red"
+//            anchors.fill: parent
+//            }
         }
         Label {
             id:captionUnread
+            width:label.width
             anchors.left: counter.right
+            anchors.leftMargin: Theme.paddingSmall
             anchors.top: counter.top
-            text:qsTr("Unread \n messages")
-            maximumLineCount: 2
-            color: Theme.secondaryColor
+            anchors.topMargin: Theme.paddingMedium
+            text:qsTr("Unread messages")
+            wrapMode: Text.WordWrap
             font.pixelSize: Theme.fontSizeExtraSmall
+            color: Theme.secondaryColor
         }
         }
     Label {

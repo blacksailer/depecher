@@ -112,13 +112,18 @@ signals:
     void stickersReceived(const QJsonObject &stickersObject);
     void secondsReceived(const QJsonObject &secondsObject);
     void textReceived(const QJsonObject &textObject);
-
+    void usersReceived(const QJsonObject &usersObject);
     void errorReceivedMap(const QVariantMap &errorObject);
     void totalUnreadCountChanged(int totalUnreadCount);
+    void userReceived(const QJsonObject &userObject);
+    void updateUserStatusReceived(const QJsonObject &updateUserStatusObject);
 
 public slots:
     void openChat(const QString &chat_id);
     void closeChat(const QString &chat_id);
+    void getContacts();
+    void getUser(const qint64 chatId, const QString &extra);
+    void searchContacts(const QString &query, const int limit);
     void getProxies();
     void addProxy(const QString &address, const int port,
                   const bool &enabled, const QVariantMap &type);
