@@ -623,6 +623,13 @@
     </message>
 </context>
 <context>
+    <name>ShareUI</name>
+    <message>
+        <source>Share with</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>

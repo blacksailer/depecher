@@ -193,9 +193,6 @@ QString UsersModel::getUserStatusAsString(const QSharedPointer<UserStatus> &user
         QDateTime lastSeen =  QDateTime::fromMSecsSinceEpoch(timestamp * 1000);
         qint64 diff = currentDate.toMSecsSinceEpoch() - timestamp * 1000;
         QDateTime diffDateTime = QDateTime::fromMSecsSinceEpoch(diff).toUTC();
-        qDebug() << currentDate.toString(Qt::DefaultLocaleLongDate)
-                 << diffDateTime.toString(Qt::DateFormat::DefaultLocaleLongDate)
-                 << QDateTime::fromMSecsSinceEpoch(0).toString(Qt::DateFormat::DefaultLocaleLongDate);
         qint64 diffDays = QDateTime::fromMSecsSinceEpoch(0).toUTC().daysTo(diffDateTime);
         int hour = diffDateTime.time().hour();
         int minute = diffDateTime.time().minute();

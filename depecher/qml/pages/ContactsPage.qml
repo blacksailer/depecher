@@ -5,36 +5,8 @@ import "items"
 
 Page {
     id:root
-    SilicaListView {
-        id:list
+    SilicaFlickable {
         anchors.fill: parent
-        property bool showSearch: false
-        header: Column {
-            width:parent.width
-            PageHeader {
-                title: qsTr("Contacts")
-            }
-            SearchField {
-                id:searchField
-                width: parent.width
-                height: list.showSearch ? implicitHeight : 0
-                opacity: list.showSearch ? 1 : 0
-                onTextChanged: filterModel.setFilterFixedString(text)
-                Connections {
-                    target: list
-                    onShowSearchChanged:{
-                        searchField.forceActiveFocus()
-                    }
-                }
-
-                Behavior on height {
-                 NumberAnimation { duration: 300 }
-                }
-                Behavior on opacity {
-                 NumberAnimation { duration: 300 }
-                }
-            }
-        }
         PullDownMenu {
             MenuItem {
                 text: qsTr("Search")
@@ -42,6 +14,44 @@ Page {
             }
         }
 
+    Column {
+        id:header
+        width:parent.width
+        PageHeader {
+            title: qsTr("Contacts")
+        }
+
+        SearchField {
+            id:searchField
+            width: parent.width
+            height: list.showSearch ? implicitHeight : 0
+            opacity: list.showSearch ? 1 : 0
+            onTextChanged: {
+                filterModel.setFilterFixedString(text)
+            }
+
+            Connections {
+                target: list
+                onShowSearchChanged: {
+                    searchField.forceActiveFocus()
+                }
+            }
+
+            Behavior on height {
+                NumberAnimation { duration: 300 }
+            }
+            Behavior on opacity {
+                NumberAnimation { duration: 300 }
+            }
+        }
+    }
+    SilicaListView {
+        id:list
+        width: parent.width
+        anchors.top: header.bottom
+        anchors.bottom: parent.bottom
+        property bool showSearch: false
+clip:true
         model:FilterContactsModel {
             id:filterModel
             source:ContactsModel {
@@ -97,4 +107,5 @@ Page {
             }
         }
     }
+}
 }
