@@ -18,7 +18,7 @@ public:
 
 public slots:
     void setSource(QAbstractItemModel *source);
-
+    void sortModel(Qt::SortOrder order);
 signals:
     void sourceChanged(QAbstractItemModel *source);
 

@@ -83,7 +83,7 @@ Drawer {
         anchors.bottom: parent.bottom
         z:1
         width: parent.width
-        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + Theme.paddingSmall
+        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
 
         BackgroundItem {
             id:returnButton
@@ -395,13 +395,13 @@ Drawer {
             id:labelTime
             property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
             property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
-
             height: Theme.fontSizeTiny
             font: Theme.fontSizeTiny
 
             x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin
             anchors.leftMargin: Theme.horizontalPageMargin
             anchors.bottom: parent.bottom
+            anchors.bottomMargin: Theme.paddingMedium
             visible: messageArea.visible
             Timer {
                 interval: 60*1000

@@ -9,6 +9,7 @@ QAbstractItemModel *FilterContactsModel::source() const
     return m_source;
 }
 
+
 void FilterContactsModel::setSource(QAbstractItemModel *source)
 {
     if (m_source == source)
@@ -18,6 +19,11 @@ void FilterContactsModel::setSource(QAbstractItemModel *source)
     setSourceModel(m_source);
 
     emit sourceChanged(m_source);
+}
+
+void FilterContactsModel::sortModel(Qt::SortOrder order)
+{
+    this->sort(0, order);
 }
 
 bool FilterContactsModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
