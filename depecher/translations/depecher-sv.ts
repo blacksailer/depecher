@@ -282,11 +282,11 @@
     <name>ContactsPage</name>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakter</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>S??k</translation>
     </message>
 </context>
 <context>
@@ -297,7 +297,7 @@
     </message>
     <message>
         <source>Unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ol??sta meddelanden</translation>
     </message>
 </context>
 <context>
@@ -328,7 +328,7 @@
     </message>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakter</translation>
     </message>
 </context>
 <context>
@@ -623,7 +623,7 @@
     <name>ShareUI</name>
     <message>
         <source>Share with</source>
-        <translation type="unfinished"></translation>
+        <translation>Dela med</translation>
     </message>
 </context>
 <context>
