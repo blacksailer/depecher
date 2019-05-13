@@ -9,6 +9,7 @@ import "items"
 Page {
     id: page
     allowedOrientations: Orientation.All
+    property alias nameplateHeight: nameplate.height
     property alias chatId: messagingModel.peerId
     property var forwardMessages: ({})
     property var arrayIndex: []

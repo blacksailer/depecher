@@ -97,7 +97,15 @@ ListItem {
             return colorEnum
         }
     }
-
+    states: [State {
+            name: "fullSizeInCannels"
+            when: contentLoader.item.state === "fullSizeWithMarginCorrection"
+            PropertyChanges {
+                target: columnWrapper
+                anchors.leftMargin: 0
+                width: contentLoader.item.width
+            }
+        }]
     Column {
         id: columnWrapper
         width: contentWrapper.width + 20

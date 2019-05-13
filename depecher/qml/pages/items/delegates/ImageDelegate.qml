@@ -9,8 +9,46 @@ import QtQml.Models 2.3
 import depecherUtils 1.0
 
 Column{
+        id: imageColumn
         width: image.width
         property alias textHeight: captionText.height
+        ConfigurationValue {
+            id: fullSizeInChannels
+            key:"/apps/depecher/ui/message/fullSizeInChannels"
+            defaultValue: false
+        }
+        property real currentWidth: image.getWidth()
+        property real currentHeight: image.getHeight() - nameplateHeight - 20
+        property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
+                                        currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
+        states: [
+            State {
+                name: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      !marginCorrection
+                PropertyChanges {
+                    target: image
+                    maxWidth: currentWidth
+                    maxHeight: currentHeight
+                    width: Math.min(maxHeight * photo_aspect, maxWidth)
+                    height: Math.min(maxHeight, maxWidth / photo_aspect)
+                }
+            }, State {
+                name: "fullSizeWithMarginCorrection"
+                extend: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      marginCorrection
+                PropertyChanges {
+                    target: captionText
+                    x: Theme.horizontalPageMargin + 10
+                    width: image.width - 2 * x
+                }
+                PropertyChanges {
+                    target: imageColumn
+                    x: -10
+                }
+            }
+        ]
         Image {
             id: image
             asynchronous: true
