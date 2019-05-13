@@ -105,6 +105,10 @@ ListItem {
                 anchors.leftMargin: 0
                 width: contentLoader.item.width
             }
+            PropertyChanges {
+                target: metaInfoRow
+                x: Theme.horizontalPageMargin + 10
+            }
         }]
     Column {
         id: columnWrapper
