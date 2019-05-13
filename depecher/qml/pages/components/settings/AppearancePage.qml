@@ -99,11 +99,6 @@ Page {
                 key:settingsMessagePath +"/oneAlign"
                 defaultValue: false//Theme.highlightDimmerColor
             }
-            ConfigurationValue {
-                id: fullSizeInChannels
-                key: settingsMessagePath +"/fullSizeInChannels"
-                defaultValue: false
-            }
 
             PageHeader {
                 id: nameplate
@@ -144,17 +139,6 @@ Page {
                 color: Theme.secondaryColor
             }
 
-            TextSwitch {
-                width: parent.width -2*x
-                x:Theme.horizontalPageMargin
-                checked: fullSizeInChannels.value
-                automaticCheck: false
-                text: "Show full screen images in channels"// qsTr("Show full screen images in channels")
-                onClicked: {
-                    fullSizeInChannels.value = !checked
-                    fullSizeInChannels.sync()
-                }
-            }
             Slider {
                 id:radiusSlider
                 width: parent.width
