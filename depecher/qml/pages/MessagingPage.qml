@@ -467,6 +467,7 @@ Page {
         }
 
         function sendText(text,reply_id) {
+            Qt.inputMethod.commit()
             if(writer.state == "publish"){
                 if(text.trim().length > 0)
                     messagingModel.sendTextMessage(text,reply_id)
