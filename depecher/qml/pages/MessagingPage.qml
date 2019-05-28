@@ -108,6 +108,22 @@ Page {
                 sendText(messageText,writer.reply_id)
             }
         }
+        Keys.onUpPressed: {
+            var listItems=messageList.contentItem.children
+            for (var i=0; i<listItems.length; ++i){
+                if (listItems[i].currentMessageType !== undefined) {
+                    if (listItems[i].messageEditable) {
+                        listItems[i].triggerEdit()
+                        // break;   // break here if you want to edit even if someone answered.
+                                    // If the list is scrolling, children change index while looping,
+                                    // and it ends up peaking the wrong child.
+                                    // Is there any porperty that tells whether it is scrolling?
+                    }
+                    break;
+                }
+            }
+        }
+
         returnButtonItem.onClicked: {
             if(arrayIndex.length>0)
             {
@@ -286,7 +302,7 @@ Page {
 //                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
 
                 }
-                delegate:           MessageItem {
+                delegate: MessageItem {
                     id: myDelegate
                     onReplyMessageClicked:    {
                         if(messagingModel.findIndexById(replied_message_index) !== -1) {
@@ -309,6 +325,10 @@ Page {
                     ListView.onRemove: RemoveAnimation {
                         target: myDelegate
                     }
+
+                    property alias messageEditable: editEntry.visible
+                    signal triggerEdit()
+                    onTriggerEdit: editEntry.clicked()
                     menu: ContextMenu {
                         MenuItem {
                             text: qsTr("Reply")
@@ -343,6 +363,7 @@ Page {
                             }
                         }
                         MenuItem {
+                        id: editEntry
                         text:qsTr("Edit")
                         visible: can_be_edited && (message_type == MessagingModel.TEXT
                                                 || message_type == MessagingModel.PHOTO
