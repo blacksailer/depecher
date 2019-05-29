@@ -288,7 +288,10 @@ Drawer {
                                 target:sendButton
                                 visible:false
                             }
-
+                            PropertyChanges {
+                                target:labelTime
+                                x: Theme.horizontalPageMargin
+                            }
                         },
                         State  {
                             name:"voice-fixed"
@@ -361,6 +364,11 @@ Drawer {
                             NumberAnimation  {
                                 target: mic
                                 properties :"width"
+                                duration :200
+                            }
+                            NumberAnimation  {
+                                target: labelTime
+                                properties :"x"
                                 duration :200
                             }
                         }
