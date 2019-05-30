@@ -296,8 +296,9 @@
         <translation>Depecher</translation>
     </message>
     <message>
+
         <source>Unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ungelesene Nachrichten</translation>
     </message>
 </context>
 <context>
