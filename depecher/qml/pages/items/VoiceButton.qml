@@ -226,8 +226,9 @@ Row {
             id:lock
             source :rootItem.state == "fixed" ? "image://theme/icon-m-pause?"+Theme.primaryColor : "qrc:/qml/assets/icons/lock_slide_80x40.png"
             z:1
-            anchors.verticalCenter: recordButton.verticalCenter
-            anchors.right: recordButton.left
+            anchors.horizontalCenter:  recordButton.horizontalCenter
+            anchors.bottom: recordButton.top
+            anchors.bottomMargin: Theme.paddingMedium
             visible: rootItem.state != "default" && rootItem.state != "voice-validation"
             MouseArea {
                 anchors.fill: parent

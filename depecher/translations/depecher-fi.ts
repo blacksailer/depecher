@@ -144,10 +144,6 @@
         <translation>Piilota nimi</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Tasaa viestit aina vasemmalle</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Ota yötila käyttöön</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>Mihin</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -620,13 +628,6 @@
     <message>
         <source>Proxy</source>
         <translation>Välityspalvelin</translation>
-    </message>
-</context>
-<context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -144,10 +144,6 @@
         <translation>Namensschild minimieren</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Nachrichten immer linksbündig ausrichten</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Nachtmodus aktivieren</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>Bis</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -296,7 +304,6 @@
         <translation>Depecher</translation>
     </message>
     <message>
-
         <source>Unread messages</source>
         <translation>Ungelesene Nachrichten</translation>
     </message>
@@ -618,13 +625,6 @@
     <message>
         <source>Proxy</source>
         <translation>Proxy</translation>
-    </message>
-</context>
-<context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

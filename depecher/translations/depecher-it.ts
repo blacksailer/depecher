@@ -144,10 +144,6 @@
         <translation>Riduci nome utente</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Allinea sempre i messaggi a sinistra</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Attiva modalità notturna</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>Alle</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -279,16 +287,25 @@
     </message>
 </context>
 <context>
+    <name>ContactsPage</name>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Depecher</source>
         <translation>Depecher</translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translation>Messaggi
-non letti</translation>
+        <source>Unread messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -316,6 +333,10 @@ non letti</translation>
     <message>
         <source>Mark as unread</source>
         <translation>Non letto</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -689,13 +710,6 @@ non letti</translation>
     <message>
         <source>Authentication state</source>
         <translation>Stato autenticazione</translation>
-    </message>
-</context>
-<context>
-    <name>VoiceNoteDelegate</name>
-    <message>
-        <source>Voice note</source>
-        <translation>Nota vocale</translation>
     </message>
 </context>
 <context>

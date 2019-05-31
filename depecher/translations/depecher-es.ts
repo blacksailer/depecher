@@ -144,10 +144,6 @@
         <translation>Ocultar nombre del chat</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Alinear todo a la izquierda</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Activar modo noche</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>A</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -617,13 +625,6 @@
     <message>
         <source>Proxy</source>
         <translation>Proxy</translation>
-    </message>
-</context>
-<context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation>Compartir con</translation>
     </message>
 </context>
 <context>

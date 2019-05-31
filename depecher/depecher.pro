@@ -14,8 +14,8 @@ TARGET = depecher
 
 QT += sql dbus multimedia network
 
-##Application must be also changel in depecher.yaml file
-VERSION = 0.6.0
+##Application must be also changed in depecher.yaml file and tdlibjsonwrapper.pro
+VERSION = 0.6.1
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp

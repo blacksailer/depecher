@@ -9,14 +9,47 @@ import QtQml.Models 2.3
 import depecherUtils 1.0
 
 Column{
+    id:gifColumn
         width:animation.width
         property alias textHeight: captionText.height
+        ConfigurationValue {
+            id: fullSizeInChannels
+            key:"/apps/depecher/ui/message/fullSizeInChannels"
+            defaultValue: false
+        }
+        property real currentWidth: getWidth()
+        property real currentHeight: getHeight() - nameplateHeight - 20
+        property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
+                                        currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
+        states: [
+            State {
+                name: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      !marginCorrection
+            }, State {
+                name: "fullSizeWithMarginCorrection"
+                extend: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      marginCorrection
+                PropertyChanges {
+                    target: captionText
+                    x: Theme.horizontalPageMargin + 10
+                    width: animation.width - 2 * x
+                }
+                PropertyChanges {
+                    target: gifColumn
+                    x: -10
+                }
+
+            }
+        ]
+
         Component {
             id:gifComponent
             AnimatedImage {
                 id:animationGif
-                property int maxWidth:getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: getHeight()/2
+                property int maxWidth:gifColumn.getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: gifColumn.getHeight() / 2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit
@@ -102,39 +135,35 @@ Column{
                     }
                     
                 }
-                function getWidth() {
-                    switch(page.orientation) {
-                    case Orientation.Portrait:
-                    case Orientation.PortraitInverted:
-                        return Screen.width
-                    case Orientation.Landscape:
-                    case Orientation.LandscapeInverted:
-                        return Screen.height
-
+                states: [
+                    State {
+                        name: "fullSize"
+                        when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                              !marginCorrection
+                        PropertyChanges {
+                            target: animationGif
+                            maxWidth: currentWidth
+                            maxHeight: currentHeight
+                            width: Math.min(maxHeight * photo_aspect, maxWidth)
+                            height: Math.min(maxHeight, maxWidth / photo_aspect)
+                        }
+                    }, State {
+                        name: "fullSizeWithMarginCorrection"
+                        extend: "fullSize"
+                        when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                              marginCorrection
                     }
-                }
-                function getHeight() {
-                    switch(page.orientation) {
-                    case Orientation.Portrait:
-                    case Orientation.PortraitInverted:
-                        return Screen.height
-                    case Orientation.Landscape:
-                    case Orientation.LandscapeInverted:
-                        return Screen.width
-
-                    }
-                }
-
+                ]
             }
         }
         Component {
             id:mp4Component
             VideoOutput {
-                id: animation
-                property int maxWidth: getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: getHeight()/2
+                id: animationVideo
+                property int maxWidth: gifColumn.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: gifColumn.getHeight() / 2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
-                height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
+                height: photo_aspect > 1 ? maxWidth / photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit
                 
                 source: MediaPlayer {
@@ -205,11 +234,10 @@ Column{
                 }
                 Rectangle {
                     id:dimmedPlayColor
-                    anchors.fill: animation
+                    anchors.fill: animationVideo
                     opacity: 0.5
                     color:"black"
                     visible: file_downloading_completed && mediaPlayer.playbackState != MediaPlayer.PlayingState
-                    
                 }
                 Image {
                     id: playIcon
@@ -217,35 +245,32 @@ Column{
                     source:  "image://theme/icon-m-play"
                     anchors.centerIn: dimmedPlayColor
                 }
-                MouseArea{
+                MouseArea {
                     anchors.fill: dimmedPlayColor
                     enabled: file_downloading_completed
                     onClicked: {
                         mediaPlayer.playbackState != MediaPlayer.PlayingState ?   mediaPlayer.play() : mediaPlayer.stop()
                     }
                 }
-                function getWidth() {
-                    switch(page.orientation) {
-                    case Orientation.Portrait:
-                    case Orientation.PortraitInverted:
-                        return Screen.width
-                    case Orientation.Landscape:
-                    case Orientation.LandscapeInverted:
-                        return Screen.height
-
+                states: [
+                    State {
+                        name: "fullSize"
+                        when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                              !marginCorrection
+                        PropertyChanges {
+                            target: animationVideo
+                            maxWidth: currentWidth
+                            maxHeight: currentHeight
+                            width: Math.min(maxHeight * photo_aspect, maxWidth)
+                            height: Math.min(maxHeight, maxWidth / photo_aspect)
+                        }
+                    }, State {
+                        name: "fullSizeWithMarginCorrection"
+                        extend: "fullSize"
+                        when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                              marginCorrection
                     }
-                }
-                function getHeight() {
-                    switch(page.orientation) {
-                    case Orientation.Portrait:
-                    case Orientation.PortraitInverted:
-                        return Screen.height
-                    case Orientation.Landscape:
-                    case Orientation.LandscapeInverted:
-                        return Screen.width
-
-                    }
-                }
+                ]
 
             }
         }
@@ -263,5 +288,28 @@ Column{
             font.pixelSize: Theme.fontSizeSmall
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             visible:  file_caption === "" ? false : true
+        }
+
+        function getWidth() {
+            switch(page.orientation) {
+            case Orientation.Portrait:
+            case Orientation.PortraitInverted:
+                return Screen.width
+            case Orientation.Landscape:
+            case Orientation.LandscapeInverted:
+                return Screen.height
+
+            }
+        }
+        function getHeight() {
+            switch(page.orientation) {
+            case Orientation.Portrait:
+            case Orientation.PortraitInverted:
+                return Screen.height
+            case Orientation.Landscape:
+            case Orientation.LandscapeInverted:
+                return Screen.width
+
+            }
         }
     }

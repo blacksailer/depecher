@@ -144,10 +144,6 @@
         <translation>最小化名字</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>始终将消息对齐到左侧</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>启用夜间模式</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>至</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -617,13 +625,6 @@
     <message>
         <source>Proxy</source>
         <translation>代理</translation>
-    </message>
-</context>
-<context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

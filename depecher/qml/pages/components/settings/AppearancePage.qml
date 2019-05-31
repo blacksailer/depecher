@@ -144,17 +144,6 @@ Page {
                 color: Theme.secondaryColor
             }
 
-            TextSwitch {
-                width: parent.width -2*x
-                x:Theme.horizontalPageMargin
-                checked: fullSizeInChannels.value
-                automaticCheck: false
-                text: "Show full screen images in channels"// qsTr("Show full screen images in channels")
-                onClicked: {
-                    fullSizeInChannels.value = !checked
-                    fullSizeInChannels.sync()
-                }
-            }
             Slider {
                 id:radiusSlider
                 width: parent.width
@@ -329,10 +318,26 @@ Page {
                 x:Theme.horizontalPageMargin
                 checked: oneAligningValue.value
                 automaticCheck: false
-                text: qsTr("Aways align messages to left")
+                text: qsTr("Always align messages to left")
                 onClicked: {
                     oneAligningValue.value = !checked
                     oneAligningValue.sync()
+                }
+            }
+            SectionHeader {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                text: qsTr("Miscellaneous")
+            }
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: fullSizeInChannels.value
+                automaticCheck: false
+                text: qsTr("Show full screen images in channels")
+                onClicked: {
+                    fullSizeInChannels.value = !checked
+                    fullSizeInChannels.sync()
                 }
             }
             ExpandingSectionGroup {

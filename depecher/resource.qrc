@@ -8,5 +8,6 @@
         <file>qml/assets/icons/ru_sailfish.jpg</file>
         <file>qml/assets/background/dark.jpg</file>
         <file>qml/assets/icons/lock_slide_40x80.png</file>
+        <file>qml/assets/icons/lock_slide_80x40.png</file>
     </qresource>
 </RCC>
