@@ -59,7 +59,7 @@ ListItem {
     }
     Rectangle {
         id:background
-        width: columnWrapper.width
+        width: columnWrapper.width + columnWrapper.anchors.leftMargin
         height: columnWrapper.height
         x:columnWrapper.x
         y:columnWrapper.y
@@ -97,26 +97,37 @@ ListItem {
             return colorEnum
         }
     }
-    states: [State {
+    states: [
+        State {
             name: "fullSizeInCannels"
             when: contentLoader.item.state === "fullSizeWithMarginCorrection"
             PropertyChanges {
                 target: columnWrapper
                 anchors.leftMargin: 0
-                width: contentLoader.item.width
+                anchors.rightMargin: 0
+                anchors.left:messageListItem.left
+                anchors.right:messageListItem.right
+//                width: contentLoader.item.width
             }
             PropertyChanges {
                 target: metaInfoRow
-                x: Theme.horizontalPageMargin + 10
+                x: Theme.paddingMedium
             }
-        }]
+            PropertyChanges {
+                target: contentWrapper
+                x: 0
+                layoutDirection:Qt.LeftToRight
+            }
+
+        }
+    ]
     Column {
         id: columnWrapper
-        width: contentWrapper.width + 20
+        width: contentWrapper.width
         anchors.right: oneAligningValue.value ? undefined :
-                                          is_outgoing ? parent.right : undefined
+                                          is_outgoing ? messageListItem.right : undefined
         anchors.left: oneAligningValue.value ? parent.left :
-                                         is_outgoing ? undefined : parent.left
+                                         is_outgoing ? undefined : messageListItem.left
         anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                             currentMessageType != MessagingModel.JOINBYLINK &&
                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
@@ -137,7 +148,7 @@ ListItem {
             x:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
               currentMessageType != MessagingModel.JOINBYLINK &&
               currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-              currentMessageType != MessagingModel.CHAT_CREATED ? 10 : 0
+              currentMessageType != MessagingModel.CHAT_CREATED ? Theme.paddingMedium : 0
             width: Math.max(metaInfoRow.width,replyLoader.width,
                             userAvatarLoader.width + contentColumn.width +
                             (userAvatarLoader.width == 0 ? 0:spacing))
@@ -170,7 +181,6 @@ ListItem {
                     }
                 }
             }
-
 
             Column {
                 id: contentColumn
@@ -379,10 +389,6 @@ ListItem {
 
 
         }
-//        Loader {
-//            sourceComponent: Component {
-//            }
-//        }
     }
     ListView {
         id:inlineView

@@ -7,6 +7,7 @@ import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import QtQml.Models 2.3
 import depecherUtils 1.0
+import "utils.js" as JsUtils
 
 Column{
     id:gifColumn
@@ -17,8 +18,8 @@ Column{
             key:"/apps/depecher/ui/message/fullSizeInChannels"
             defaultValue: false
         }
-        property real currentWidth: getWidth()
-        property real currentHeight: getHeight() - nameplateHeight - 20
+        property real currentWidth: JsUtils.getWidth()
+        property real currentHeight: JsUtils.getHeight() - nameplateHeight
         property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
                                         currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
         states: [
@@ -33,12 +34,8 @@ Column{
                       marginCorrection
                 PropertyChanges {
                     target: captionText
-                    x: Theme.horizontalPageMargin + 10
+                    x: Theme.paddingMedium
                     width: animation.width - 2 * x
-                }
-                PropertyChanges {
-                    target: gifColumn
-                    x: -10
                 }
 
             }
@@ -48,8 +45,8 @@ Column{
             id:gifComponent
             AnimatedImage {
                 id:animationGif
-                property int maxWidth:gifColumn.getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: gifColumn.getHeight() / 2
+                property int maxWidth:JsUtils.getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: JsUtils.getHeight() / 2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect > 1 ? maxWidth/photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit
@@ -160,8 +157,8 @@ Column{
             id:mp4Component
             VideoOutput {
                 id: animationVideo
-                property int maxWidth: gifColumn.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-                property int maxHeight: gifColumn.getHeight() / 2
+                property int maxWidth: JsUtils.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+                property int maxHeight: JsUtils.getHeight() / 2
                 width: photo_aspect > 1 ? maxWidth : maxHeight * photo_aspect
                 height: photo_aspect > 1 ? maxWidth / photo_aspect : maxHeight
                 fillMode: VideoOutput.PreserveAspectFit
@@ -290,26 +287,4 @@ Column{
             visible:  file_caption === "" ? false : true
         }
 
-        function getWidth() {
-            switch(page.orientation) {
-            case Orientation.Portrait:
-            case Orientation.PortraitInverted:
-                return Screen.width
-            case Orientation.Landscape:
-            case Orientation.LandscapeInverted:
-                return Screen.height
-
-            }
-        }
-        function getHeight() {
-            switch(page.orientation) {
-            case Orientation.Portrait:
-            case Orientation.PortraitInverted:
-                return Screen.height
-            case Orientation.Landscape:
-            case Orientation.LandscapeInverted:
-                return Screen.width
-
-            }
-        }
     }

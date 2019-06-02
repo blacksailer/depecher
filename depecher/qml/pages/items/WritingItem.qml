@@ -105,7 +105,7 @@ Drawer {
             id: replyArea
             width: parent.width
             height: reply_id != "0" ||  edit_message_id != "0"  ? Theme.itemSizeExtraSmall : 0
-            anchors.bottom: messageArea.top
+            anchors.bottom: row.top
             Row {
                 width: parent.width
                 height:parent.height
@@ -403,7 +403,6 @@ Drawer {
             id:labelTime
             property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
             property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
-            height: Theme.fontSizeTiny
             font: Theme.fontSizeTiny
 
             x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin

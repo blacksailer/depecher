@@ -8,6 +8,13 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-1
+- Pull request merged, thanks to @foolsbazar
+- Added translations
+- Mic button is swapping to send button while typing
+- Added option to full size messages in channels (Appearences -> Show full screen)
+
+
 * Fri Apr 19 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6-0
 - Bug fix of textArea
 - List of contacts added (no stync from phone)

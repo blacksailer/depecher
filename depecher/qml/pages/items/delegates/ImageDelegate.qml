@@ -7,6 +7,7 @@ import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import QtQml.Models 2.3
 import depecherUtils 1.0
+import "utils.js" as JsUtils
 
 Column{
         id: imageColumn
@@ -17,15 +18,17 @@ Column{
             key:"/apps/depecher/ui/message/fullSizeInChannels"
             defaultValue: false
         }
-        property real currentWidth: image.getWidth()
-        property real currentHeight: image.getHeight() - nameplateHeight - 20
+        property real currentWidth: JsUtils.getWidth()
+        property real currentHeight: JsUtils.getHeight() - nameplateHeight
         property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
-                                        currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
+                                        currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin
         states: [
             State {
                 name: "fullSize"
                 when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
                       !marginCorrection
+
+
                 PropertyChanges {
                     target: image
                     maxWidth: currentWidth
@@ -40,20 +43,16 @@ Column{
                       marginCorrection
                 PropertyChanges {
                     target: captionText
-                    x: Theme.horizontalPageMargin + 10
+                    x: Theme.paddingMedium
                     width: image.width - 2 * x
-                }
-                PropertyChanges {
-                    target: imageColumn
-                    x: -10
                 }
             }
         ]
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: getHeight()/2
+            property int maxWidth: JsUtils.getWidth()-Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: JsUtils.getHeight()/2
             width: photo_aspect >= 1 ? maxWidth *3/4 : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
@@ -98,29 +97,6 @@ Column{
                     }
                 }
             }
-            function getWidth() {
-                switch(page.orientation) {
-                case Orientation.Portrait:
-                case Orientation.PortraitInverted:
-                    return Screen.width
-                case Orientation.Landscape:
-                case Orientation.LandscapeInverted:
-                    return Screen.height
-
-                }
-            }
-            function getHeight() {
-                switch(page.orientation) {
-                case Orientation.Portrait:
-                case Orientation.PortraitInverted:
-                    return Screen.height
-                case Orientation.Landscape:
-                case Orientation.LandscapeInverted:
-                    return Screen.width
-
-                }
-            }
-
         }
         
         LinkedLabel {
