@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-2
+- hotfix of aligning
+
 * Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-1
 - Pull request merged, thanks to @foolsbazar
 - Added translations

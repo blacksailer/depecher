@@ -59,10 +59,10 @@ ListItem {
     }
     Rectangle {
         id:background
-        width: columnWrapper.width + columnWrapper.anchors.leftMargin
+        width:  columnWrapper.width + columnWrapper.anchors.leftMargin
         height: columnWrapper.height
-        x:columnWrapper.x
-        y:columnWrapper.y
+        x: columnWrapper.x
+        y: columnWrapper.y
         visible: currentMessageType != MessagingModel.STICKER &&
                  currentMessageType != MessagingModel.VIDEO_NOTE &&
                  currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
@@ -97,6 +97,7 @@ ListItem {
             return colorEnum
         }
     }
+
     states: [
         State {
             name: "fullSizeInCannels"
@@ -105,13 +106,16 @@ ListItem {
                 target: columnWrapper
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
-                anchors.left:messageListItem.left
-                anchors.right:messageListItem.right
-//                width: contentLoader.item.width
+//                anchors.left:undefined
+//                anchors.right:undefined
+                width: contentLoader.item.width
+//                x:0
             }
             PropertyChanges {
                 target: metaInfoRow
                 x: Theme.paddingMedium
+                layoutDirection:Qt.LeftToRight
+
             }
             PropertyChanges {
                 target: contentWrapper
@@ -125,14 +129,15 @@ ListItem {
         id: columnWrapper
         width: contentWrapper.width
         anchors.right: oneAligningValue.value ? undefined :
-                                          is_outgoing ? messageListItem.right : undefined
-        anchors.left: oneAligningValue.value ? parent.left :
-                                         is_outgoing ? undefined : messageListItem.left
+                                          is_outgoing ? parent.right : undefined
         anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                             currentMessageType != MessagingModel.JOINBYLINK &&
                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                            currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin
+                            currentMessageType != MessagingModel.CHAT_CREATED ?
+                                is_outgoing ?Theme.horizontalPageMargin * 2 : Theme.horizontalPageMargin
                                                                               : 0
+        anchors.left: oneAligningValue.value ? parent.left :
+                                         is_outgoing ? undefined : parent.left
         anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                            currentMessageType != MessagingModel.JOINBYLINK &&
                            currentMessageType != MessagingModel.CONTACT_REGISTERED &&
@@ -390,6 +395,7 @@ ListItem {
 
         }
     }
+
     ListView {
         id:inlineView
         anchors.top: columnWrapper.bottom
