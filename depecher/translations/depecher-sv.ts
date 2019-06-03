@@ -165,15 +165,15 @@
     </message>
     <message>
         <source>Always align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>Justera alltid meddelanden åt vänster</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Diverse</translation>
     </message>
     <message>
         <source>Show full screen images in channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Visa helskärmsbilder i kanaler</translation>
     </message>
 </context>
 <context>
