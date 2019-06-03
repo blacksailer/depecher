@@ -105,7 +105,7 @@ Drawer {
             id: replyArea
             width: parent.width
             height: reply_id != "0" ||  edit_message_id != "0"  ? Theme.itemSizeExtraSmall : 0
-            anchors.bottom: messageArea.top
+            anchors.bottom: row.top
             Row {
                 width: parent.width
                 height:parent.height
@@ -229,24 +229,24 @@ Drawer {
                             }
                             PropertyChanges {
                                 target:mic
-                                visible:true
+                                visible: reply_id != "-1"
                                 y:stickerButton.y
                             }
                             PropertyChanges {
                                 target:sendButton
-                                visible:!sendByEnter.value || reply_id == "-1"
+                                visible: reply_id == "-1"
                             }
                         },
                         State {
                             name:"typing"
                             PropertyChanges {
                                 target:messageArea
-                                width :row.width - sendButton.width
+                                width :row.width - sendButton.width - stickerButton.width
                                 opacity:1
                             }
                             PropertyChanges {
                                 target:stickerButton
-                                visible:false
+                                visible:true
                             }
                             PropertyChanges {
                                 target:skrepkaWizard
@@ -270,7 +270,7 @@ Drawer {
                             }
                             PropertyChanges {
                                 target:mic
-                                width: row.width  - sendButton.width
+                                width: row.width
                             }
                             PropertyChanges {
                                 target:stickerButton
@@ -284,13 +284,16 @@ Drawer {
                                 target:mic
                                 visible:true
                             }
-
                             PropertyChanges {
                                 target:sendButton
-                                visible:!sendByEnter.value || reply_id == "-1"
+                                visible:false
                             }
-
-                        }, State  {
+                            PropertyChanges {
+                                target:labelTime
+                                x: Theme.horizontalPageMargin
+                            }
+                        },
+                        State  {
                             name:"voice-fixed"
                             PropertyChanges {
                                 target:rowArea
@@ -304,7 +307,7 @@ Drawer {
 
                             PropertyChanges {
                                 target:mic
-                                width: row.width  - sendButton.width
+                                width: row.width
                             }
                             PropertyChanges {
                                 target:stickerButton
@@ -319,7 +322,8 @@ Drawer {
                                 visible:false
                             }
 
-                        },  State  {
+                        },
+                        State  {
                             name:"voice-validation"
                             PropertyChanges {
                                 target:mic
@@ -338,7 +342,6 @@ Drawer {
                                 target:mic
                                 visible:true
                             }
-
                             PropertyChanges {
                                 target:skrepkaWizard
                                 visible:false
@@ -361,6 +364,11 @@ Drawer {
                             NumberAnimation  {
                                 target: mic
                                 properties :"width"
+                                duration :200
+                            }
+                            NumberAnimation  {
+                                target: labelTime
+                                properties :"x"
                                 duration :200
                             }
                         }
@@ -395,7 +403,6 @@ Drawer {
             id:labelTime
             property int leftMarginOne: stickerButton.visible ? stickerButton.width : 0
             property int leftMarginTwo: skrepkaWizard.visible ? skrepkaWizard.width : 0
-            height: Theme.fontSizeTiny
             font: Theme.fontSizeTiny
 
             x: leftMarginTwo + leftMarginOne + Theme.horizontalPageMargin

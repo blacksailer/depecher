@@ -144,10 +144,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,6 +161,18 @@
     </message>
     <message>
         <source>Till</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -616,13 +624,6 @@
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

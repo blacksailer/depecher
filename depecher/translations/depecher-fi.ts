@@ -144,10 +144,6 @@
         <translation>Piilota nimi</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Tasaa viestit aina vasemmalle</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Ota yötila käyttöön</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>Mihin</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -320,11 +328,11 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkitse luetuksi</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkitse lukemattomaksi</translation>
     </message>
     <message>
         <source>Contacts</source>
@@ -428,7 +436,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa</translation>
     </message>
 </context>
 <context>
@@ -623,13 +631,6 @@
     </message>
 </context>
 <context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -718,11 +719,11 @@
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa teksti??</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa kuvateksti??</translation>
     </message>
 </context>
 <context>

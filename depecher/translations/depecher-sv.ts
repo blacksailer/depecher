@@ -144,10 +144,6 @@
         <translation>Minimera namnplåten</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Justera alltid meddelanden åt vänster</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Aktivera nattläge</translation>
     </message>
@@ -166,6 +162,18 @@
     <message>
         <source>Till</source>
         <translation>Till</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -282,11 +290,11 @@
     <name>ContactsPage</name>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakter</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>S??k</translation>
     </message>
 </context>
 <context>
@@ -297,7 +305,7 @@
     </message>
     <message>
         <source>Unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Ol??sta meddelanden</translation>
     </message>
 </context>
 <context>
@@ -320,15 +328,15 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera som l??st</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Markera som ol??st</translation>
     </message>
     <message>
         <source>Contacts</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakter</translation>
     </message>
 </context>
 <context>
@@ -427,7 +435,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera</translation>
     </message>
 </context>
 <context>
@@ -620,13 +628,6 @@
     </message>
 </context>
 <context>
-    <name>ShareUI</name>
-    <message>
-        <source>Share with</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -715,11 +716,11 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera text</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigera bildtext</translation>
     </message>
 </context>
 <context>

@@ -15,10 +15,14 @@ Item {
         PropertyChanges {
                 target : recordButton
                 source: "image://theme/icon-m-mic"
-                y:Theme.paddingSmall
+                x:0
             }
             PropertyChanges {
                 target:stick
+                opacity : 0
+            }
+            PropertyChanges {
+                target:voiceLabel
                 opacity : 0
             }
         },
@@ -31,6 +35,10 @@ Item {
         PropertyChanges {
             target:stick
             opacity:1
+        }
+        PropertyChanges {
+            target:voiceLabel
+            opacity : 1
         }
       },
     State {
@@ -49,12 +57,12 @@ Item {
         PropertyChanges {
             target: recordButton
             source: "image://theme/icon-m-acknowledge"
-            y:Theme.paddingSmall
+            x: 0
 
         }
         PropertyChanges {
             target:stick
-            opacity:0
+            opacity: 0
         }
      },
     State {
@@ -62,7 +70,7 @@ Item {
         PropertyChanges {
             target: recordButton
             source:"image://theme/icon-m-message"
-            y:Theme.paddingSmall
+            x: 0
         }
         PropertyChanges {
             target:stick
@@ -75,16 +83,20 @@ Item {
             from:"default"
             to:"pressed"
             NumberAnimation {
-
                 target:stick
                 properties:"opacity"
                 duration:300
             }
+            NumberAnimation {
+                target:voiceLabel
+                properties:"opacity"
+                duration:300
+            }
             onRunningChanged: {
-                 if ((rootItem.state == "pressed" || rootItem.state == "moving") && (!running))
-{
-                audioRec.startRecording()
-}
+                if ((rootItem.state == "pressed" || rootItem.state == "moving") && (!running))
+                {
+                    audioRec.startRecording()
+                }
             }
 
         },Transition {
@@ -122,8 +134,10 @@ Row {
                 visible: voiceLabel.width > 0
                 icon.source:rootItem.state == 'voice-validation' ? "image://theme/icon-m-clear" : "image://theme/icon-m-call-recording-on-light" //+ voiceLabel.width > 0 ? "icon-m-call-recording-on-dark" : "icon-m-call-recording-on-light"
                 onClicked:{
-                    if(rootItem.state == 'voice-validation')
+                    if(rootItem.state == 'voice-validation' || rootItem.state == "fixed")
                     {
+                        if (rootItem.state == "fixed")
+                            audioRec.stopRecording()
                         audioRec.deleteRecording()
                         rootItem.state = "default"
 
@@ -174,23 +188,28 @@ Row {
         Image {
             id:recordButton
             source:  "image://theme/icon-m-mic"
+            y:Theme.paddingSmall
             z:2
             MouseArea {
                 anchors.fill: parent
                 enabled:  rootItem.state == "fixed" ||  rootItem.state == "voice-validation"
                 onClicked: {
-                    if(rootItem.state == "voice-validation")
-                    {
+                    if(rootItem.state == "voice-validation") {
                         rootItem.state = "default"
                     } else {
                         rootItem.state = "default"
                         audioRec.stopRecording()
                     }
-                   if( __depecher_audio.source == Qt.resolvedUrl(audioRec.location))
-                   sendVoice(audioRec.location,__depecher_audio.duration/1000,audioRec.getWaveform())
-                   else
-                    sendVoice(audioRec.location,audioRec.duration/1000,audioRec.getWaveform())
-
+                    if( __depecher_audio.source == Qt.resolvedUrl(audioRec.location))
+                        if (__depecher_audio.duration > 500)
+                            sendVoice(audioRec.location,__depecher_audio.duration/1000,audioRec.getWaveform())
+                        else
+                            audioRec.deleteRecording()
+                    else
+                        if (audioRec.duration > 500)
+                            sendVoice(audioRec.location,audioRec.duration/1000,audioRec.getWaveform())
+                        else
+                            audioRec.deleteRecording()
                 }
             }
         }
@@ -205,10 +224,11 @@ Row {
         }
         Image {
             id:lock
-            source :rootItem.state == "fixed" ? "image://theme/icon-m-pause?"+Theme.primaryColor : "qrc:/qml/assets/icons/lock_slide_40x80.png"
+            source :rootItem.state == "fixed" ? "image://theme/icon-m-pause?"+Theme.primaryColor : "qrc:/qml/assets/icons/lock_slide_80x40.png"
             z:1
-            anchors.horizontalCenter: recordButton.horizontalCenter
+            anchors.horizontalCenter:  recordButton.horizontalCenter
             anchors.bottom: recordButton.top
+            anchors.bottomMargin: Theme.paddingMedium
             visible: rootItem.state != "default" && rootItem.state != "voice-validation"
             MouseArea {
                 anchors.fill: parent
@@ -222,8 +242,8 @@ Row {
         Item {
             id:stick
             width: recordButton.width
-            height: parent.height * 2
-            anchors.bottom: parent.bottom
+            height: recordButton.height
+            anchors.right: parent.right
             MouseArea {
                 anchors.fill:stick
                 enabled: rootItem.state != "fixed" && rootItem.state != "voice-validation"
@@ -231,28 +251,17 @@ Row {
                 onPressed:  {
                     preventStealing=true
                     rootItem.state = "pressed"
+                    recordButton.x = mouse.x - width
                 }
                 onPositionChanged: {
-                    if(rootItem.state =="pressed" || rootItem.state =="moving") {
-                        if(mouse.y >= 0  && mouse.y < height )  {
-                            if (mouse.y < recordButton.height / 2)
-                            {
-                                rootItem.state = "fixed"
-                            }
-
-                            else if (mouse.y > height - recordButton.height )
-{
-                            rootItem.state = "pressed"
-                            recordButton.y  =  Theme.paddingSmall
-}
-                            else
-                            {
-                                rootItem.state = "moving"
-                                recordButton.y  =  mouse.y - height  + recordButton.height
-                            }
-
-                        }
-
+                    if (rootItem.state == "pressed" || rootItem.state =="moving") {
+                        rootItem.state = "moving"
+                        if (mouse.x < - width)
+                            rootItem.state = "fixed"
+                        else if (mouse.x - width > 0    )
+                            recordButton.x = 0
+                        else
+                            recordButton.x = mouse.x - width
                     }
                 }
                 onReleased: {
@@ -261,14 +270,16 @@ Row {
                          if (rootItem.state != "fixed") {
                             audioRec.stopRecording()
                             rootItem.state = "default"
-                             sendVoice(audioRec.location,audioRec.duration/1000,audioRec.getWaveform())
+                            if (audioRec.duration > 500)
+                                sendVoice(audioRec.location,audioRec.duration/1000,audioRec.getWaveform())
+                            else
+                                audioRec.deleteRecording()
                         }
                     } else {
                             rootItem.state = "default"
                     }
                 }
             }
-
         }
     }
     Item {

@@ -13,8 +13,8 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.6
-Release:    0
+Version:    0.6.1
+Release:    2
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher

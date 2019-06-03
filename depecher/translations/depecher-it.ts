@@ -1,167 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.1" language="it_IT">
 <context>
     <name></name>
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation>No hay cuentas para compartir. Puedes añadir cuentas en ajustes</translation>
+        <translation>Nessun account per la condivisione disponibile. Puoi aggiungerne uno nelle impostazioni</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
         <extracomment>List header for link sharing method list</extracomment>
-        <translation>Compartir enlace</translation>
+        <translation>Link condivisione</translation>
     </message>
 </context>
 <context>
     <name>AboutPage</name>
     <message>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <source>Donations</source>
-        <translation>Donaciones</translation>
+        <translation>Donazioni</translation>
     </message>
     <message>
         <source>Sources</source>
-        <translation>Fuentes</translation>
+        <translation>Sorgenti</translation>
     </message>
     <message>
         <source>Groups in Telegram</source>
-        <translation>Grupos en Telegram</translation>
+        <translation>Gruppi in Telegram</translation>
     </message>
     <message>
         <source>English speaking community</source>
-        <translation>Comunidad de habla inglesa</translation>
+        <translation>Community in inglese</translation>
     </message>
     <message>
         <source>Error %1</source>
-        <translation>Error %1</translation>
+        <translation>Errore %1</translation>
     </message>
     <message>
         <source>Joining chat</source>
-        <translation>Unirse a chat</translation>
+        <translation>Unisciti</translation>
     </message>
     <message>
         <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Ten en cuenta que después de hacer clic te unirás al chat. Dejar chats no está soportado aún.</translation>
+        <translation>Dopo aver cliccato ti unirai alla chat. L&apos;abbandono delle chat non è ancora supportato.</translation>
     </message>
     <message>
         <source>Error to get invite link</source>
-        <translation>Error al obtener enlace de invitación</translation>
+        <translation>Errore nel recuperare il link d&apos;invito</translation>
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation>Depecher - Otro cliente de Telegram para Sailfish OS basado en tdlib.</translation>
+        <translation>Depecher - un client Telegram per Sailfish OS basato su tdlib.</translation>
     </message>
     <message>
         <source>Features:</source>
-        <translation>Funcionalidades:</translation>
+        <translation>Funzionalità:</translation>
     </message>
     <message>
         <source>- Send/View/Delete messages</source>
-        <translation>- Enviar/Ver/Borrar mensajes</translation>
+        <translation>- Invia/visualizza/elimina messaggi</translation>
     </message>
     <message>
         <source>- Mute/unmute chats</source>
-        <translation>- Silenciar/No silenciar conversaciones</translation>
+        <translation>- Silenzia chat</translation>
     </message>
     <message>
         <source>- View photos</source>
-        <translation>- Ver fotos</translation>
+        <translation>- Visualizza immagini</translation>
     </message>
     <message>
         <source>- View animations (gifs)</source>
-        <translation>- Ver animaciones (gifs)</translation>
+        <translation>- Visualizza GIF</translation>
     </message>
     <message>
         <source>- View/Send stickers</source>
-        <translation>- Ver/Enviar stickers</translation>
+        <translation>- Visualizza/invia sticker</translation>
     </message>
     <message>
         <source>- Manage stickers from chat</source>
-        <translation>- Gestionar stickers desde conversación</translation>
+        <translation>- Gestisci sticker dalla chat</translation>
     </message>
     <message>
         <source>- Uploading/Downloading photos/docs</source>
-        <translation>- Subida/Descarga de fotos/documentos</translation>
+        <translation>- Invia/ricevi immagini e documenti</translation>
     </message>
     <message>
         <source>- Receive notifications</source>
-        <translation>- Recibir notificaciones</translation>
+        <translation>- Ricevi notifiche</translation>
     </message>
     <message>
         <source>- 2FA authorization enabled</source>
-        <translation>- Autorización 2FA habilitado</translation>
+        <translation>- Supporto autenticazione a due fattori</translation>
     </message>
     <message>
         <source>Thanks to:</source>
-        <translation>Gracias a:</translation>
+        <translation>Grazie a:</translation>
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>Aquí se enumeran los grupos donde puedes preguntar cualquier duda (general, dev, etc.) sobre Sailfish OS.</translation>
+        <translation>Qui i gruppi nei quali puoi chiedere qualsiasi cosa relativa a Sailfish OS.</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>Estos grupos sólo viven por y para la comunidad que rodea a Sailfish OS.</translation>
+        <translation>Questo gruppo vive soltanto e grazie alla community di Sailfish OS.</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>Versión</translation>
+        <translation>Versione</translation>
     </message>
 </context>
 <context>
     <name>AppearancePage</name>
     <message>
         <source>Appearance</source>
-        <translation>Apariencia</translation>
+        <translation>Aspetto</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation>Radio</translation>
+        <translation>Angolo</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation>Opacidad</translation>
+        <translation>Opacità</translation>
     </message>
     <message>
         <source>Incoming message background color</source>
-        <translation>Color-fondo en mensajes recibidos</translation>
+        <translation>Colore sfondo messaggi ricevuti</translation>
     </message>
     <message>
         <source>Outcoming message background color</source>
-        <translation>Color-fondo en mensajes enviados</translation>
+        <translation>Colore sfondo messaggi inviati</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation>Resetear</translation>
+        <translation>Reimposta predefiniti</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
-        <translation>Ocultar nombre del chat</translation>
+        <translation>Riduci nome utente</translation>
     </message>
     <message>
         <source>Enable night mode</source>
-        <translation>Activar modo noche</translation>
+        <translation>Attiva modalità notturna</translation>
     </message>
     <message>
         <source>Night Mode</source>
-        <translation>Modo noche</translation>
+        <translation>Modalità notturna</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation>Activar horario</translation>
+        <translation>Programmata</translation>
     </message>
     <message>
         <source>From</source>
-        <translation>De</translation>
+        <translation>Dalle</translation>
     </message>
     <message>
         <source>Till</source>
-        <translation>A</translation>
+        <translation>Alle</translation>
     </message>
     <message>
         <source>Always align messages to left</source>
@@ -180,30 +180,30 @@
     <name>AreYouSureDialog</name>
     <message>
         <source>Is phone correct?</source>
-        <translation>¿Es correcto el teléfono?</translation>
+        <translation>Numero corretto?</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation>Estado conexión: </translation>
+        <translation>Stato connessione: </translation>
     </message>
     <message>
         <source>To continue connection to Telegram is needed</source>
-        <translation>Es necesario para continuar con la conexión de Telegram</translation>
+        <translation>Per continuare la connessione a Telegram è necessaria</translation>
     </message>
 </context>
 <context>
     <name>AttachComponent</name>
     <message>
         <source>Photo</source>
-        <translation>Foto</translation>
+        <translation>Immagine</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation>Enviar</translation>
+        <translation>Invia</translation>
     </message>
     <message>
         <source>Type</source>
@@ -219,82 +219,82 @@
     </message>
     <message>
         <source>Go to Home folder</source>
-        <translation>Ir a carpeta Home</translation>
+        <translation>Vai alla cartella home</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation>Documentos</translation>
+        <translation>Documenti</translation>
     </message>
     <message>
         <source>Send a document</source>
-        <translation>Enviar un documento</translation>
+        <translation>Invia un documento</translation>
     </message>
     <message>
         <source>Files to send</source>
-        <translation>Archivos para enviar</translation>
+        <translation>File da inviare</translation>
     </message>
 </context>
 <context>
     <name>AttachSticker</name>
     <message>
         <source>Sticker preview mode</source>
-        <translation>Modo vista previa de stickers</translation>
+        <translation>Anteprima sticker</translation>
     </message>
 </context>
 <context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
-        <translation>Inserta tu número de teléfono y presiona &apos;Siguiente&apos;</translation>
+        <translation>Inserisci il tuo numero di telefono e premi &quot;Successivo&quot;</translation>
     </message>
     <message>
         <source>Country Code</source>
-        <translation>Código de país</translation>
+        <translation>Codice paese</translation>
     </message>
     <message>
         <source>Phone Number</source>
-        <translation>Número de teléfono</translation>
+        <translation>Numero di telefono</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Ajustes</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>Welcome</source>
-        <translation>Bienvenido</translation>
+        <translation>Benvenuto</translation>
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation>Atención: Si Telegram está bloqueado en tu país, primero configura el servidor proxy en ajustes desde el menú deslizante</translation>
+        <translation>Attenzione: se Telegram è bloccato nel tuo paese, imposta prima il server proxy dalle impostazioni nel pulley menu</translation>
     </message>
 </context>
 <context>
     <name>BehaviorPage</name>
     <message>
         <source>Behavior</source>
-        <translation>Comportamiento</translation>
+        <translation>Comportamento</translation>
     </message>
     <message>
         <source>Send message by enter</source>
-        <translation>Enviar con intro</translation>
+        <translation>Invia messaggio con tasto Invio</translation>
     </message>
 </context>
 <context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
-        <translation>%1 ha creado el grupo %2</translation>
+        <translation>%1 ha creato il gruppo %2</translation>
     </message>
 </context>
 <context>
     <name>ContactsPage</name>
     <message>
-        <source>Contacts</source>
-        <translation>Contactos</translation>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search</source>
-        <translation>Buscar</translation>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -305,89 +305,89 @@
     </message>
     <message>
         <source>Unread messages</source>
-        <translation>Mensajes no leídos</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DialogsPage</name>
     <message>
         <source>Reset dialogs</source>
-        <translation>Restablecer diálogos</translation>
+        <translation>Ricarica conversazioni</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Ajustes</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>Unmute</source>
-        <translation>Dejar de silenciar</translation>
+        <translation>Suona</translation>
     </message>
     <message>
         <source>Mute</source>
-        <translation>Silenciar</translation>
+        <translation>Silenzia</translation>
     </message>
     <message>
         <source>Mark as read</source>
-        <translation>Marcar como leído</translation>
+        <translation>Letto</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation>Marcar como no leído</translation>
+        <translation>Non letto</translation>
     </message>
     <message>
         <source>Contacts</source>
-        <translation>Contactos</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
     <message>
         <source>%1 joined by invite link</source>
-        <translation>%1 se unió con enlace de invitación</translation>
+        <translation>%1 è entrato tramite link d&apos;invito</translation>
     </message>
 </context>
 <context>
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
-        <translation>¡%1 se unió a Telegram!</translation>
+        <translation>%1 si è unito a Telegram!</translation>
     </message>
 </context>
 <context>
     <name>MenuComponent</name>
     <message>
         <source>Settings</source>
-        <translation>Ajustes</translation>
+        <translation>Impostazioni</translation>
     </message>
 </context>
 <context>
     <name>MessageItem</name>
     <message>
         <source>edited</source>
-        <translation>editado</translation>
+        <translation>modificato</translation>
     </message>
     <message>
         <source>Forwarded from</source>
-        <translation>Reenviado desde</translation>
+        <translation>Inoltrato da</translation>
     </message>
 </context>
 <context>
     <name>MessagingPage</name>
     <message>
         <source>Copy text</source>
-        <translation>Copiar texto</translation>
+        <translation>Copia testo</translation>
     </message>
     <message>
         <source>Copy path</source>
-        <translation>Copiar ruta</translation>
+        <translation>Copia link</translation>
     </message>
     <message>
         <source>Reply</source>
-        <translation>Responder</translation>
+        <translation>Rispondi</translation>
     </message>
     <message>
         <source>Photo</source>
-        <translation>Foto</translation>
+        <translation>Immagine</translation>
     </message>
     <message>
         <source>Sticker</source>
@@ -399,154 +399,154 @@
     </message>
     <message>
         <source>Animation</source>
-        <translation>Animación</translation>
+        <translation>GIF</translation>
     </message>
     <message>
         <source>Contact</source>
-        <translation>Contacto</translation>
+        <translation>Contatto</translation>
     </message>
     <message>
         <source>Message</source>
-        <translation>Mensaje</translation>
+        <translation>Messaggio</translation>
     </message>
     <message>
         <source>Delete Message</source>
-        <translation>Borrar mensaje</translation>
+        <translation>Elimina messaggio</translation>
     </message>
     <message>
         <source>Delete for everyone</source>
-        <translation>Borrar para todos</translation>
+        <translation>Elimina per tutti</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translation>Borrando...</translation>
+        <translation>Eliminazione...</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>Reenviar</translation>
+        <translation>Inoltra</translation>
     </message>
     <message>
         <source>Forwarded messages</source>
-        <translation>Mensajes reenviados</translation>
+        <translation>Messaggi inoltrati</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation>mensajes</translation>
+        <translation>messaggi</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation>Modifica</translation>
     </message>
 </context>
 <context>
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
-        <translation>Nuevos mensajes</translation>
+        <translation>Nuovi messaggi</translation>
     </message>
 </context>
 <context>
     <name>PicturePage</name>
     <message>
         <source>Save to gallery</source>
-        <translation>Guardar en Galería</translation>
+        <translation>Salva nella galleria</translation>
     </message>
     <message>
         <source>Image saved to gallery!</source>
-        <translation>¡Imagen guardada en Galería!</translation>
+        <translation>Immagine salvata nella galleria!</translation>
     </message>
     <message>
         <source>Share function will be here soon</source>
-        <translation>La función compartir estará aquí pronto</translation>
+        <translation>La funzione condividi arriverà presto</translation>
     </message>
 </context>
 <context>
     <name>PreviewStickerSetDialog</name>
     <message>
+        <source>Back</source>
+        <translation>Indietro</translation>
+    </message>
+    <message>
         <source>Sticker preview mode</source>
-        <translation>Modo vista previa de stickers</translation>
+        <translation>Anteprima sticker</translation>
     </message>
     <message>
         <source>Remove %1 stickers</source>
-        <translation>Eliminar %1 stickers</translation>
+        <translation>Rimuovi %1 sticker</translation>
     </message>
     <message>
         <source>Add %1 stickers</source>
-        <translation>Añadir %1 stickers</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>Volver</translation>
+        <translation>Aggiungi %1 sticker</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation>Dirección del servidor</translation>
+        <translation>Indirizzo server</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation>Puerto del servidor</translation>
+        <translation>Porta server</translation>
     </message>
     <message>
         <source>port</source>
-        <translation>puerto</translation>
+        <translation>porta</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation>Nombre de usuario</translation>
+        <translation>Nome utente</translation>
     </message>
     <message>
         <source>username</source>
-        <translation>nombre de usuario</translation>
+        <translation>nome utente</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Contraseña</translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation>Añadir proxy</translation>
+        <translation>Aggiungi proxy</translation>
     </message>
     <message>
         <source>Proxy type</source>
-        <translation>Tipo de proxy</translation>
+        <translation>Tipo proxy</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation>Dirección</translation>
+        <translation>Indirizzo</translation>
     </message>
     <message>
         <source>HTTP only</source>
-        <translation>Sólo HTTP</translation>
+        <translation>Solo HTTP</translation>
     </message>
     <message>
         <source>Secret</source>
-        <translation>Secreto</translation>
+        <translation>Secret</translation>
     </message>
     <message>
         <source>secret</source>
-        <translation>secreto</translation>
+        <translation>secret</translation>
     </message>
     <message>
         <source>Edit proxy</source>
-        <translation>Editar proxy</translation>
+        <translation>Modifica proxy</translation>
     </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
-        <translation>El Proxy está listo</translation>
+        <translation>Proxy pronto</translation>
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation>Enlace copiado al portapapeles</translation>
+        <translation>Link copiato negli appunti</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <source>Proxy</source>
@@ -554,73 +554,73 @@
     </message>
     <message>
         <source>Connection status: </source>
-        <translation>Estado conexión: </translation>
+        <translation>Stato connessione: </translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation>Activado</translation>
+        <translation>Attivo</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation>Desactivado</translation>
+        <translation>Disattivo</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation>Añadir proxy</translation>
+        <translation>Aggiungi proxy</translation>
     </message>
 </context>
 <context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation>Seleccionar chat</translation>
+        <translation>Seleziona chat</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Settings</source>
-        <translation>Ajustes</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <source>Log out</source>
-        <translation>Cerrar sesión</translation>
+        <translation>Esci</translation>
     </message>
     <message>
         <source>Proxy is ready</source>
-        <translation>El Proxy está listo</translation>
+        <translation>Proxy pronto</translation>
     </message>
     <message>
         <source>About program</source>
-        <translation>Acerca del programa</translation>
+        <translation>Info app</translation>
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation>Créditos y demás</translation>
+        <translation>Crediti</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation>Apariencia</translation>
+        <translation>Aspetto</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation>Funcionamiento</translation>
+        <translation>Comportamento</translation>
     </message>
     <message>
         <source>Daemon settings</source>
-        <translation>Ajustes de daemon</translation>
+        <translation>Impostazioni demone</translation>
     </message>
     <message>
         <source>Logging out</source>
-        <translation>Cerrar sesión</translation>
+        <translation>Uscita</translation>
     </message>
     <message>
         <source>Proxy</source>
@@ -631,155 +631,155 @@
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
-        <translation>Código</translation>
+        <translation>Codice</translation>
     </message>
     <message>
         <source>First Name</source>
-        <translation>Nombre</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <source>Surname</source>
-        <translation>Apellido</translation>
+        <translation>Cognome</translation>
     </message>
     <message>
         <source>Sign In</source>
-        <translation>Iniciar sesión</translation>
+        <translation>Accedi</translation>
     </message>
     <message>
         <source>Sign up</source>
-        <translation>Registrarse</translation>
+        <translation>Registrati</translation>
     </message>
     <message>
         <source>Sending request...</source>
-        <translation>Enviando solicitud...</translation>
+        <translation>Invio richiesta...</translation>
     </message>
     <message>
         <source>Enter your password</source>
-        <translation>Introduce tu contraseña</translation>
+        <translation>Inserisci la tua password</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Contraseña</translation>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <source>Recover password</source>
-        <translation>Recuperar contraseña</translation>
+        <translation>Recupera password</translation>
     </message>
     <message>
         <source>Email is sent</source>
-        <translation>Correo enviado</translation>
+        <translation>Email inviata</translation>
     </message>
     <message>
         <source>Show hint</source>
-        <translation>Mostrar pista</translation>
+        <translation>Mostra suggerimento</translation>
     </message>
     <message>
         <source>Enter recovery code. 
  Remember! After that 2FA authorization will be disabled</source>
-        <translation>Introduce código de recuperación. 
-¡Recuerda! Después de la autorización 2FA se deshabilitará</translation>
+        <translation>Recovery mode. 
+ Ricorda! L&apos;autenticazione a due fattori verrà disattivata</translation>
     </message>
     <message>
         <source>Recovery code</source>
-        <translation>Código de recuperación</translation>
+        <translation>Recovery mode</translation>
     </message>
     <message>
         <source>Wait for the message via %1 containing the activation code and press %2</source>
-        <translation>Espera el mensaje de %1 con el código de activación y presiona %2</translation>
+        <translation>Attendi il messaggio via %1 contenente il codice di attivazione e premi %2</translation>
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation>código de recuperación enviado a %1</translation>
+        <translation>codice inviato a %1</translation>
     </message>
     <message>
         <source>Password hint</source>
-        <translation>Pista para contraseña</translation>
+        <translation>Suggerimento password</translation>
     </message>
     <message>
         <source>Enter code</source>
-        <translation>Introduce código</translation>
+        <translation>Inserisci codice</translation>
     </message>
     <message>
         <source>Enter password</source>
-        <translation>Introduce contraseña</translation>
+        <translation>Inserisci password</translation>
     </message>
     <message>
         <source>Authentication state</source>
-        <translation>Estado de autenticación</translation>
+        <translation>Stato autenticazione</translation>
     </message>
 </context>
 <context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation>Editar texto</translation>
+        <translation>Modifica testo</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation>Editar subtítulo</translation>
+        <translation>Modifica didascalia</translation>
     </message>
 </context>
 <context>
     <name>utils</name>
     <message>
         <source>Waiting for network</source>
-        <translation>Esperando conexión</translation>
+        <translation>In attesa della rete</translation>
     </message>
     <message>
         <source>Connecting</source>
-        <translation>Conectando</translation>
+        <translation>Connessione</translation>
     </message>
     <message>
         <source>Connecting to proxy</source>
-        <translation>Conectando al proxy</translation>
+        <translation>Connessione al proxy</translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation>Actualizando...</translation>
+        <translation>Aggiornamento...</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation>Conectado</translation>
+        <translation>Pronto</translation>
     </message>
     <message>
         <source>Uknown</source>
-        <translation>Desconocido</translation>
+        <translation>Sconosciuto</translation>
     </message>
     <message>
         <source>Wait lib parameters</source>
-        <translation>Espera parámetros de lib</translation>
+        <translation>Attendo parametri lib</translation>
     </message>
     <message>
         <source>Wait encryption key</source>
-        <translation>Espera clave de cifrado</translation>
+        <translation>Attendo chiave crittografia</translation>
     </message>
     <message>
         <source>Wait phone number</source>
-        <translation>Espera número de teléfono</translation>
+        <translation>Attendo numero di telefono</translation>
     </message>
     <message>
         <source>Wait code</source>
-        <translation>Espera código</translation>
+        <translation>Attendo codice</translation>
     </message>
     <message>
         <source>Wait password</source>
-        <translation>Espera contraseña</translation>
+        <translation>Attendo password</translation>
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>Espera cierre de sesión</translation>
+        <translation>Attendo uscita</translation>
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Espera cierre</translation>
+        <translation>Attendo chiusura</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Espera cerrado</translation>
+        <translation>Attendo chiusura</translation>
     </message>
 </context>
 </TS>

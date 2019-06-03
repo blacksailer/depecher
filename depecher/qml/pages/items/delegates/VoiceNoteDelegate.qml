@@ -98,14 +98,12 @@ Column{
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if(!file_downloading_completed) {
-                            if(progress.visible)
-                                if(file_is_downloading)
-                                    messagingModel.cancelDownload(index)
-                                else
-                                    messagingModel.deleteMessage(index)
-                            else
-                                messagingModel.downloadDocument(index)
+                        if(file_is_downloading) {
+                            messagingModel.cancelDownload(index)
+                        } else if (file_is_uploading) {
+                            messagingModel.deleteMessage(index)
+                        } else if (!file_downloading_completed) {
+                            messagingModel.downloadDocument(index)
                         } else {
                             if(__depecher_audio.playbackState === Audio.PlayingState)
                                 __depecher_audio.stop()
