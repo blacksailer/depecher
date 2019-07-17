@@ -1,7 +1,9 @@
 TEMPLATE = subdirs
-SUBDIRS = lib \
-webp \
-          app
+SUBDIRS =  webp \
+            lib \
+            shareui \
+            sharechat \
+            app
   # where to find the sub projects - give the folders
 lib.subdir  = tdlibjson_wrapper
 app.subdir  = depecher
@@ -22,7 +24,9 @@ DISTFILES += \
     depecher/qml/pages/VideoPage.qml \
     depecher/qml/pages/components/settings/ProxyPage.qml \
     depecher/qml/pages/items/VoiceButton.qml \
-    depecher/qml/pages/items/delegates/utils.js
+    depecher/qml/pages/items/delegates/utils.js \
+    depecher/qml/ShareUI.qml \
+    ../../DepecherPluginTest/qml/pages/components/ChatItemShare.qml
 
 RESOURCES += \
     depecher/qml/pages/components/settings/proxypage.qrc

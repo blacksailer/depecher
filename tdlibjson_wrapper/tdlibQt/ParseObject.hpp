@@ -32,6 +32,9 @@ public:
             return -1;
         }
     }
+    static QString messageTypeToString(const int messageTypeId);
+
+
     static QSharedPointer<message> parseMessage(const QJsonObject &messageObject);
     static QSharedPointer<ReplyMarkup> parseReplyMarkup(const QJsonObject
             &replyMarkupObject);
@@ -128,6 +131,7 @@ signals:
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void chatIds(const QVariantList &ids);
     void getChat(const qint64 id, const QString &extra);
+    void chatsReceived(const QJsonObject &chatsObject);
     void newChatReceived(const QJsonObject &chatItem);
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);

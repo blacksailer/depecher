@@ -117,7 +117,9 @@ signals:
     void totalUnreadCountChanged(int totalUnreadCount);
     void userReceived(const QJsonObject &userObject);
     void updateUserStatusReceived(const QJsonObject &updateUserStatusObject);
-
+    void chatsReceived(const QJsonObject &chatsObject);
+private slots:
+    void setTdlibParameters();
 public slots:
     void openChat(const QString &chat_id);
     void closeChat(const QString &chat_id);
@@ -142,7 +144,9 @@ public slots:
     void setCodeIfNewUser(const QString &code, const QString &firstName,
                           const QString &lastName); /*TODO check for numbers only and escape characters*/
     void getChats(const qint64 offset_chat_id = 0,
-                  const qint64 offset_order = std::numeric_limits<std::int64_t>::max(), const int limit = 100);
+                  const qint64 offset_order = std::numeric_limits<std::int64_t>::max(),
+                  const int limit = 100,
+                  const QString &extra = "");
     void getChat(const qint64 chatId, const QString &extra);
     void searchChatsOnServer(const QString &query, const int limit);
     void searchChats(const QString &query, const int limit);

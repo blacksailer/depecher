@@ -4,14 +4,21 @@
 #include "../ParseObject.hpp"
 #include "../TdlibJsonWrapper.hpp"
 #include "tdlibQt/include/TdlibNamespace.hpp"
-#include "MessagingModel.hpp"
+
 namespace tdlibQt {
 ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     tdlibJson(TdlibJsonWrapper::instance())
 {
+    //FIX for bug if depecher running only in foreground mode
+    connect(tdlibJson, &TdlibJsonWrapper::authorizationStateChanged,
+    [this](Enums::AuthorizationState state) {
+        if (state == Enums::AuthorizationState::AuthorizationStateReady && rowCount(QModelIndex()) == 0)
+            reset();
+    });
     connect(this, &ChatsModel::totalUnreadCountChanged,
             tdlibJson, &TdlibJsonWrapper::setTotalUnreadCount);
-
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::chatsReceived,
+            this, &tdlibQt::ChatsModel::addChats);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
             this, &tdlibQt::ChatsModel::addChat);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
@@ -38,6 +45,7 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     connect(&chatActionTimer, &QTimer::timeout, this, &tdlibQt::ChatsModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
 }
+
 void ChatsModel::changeChatOrder(qint64 chatId, qint64 order)
 {
     for (int i = 0; i < m_chats.size(); i++) {
@@ -58,8 +66,6 @@ const int ChatsModel::indexByOrder(const qint64 order)
     }
     return -1;
 }
-
-
 
 bool ChatsModel::isContains(const QSharedPointer<chat> &chat)
 {
@@ -208,6 +214,11 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     case IS_MARKED_UNREAD:
         return m_chats[rowIndex]->is_marked_as_unread_;
     case TYPE:
+        if (m_chats[rowIndex]->type_.data() == nullptr) {
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::BasicGroup);
+            return resultType;
+        }
         switch (m_chats[rowIndex]->type_->get_id()) {
         case chatTypeBasicGroup::ID: {
             QVariantMap resultType;
@@ -259,10 +270,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
                         return QString::fromStdString(contentPtr->text_->text_);
                     }
                 }
-
-                return MessagingModel::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
-
-                return QVariant();
+                return ParseObject::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
             }
         }
     case LAST_MESSAGE_AUTHOR:
@@ -315,6 +323,7 @@ void ChatsModel::fetchMore(const QModelIndex &parent)
 {
     Q_UNUSED(parent)
     fetchPending = true;
+    qDebug() << "getch more";
     if (rowCount(QModelIndex()) > 0)
         tdlibJson->getChats(m_chats.last()->id_, m_chats.last()->order_, 100);
     else
@@ -355,7 +364,7 @@ QHash<int, QByteArray> ChatsModel::roleNames() const
 bool ChatsModel::canFetchMore(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return !fetchPending;
+    return tdlibJson->authorizationState() == tdlibQt::Enums::AuthorizationState::AuthorizationStateReady && !fetchPending;
 }
 
 int ChatsModel::getIndex(const qint64 chatId)
@@ -379,8 +388,7 @@ void ChatsModel::chatActionCleanUp()
 
 void ChatsModel::addChat(const QJsonObject &chatObject)
 {
-    if(!chatObject.contains("@extra"))
-    {
+    if (!chatObject.contains("@extra")) {
         fetchPending = false;
 
         QSharedPointer<chat> chatItem = ParseObject::parseChat(chatObject);
@@ -419,6 +427,17 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
             if (chatItem->photo_->small_.data() != nullptr)
                 if (!chatItem->photo_->small_->local_->is_downloading_completed_)
                     tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+        }
+    }
+}
+
+void ChatsModel::addChats(const QJsonObject &chatsObject)
+{
+    qDebug() << chatsObject;
+    if (!chatsObject.contains("@extra")) {
+        QJsonArray chat_ids = chatsObject["chat_ids"].toArray();
+        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
+            tdlibJson->getChat(ParseObject::getInt64(*it), "");
         }
     }
 }

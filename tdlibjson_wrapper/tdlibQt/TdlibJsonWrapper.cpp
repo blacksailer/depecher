@@ -14,48 +14,6 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 {
     td_set_log_verbosity_level(2);
     client = td_json_client_create();
-    //SEG FAULT means that json has error input variable names
-    MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
-    MGConfItem useFileDatabase("/apps/depecher/tdlib/use_file_database");
-    MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
-    MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
-    MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
-
-    QFileInfo checkDir(filesDirectory.value("").toString());
-    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
-        filesDirectory.set("");
-    else {
-        //Disable directory from being tracked by tracker
-        QFile file(filesDirectory.value("").toString() + "/.nomedia");
-        if (!file.exists()) {
-            file.open(QIODevice::WriteOnly);
-            file.close();
-        }
-    }
-
-    QVariantMap parametersObject;
-    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
-    parametersObject["files_directory"] = filesDirectory.value("").toString();
-    parametersObject["api_id"] = tdlibQt::appid.toInt();
-    parametersObject["api_hash"] = tdlibQt::apphash;
-    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
-    parametersObject["device_model"] = QSysInfo::prettyProductName();
-    parametersObject["system_version"] = QSysInfo::productVersion();
-    parametersObject["application_version"] = APP_VERSION;
-    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
-    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
-    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
-    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
-    parametersObject["use_secret_chats"] = false;
-#ifdef TEST_DC
-    parametersObject["use_test_dc"] = true;
-#endif
-
-    QVariantMap rootObject;
-    rootObject["@type"] = "setTdlibParameters";
-    rootObject["parameters"] = parametersObject;
-    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
-    //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
 
 void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
@@ -223,6 +181,9 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::userReceived);
     connect(parseObject, &ParseObject::updateUserStatusReceived,
             this, &TdlibJsonWrapper::updateUserStatusReceived);
+    connect(parseObject, &ParseObject::chatsReceived,
+            this, &TdlibJsonWrapper::chatsReceived);
+
     listenThread->start();
     parseThread->start();
 
@@ -522,6 +483,53 @@ void TdlibJsonWrapper::checkPassword(const QString &password)
 
     sendToTelegram(client, setAuthenticationPassword.c_str());
 }
+
+void TdlibJsonWrapper::setTdlibParameters()
+{
+    //SEG FAULT means that json has error input variable names
+    MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
+    MGConfItem useFileDatabase("/apps/depecher/tdlib/use_file_database");
+    MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
+    MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
+    MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
+
+    QFileInfo checkDir(filesDirectory.value("").toString());
+    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
+        filesDirectory.set("");
+    else {
+        //Disable directory from being tracked by tracker
+        QFile file(filesDirectory.value("").toString() + "/.nomedia");
+        if (!file.exists()) {
+            file.open(QIODevice::WriteOnly);
+            file.close();
+        }
+    }
+
+    QVariantMap parametersObject;
+    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
+    parametersObject["files_directory"] = filesDirectory.value("").toString();
+    parametersObject["api_id"] = tdlibQt::appid.toInt();
+    parametersObject["api_hash"] = tdlibQt::apphash;
+    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
+    parametersObject["device_model"] = QSysInfo::prettyProductName();
+    parametersObject["system_version"] = QSysInfo::productVersion();
+    parametersObject["application_version"] = APP_VERSION;
+    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
+    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
+    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
+    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
+    parametersObject["use_secret_chats"] = false;
+#ifdef TEST_DC
+    parametersObject["use_test_dc"] = true;
+#endif
+
+    QVariantMap rootObject;
+    rootObject["@type"] = "setTdlibParameters";
+    rootObject["parameters"] = parametersObject;
+    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
+    //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
+
+}
 void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
                                         const QString &lastName)
 {
@@ -535,15 +543,30 @@ void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firs
 
 }
 void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset_order,
-                                const int limit)
+                                const int limit, const QString &extra)
 {
-    auto max_order = std::to_string(offset_order);
-    std::string getChats =
-        "{\"@type\":\"getChats\","
-        "\"offset_order\":\"" + max_order + "\","
-        "\"offset_chat_id\":\"" + std::to_string(offset_chat_id) + "\","
-        "\"limit\":" + std::to_string(limit) + "}";
-    sendToTelegram(client, getChats.c_str());
+    QString str;
+    if (extra != "") {
+        str = "{\"@type\":\"getChats\","
+              "\"offset_order\":\"%1\","
+              "\"offset_chat_id\":\"%2\","
+              "\"limit\":%3,"
+              "\"@extra\":\"%4\""
+              "}";
+        str = str.arg(QString::number(offset_order),
+                      QString::number(offset_chat_id),
+                      QString::number(limit),  extra);
+    } else {
+        str = "{\"@type\":\"getChats\","
+              "\"offset_order\":\"%1\","
+              "\"offset_chat_id\":\"%2\","
+              "\"limit\":%3"
+              "}";
+        str = str.arg(QString::number(offset_order),
+                      QString::number(offset_chat_id),
+                      QString::number(limit));
+    }
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getChat(const qint64 chatId, const QString &extra)
@@ -824,6 +847,10 @@ void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)
 
 void TdlibJsonWrapper::setAuthorizationState(Enums::AuthorizationState &authorizationState)
 {
+    if (authorizationState == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitTdlibParameters)
+        setTdlibParameters();
+    else if (authorizationState == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
+        setEncryptionKey();
 
     if (m_authorizationState == authorizationState)
         return;

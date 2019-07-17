@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql dbus multimedia network
+QT += core sql dbus multimedia network
 
 ##Application must be also changed in depecher.yaml file and tdlibjsonwrapper.pro
 VERSION = 0.6.1
@@ -85,7 +85,9 @@ SOURCES += \
     src/singletons/DNSTXTLookup.cpp \
     src/fileGeneratedHandlers/FileGeneratedHandler.cpp \
     src/fileGeneratedHandlers/CopyFileConversion.cpp \
-    src/components/AudioRecorder.cpp
+    src/components/AudioRecorder.cpp \
+    dbus/DBusShareAdaptor.cpp \
+    dbus/DBusShareAdaptorWrapper.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -127,7 +129,6 @@ DISTFILES += \
     translations/depecher-es.ts \
     dbus/org.blacksailer.depecher.service \
     dbus/org.blacksailer.depecher.xml \
-    dbus/application.xml \
     settings/DepecherAppSettings.qml \
     qml/app.qml \
     systemd/org.blacksailer.depecher.service \
@@ -136,7 +137,9 @@ DISTFILES += \
     qml/Background.qml \
     qml/pages/items/delegates/VideoDelegate.qml \
     qml/pages/items/delegates/VideoNoteDelegate.qml \
-    qml/pages/components/ChatItemShare.qml
+    qml/pages/components/ChatItemShare.qml \
+    dbus/org.blacksailer.depecher.share.xml \
+    qml/js/mimetypes.js
 
 HEADERS += \
     src/FileWorker.hpp \
@@ -148,4 +151,6 @@ HEADERS += \
     src/fileGeneratedHandlers/FileGeneratedHandler.hpp \
     src/fileGeneratedHandlers/FileGeneratedInterface.hpp \
     src/fileGeneratedHandlers/CopyFileConversion.hpp \
-    src/components/AudioRecorder.hpp
+    src/components/AudioRecorder.hpp \
+    dbus/DBusShareAdaptor.hpp \
+    dbus/DBusShareAdaptorWrapper.hpp

@@ -10,6 +10,7 @@
 #include "tdlibQt/NotificationManager.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "DBusAdaptor.hpp"
+#include "dbus/DBusShareAdaptor.hpp"
 #include "src/fileGeneratedHandlers/FileGeneratedHandler.hpp"
 
 int main(int argc, char *argv[])
@@ -25,8 +26,8 @@ int main(int argc, char *argv[])
         }
     }
 
-
     QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
+    QScopedPointer<DBusShareAdaptor> dbusShareWatcher(new DBusShareAdaptor(app));
 
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
@@ -45,13 +46,12 @@ int main(int argc, char *argv[])
 
 
     //Need to create at first launch. Bad design maybe, should change
-
     auto tdlib = tdlibQt::TdlibJsonWrapper::instance();
     auto NotificationManager = tdlibQt::NotificationManager::instance();
     auto usersmodel = tdlibQt::UsersModel::instance();
     tdlib->startListen();
     //used in authenticationhandler too.
-    tdlib->setEncryptionKey();
+//    tdlib->setEncryptionKey();
     FileGeneratedHandler generationHandler(app);
 
     if (quitOnCloseUi.value(false).toBool()) {

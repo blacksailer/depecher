@@ -179,7 +179,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 return QString::fromStdString(contentPtr->text_->text_);
 
             } else
-                return messageTypeToString(messagePtr.data()->get_id());
+                return ParseObject::messageTypeToString(messagePtr.data()->get_id());
         }
         return QVariant();
     }
@@ -839,40 +839,6 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
 
 
         setFetching(false);
-    }
-}
-
-QString MessagingModel::messageTypeToString(const int messageTypeId)
-{
-    switch (messageTypeId) {
-    case  messageText::ID:
-        return tr("Text");
-    case  messagePhoto::ID:
-        return tr("Photo");
-    case  messageDocument::ID:
-        return tr("Document");
-    case messageVideo::ID:
-        return tr("Video");
-    case messageAudio::ID:
-        return tr("Audio");
-    case messageVideoNote::ID:
-        return tr("Video note");
-    case messageAnimation::ID:
-        return tr("GIF");
-    case messageCall::ID:
-        return tr("Call");
-    case messageContact::ID:
-        return tr("Contact");
-    case messageVoiceNote::ID:
-        return tr("Audio note");
-    case messageVenue::ID:
-        return tr("Venue");
-    case messageUnsupported::ID:
-        return tr("Unsupported");
-    case messageSticker::ID:
-        return tr("Sticker");
-    default:
-        return tr("Message content");
     }
 }
 

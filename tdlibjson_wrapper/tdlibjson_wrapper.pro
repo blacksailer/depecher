@@ -10,8 +10,7 @@ TARGET = tdlibjson_wrapper
 CONFIG += staticlib
 QT += dbus quick
 
-CONFIG += c++11
-CONFIG += link_pkgconfig
+CONFIG += c++11 link_pkgconfig
 PKGCONFIG +=  tdlibjson
 PKGCONFIG += mlite5
 

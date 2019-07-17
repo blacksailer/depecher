@@ -14,6 +14,7 @@ class ChatsModel : public QAbstractListModel
     Q_PROPERTY(int totalUnreadCount READ totalUnreadCount NOTIFY
                totalUnreadCountChanged)
     QList<QSharedPointer<chat>> m_chats;
+    QList<int> m_chatIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionMap;
     QVector<int> chatActionIndices;
     QTimer chatActionTimer;
@@ -72,6 +73,7 @@ public:
 private slots:
     void chatActionCleanUp();
     void addChat(const QJsonObject &chatObject);
+    void addChats(const QJsonObject &chatsObject);
     void updateChatPhoto(const QJsonObject &chatObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
     void updateChatLastMessage(const QJsonObject &chatLastMessageObject);

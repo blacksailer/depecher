@@ -107,8 +107,9 @@ fi
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
 %{_datadir}/dbus-1/services/org.blacksailer.depecher.service
-%{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml
+%{_datadir}/dbus-1/interfaces/*.xml
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_libdir}/systemd/user/org.blacksailer.depecher.service
+%{_libdir}/nemo-transferengine/plugins/*
 # >> files
 # << files
