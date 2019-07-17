@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import tdlibQtEnums 1.0 //org.blacksailer.depecher.sharechat
 import "../items"
 
 ListItem {
@@ -20,7 +19,7 @@ ListItem {
                 id: avatar
                 width:height
                 height: parent.height
-                source: photo ? "image://depecherDb/"+photo : ""
+                source: photo ? photo : ""
                 fallbackText: title.charAt(0)
                 fallbackItemVisible: photo ? false : true
             }
@@ -36,15 +35,15 @@ ListItem {
                     Image {
                         id: iconGroup
                         source: type["is_channel"] ? "image://theme/icon-m-media-radio?" + (pressed
-                                                                                                    ? Theme.highlightColor
-                                                                                                    : Theme.primaryColor) :
-                                                             type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
-                                                                                                                                                                   ? Theme.highlightColor
-                                                                                                                                                                   : Theme.primaryColor) :
-                                                                                                                              type["type"] == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
-                                                                                                                                                                                           ? Theme.highlightColor
-                                                                                                                                                                                           : Theme.primaryColor) :
-                                                                                                                                                          ""
+                                                                                            ? Theme.highlightColor
+                                                                                            : Theme.primaryColor) :
+                                                     type["type"] == TdlibState.Supergroup || type["type"] == TdlibState.BasicGroup ? "image://theme/icon-s-group-chat?"+ (pressed
+                                                                                                                                                                           ? Theme.highlightColor
+                                                                                                                                                                           : Theme.primaryColor) :
+                                                                                                                                      type["type"] == TdlibState.Secret ? "image://theme/icon-s-secure?"+ (pressed
+                                                                                                                                                                                                           ? Theme.highlightColor
+                                                                                                                                                                                                           : Theme.primaryColor) :
+                                                                                                                                                                          ""
                         anchors.verticalCenter: parent.verticalCenter
                         height: parent.height
                         width: source == "" ? 0 : implicitWidth
@@ -203,9 +202,7 @@ ListItem {
                             }
                         }
                     }
-
                 }
-
             }
         }
     }

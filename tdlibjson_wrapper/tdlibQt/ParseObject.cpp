@@ -1,11 +1,10 @@
-#include "ParseObject.hpp"
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QDebug>
-#include "NotificationManager.hpp"
 #include <QDateTime>
 #include <QGuiApplication>
 #include <QFile>
+#include "ParseObject.hpp"
 
 namespace tdlibQt {
 ParseObject::ParseObject(QObject *parent) : QObject(parent)
@@ -255,13 +254,14 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
 
     if (typeField == "chats") {
-        QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
-        QString extra = "";
-        if (doc.object().contains("@extra"))
-            extra =  doc.object()["@extra"].toString();
-        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
-            emit getChat(getInt64(*it), extra);
-        }
+        emit chatsReceived(doc.object());
+//        QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
+//        QString extra = "";
+//        if (doc.object().contains("@extra"))
+//            extra =  doc.object()["@extra"].toString();
+//        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
+//            emit getChat(getInt64(*it), extra);
+//        }
     }
     if (typeField == "chat") {
         auto chatItem = doc.object();
@@ -295,6 +295,41 @@ QString ParseObject::getUserName(int userId)
     if (users_.contains(userId))
         return users_[userId];
     return "Unknown";
+}
+
+QString ParseObject::messageTypeToString(const int messageTypeId)
+{
+    switch (messageTypeId) {
+    case  messageText::ID:
+        return tr("Text");
+    case  messagePhoto::ID:
+        return tr("Photo");
+    case  messageDocument::ID:
+        return tr("Document");
+    case messageVideo::ID:
+        return tr("Video");
+    case messageAudio::ID:
+        return tr("Audio");
+    case messageVideoNote::ID:
+        return tr("Video note");
+    case messageAnimation::ID:
+        return tr("GIF");
+    case messageCall::ID:
+        return tr("Call");
+    case messageContact::ID:
+        return tr("Contact");
+    case messageVoiceNote::ID:
+        return tr("Audio note");
+    case messageVenue::ID:
+        return tr("Venue");
+    case messageUnsupported::ID:
+        return tr("Unsupported");
+    case messageSticker::ID:
+        return tr("Sticker");
+    default:
+        return tr("Message content");
+    }
+
 }
 QString ParseObject::getFirstName(int userId)
 {
@@ -1453,7 +1488,6 @@ QSharedPointer<UserType> ParseObject::parseUserType(const QJsonObject &userTypeO
         resultTypeBot->need_location_ = userTypeObject["need_location"].toBool();
         return resultTypeBot;
     }
-
     return QSharedPointer<UserType>(new userTypeUnknown);
 }
 

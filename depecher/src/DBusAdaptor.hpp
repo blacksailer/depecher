@@ -6,20 +6,23 @@
 #include <QQuickView>
 #include "dbus/DepecherAdaptor.hpp"
 class PageAppStarter;
+namespace tdlibQt {
+class TdlibJsonWrapper;
+}
+
+
 class DBusAdaptor : public QObject
 {
     Q_OBJECT
     QGuiApplication *app = nullptr;
     QQuickView *view = nullptr;
     PageAppStarter *pagesStarter;
-
+    tdlibQt::TdlibJsonWrapper *tdlibJson;
 public:
     explicit DBusAdaptor(QGuiApplication *parent = nullptr);
     ~DBusAdaptor();
     static bool isRegistered();
     static bool raiseApp();
-signals:
-
 public slots:
     void showApp(const QStringList &cmd);
     void openConversation(const qlonglong &chatId);

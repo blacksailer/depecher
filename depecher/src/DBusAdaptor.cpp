@@ -27,11 +27,12 @@ static const QString c_dbusServiceName = QStringLiteral("org.blacksailer.depeche
 static const QString c_dbusObjectPath = QStringLiteral("/org/blacksailer/depecher");
 static const QString c_dbusInterface = QStringLiteral("org.blacksailer.depecher");
 static const QString c_dbusMethod = QStringLiteral("showApp");
+static const QString c_extraName = QStringLiteral("dbus");
 
 DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 {
 //    connect(app, &QGuiApplication::destroyed, this, &DBusAdaptor::stopDaemon);
-
+    tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
     QDBusConnection dbus = QDBusConnection::sessionBus();
     new DepecherAdaptor(this);
     pagesStarter = new PageAppStarter(this);
@@ -48,11 +49,9 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 DBusAdaptor::~DBusAdaptor()
 {
     QDBusConnection dbus = QDBusConnection::sessionBus();
-
     dbus.unregisterObject(c_dbusObjectPath); //object path
     bool ready = dbus.unregisterService(c_dbusServiceName);
     qDebug() << "Unregister service" << ready; //object path
-
 }
 
 bool DBusAdaptor::isRegistered()

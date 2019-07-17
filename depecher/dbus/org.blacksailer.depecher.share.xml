@@ -1,0 +1,43 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+<interface name="org.blacksailer.depecher.share">
+<method name="getChatList">
+<arg direction="in" type="x" name="last_chat_id"/>
+<arg direction="in" type="x" name="order"/>
+<arg direction="out" type="av" name="chatVariant"/>
+</method>
+<method name="sendVCard">
+<arg direction="in" type="ax" name="chat_ids"/>
+<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QList&lt;qlonglong&gt;"/>
+<arg direction="in" type="s" name="data"/>
+<annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
+</method>
+<method name="sendMedia">
+<arg direction="in" type="ax" name="chat_ids"/>
+<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QList&lt;qlonglong&gt;"/>
+<arg direction="in" type="s" name="filepath"/>
+<arg direction="in" type="s" name="mime_type"/>
+<annotation value="true" name="org.freedesktop.DBus.Method.NoReply"/>
+</method>
+<signal name="uploadFailed">
+<arg direction="out" type="s" name="chat_id"/>
+<arg direction="out" type="s" name="message_id"/>
+</signal>
+<signal name="uploadFinished">
+<arg direction="out" type="s" name="chat_id"/>
+<arg direction="out" type="s" name="message_id"/>
+<arg direction="out" type="s" name="remote_url"/>
+</signal>
+<signal name="uploadStarted">
+<arg direction="out" type="s" name="chat_id"/>
+<arg direction="out" type="s" name="message_id"/>
+<arg direction="out" type="s" name="local_url"/>
+</signal>
+<signal name="uploadProgress">
+<arg direction="out" type="s" name="chat_id"/>
+<arg direction="out" type="s" name="message_id"/>
+<arg direction="out" type="i" name="percent"/>
+</signal>
+</interface>
+</node>

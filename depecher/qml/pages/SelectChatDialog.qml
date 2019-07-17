@@ -16,7 +16,7 @@ Dialog {
             return page.__chat_page !== undefined;
         });
         if(page)
-page._opened_chat_id = ""
+        page._opened_chat_id = ""
         pageStack.replaceAbove(page,Qt.resolvedUrl("MessagingPage.qml"),{"chatId":selected_chat_id,
                               "forwardMessages":{
                              "selected_chat_id":selected_chat_id,

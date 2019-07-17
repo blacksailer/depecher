@@ -247,7 +247,6 @@ signals:
 
 
 public:
-    static QString messageTypeToString(const int  messageTypeId);
     // QAbstractItemModel interface
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
