@@ -103,7 +103,9 @@ class MessagingModel : public QAbstractListModel
         FILE_TYPE,
         STICKER_SET_ID,
         SECTION, //Custom
+        RICH_TEXT, //Custom
         MESSAGE_TYPE //Custom
+
     };
 
     void appendMessage(const QJsonObject &messageObject);
@@ -114,6 +116,7 @@ class MessagingModel : public QAbstractListModel
     void addRepliedMessage(const QJsonObject &messageObject);
 
     bool canFetchOlder();
+    QString makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity>> &markup) const;
 private slots:
     void chatActionCleanUp();
     void getFile(const int fileId, const int priority, const int indexItem);

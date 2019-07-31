@@ -27,8 +27,11 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
             isAtFirstLoaded = false;
         }
     });
-    connect(m_client, &TdlibJsonWrapper::newMessageFromUpdate,
-            this, &NotificationManager::gotNewMessage);
+    connect(m_client, &TdlibJsonWrapper::updateNotificationGroupReceived,
+            this, &NotificationManager::gotNotificationGroup);
+    connect(m_client, &TdlibJsonWrapper::updateActiveNotificationReceived,
+            this, &NotificationManager::gotActiveNotification);
+
     //Not working. Before get Ready, do not emit updateChatReadInbox.
     connect(m_client, &TdlibJsonWrapper::updateChatReadInbox,
     [this](const QJsonObject & object) {
@@ -63,6 +66,45 @@ NotificationManager::NotificationManager(QObject *parent) : QObject(parent),
 
     connect(m_client, &TdlibJsonWrapper::updateChatReadOutbox,
             this, &NotificationManager::getUpdateChatOutbox);
+}
+
+void NotificationManager::processNotificationGroup(QSharedPointer<notificationGroup> &group)
+{
+    foreach (auto notification, group->notifications_) {
+        switch (notification->type_->get_id()) {
+        case notificationTypeNewMessage::ID:
+            QSharedPointer<message> messageItem = static_cast<notificationTypeNewMessage *>(notification->type_.data())->message_;
+            auto notificationTimestamp = qint64(messageItem->date_);
+            qDebug() << "Publishing...";
+            QString notificationSummary;
+            QString notificationBody;
+            qint64 chatId = messageItem->chat_id_;
+            QString chatTitle = UsersModel::instance()->getChatTitle(chatId);
+            notificationSummary = chatTitle;
+            QString userName = UsersModel::instance()->getUserFullName(messageItem->sender_user_id_);
+            notificationBody = userName + ":";
+
+            if (messageItem->content_->get_id() == messageText::ID) {
+                auto one = static_cast<messageText *>(messageItem->content_.data());
+                auto two = static_cast<formattedText *>(one->text_.data());
+                notificationBody.append(" " +
+                                        QString::fromStdString(two->text_));
+            } else
+                notificationBody.append(" " +
+                                        ParseObject::messageTypeToString(messageItem->content_->get_id()));
+
+            if (qApp->applicationState() != Qt::ApplicationActive)
+                notifySummary(notificationTimestamp, notificationSummary,
+                              notificationBody,
+                              chatId, 1);
+            else
+                notifyPreview(notificationTimestamp, notificationSummary,
+                              notificationBody,
+                              chatId, 1);
+            break;
+        }
+    }
+
 }
 
 void NotificationManager::publishNotifications()
@@ -108,7 +150,8 @@ void NotificationManager::getUpdateChatOutbox(const QJsonObject &chatReadOutbox)
 
 void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
 {
-    bool disableNotification  = updateNewMessage["disable_notification"].toBool();
+#warning parse notifiocation
+    bool disableNotification  = true;//updateNewMessage["disable_notification"].toBool();
     qDebug() << disableNotification;
     if (!disableNotification) {
         auto messageObject = updateNewMessage["message"].toObject();
@@ -145,6 +188,33 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
                           chatId, 1);
     }
 
+}
+
+void NotificationManager::gotNotificationGroup(const QJsonObject &updateNotificationGroupObject)
+{
+    auto updateNotificationGroupObj = ParseObject::parseUpdateNotificationGroup(updateNotificationGroupObject);
+    if (updateNotificationGroupObj->type_->get_id() == notificationGroupTypeMessages::ID ||
+            updateNotificationGroupObj->type_->get_id() == notificationGroupTypeMentions::ID) {
+        auto tmpNotifGroup = QSharedPointer<notificationGroup>(new notificationGroup);
+        tmpNotifGroup->chat_id_ = updateNotificationGroupObj->chat_id_;
+        tmpNotifGroup->id_  = updateNotificationGroupObj->notification_group_id_;
+        tmpNotifGroup->notifications_  = updateNotificationGroupObj->added_notifications_;
+        tmpNotifGroup->total_count_  = updateNotificationGroupObj->total_count_;
+        tmpNotifGroup->type_ =  updateNotificationGroupObj->type_;
+        processNotificationGroup(tmpNotifGroup);
+    }
+}
+
+void NotificationManager::gotActiveNotification(const QJsonObject &updateActiveNotificationObject)
+{
+    std::vector<object_ptr<notificationGroup>> groups_;
+    foreach (auto itm, updateActiveNotificationObject["groups"].toArray()) {
+        auto notificationGroup = ParseObject::parseNotificationGroup(itm.toObject());
+        if (notificationGroup->type_->get_id() == notificationGroupTypeMessages::ID ||
+                notificationGroup->type_->get_id() == notificationGroupTypeMentions::ID)
+            processNotificationGroup(notificationGroup);
+        groups_.push_back(notificationGroup);
+    }
 }
 
 void NotificationManager::onViewMessages(const qint64 peerId)

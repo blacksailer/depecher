@@ -16,7 +16,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
-
+#include "sailfish_access.c"
+#include <QDebug>
 /*
  * Implementation of adaptor class DBusShareAdaptorWrapper
  */
@@ -30,15 +31,39 @@ DBusShareAdaptorWrapper::DBusShareAdaptorWrapper(QObject *parent)
 
 DBusShareAdaptorWrapper::~DBusShareAdaptorWrapper()
 {
-    // destructor
+    if (m_policyInitialized) {
+        da_peer_flush(CONNMAN_BUS, NULL);
+        if (active_policy) {
+            g_ptr_array_free(active_policy, TRUE);
+            active_policy = NULL;
+        }
+    }
+
+}
+
+void DBusShareAdaptorWrapper::initPolicy()
+{
+    active_policy = g_ptr_array_new_with_free_func
+                    (sailfish_access_policy_free);
+
+    sailfish_access_load_config();
+    m_policyInitialized = true;
+
+
 }
 
 QDBusVariant DBusShareAdaptorWrapper::getChatList(qint64 last_chat_id, qint64 order, const QDBusMessage &message)
 {
+    qDebug() << (int)sailfish_access_policy_check(message.service().toLatin1().constData(),
+             GET_CHAT_LIST, 0);
     // handle method call org.blacksailer.depecher.share.getChatList
+    if (sailfish_access_policy_check(message.service().toLatin1().constData(),
+                                     GET_CHAT_LIST, 0) == AUTH_DENY) {
+        QDBusConnection::sessionBus().send(message.createErrorReply(QDBusError::AccessDenied, "Policy error"));
+        return QDBusVariant();
+    }
     QVariant chatVariant;
     message.setDelayedReply(true);
-    qDebug() << "Wrppaer dbus";
     QMetaObject::invokeMethod(parent(), "getChatList",
                               Q_RETURN_ARG(QVariant, chatVariant),
                               Q_ARG(qint64, last_chat_id),
@@ -47,8 +72,14 @@ QDBusVariant DBusShareAdaptorWrapper::getChatList(qint64 last_chat_id, qint64 or
     return QDBusVariant(chatVariant);
 }
 
-void DBusShareAdaptorWrapper::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType)
+void DBusShareAdaptorWrapper::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType, const QDBusMessage &message)
 {
+    if (sailfish_access_policy_check(message.service().toLatin1().constData(),
+                                     SEND_MEDIA, 0) == AUTH_DENY) {
+        QDBusConnection::sessionBus().send(message.createErrorReply(QDBusError::AccessDenied, "Policy error"));
+        return;
+
+    }
     // handle method call org.blacksailer.depecher.share.sendMedia
     QMetaObject::invokeMethod(parent(), "sendMedia",
                               Q_ARG(QList<qlonglong>, chat_ids),
@@ -57,8 +88,13 @@ void DBusShareAdaptorWrapper::sendMedia(const QList<qlonglong> &chat_ids, const 
                              );
 }
 
-void DBusShareAdaptorWrapper::sendVCard(const QList<qlonglong> &chat_ids, const QString &data)
+void DBusShareAdaptorWrapper::sendVCard(const QList<qlonglong> &chat_ids, const QString &data, const QDBusMessage &message)
 {
+    if (sailfish_access_policy_check(message.service().toLatin1().constData(),
+                                     SEND_VCARD, 0) == AUTH_DENY) {
+        QDBusConnection::sessionBus().send(message.createErrorReply(QDBusError::AccessDenied, "Policy error"));
+        return;
+    }
     // handle method call org.blacksailer.depecher.share.sendVCard
     QMetaObject::invokeMethod(parent(), "sendVCard",
                               Q_ARG(QList<qlonglong>, chat_ids),

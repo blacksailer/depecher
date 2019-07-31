@@ -13,8 +13,8 @@ Name:       depecher
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Telegram client for Sailfish OS
-Version:    0.6.1
-Release:    2
+Version:    0.7.0
+Release:    1
 Group:      Applications/Communications
 License:    LICENSE
 URL:        https://github.com/blacksailer/depecher
@@ -23,6 +23,7 @@ Source100:  depecher.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   tdlibjson >= 1.3.1
 Requires:   libvorbis
+Requires:   libdbusaccess
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
@@ -31,6 +32,7 @@ BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(tdlibjson)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(vorbisfile)
+BuildRequires:  pkgconfig(libdbusaccess)
 BuildRequires:  desktop-file-utils
 
 %description
@@ -107,9 +109,10 @@ fi
 %exclude %{_libdir}/cmake/*
 %exclude %{_libdir}/debug/*
 %{_datadir}/dbus-1/services/org.blacksailer.depecher.service
-%{_datadir}/dbus-1/interfaces/*.xml
+%{_datadir}/dbus-1/interfaces/org.blacksailer.depecher.xml
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{_libdir}/systemd/user/org.blacksailer.depecher.service
 %{_libdir}/nemo-transferengine/plugins/*
+%{_sysconfdir}/%{name}/depecher-dbus-access.conf
 # >> files
 # << files

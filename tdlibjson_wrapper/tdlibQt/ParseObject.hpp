@@ -74,7 +74,7 @@ public:
     static QSharedPointer<messageAnimation> parseMessageAnimation(const QJsonObject
             &messageAnimationObject);
     static QSharedPointer<animation> parseAnimation(const QJsonObject &animationObject);
-    static QSharedPointer<MessageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
+    static QSharedPointer<messageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
     static QSharedPointer<MessageSendingState> parseMessageSendingState(const QJsonObject
             &messageSendingStateObject);
     static QSharedPointer<ChatMemberStatus> parseChatMemberStatus(const QJsonObject
@@ -97,6 +97,10 @@ public:
     static QSharedPointer<video> parseVideo(const QJsonObject &videoObject);
     static QSharedPointer<videoNote> parseVideoNote(const QJsonObject &videoNoteObject);
     static QSharedPointer<messageVideoNote> parseMessageVideoNote(const QJsonObject  &messageVideoNoteObject);
+
+    static QSharedPointer<textEntity> parseTextEntity(const QJsonObject &textEntityObject);
+    static QSharedPointer<updateNotificationGroup> parseUpdateNotificationGroup(const QJsonObject &updateNotificationGroupObject);
+    static QSharedPointer<notificationGroup> parseNotificationGroup(const QJsonObject &updateNotificationGroupObject);
 
 signals:
 
@@ -150,6 +154,8 @@ signals:
     void secondsReceived(const QJsonObject &secondsObject);
     void textReceived(const QJsonObject &textObject);
     void userReceived(const QJsonObject &userObject);
+    void updateNotificationGroupReceived(const QJsonObject &updateNotificationGroupObject);
+    void updateActiveNotificationReceived(const QJsonObject &updateActiveNotificationObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

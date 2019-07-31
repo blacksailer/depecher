@@ -101,10 +101,12 @@ void DBusShareAdaptor::sendText(const QList<qlonglong> &chat_ids, const QString 
 
 DBusShareAdaptor::DBusShareAdaptor(QObject *parent) : QObject(parent)
 {
-    new DBusShareAdaptorWrapper(this);
-    m_tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
+
+    auto adaptor = new DBusShareAdaptorWrapper(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    qDebug() << "Register object" << dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this); //object path
+    dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this);
+    adaptor->initPolicy();
+    m_tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
 
     connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFileGenerationStartReceived,
             this, &DBusShareAdaptor::fileGenerationStarted);
@@ -144,6 +146,7 @@ DBusShareAdaptor::~DBusShareAdaptor()
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.unregisterObject(c_dbusObjectPath); //object path
 }
+
 
 void DBusShareAdaptor::addChatItem(const QJsonObject &chatObject)
 {

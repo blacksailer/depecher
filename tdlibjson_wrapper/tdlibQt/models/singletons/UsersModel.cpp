@@ -107,7 +107,7 @@ QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const qint64 userId)
 QString UsersModel::getUserFullName(const int userId)
 {
     if (!m_users.contains(userId))
-        return tr("Uknown user");
+        return tr("Unknown user");
 
     return QString::fromStdString(m_users[userId]->first_name_) + " " + QString::fromStdString(
                m_users[userId]->last_name_);

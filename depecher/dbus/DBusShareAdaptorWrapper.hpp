@@ -71,14 +71,15 @@ class DBusShareAdaptorWrapper: public QDBusAbstractAdaptor
                 "    </signal>\n"
                 "  </interface>\n"
                 "")
+    bool m_policyInitialized = false;
 public:
     DBusShareAdaptorWrapper(QObject *parent);
     virtual ~DBusShareAdaptorWrapper();
-
+    void initPolicy();
 public Q_SLOTS: // METHODS
     QDBusVariant getChatList(qint64 last_chat_id, qint64 order, const QDBusMessage &message);
-    Q_NOREPLY void sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType);
-    Q_NOREPLY void sendVCard(const QList<qlonglong> &chat_ids, const QString &data);
+    Q_NOREPLY void sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType, const QDBusMessage &message);
+    Q_NOREPLY void sendVCard(const QList<qlonglong> &chat_ids, const QString &data, const QDBusMessage &message);
 Q_SIGNALS: // SIGNALS
     void uploadFailed(const QString &chat_id, const QString &message_id);
     void uploadFinished(const QString &chat_id, const QString &message_id, const QString &remote_url);

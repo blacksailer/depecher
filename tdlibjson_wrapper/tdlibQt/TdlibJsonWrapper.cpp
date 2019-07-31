@@ -183,7 +183,10 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateUserStatusReceived);
     connect(parseObject, &ParseObject::chatsReceived,
             this, &TdlibJsonWrapper::chatsReceived);
-
+    connect(parseObject, &ParseObject::updateNotificationGroupReceived,
+            this, &TdlibJsonWrapper::updateNotificationGroupReceived);
+    connect(parseObject, &ParseObject::updateActiveNotificationReceived,
+            this, &TdlibJsonWrapper::updateActiveNotificationReceived);
     listenThread->start();
     parseThread->start();
 
@@ -218,6 +221,41 @@ void TdlibJsonWrapper::closeChat(const QString &chat_id)
     std::string closeChat = "{\"@type\":\"closeChat\","
                             "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
     sendToTelegram(client, closeChat.c_str());
+}
+
+void TdlibJsonWrapper::setOption(const QString &name, const QVariant &value)
+{
+    QString str = "{\"@type\":\"setOption\","
+                  "\"name\":\"%1\","
+                  "\"value\":%2}";
+
+    QString objValue = "{\"@type\":\"%1\","
+                       "\"value\":%2}";
+    if (value.isNull())
+        objValue = "{\"@type\":\"optionValueEmpty\"}";
+    else {
+        switch (value.type()) {
+        case QVariant::Type::Bool:
+            if (value.toBool())
+                objValue = objValue.arg("optionValueBoolean", "true");
+            else
+                objValue = objValue.arg("optionValueBoolean", "false");
+            break;
+        case QVariant::Type::Int:
+        case QVariant::Type::Double:
+            objValue = objValue.arg("optionValueInteger", value.toString());
+
+            break;
+        case QVariant::Type::String:
+            objValue = objValue.arg("optionValueString", value.toString().prepend("\"").append("\""));
+        default:
+            objValue = "{\"@type\":\"optionValueEmpty\"}";
+            break;
+        }
+    }
+    str = str.arg(name, objValue);
+
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getContacts()
@@ -492,6 +530,10 @@ void TdlibJsonWrapper::setTdlibParameters()
     MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
     MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
     MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
+    MGConfItem notificationGroupCountMax("/apps/depecher/tdlib/notification_group_count_max");
+    MGConfItem notificationGroupSizeMax("/apps/depecher/tdlib/notification_group_size_max");
+    setOption("notification_group_count_max", notificationGroupCountMax.value(3));
+    setOption("notification_group_size_max", notificationGroupSizeMax.value(10));
 
     QFileInfo checkDir(filesDirectory.value("").toString());
     if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
@@ -629,10 +671,17 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
         priority = 32;
     if (priority < 1)
         priority = 1;
+    bool sync = false;
     QString getFile = "{\"@type\":\"downloadFile\","
-                      "\"file_id\":" + QString::number(fileId) + ","
-                      "\"priority\":" + QString::number(priority) +
+                      "\"file_id\":\"%1\","
+                      "\"priority\":%2,"
+                      "\"offset\":%3,"
+                      "\"limit\":%4,"
+                      "\"synchronous\":%5"
                       "}";
+
+    getFile = getFile.arg(QString::number(fileId), QString::number(priority),
+                          QString::number(0), QString::number(0), sync ? QString("true") : QString("false"));
     if (extra != "") {
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}");
@@ -851,7 +900,6 @@ void TdlibJsonWrapper::setAuthorizationState(Enums::AuthorizationState &authoriz
         setTdlibParameters();
     else if (authorizationState == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
         setEncryptionKey();
-
     if (m_authorizationState == authorizationState)
         return;
 

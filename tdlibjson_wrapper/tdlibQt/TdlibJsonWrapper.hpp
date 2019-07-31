@@ -118,11 +118,15 @@ signals:
     void userReceived(const QJsonObject &userObject);
     void updateUserStatusReceived(const QJsonObject &updateUserStatusObject);
     void chatsReceived(const QJsonObject &chatsObject);
+    void updateNotificationGroupReceived(const QJsonObject &updateNotificationGroupObject);
+    void updateActiveNotificationReceived(const QJsonObject &updateActiveNotificationObject);
+
 private slots:
     void setTdlibParameters();
 public slots:
     void openChat(const QString &chat_id);
     void closeChat(const QString &chat_id);
+    void setOption(const QString &name, const QVariant &value);
     void getContacts();
     void getUser(const qint64 chatId, const QString &extra);
     void searchContacts(const QString &query, const int limit);

@@ -43,7 +43,16 @@ Page {
         key: tdlibSettingsPath + "/quit_on_close_ui"
         defaultValue: false
     }
-
+    ConfigurationValue {
+        id:notificationGroupCountMax
+        key: tdlibSettingsPath + "/notification_group_count_max"
+        defaultValue: 4
+    }
+    ConfigurationValue {
+        id:notificationGroupSizeMax
+        key: tdlibSettingsPath + "/notification_group_size_max"
+        defaultValue: 10
+    }
     DBusInterface {
         id: depecherService
 
@@ -275,6 +284,32 @@ Page {
                 text: qsTr("Library settings")
             }
 
+            Slider {
+                id: notificationGroupCountMaxSlider
+                width: parent.width - 2 * x
+                x:Theme.horizontalPageMargin
+                label: qsTr("Max number of notification groups to be shown")
+
+                minimumValue: 0
+                maximumValue: 25
+                stepSize: 1
+                value: notificationGroupCountMax.value
+                valueText: value
+                onValueChanged: notificationGroupCountMax.value = value
+            }
+            Slider {
+                id: notificationGroupSizeMaxSlider
+                width: parent.width - 2 * x
+                x:Theme.horizontalPageMargin
+                label: qsTr("Max number of notifications in a group")
+
+                minimumValue: 0
+                maximumValue: 25
+                stepSize: 1
+                value: notificationGroupSizeMax.value
+                valueText: value
+                onValueChanged: notificationGroupSizeMax.value = value
+            }
             TextField {
                 id: filesDirectoryField
                 width: parent.width - 2 * x

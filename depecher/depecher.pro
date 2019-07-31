@@ -15,7 +15,7 @@ TARGET = depecher
 QT += core sql dbus multimedia network
 
 ##Application must be also changed in depecher.yaml file and tdlibjsonwrapper.pro
-VERSION = 0.6.1
+VERSION = 0.7.0
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -23,8 +23,11 @@ CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
 PKGCONFIG += sailfishapp mlite5
-PKGCONFIG += vorbisfile
+PKGCONFIG += vorbisfile libglibutil libdbusaccess
 
+dbus_policy.files = dbus/depecher-dbus-access.conf
+dbus_policy.path = /etc/$$TARGET
+INSTALLS += dbus_policy
 
 LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv
 
@@ -87,7 +90,8 @@ SOURCES += \
     src/fileGeneratedHandlers/CopyFileConversion.cpp \
     src/components/AudioRecorder.cpp \
     dbus/DBusShareAdaptor.cpp \
-    dbus/DBusShareAdaptorWrapper.cpp
+    dbus/DBusShareAdaptorWrapper.cpp \
+    dbus/sailfish_access.c
 
 
 OTHER_FILES += qml/app.qml \
@@ -139,7 +143,9 @@ DISTFILES += \
     qml/pages/items/delegates/VideoNoteDelegate.qml \
     qml/pages/components/ChatItemShare.qml \
     dbus/org.blacksailer.depecher.share.xml \
-    qml/js/mimetypes.js
+    qml/js/mimetypes.js \
+    dbus/depecher-dbus-access.conf \
+    dbus/org.blacksailer.depecher.conf
 
 HEADERS += \
     src/FileWorker.hpp \

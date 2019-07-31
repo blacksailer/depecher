@@ -194,20 +194,29 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case MEDIA_ALBUM_ID:
         return QString::number(m_messages[rowIndex]->media_album_id_);
     case FORWARD_INFO: {
-        if (m_messages[rowIndex]->forward_info_.data()) {
-            if (m_messages[rowIndex]->forward_info_->get_id() == messageForwardedFromUser::ID) {
-                messageForwardedFromUser *messageForwardInfoPtr = static_cast<messageForwardedFromUser *>
-                        (m_messages[rowIndex]->forward_info_.data());
+//        if (m_messages[rowIndex]->forward_info_.data()) {
+        if (m_messages[rowIndex]->forward_info_->origin_.data()) {
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginUser::ID) {
+                messageForwardOriginUser *messageForwardInfoPtr = static_cast<messageForwardOriginUser *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getUserFullName(messageForwardInfoPtr->sender_user_id_);
             }
-            if (m_messages[rowIndex]->forward_info_->get_id() == messageForwardedPost::ID) {
-                messageForwardedPost *messageForwardInfoPtr = static_cast<messageForwardedPost *>
-                        (m_messages[rowIndex]->forward_info_.data());
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginChannel::ID) {
+                messageForwardOriginChannel *messageForwardInfoPtr = static_cast<messageForwardOriginChannel *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getChatTitle(messageForwardInfoPtr->chat_id_);
             }
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginHiddenUser::ID) {
+                messageForwardOriginHiddenUser *messageForwardInfoPtr = static_cast<messageForwardOriginHiddenUser *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
+
+                return QString::fromStdString(messageForwardInfoPtr->sender_name_);
+            }
         }
+
+//        }
         return QVariant();
     }
 
@@ -355,6 +364,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case FILE_TYPE:
         return dataFileMeta(rowIndex, role);
         break;
+
     case STICKER_SET_ID:
         if (m_messages[rowIndex]->content_->get_id() == messageSticker::ID) {
             auto contentStickerPtr = static_cast<messageSticker *>
@@ -475,9 +485,19 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         auto DateTimestamp = QDateTime::fromString(messageDate.toString(Qt::ISODate), Qt::ISODate);
         return DateTimestamp.toTime_t();
     }
-    //        FORWARD_INFO,
+    case RICH_TEXT:
+        if (m_messages[rowIndex]->content_.data() != nullptr) {
+            if (m_messages[rowIndex]->content_->get_id() == messageText::ID) {
+                auto contentPtr = static_cast<messageText *>
+                                  (m_messages[rowIndex]->content_.data());
+                if (contentPtr->text_.data() != nullptr) {
+                    auto t = contentPtr->text_->entities_;
+                    return makeRichText(QString::fromStdString(contentPtr->text_->text_), t);
+                }
+            }
+        }
+        return QVariant();
     //        VIEWS,
-
     default:
         break;
     }
@@ -541,6 +561,8 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[MESSAGE_TYPE] = "message_type";
     roles[SECTION] = "section";
     roles[WAVEFORM] = "waveform";
+    roles[RICH_TEXT] = "rich_text";
+
     return roles;
 }
 void MessagingModel::fetchOlder()
@@ -1155,6 +1177,93 @@ void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
 bool MessagingModel::canFetchOlder()
 {
     return !reachedHistoryEnd();
+}
+
+QString MessagingModel::makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity> > &markup) const
+{
+    if (markup.size() == 0)
+        return data;
+
+    QList<QPair<int, int>> positions;
+
+    for (int i = 0; i < markup.size(); ++i)
+        positions.append(QPair<int, int>(markup[i]->offset_, markup[i]->length_));
+
+    QStringList textParts;
+
+    for (int i = 0; i < positions.size(); ++i) {
+        auto pair = positions[i];
+        textParts.append(data.mid(pair.first, pair.second));
+    }
+
+    for (int i = 0; i < markup.size(); ++i) {
+        switch (markup[i]->type_->get_id()) {
+        case textEntityTypeItalic::ID:
+            textParts[i] = textParts[i].prepend("<i>");
+            textParts[i] = textParts[i].append("</i>");
+            break;
+        case textEntityTypeBold::ID:
+            textParts[i] = textParts[i].prepend("<b>");
+            textParts[i] = textParts[i].append("</b>");
+            break;
+        case textEntityTypeEmailAddress::ID:
+            textParts[i] = textParts[i].prepend("<a href=\"mailto:" + textParts[i] + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeHashtag::ID:
+            textParts[i] = textParts[i].prepend("<a href=hashtag/" + textParts[i] + ">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeMention::ID:
+            textParts[i] = textParts[i].prepend("<a href=user/" + textParts[i] + ">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypePhoneNumber::ID:
+            textParts[i] = textParts[i].prepend("<a href=tel:" + textParts[i].remove(QRegExp("[- )(]")) + ">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeUrl::ID: {
+            if (textParts[i].left(4) == "http")
+                textParts[i] = textParts[i].prepend("<a href=" + textParts[i] + ">");
+            else
+                textParts[i] = textParts[i].prepend("<a href=" + QUrl::fromUserInput(textParts[i]).toString() + ">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        }
+        case textEntityTypeMentionName::ID: {
+            auto tmp = static_cast<textEntityTypeMentionName *>(markup[i]->type_.data());
+            textParts[i] = textParts[i].prepend(QString("<a href=user/%1>").arg(tmp->user_id_));
+            textParts[i] = textParts[i].append("</a>");
+        }
+        break;
+        case textEntityTypeBotCommand::ID:
+            textParts[i] = textParts[i].prepend("<a href=bot_command/" + textParts[i] + ">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeTextUrl::ID: {
+            auto tmp = static_cast<textEntityTypeTextUrl *>(markup[i]->type_.data());
+//            qDebug() << QString::fromStdString(tmp->url_);
+            textParts[i] = textParts[i].prepend(QString("<a href=%1>").arg(QString::fromStdString(tmp->url_)));
+            textParts[i] = textParts[i].append("</a>");
+        }
+        break;
+        case textEntityTypeCashtag::ID:
+        case textEntityTypeCode::ID:
+        case textEntityTypePre::ID:
+        case textEntityTypePreCode::ID:
+            break;
+        default:
+            break;
+        }
+    }
+
+    int bias = 0;
+    QString result = data;
+    for (int i = 0; i < textParts.size(); ++i) {
+        result = result.replace(positions[i].first + bias, positions[i].second, textParts[i]);
+        bias += textParts[i].size() - positions[i].second;
+    }
+    return result;
 }
 
 void MessagingModel::prependMessage(const QJsonObject &messageObject)

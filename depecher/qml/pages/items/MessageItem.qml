@@ -217,9 +217,9 @@ ListItem {
                     Label {
                         id: forwardInfoLabel
                         visible: forward_info ? true : false
-                        text: forward_info ? qsTr("Forwarded from") + " " + forward_info : ""
+                        text:forward_info  ? qsTr("Forwarded from") + " " + forward_info : ""
                         width: contentLoader.width
-                        color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
+                        color: pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeSmall
                         font.bold: true
                         truncationMode: TruncationMode.Fade

@@ -9,7 +9,7 @@
 #include <QSharedPointer>
 namespace tdlibQt {
 class TdlibJsonWrapper;
-
+class notificationGroup;
 class NotificationManager : public QObject
 {
     Q_OBJECT
@@ -23,7 +23,9 @@ class NotificationManager : public QObject
     QTimer m_PublishTimer;
 
 
+
     explicit NotificationManager(QObject *parent = 0);
+    void processNotificationGroup(QSharedPointer<notificationGroup> &group);
 public:
     qint64 currentViewableChatId = 0; //Setted by MessageModel
     static NotificationManager *instance();
@@ -36,6 +38,8 @@ signals:
 private slots:
     void getUpdateChatOutbox(const QJsonObject &chatReadOutbox);
     void gotNewMessage(const QJsonObject &updateNewMessage);
+    void gotNotificationGroup(const QJsonObject &updateNotificationGroupObject);
+    void gotActiveNotification(const QJsonObject &updateActiveNotificationObject);
     void publishNotifications();
 
 public slots:
