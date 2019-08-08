@@ -32,11 +32,6 @@ class DBusShareAdaptorWrapper: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.blacksailer.depecher.share")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"org.blacksailer.depecher.share\">\n"
-                "    <method name=\"getChatList\">\n"
-                "      <arg direction=\"in\" type=\"x\" name=\"last_chat_id\"/>\n"
-                "      <arg direction=\"in\" type=\"x\" name=\"order\"/>\n"
-                "      <arg direction=\"out\" type=\"av\" name=\"chatVariant\"/>\n"
-                "    </method>\n"
                 "    <method name=\"sendVCard\">\n"
                 "      <arg direction=\"in\" type=\"ax\" name=\"chat_ids\"/>\n"
                 "      <annotation value=\"QList&lt;qlonglong&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
@@ -77,7 +72,6 @@ public:
     virtual ~DBusShareAdaptorWrapper();
     void initPolicy();
 public Q_SLOTS: // METHODS
-    QDBusVariant getChatList(qint64 last_chat_id, qint64 order, const QDBusMessage &message);
     Q_NOREPLY void sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType, const QDBusMessage &message);
     Q_NOREPLY void sendVCard(const QList<qlonglong> &chat_ids, const QString &data, const QDBusMessage &message);
 Q_SIGNALS: // SIGNALS

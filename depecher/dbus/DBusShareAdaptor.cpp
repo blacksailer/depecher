@@ -1,10 +1,11 @@
 #include "DBusShareAdaptor.hpp"
 #include "DBusShareAdaptorWrapper.hpp"
-#include "dbus/DepecherAdaptor.hpp"
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/ParseObject.hpp"
 #include <QDebug>
 #include <QFile>
+#include <QDBusServer>
+
 static const QString c_dbusServiceName = QStringLiteral("org.blacksailer.depecher");
 static const QString c_dbusObjectPath = QStringLiteral("/org/blacksailer/depecher/share");
 static const QString c_dbusInterface = QStringLiteral("org.blacksailer.depecher.share");
@@ -104,7 +105,8 @@ DBusShareAdaptor::DBusShareAdaptor(QObject *parent) : QObject(parent)
 
     auto adaptor = new DBusShareAdaptorWrapper(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this);
+    qDebug() << dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this);
+
     adaptor->initPolicy();
     m_tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
 
@@ -114,31 +116,6 @@ DBusShareAdaptor::DBusShareAdaptor(QObject *parent) : QObject(parent)
             this, &DBusShareAdaptor::fileGenerationStoped);
 //    connect(m_tdlibJson, &TdlibJsonWrapper::updateFile,
 //            this, &DBusShareAdaptor::updateSendingState);
-    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
-            this, &DBusShareAdaptor::addChatItem);
-    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::chatsReceived,
-    [this](const QJsonObject & chatsObject) {
-        if (chatsObject.keys().contains("@extra")) {
-            if (chatsObject["@extra"].toString() == c_extraName) {
-                foreach (auto item, chatsObject["chat_ids"].toArray()) {
-                    qDebug() << m_chatIds.size();
-                    switch (item.type()) {
-                    case QJsonValue::Double:
-                        m_chatIds.append((qint64)item.toDouble());
-                        break;
-                    case QJsonValue::String:
-                        m_chatIds.append((qint64)item.toString().toLongLong());
-                        break;
-                    default:
-                        break;
-                    }
-                }
-            }
-            foreach (qint64 item, m_chatIds) {
-                m_tdlibJson->getChat(item, c_extraName);
-            }
-        }
-    });
 }
 
 DBusShareAdaptor::~DBusShareAdaptor()
@@ -148,18 +125,6 @@ DBusShareAdaptor::~DBusShareAdaptor()
 }
 
 
-void DBusShareAdaptor::addChatItem(const QJsonObject &chatObject)
-{
-
-    if (chatObject.keys().contains("@extra")) {
-        if (chatObject["@extra"].toString() == c_extraName) {
-            m_chats.append(chatObject.toVariantMap());
-            qDebug() << m_chats.size() << m_chatIds.size();
-            if (m_chats.size() == m_chatIds.size())
-                sendChatList();
-        }
-    }
-}
 /*
  * "{\"@type\":\"updateFile\",\"file\":{\"@type\":\"file\",\"id\":1149,\"size\":0,
  * \"expected_size\":1818210,\"local\":{\"@type\":\"localFile\",\"path\":\"\",
@@ -219,23 +184,11 @@ void DBusShareAdaptor::fileGenerationStoped(const QJsonObject &updateFileGenerat
     }
 }
 
-QVariant DBusShareAdaptor::getChatList(const qint64 lastChatId, const qint64 order, const QDBusMessage &message)
-{
-    m_delayedList.append(RequestData());
-    message.setDelayedReply(true);
-    m_delayedList.last().reply = message.createReply();
-    qDebug() << "Received dbus chat" << lastChatId << order;
-    m_tdlibJson->getChats(lastChatId,
-                          order,
-                          5,
-                          c_extraName);
 
-    return QVariant();
-}
+
 
 void DBusShareAdaptor::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType)
 {
-    qDebug() << mimeType;
     if (mimeType.contains("image")) {
         sendPhoto(chat_ids, filepath);
     } else if (mimeType.contains("text")) {
@@ -251,12 +204,4 @@ void DBusShareAdaptor::sendVCard(const QList<qlonglong> &chat_ids, const QString
 
 }
 
-void DBusShareAdaptor::sendChatList()
-{
-    QDBusMessage reply = m_delayedList.last().reply;
-    reply << m_chats;
-    QDBusConnection::sessionBus().send(reply);
-    m_delayedList.removeLast();
-    m_chatIds.clear();
-    m_chats.clear();
-}
+

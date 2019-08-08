@@ -203,7 +203,7 @@ static void sailfish_access_load_config()
     }
 
     default_policy_spec = g_key_file_get_string(config, COMMON_GROUP,
-                        DEFAULT_POLICY, NULL);
+                            DEFAULT_POLICY, NULL);
     default_policy = da_policy_new(default_policy_spec);
     if (!default_policy) {
         qDebug("Failed to parse common default D-Bus policy \"%s\"",

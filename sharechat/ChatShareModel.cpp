@@ -13,12 +13,11 @@ static const QString c_extraName = QStringLiteral("dbus");
 ChatShareModel::ChatShareModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    remoteAppIface = new QDBusInterface(c_dbusServiceName,
+    remoteAppIface = new QDBusInterface(QString(),
                                         c_dbusObjectPath,
                                         c_dbusInterface,
-                                        QDBusConnection::sessionBus(),
+                                        QDBusConnection::connectToPeer("unix:path=/tmp/depecher", "depecherBus"),
                                         this);
-
 }
 
 ChatShareModel::~ChatShareModel()
@@ -260,18 +259,15 @@ void ChatShareModel::fetchMore(const QModelIndex &parent)
             lastChatId = m_chats.last()->id_;
         }
         QDBusPendingCall async = remoteAppIface->asyncCall(c_dbusMethod, lastChatId, offset);
-//        if (dbusWatcher != nullptr) {
-//            dbusWatcher->disconnect();
-//            dbusWatcher->deleteLater();
-//        }
-
         QDBusPendingCallWatcher *dbusWatcher = new QDBusPendingCallWatcher(async, this);
         connect(dbusWatcher, &QDBusPendingCallWatcher::finished,
                 this, &ChatShareModel::addItems);
+
     }
 }
 
 bool ChatShareModel::canFetchMore(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     return !m_fetchPending;
 }

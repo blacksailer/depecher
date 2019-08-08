@@ -2,11 +2,6 @@
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
 <interface name="org.blacksailer.depecher.share">
-<method name="getChatList">
-<arg direction="in" type="x" name="last_chat_id"/>
-<arg direction="in" type="x" name="order"/>
-<arg direction="out" type="av" name="chatVariant"/>
-</method>
 <method name="sendVCard">
 <arg direction="in" type="ax" name="chat_ids"/>
 <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QList&lt;qlonglong&gt;"/>

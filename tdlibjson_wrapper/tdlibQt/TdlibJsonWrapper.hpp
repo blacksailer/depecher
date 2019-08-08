@@ -52,6 +52,7 @@ public:
     TdlibJsonWrapper(TdlibJsonWrapper const &) = delete;
     void operator=(TdlibJsonWrapper const &)  = delete;
     ~TdlibJsonWrapper();
+    QByteArray sendSyncroniousMessage(const QString &json);
 
     void startListen();
     void stopListen();

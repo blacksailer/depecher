@@ -11,6 +11,7 @@
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "DBusAdaptor.hpp"
 #include "dbus/DBusShareAdaptor.hpp"
+#include "dbus/ChatShareAdaptor.hpp"
 #include "src/fileGeneratedHandlers/FileGeneratedHandler.hpp"
 
 int main(int argc, char *argv[])
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
 
     QScopedPointer<DBusAdaptor> dbusWatcher(new DBusAdaptor(app));
     QScopedPointer<DBusShareAdaptor> dbusShareWatcher(new DBusShareAdaptor(app));
-
+    QScopedPointer<ChatShareAdaptor> dbusChatShareWatcher(new ChatShareAdaptor(app));
     app->addLibraryPath(QString("%1/../share/%2/lib").arg(qApp->applicationDirPath(),
                         qApp->applicationName()));
     app->setApplicationVersion(APP_VERSION);

@@ -52,25 +52,6 @@ void DBusShareAdaptorWrapper::initPolicy()
 
 }
 
-QDBusVariant DBusShareAdaptorWrapper::getChatList(qint64 last_chat_id, qint64 order, const QDBusMessage &message)
-{
-    qDebug() << (int)sailfish_access_policy_check(message.service().toLatin1().constData(),
-             GET_CHAT_LIST, 0);
-    // handle method call org.blacksailer.depecher.share.getChatList
-    if (sailfish_access_policy_check(message.service().toLatin1().constData(),
-                                     GET_CHAT_LIST, 0) == AUTH_DENY) {
-        QDBusConnection::sessionBus().send(message.createErrorReply(QDBusError::AccessDenied, "Policy error"));
-        return QDBusVariant();
-    }
-    QVariant chatVariant;
-    message.setDelayedReply(true);
-    QMetaObject::invokeMethod(parent(), "getChatList",
-                              Q_RETURN_ARG(QVariant, chatVariant),
-                              Q_ARG(qint64, last_chat_id),
-                              Q_ARG(qint64, order),
-                              Q_ARG(QDBusMessage, message));
-    return QDBusVariant(chatVariant);
-}
 
 void DBusShareAdaptorWrapper::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType, const QDBusMessage &message)
 {

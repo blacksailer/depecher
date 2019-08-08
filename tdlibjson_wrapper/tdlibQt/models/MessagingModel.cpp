@@ -1551,6 +1551,11 @@ void MessagingModel::sendEditTextMessage(const QString &message_id, const QStrin
 void MessagingModel::sendTextMessage(const QString &text,
                                      const QString &reply_id)
 {
+    QByteArray formattedTextEntities = tdlibJson->sendSyncroniousMessage(QString("{\"@type\":\"parseTextEntities\","
+                                       "\"text\":\"%1\","
+                                       "\"parse_mode\":"
+                                       "{\"@type\":\"textParseModeMarkdown\"}}").arg(QString(text).replace(QChar('"'), "\\\"")));
+    qDebug() << formattedTextEntities;
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
@@ -1562,9 +1567,7 @@ void MessagingModel::sendTextMessage(const QString &text,
                             (sendMessageObject.input_message_content_.data());
     ptr->clear_draft_ = true;
     ptr->disable_web_page_preview_ = true;
-    ptr->text_ = QSharedPointer<formattedText>(new formattedText);
-    ptr->text_->text_ = text.toStdString();
-
+    ptr->text_ = ParseObject::parseFormattedTextContent(QJsonDocument::fromJson(formattedTextEntities).object());
     if (reply_id != "0" && reply_id != "-1" && !replyMessagesMap.contains(reply_id.toLongLong())) {
         auto repliedMessage = findMessageById(reply_id.toLongLong());
         if (repliedMessage.data() != nullptr)
@@ -1977,6 +1980,7 @@ void MessagingModel::onMessageContentEdited(const QJsonObject &updateMessageCont
             QVector<int> roles;
             roles.append(CONTENT);
             roles.append(FILE_CAPTION);
+            roles.append(RICH_TEXT);
             emit dataChanged(index(i + 1), index(i + 1), roles);
             break;
         }

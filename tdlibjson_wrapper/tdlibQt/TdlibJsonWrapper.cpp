@@ -24,6 +24,12 @@ void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
     td_json_client_send(Client, str);
 }
 
+QByteArray TdlibJsonWrapper::sendSyncroniousMessage(const QString &json)
+{
+    std::string reply = td_json_client_execute(client, json.toStdString().c_str());
+    return QByteArray::fromStdString(reply);
+}
+
 TdlibJsonWrapper *TdlibJsonWrapper::instance()
 {
     static TdlibJsonWrapper    instance;

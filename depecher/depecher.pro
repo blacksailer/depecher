@@ -91,7 +91,8 @@ SOURCES += \
     src/components/AudioRecorder.cpp \
     dbus/DBusShareAdaptor.cpp \
     dbus/DBusShareAdaptorWrapper.cpp \
-    dbus/sailfish_access.c
+    dbus/sailfish_access.c \
+    dbus/ChatShareAdaptor.cpp
 
 
 OTHER_FILES += qml/app.qml \
@@ -144,8 +145,7 @@ DISTFILES += \
     qml/pages/components/ChatItemShare.qml \
     dbus/org.blacksailer.depecher.share.xml \
     qml/js/mimetypes.js \
-    dbus/depecher-dbus-access.conf \
-    dbus/org.blacksailer.depecher.conf
+    dbus/depecher-dbus-access.conf
 
 HEADERS += \
     src/FileWorker.hpp \
@@ -159,4 +159,5 @@ HEADERS += \
     src/fileGeneratedHandlers/CopyFileConversion.hpp \
     src/components/AudioRecorder.hpp \
     dbus/DBusShareAdaptor.hpp \
-    dbus/DBusShareAdaptorWrapper.hpp
+    dbus/DBusShareAdaptorWrapper.hpp \
+    dbus/ChatShareAdaptor.hpp

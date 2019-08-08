@@ -2,16 +2,17 @@
 
 DepecherMediaTransfer::DepecherMediaTransfer(QObject *parent) : MediaTransferInterface(parent)
 {
-    _iface = new QDBusInterface(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE, QDBusConnection::sessionBus(), this);
-
-    QDBusConnection::sessionBus().connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
-                                          "uploadFailed", this, SLOT(uploadMediaFailed(QString, QString)));
-    QDBusConnection::sessionBus().connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
-                                          "uploadFinished", this, SLOT(uploadMediaFinished(QString, QString, QString)));
-    QDBusConnection::sessionBus().connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
-                                          "uploadStarted", this, SLOT(uploadMediaStarted(QString, QString, QString)));
-    QDBusConnection::sessionBus().connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
-                                          "uploadProgress", this, SLOT(uploadMediaProgress(QString, QString, int)));
+    QDBusConnection conn = QDBusConnection::sessionBus();
+    _iface = new QDBusInterface(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
+                                conn, this);
+    conn.connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
+                 "uploadFailed", this, SLOT(uploadMediaFailed(QString, QString)));
+    conn.connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
+                 "uploadFinished", this, SLOT(uploadMediaFinished(QString, QString, QString)));
+    conn.connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
+                 "uploadStarted", this, SLOT(uploadMediaStarted(QString, QString, QString)));
+    conn.connect(SERVER_SERVICE, SERVER_PATH, SERVER_INTERFACE,
+                 "uploadProgress", this, SLOT(uploadMediaProgress(QString, QString, int)));
 }
 
 bool DepecherMediaTransfer::cancelEnabled() const
@@ -82,44 +83,9 @@ void DepecherMediaTransfer::cancel()
 
 void DepecherMediaTransfer::start()
 {
-    /*    enum ValueKey {
-        TransferType,
-        Timestamp,
-        Status,
-        DisplayName,
-        Url,
-        ContentData,
-        ResourceName,
-        MimeType,
-        FileSize,
-        PluginId,
-        MetadataStripped,
-        ScalePercent,
-        Title,
-        Description,
-        ServiceIcon,
-        ApplicationIcon,
-        ThumbnailIcon,
-        AccountId,
-        UserData,
-
-        // Callback methods comes from the API, not from the plugins
-        Callback,
-        CancelCBMethod,
-        RestartCBMethod,
-
-        // These come from plugins.
-        CancelSupported,
-        RestartSupported
-
-    };
-     */
     QString mime = mediaItem()->value(MediaItem::MimeType).toString();
     _mediaName = mediaItem()->value(MediaItem::Url).toString().replace("file://", "");
     QVariantMap description = mediaItem()->value(MediaItem::UserData).toMap();
-    qDebug() << _mediaName << mediaItem()->value(MediaItem::ContentData)
-             << QString(QJsonDocument::fromVariant(mediaItem()->value(MediaItem::UserData)).toJson());
-
     QStringList jids = description["recipients"].toString().split(",");
     QList<qint64> chat_ids;
     for (int i = 0; i < jids.size(); ++i)
