@@ -97,7 +97,7 @@ SOURCES += \
 
 OTHER_FILES += qml/app.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
+    qml/pages/*.qml \
 qml/pages/items/delegates/*.qml \
     translations/*.ts
 
@@ -122,6 +122,8 @@ RESOURCES += \
 DISTFILES += \
     qml/js/countries.js \
     depecher.desktop \
+    qml/pages/GroupInfoPage.qml \
+    qml/pages/UserPage.qml \
     rpm/depecher.yaml \
     rpm/depecher.spec \
     rpm/depecher.changes.in \

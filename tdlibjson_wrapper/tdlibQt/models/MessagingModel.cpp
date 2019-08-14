@@ -219,6 +219,46 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
 //        }
         return QVariant();
     }
+    case RICH_FILE_CAPTION: {
+        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+            auto contentPhotoPtr = static_cast<messagePhoto *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentPhotoPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentPhotoPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+            auto contentDocumentPtr = static_cast<messageDocument *>
+                                      (m_messages[rowIndex]->content_.data());
+            auto entities = contentDocumentPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentDocumentPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (m_messages[rowIndex]->content_.data());
+            auto entities = contentAnimationPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentAnimationPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+            auto contentVoicePtr = static_cast<messageVoiceNote *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentVoicePtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentVoicePtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+            auto contentAudioPtr = static_cast<messageAudio *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentAudioPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentAudioPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+            auto contentVideoPtr = static_cast<messageVideo *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentVideoPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentVideoPtr->caption_->text_), entities);
+        }
+
+        return QVariant();
+    }
 
     case FILE_CAPTION: {
         if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
@@ -543,6 +583,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[MEDIA_PREVIEW] = "media_preview";
     roles[CONTENT] = "content";
     roles[FILE_CAPTION] = "file_caption";
+    roles[RICH_FILE_CAPTION] = "rich_file_caption";
     roles[PHOTO_ASPECT] = "photo_aspect";
     roles[DOCUMENT_NAME] = "document_name";
     roles[DURATION] = "duration";
@@ -1211,40 +1252,42 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
             textParts[i] = textParts[i].append("</a>");
             break;
         case textEntityTypeHashtag::ID:
-            textParts[i] = textParts[i].prepend("<a href=hashtag/" + textParts[i] + ">");
+            textParts[i] = textParts[i].prepend("<a href=\"hashtag/" + textParts[i] + "\">");
             textParts[i] = textParts[i].append("</a>");
             break;
         case textEntityTypeMention::ID:
-            textParts[i] = textParts[i].prepend("<a href=user/" + textParts[i] + ">");
+            textParts[i] = textParts[i].prepend("<a href=\"user/" + textParts[i] + "\">");
             textParts[i] = textParts[i].append("</a>");
             break;
-        case textEntityTypePhoneNumber::ID:
-            textParts[i] = textParts[i].prepend("<a href=tel:" + textParts[i].remove(QRegExp("[- )(]")) + ">");
+        case textEntityTypePhoneNumber::ID: {
+            QString phone_trimmed = textParts[i];
+            textParts[i] = textParts[i].prepend("<a href=\"tel:" + phone_trimmed.remove(QRegExp("[- )(]")) + "\">");
             textParts[i] = textParts[i].append("</a>");
             break;
+        }
         case textEntityTypeUrl::ID: {
             if (textParts[i].left(4) == "http")
-                textParts[i] = textParts[i].prepend("<a href=" + textParts[i] + ">");
+                textParts[i] = textParts[i].prepend("<a href=\"" + textParts[i] + "\">");
             else
-                textParts[i] = textParts[i].prepend("<a href=" + QUrl::fromUserInput(textParts[i]).toString() + ">");
+                textParts[i] = textParts[i].prepend("<a href=\"" + QUrl::fromUserInput(textParts[i]).toString() + "\">");
             textParts[i] = textParts[i].append("</a>");
             break;
         }
         case textEntityTypeMentionName::ID: {
             auto tmp = static_cast<textEntityTypeMentionName *>(markup[i]->type_.data());
-            textParts[i] = textParts[i].prepend(QString("<a href=user/%1>").arg(tmp->user_id_));
+            textParts[i] = textParts[i].prepend(QString("<a href=\"id_user/%1\">").arg(QString::number(tmp->user_id_)));
             textParts[i] = textParts[i].append("</a>");
+            break;
         }
-        break;
         case textEntityTypeBotCommand::ID:
-            textParts[i] = textParts[i].prepend("<a href=bot_command/" + textParts[i] + ">");
+            textParts[i] = textParts[i].prepend("<a href=\"bot_command/" + textParts[i] + "\">");
             textParts[i] = textParts[i].append("</a>");
             break;
         case textEntityTypeTextUrl::ID: {
             auto tmp = static_cast<textEntityTypeTextUrl *>(markup[i]->type_.data());
-//            qDebug() << QString::fromStdString(tmp->url_);
-            textParts[i] = textParts[i].prepend(QString("<a href=%1>").arg(QString::fromStdString(tmp->url_)));
+            textParts[i] = textParts[i].prepend(QString("<a href=\"%1\">").arg(QString::fromStdString(tmp->url_)));
             textParts[i] = textParts[i].append("</a>");
+            break;
         }
         break;
         case textEntityTypeCashtag::ID:
@@ -1333,6 +1376,7 @@ void MessagingModel::updateFile(const QJsonObject &fileObject)
 void MessagingModel::processFile(const QJsonObject &fileObject)
 {
     auto file = ParseObject::parseFile(fileObject);
+
     //1. - can be file in message
     //2. - can be avatar photo
     if (messagePhotoQueue.keys().contains(file->id_)) {

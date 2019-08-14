@@ -280,6 +280,13 @@
     </message>
 </context>
 <context>
+    <name>ChannelInfoPage</name>
+    <message>
+        <source>Channel info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
@@ -336,6 +343,53 @@
     </message>
     <message>
         <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupInfoPage</name>
+    <message>
+        <source>Group info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -721,6 +775,81 @@
  Remember! After that 2FA authorization will be disabled</source>
         <translation>Wiederherstellungscode eingeben. 
 Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
+    </message>
+</context>
+<context>
+    <name>UserPage</name>
+    <message>
+        <source>User info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 groups in common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leaving</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

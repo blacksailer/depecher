@@ -21,7 +21,7 @@ ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent)
     });
     m_tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
 
-    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::chatReceived,
             this, &ChatShareAdaptor::addChatItem);
     connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::chatsReceived,
     [this](const QJsonObject & chatsObject) {

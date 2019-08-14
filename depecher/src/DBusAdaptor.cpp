@@ -10,13 +10,19 @@
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ContactsModel.hpp"
 #include "tdlibQt/models/FilterContactsModel.hpp"
+#include "tdlibQt/models/ChatMembersModel.hpp"
+
 #include "tdlibQt/TelegramProfileProvider.hpp"
 #include "tdlibQt/include/AuthenticationHandler.hpp"
 #include "tdlibQt/items/ProxyDAO.hpp"
 #include "tdlibQt/items/AboutMeDAO.hpp"
-
+#include "tdlibQt/infoProviders/UserInfoProvider.hpp"
 #include "singletons/DNSTXTLookup.hpp"
 
+#include "tdlibQt/infoProviders/ChannelInfoProvider.hpp"
+#include "tdlibQt/infoProviders/BasicGroupInfoProvider.hpp"
+
+#include "tdlibQt/infoProviders/UsernameResolver.hpp"
 #include <QDebug>
 #include <QQuickView>
 #include <QQmlContext>
@@ -105,9 +111,15 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
         qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
         qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");
+        qmlRegisterType<tdlibQt::UserInfoProvider>("TelegramDAO", 1, 0, "UserInfo");
+        qmlRegisterType<tdlibQt::ChannelInfoProvider>("TelegramDAO", 1, 0, "ChannelInfo");
+        qmlRegisterType<tdlibQt::BasicGroupInfoProvider>("TelegramDAO", 1, 0, "BasicGroupInfo");
+
+        qmlRegisterType<tdlibQt::UsernameResolver>("TelegramDAO", 1, 0, "UsernameResolver");
 
         qmlRegisterType<tdlibQt::AuthenticationHandler>("TelegramAuthentication", 1, 0,
                 "TelegramAuthenticationHandler");
+        qRegisterMetaType<tdlibQt::ChatMembersModel *>("ChatMembersModel*");
         view->setTitle("Depecher");
         view->rootContext()->setContextProperty("c_telegramWrapper", tdlibQt::TdlibJsonWrapper::instance());
         view->rootContext()->setContextProperty("c_PageStarter", pagesStarter);

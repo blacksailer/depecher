@@ -38,18 +38,10 @@ Column {
     ]
 
 
-    Label {
+    RichTextItem {
         id: textItem
         width: messageListItem.width * 2 / 3 - Theme.horizontalPageMargin * 2
-        textFormat: Text.RichText
-           text: "<style>a:link { color: " + Theme.highlightColor + "; }</style>" +
-                 rich_text
-       // plainText: content ? content : ""
-        color: pressed ? Theme.secondaryColor : Theme.primaryColor
-        linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
-        onLinkActivated: Qt.openUrlExternally(link)
-        font.pixelSize: Theme.fontSizeSmall
-        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        content:  rich_text
     }
 
 }

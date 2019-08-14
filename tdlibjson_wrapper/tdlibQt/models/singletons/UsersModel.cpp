@@ -4,23 +4,24 @@
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 namespace tdlibQt {
 UsersModel::UsersModel(QObject *parent) : QObject(parent),
-    m_client(TdlibJsonWrapper::instance())
+    m_tdlibJson(TdlibJsonWrapper::instance())
 {
-    connect(m_client, &TdlibJsonWrapper::updateNewUser,
-            this, &UsersModel::getUpdateNewUser);
-    connect(m_client, &TdlibJsonWrapper::updateNewChat,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateUserReceived,
+            this, &UsersModel::getUpdateUser);
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateNewChat,
             this, &UsersModel::getUpdateNewChat);
-    connect(m_client, &TdlibJsonWrapper::updateSupergroup,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateSupergroup,
             this, &UsersModel::getUpdateNewSupergroup);
-    connect(m_client, &tdlibQt::TdlibJsonWrapper::updateChatLastMessage,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatLastMessage,
             this, &tdlibQt::UsersModel::updateChatLastMessage);
-    connect(m_client, &tdlibQt::TdlibJsonWrapper::updateChatReadInbox,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadInbox,
             this, &tdlibQt::UsersModel::updateChatReadInbox);
-    connect(m_client, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &tdlibQt::UsersModel::updateChatReadOutbox);
-    connect(m_client, &tdlibQt::TdlibJsonWrapper::updateUserStatusReceived,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserStatusReceived,
             this, &tdlibQt::UsersModel::updateUserStatus);
-
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateBasicGroupReceived,
+            this, &tdlibQt::UsersModel::getUpdateGroup);
 }
 
 UsersModel *UsersModel::instance()
@@ -96,7 +97,7 @@ QVariantMap UsersModel::getChatType(const qint64 chatId)
 
 }
 
-QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const qint64 userId)
+QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const int userId)
 {
     if (!m_users.contains(userId))
         return QSharedPointer<profilePhoto>(nullptr);
@@ -130,7 +131,7 @@ void UsersModel::getUpdateNewChat(const QJsonObject &updateNewChatObject)
 
 }
 
-void UsersModel::getUpdateNewUser(const QJsonObject &updateNewUserObject)
+void UsersModel::getUpdateUser(const QJsonObject &updateNewUserObject)
 {
     auto userItem = ParseObject::parseUser(updateNewUserObject);
     if (userItem->id_ != 0) {
@@ -148,6 +149,13 @@ void UsersModel::getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupOb
 
 }
 
+void UsersModel::getUpdateGroup(const QJsonObject &updateGroupObject)
+{
+    auto item = ParseObject::parseBasicGroup(updateGroupObject);
+    if (!m_groups.contains(item->id_))
+        m_groups[item->id_] = item;
+}
+
 void UsersModel::setSmallAvatar(qint64 id, QSharedPointer<file> small)
 {
     if (!m_users.contains(id))
@@ -156,7 +164,7 @@ void UsersModel::setSmallAvatar(qint64 id, QSharedPointer<file> small)
     m_users[id]->profile_photo_->small_ = small;
 }
 
-QSharedPointer<ChatMemberStatus> UsersModel::getGroupStatus(qint64 group_id)
+QSharedPointer<ChatMemberStatus> UsersModel::getGroupStatus(int group_id)
 {
     if (!m_supergroups.contains(group_id))
         return QSharedPointer<ChatMemberStatus>(nullptr);
@@ -169,6 +177,27 @@ QSharedPointer<user> UsersModel::getUser(const int userId)
     if (!m_users.contains(userId))
         return QSharedPointer<user>(nullptr);
     return m_users[userId];
+}
+
+QSharedPointer<basicGroup> UsersModel::getGroup(const int groupId)
+{
+    if (!m_groups.contains(groupId))
+        return QSharedPointer<basicGroup>(nullptr);
+    return m_groups[groupId];
+}
+
+QSharedPointer<supergroup> UsersModel::getSupergroup(const int supergroupId)
+{
+    if (!m_supergroups.contains(supergroupId))
+        return QSharedPointer<supergroup>(nullptr);
+    return m_supergroups[supergroupId];
+}
+
+QSharedPointer<chat> UsersModel::getChat(const qint64 chatId)
+{
+    if (!m_chats.contains(chatId))
+        return QSharedPointer<chat>(nullptr);
+    return m_chats[chatId];
 }
 
 QSharedPointer<UserStatus> UsersModel::getUserStatus(const int userId)

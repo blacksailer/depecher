@@ -86,9 +86,9 @@ void TdlibJsonWrapper::startListen()
 
     connect(parseObject, &ParseObject::updateNewChat,
             this, &TdlibJsonWrapper::updateNewChat);
-    connect(parseObject, &ParseObject::updateNewUser,
-            this, &TdlibJsonWrapper::updateNewUser);
-    connect(parseObject, &ParseObject::newChatReceived,
+    connect(parseObject, &ParseObject::updateUserReceived,
+            this, &TdlibJsonWrapper::updateUserReceived);
+    connect(parseObject, &ParseObject::chatReceived,
     [this](const QJsonObject & chat) {
         if (chat.contains("@extra")) {
             if (chat["@extra"].toString() == "EnSailfish") {
@@ -119,7 +119,7 @@ void TdlibJsonWrapper::startListen()
                                    QString::number(chatPtr->last_message_->id_));
             }
         }
-        emit newChatGenerated(chat);
+        emit chatReceived(chat);
     });
     connect(parseObject, &ParseObject::updateFile,
             this, &TdlibJsonWrapper::updateFile);
@@ -193,6 +193,20 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateNotificationGroupReceived);
     connect(parseObject, &ParseObject::updateActiveNotificationReceived,
             this, &TdlibJsonWrapper::updateActiveNotificationReceived);
+    connect(parseObject, &ParseObject::countReceived,
+            this, &TdlibJsonWrapper::countReceived);
+    connect(parseObject, &ParseObject::userFullInfoReceived,
+            this, &TdlibJsonWrapper::userFullInfoReceived);
+    connect(parseObject, &ParseObject::supergroupFullInfoReceived,
+            this, &TdlibJsonWrapper::supergroupFullInfoReceived);
+    connect(parseObject, &ParseObject::basicGroupReceived,
+            this, &TdlibJsonWrapper::basicGroupReceived);
+    connect(parseObject, &ParseObject::basicGroupFullInfoReceived,
+            this, &TdlibJsonWrapper::basicGroupFullInfoReceived);
+    connect(parseObject, &ParseObject::updateBasicGroupFullInfoReceived,
+            this, &TdlibJsonWrapper::updateBasicGroupFullInfoReceived);
+    connect(parseObject, &ParseObject::updateBasicGroupReceived,
+            this, &TdlibJsonWrapper::updateBasicGroupReceived);
     listenThread->start();
     parseThread->start();
 
@@ -212,6 +226,11 @@ Enums::AuthorizationState TdlibJsonWrapper::authorizationState() const
 Enums::ConnectionState TdlibJsonWrapper::connectionState() const
 {
     return m_connectionState;
+}
+
+int TdlibJsonWrapper::totalUnreadCount() const
+{
+    return m_totalUnreadCount;
 }
 
 void TdlibJsonWrapper::openChat(const QString &chat_id)
@@ -344,13 +363,69 @@ void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &
 {
     QString joinChatByInviteLink =
         "{\"@type\":\"joinChatByInviteLink\","
-        "\"invite_link\":\"" + link  + "\"}";
+        "\"invite_link\":\"%1\"}";
+    joinChatByInviteLink = joinChatByInviteLink.arg(link);
     if (extra != "") {
         joinChatByInviteLink.remove(joinChatByInviteLink.size() - 1, 1);
         joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}");
     }
 
     sendToTelegram(client, joinChatByInviteLink.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::joinChat(const qint64 chatId, const QString &extra)
+{
+    QString joinChat =
+        "{\"@type\":\"joinChat\","
+        "\"chat_id\":\"%1\"}";
+    joinChat = joinChat.arg(QString::number(chatId));
+    if (extra != "") {
+        joinChat.remove(joinChat.size() - 1, 1);
+        joinChat.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, joinChat.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::leaveChat(const qint64 chatId, const QString &extra)
+{
+    QString leaveChat =
+        "{\"@type\":\"leaveChat\","
+        "\"chat_id\":\"%1\"}";
+    leaveChat = leaveChat.arg(QString::number(chatId));
+    if (extra != "") {
+        leaveChat.remove(leaveChat.size() - 1, 1);
+        leaveChat.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, leaveChat.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getBasicGroup(const qint64 basicGroupId, const QString &extra)
+{
+    QString query = "{\"@type\":\"getBasicGroup\","
+                    "\"basic_group_id\":%1}";
+    query = query.arg(QString::number(basicGroupId));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getBasicGroupFullInfo(const int groupId, const QString &extra)
+{
+    QString query =
+        "{\"@type\":\"getBasicGroupFullInfo\","
+        "\"basic_group_id\":%1}";
+    query = query.arg(QString::number(groupId));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, query.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
@@ -715,6 +790,61 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
     sendToTelegram(client, getChatHistory.toStdString().c_str());
 }
 
+void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, SearchFilter filter, bool return_local, const QString &extra)
+{
+    QString query = "{\"@type\":\"getChatMessageCount\","
+                    "\"chat_id\":\"%1\","
+                    "\"filter\":%2,"
+                    "\"return_local\":%3"
+                    "}";
+    QString filterStr = "{\"@type\":\"%1\"}";
+    filterStr = filterStr.arg(QMetaEnum::fromType<TdlibJsonWrapper::SearchFilter>().valueToKey(filter));
+    query = query.arg(QString::number(chat_id), filterStr,
+                      return_local ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getUserFullInfo(const int user_id, const QString &extra)
+{
+    QString query = "{\"@type\":\"getUserFullInfo\","
+                    "\"user_id\":%1}";
+    query = query.arg(QString::number(user_id));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getSupergroupFullInfo(const int supergroup_id, const QString &extra)
+{
+    QString query = "{\"@type\":\"getSupergroupFullInfo\","
+                    "\"supergroup_id\":%1}";
+    query = query.arg(QString::number(supergroup_id));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString extra)
+{
+    QString query = "{\"@type\":\"searchPublicChat\","
+                    "\"username\":\"%1\"}";
+    query = query.arg(username);
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
 {
     QString getAttachedStickerSetsStr = "{\"@type\":\"getAttachedStickerSets\","
@@ -923,5 +1053,6 @@ void TdlibJsonWrapper::setConnectionState(Enums::ConnectionState &connState)
     m_connectionState = connectionState;
     emit connectionStateChanged(connectionState);
 }
+
 
 }// namespace tdlibQt

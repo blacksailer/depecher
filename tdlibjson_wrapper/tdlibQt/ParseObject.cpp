@@ -35,8 +35,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
 #endif
     //    switch (doc.object()["@type"].toString()) {
-    //    case "updateBasicGroup":
-    //    case "updateBasicGroupFullInfo":
     //    case "updateCall":
     //    case "updateChatDraftMessage":
     //    case "updateChatIsPinned":
@@ -180,12 +178,15 @@ void ParseObject::parseResponse(const QByteArray &json)
         QString firstName = userObject["first_name"].toString();
         QString lastName = userObject["last_name"].toString();
         users_[user_id] = firstName + " " + lastName;
-        emit updateNewUser(userObject);
+        emit updateUserReceived(userObject);
     }
     if (typeField == "seconds")
         emit secondsReceived(doc.object());
     if (typeField == "text")
         emit textReceived(doc.object());
+    if (typeField == "count")
+        emit countReceived(doc.object());
+
     if (typeField == "users")
         emit usersReceived(doc.object());
     if (typeField == "message")
@@ -268,7 +269,7 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     if (typeField == "chat") {
         auto chatItem = doc.object();
-        emit newChatReceived(chatItem);
+        emit chatReceived(chatItem);
     }
     if (typeField == "user") {
         auto userItem = doc.object();
@@ -277,6 +278,12 @@ void ParseObject::parseResponse(const QByteArray &json)
         else
             emit userReceived(userItem);
     }
+    if (typeField == "userFullInfo")
+        emit userFullInfoReceived(doc.object());
+    if (typeField == "supergroupFullInfo")
+        emit supergroupFullInfoReceived(doc.object());
+
+
     if (typeField == "proxies") {
         auto proxyItem = doc.object();
         emit proxiesReceived(proxyItem);
@@ -291,6 +298,21 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateUserChatAction") {
         emit updateChatAction(doc.object());
     }
+    if (typeField == "basicGroup") {
+        emit basicGroupReceived(doc.object());
+    }
+    if (typeField == "updateBasicGroup") {
+        emit updateBasicGroupReceived(doc.object());
+    }
+    if (typeField == "updateBasicGroupFullInfo") {
+        emit updateBasicGroupFullInfoReceived(doc.object());
+    }
+    if (typeField == "basicGroupFullInfo") {
+        emit basicGroupFullInfoReceived(doc.object());
+    }
+    //    case "updateBasicGroup":
+    //    case "updateBasicGroupFullInfo":
+
 }
 
 QString ParseObject::getUserName(int userId)
@@ -1417,6 +1439,106 @@ QSharedPointer<notificationGroup> ParseObject::parseNotificationGroup(const QJso
     }
     return result;
 }
+
+QSharedPointer<userFullInfo> ParseObject::parseUserFullInfo(const QJsonObject &userFullInfoObject)
+{
+    if (userFullInfoObject["@type"].toString() != "userFullInfo")
+        return QSharedPointer<userFullInfo>(new userFullInfo);
+
+    auto resultUserFullInfo = QSharedPointer<userFullInfo>(new userFullInfo);
+    resultUserFullInfo->is_blocked_ = userFullInfoObject["is_blocked"].toBool();
+    resultUserFullInfo->can_be_called_ = userFullInfoObject["can_be_called"].toBool();
+    resultUserFullInfo->has_private_calls_ = userFullInfoObject["has_private_calls"].toBool();
+    resultUserFullInfo->share_text_ = userFullInfoObject["share_text"].toString().toStdString();
+    resultUserFullInfo->bio_ = userFullInfoObject["share_text"].toString().toStdString();
+    resultUserFullInfo->group_in_common_count_ = userFullInfoObject["group_in_common_count"].toInt();
+    resultUserFullInfo->bot_info_ = parseBotInfo(userFullInfoObject["bot_info"].toObject());
+    return resultUserFullInfo;
+}
+
+QSharedPointer<botInfo> ParseObject::parseBotInfo(const QJsonObject &botInfoObject)
+{
+    if (botInfoObject["@type"].toString() != "botInfo")
+        return QSharedPointer<botInfo>(new botInfo);
+    auto resultBotInfo = QSharedPointer<botInfo>(new botInfo);
+    resultBotInfo->description_ = botInfoObject["description"].toString().toStdString();
+    for (auto command : botInfoObject["commands"].toArray()) {
+        QSharedPointer<botCommand> cmd = QSharedPointer<botCommand>(new botCommand);
+        cmd->command_ = command.toObject()["command"].toString().toStdString();
+        cmd->description_ = command.toObject()["description"].toString().toStdString();
+        resultBotInfo->commands_.push_back(cmd);
+    }
+    return    resultBotInfo;
+
+
+}
+
+QSharedPointer<supergroupFullInfo> ParseObject::parseSupergroupFullInfo(const QJsonObject &supergroupFullInfoObject)
+{
+    if (supergroupFullInfoObject["@type"].toString() != "supergroupFullInfo")
+        return QSharedPointer<supergroupFullInfo>(new supergroupFullInfo);
+
+    QSharedPointer<supergroupFullInfo> resultFullInfo = QSharedPointer<supergroupFullInfo>
+            (new supergroupFullInfo);
+    resultFullInfo->description_ = supergroupFullInfoObject["description"].toString().toStdString();
+    resultFullInfo->invite_link_ = supergroupFullInfoObject["invite_link"].toString().toStdString();
+    resultFullInfo->member_count_ = supergroupFullInfoObject["member_count"].toInt();
+    resultFullInfo->administrator_count_ = supergroupFullInfoObject["administrator_count"].toInt();
+    resultFullInfo->restricted_count_ = supergroupFullInfoObject["restricted_count"].toInt();
+    resultFullInfo->banned_count_ = supergroupFullInfoObject["banned_count"].toInt();
+    resultFullInfo->upgraded_from_basic_group_id_ = supergroupFullInfoObject["upgraded_from_basic_group_id"].toInt();
+    resultFullInfo->sticker_set_id_ = getInt64(supergroupFullInfoObject["sticker_set_id"]);
+    resultFullInfo->upgraded_from_max_message_id_ = getInt64(supergroupFullInfoObject["upgraded_from_max_message_id"]);
+
+
+    resultFullInfo->can_get_members_ = supergroupFullInfoObject["can_get_members"].toBool();
+    resultFullInfo->can_set_username_ = supergroupFullInfoObject["can_set_username"].toBool();
+    resultFullInfo->can_set_sticker_set_ = supergroupFullInfoObject["can_set_sticker_set"].toBool();
+    resultFullInfo->can_view_statistics_ = supergroupFullInfoObject["can_view_statistics"].toBool();
+    resultFullInfo->is_all_history_available_ = supergroupFullInfoObject["is_all_history_available"].toBool();
+    return resultFullInfo;
+}
+
+QSharedPointer<basicGroup> ParseObject::parseBasicGroup(const QJsonObject &basicGroupObject)
+{
+    if (basicGroupObject["@type"].toString() != "basicGroup")
+        return QSharedPointer<basicGroup>(new basicGroup);
+    auto result = QSharedPointer<basicGroup>(new basicGroup);
+    result->id_ = basicGroupObject["id"].toInt();
+    result->member_count_ = basicGroupObject["member_count"].toInt();
+    result->upgraded_to_supergroup_id_ = basicGroupObject["upgraded_to_supergroup_id"].toInt();
+    result->everyone_is_administrator_ = basicGroupObject["everyone_is_administrator"].toInt();
+    result->is_active_ = basicGroupObject["is_active"].toInt();
+    result->status_ = parseChatMemberStatus(basicGroupObject["status"].toObject());
+    return result;
+}
+
+QSharedPointer<basicGroupFullInfo> ParseObject::parseBasicGroupFullInfo(const QJsonObject &basicGroupFullInfoObject)
+{
+    if (basicGroupFullInfoObject["@type"].toString() != "basicGroupFullInfo")
+        return QSharedPointer<basicGroupFullInfo>(new basicGroupFullInfo);
+    QSharedPointer<basicGroupFullInfo> result = QSharedPointer<basicGroupFullInfo>(new basicGroupFullInfo);
+    result->creator_user_id_ = basicGroupFullInfoObject["creator_user_id"].toInt();
+    result->invite_link_ = basicGroupFullInfoObject["invite_link"].toString().toStdString();
+    foreach (auto itm, basicGroupFullInfoObject["members"].toArray()) {
+        result->members_.push_back(parseChatMember(itm.toObject()));
+    }
+    return result;
+}
+
+QSharedPointer<chatMember> ParseObject::parseChatMember(const QJsonObject &chatMemberObject)
+{
+    if (chatMemberObject["@type"].toString() != "chatMember")
+        return QSharedPointer<chatMember>(new chatMember);
+    auto result = QSharedPointer<chatMember>(new chatMember);
+    result->user_id_ = chatMemberObject["user_id"].toInt();
+    result->inviter_user_id_ = chatMemberObject["inviter_user_id"].toInt();
+    result->joined_chat_date_ = chatMemberObject["joined_chat_date"].toInt();
+    result->status_ = parseChatMemberStatus(chatMemberObject["status"].toObject());
+    result->bot_info_ = parseBotInfo(chatMemberObject["bot_info"].toObject());
+    return result;
+}
+
 
 QSharedPointer<chatPhoto> ParseObject::parseChatPhoto(const QJsonObject &chatPhotoObject)
 {

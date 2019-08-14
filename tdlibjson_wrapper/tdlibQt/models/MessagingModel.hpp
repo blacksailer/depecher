@@ -86,6 +86,7 @@ class MessagingModel : public QAbstractListModel
         MEDIA_PREVIEW,
         CONTENT,
         FILE_CAPTION,
+        RICH_FILE_CAPTION,
         PHOTO_ASPECT,
         DOCUMENT_NAME,
         DURATION,

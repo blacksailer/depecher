@@ -196,6 +196,7 @@ ListItem {
                         text: author ? author : ""
                         color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeExtraSmall
+                        width: Math.min(implicitWidth,messageListItem.width *2/3)
                         truncationMode: TruncationMode.Fade
                         visible: {
                             if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
