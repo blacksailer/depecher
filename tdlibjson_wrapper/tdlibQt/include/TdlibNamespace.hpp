@@ -45,6 +45,25 @@ public:
         Sending_Not_Read,
         Sending_Read
     };
+    enum SearchFilter {
+        Empty,
+        Animation,
+        Audio,
+        Document,
+        Photo,
+        Video,
+        VoiceNote,
+        PhotoAndVideo,
+        Url,
+        ChatPhoto,
+        Call,
+        MissedCall,
+        VideoNote,
+        VoiceAndVideoNote,
+        UnreadMention,
+        Mention
+    };
+    Q_ENUM(SearchFilter)
     Q_ENUM(MessageState)
     Q_ENUM(FileType)
     Q_ENUM(AuthorizationState)
@@ -59,6 +78,7 @@ Q_DECLARE_METATYPE(tdlibQt::Enums::AuthorizationState)
 Q_DECLARE_METATYPE(tdlibQt::Enums::ConnectionState)
 Q_DECLARE_METATYPE(tdlibQt::Enums::ChatType)
 Q_DECLARE_METATYPE(tdlibQt::Enums::MessageState)
+Q_DECLARE_METATYPE(tdlibQt::Enums::SearchFilter)
 
 Q_DECLARE_METATYPE(Qt::ApplicationState)
 

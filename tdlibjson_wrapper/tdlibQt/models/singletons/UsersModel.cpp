@@ -97,6 +97,14 @@ QVariantMap UsersModel::getChatType(const qint64 chatId)
 
 }
 
+QString UsersModel::getUserFirstName(const int userId)
+{
+    if (!m_users.contains(userId))
+        return tr("Unknown user");
+
+    return QString::fromStdString(m_users[userId]->first_name_);
+}
+
 QSharedPointer<profilePhoto> UsersModel::getUserPhoto(const int userId)
 {
     if (!m_users.contains(userId))

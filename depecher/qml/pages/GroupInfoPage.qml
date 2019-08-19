@@ -1,31 +1,32 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
 import TelegramDAO 1.0
+import tdlibQtEnums 1.0
 import "items"
-
+import "items/filter_delegates"
 Page {
 
     property alias chat_id: groupInfo.chatId
     BasicGroupInfo {
-    id:groupInfo
-    onMembersModelChanged: {
-        membersList.model = groupInfo.membersModel
-    }
+        id:groupInfo
+        onMembersModelChanged: {
+            membersList.model = groupInfo.membersModel
+        }
     }
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: content.height + header.height
+        contentHeight: contentWrapper.height + header.height
         PageHeader {
             id:header
             title:qsTr("Group info")
         }
         PullDownMenu {
-        MenuItem {
-        text: groupInfo.inviteLink
-        }
+            MenuItem {
+                text: groupInfo.inviteLink
+            }
         }
         Column {
-            id:content
+            id:contentWrapper
             width: parent.width
             anchors.top: header.bottom
             Row {
@@ -102,160 +103,21 @@ Page {
                 width: 1
                 height:Theme.paddingLarge
             }
+SharedContent {
+    chatId:groupInfo.chatId
 
-            Column {
-                width: parent.width
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.photoCount
-                    Row {
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconImages
-                            source: "image://theme/icon-m-image"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 photos").arg(groupInfo.photoCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.videoCount
-                    Row {
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconVideos
-                            source: "image://theme/icon-m-video"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 videos").arg(groupInfo.videoCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.fileCount
-                    Row {
-
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconFiles
-                            source: "image://theme/icon-m-other"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 files").arg(groupInfo.fileCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.audioCount
-                    Row {
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconAudios
-                            source: "image://theme/icon-m-sounds"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 audio").arg(groupInfo.audioCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.linkCount
-
-                    Row {
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconLinks
-                            source: "image://theme/icon-m-link"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 links").arg(groupInfo.linkCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                BackgroundItem {
-                    width: parent.width
-                    height: Theme.itemSizeSmall
-                    visible: groupInfo.voiceCount
-                    Row {
-                        width: parent.width - 2 * x
-                        anchors.verticalCenter: parent.verticalCenter
-                        x: Theme.horizontalPageMargin
-                        Icon {
-                            id:iconVoices
-                            source: "image://theme/icon-m-mic"
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                        Item {
-                            width: Theme.paddingLarge
-                            height: Theme.paddingLarge
-                        }
-                        Label {
-                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                            text:qsTr("%1 voice notes").arg(groupInfo.voiceCount)
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-            }
+    photoCount:groupInfo.photoCount
+    videoCount:groupInfo.videoCount
+    fileCount:groupInfo.fileCount
+    audioCount:groupInfo.audioCount
+    linkCount:groupInfo.linkCount
+    voiceCount:groupInfo.voiceCount
+}
             Item {
                 width: 1
                 height:Theme.paddingLarge
             }
+
             BackgroundItem {
                 width: parent.width
                 height: Theme.itemSizeSmall
@@ -280,48 +142,48 @@ Page {
                 }
             }
 
-                SilicaListView {
-                    id:membersList
+            SilicaListView {
+                id:membersList
+                width: parent.width
+                height: 6 *  Theme.itemSizeSmall
+                clip:true
+                delegate:  BackgroundItem {
                     width: parent.width
-                    height: 6 *  Theme.itemSizeSmall
-                    clip:true
-                    delegate:  BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
+                    height: Theme.itemSizeSmall
+                    Row {
+                        width: parent.width - 2 * x
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: Theme.horizontalPageMargin
+                        CircleImage {
+                            id:userPhoto
+                            source: avatar
+                            fallbackItemVisible: avatar == undefined
+                            fallbackText:name.charAt(0)
                             anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            CircleImage {
-                                id:userPhoto
-                                source: avatar
-                                fallbackItemVisible: avatar == undefined
-                                    fallbackText:name.charAt(0)
-                                anchors.verticalCenter: parent.verticalCenter
+                        }
+                        Item {
+                            width: Theme.paddingLarge
+                            height: Theme.paddingLarge
+                        }
+                        Column {
+                            width: parent.width - userPhoto.width
+                            anchors.verticalCenter:   parent.verticalCenter
+                            Label {
+                                text: name
+                                font.pixelSize: Theme.fontSizeMedium
+                                width:parent.width
                             }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Column {
-                                width: parent.width - userPhoto.width
-                                anchors.verticalCenter:   parent.verticalCenter
-                                Label {
-                                    text: name
-                                    font.pixelSize: Theme.fontSizeMedium
-                                    width:parent.width
-                                }
-                                Label {
-                                    font.pixelSize: Theme.fontSizeTiny
-                                    color:Theme.secondaryColor
-                                    text: online_status
-                                    width:parent.width
-                                }
+                            Label {
+                                font.pixelSize: Theme.fontSizeTiny
+                                color:Theme.secondaryColor
+                                text: online_status
+                                width:parent.width
                             }
                         }
                     }
-
                 }
+
+            }
 
         }
     }

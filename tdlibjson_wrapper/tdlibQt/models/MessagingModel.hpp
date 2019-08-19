@@ -25,23 +25,16 @@ class MessagingModel : public QAbstractListModel
     Q_PROPERTY(int lastMessageIndex READ lastMessageIndex NOTIFY lastMessageIndexChanged)
     Q_PROPERTY(bool fetching READ fetching WRITE setFetching NOTIFY fetchingChanged)
     Q_PROPERTY(bool reachedHistoryEnd READ reachedHistoryEnd WRITE setReachedHistoryEnd NOTIFY reachedHistoryEndChanged)
-    QList<QSharedPointer<message>> m_messages;
-    QSharedPointer<ChatMemberStatus> m_UserStatus;
-    QMap<int, int> messagePhotoQueue;
-    QMap<qint64, QVector<int>> avatarPhotoQueue;
     QVariantList unseenMessageIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionUserMap;
     QMap<qint64, QSharedPointer<message>> replyMessagesMap;
     QTimer chatActionTimer;
     QTimer userStatusTimer;
-    TdlibJsonWrapper *tdlibJson;
-    NotificationManager *m_NotificationsManager;
     bool isUpdateConnected = false;
     bool isAllOldMessages = false;
 
     bool m_fetching = false;
     QString m_userName;
-    QString m_peerId;
     int m_totalCount = 1;
     QVariantMap m_chatType;
     QString m_action;
@@ -102,6 +95,7 @@ class MessagingModel : public QAbstractListModel
         FILE_DOWNLOADED_SIZE,
         FILE_UPLOADED_SIZE,
         FILE_TYPE,
+        FILE_ID,
         STICKER_SET_ID,
         SECTION, //Custom
         RICH_TEXT, //Custom
@@ -109,7 +103,6 @@ class MessagingModel : public QAbstractListModel
 
     };
 
-    void appendMessage(const QJsonObject &messageObject);
     QVariant dataContent(const int rowIndex) const;
     QVariant dataFileMeta(const int rowIndex, int role) const;
     QSharedPointer<message> findMessageById(const qint64 messageId) const;
@@ -117,8 +110,18 @@ class MessagingModel : public QAbstractListModel
     void addRepliedMessage(const QJsonObject &messageObject);
 
     bool canFetchOlder();
-    QString makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity>> &markup) const;
-private slots:
+protected:
+    QList<QSharedPointer<message>> m_messages;
+    QSharedPointer<ChatMemberStatus> m_UserStatus;
+    QMap<int, int> messagePhotoQueue;
+    QMap<qint64, QVector<int>> avatarPhotoQueue;
+    NotificationManager *m_NotificationsManager;
+    void appendMessage(const QJsonObject &messageObject);
+    QString m_peerId;
+    TdlibJsonWrapper *m_tdlibJson = nullptr;
+    QString m_extra = QLatin1String("MessagingModel %1");
+
+protected slots:
     void chatActionCleanUp();
     void getFile(const int fileId, const int priority, const int indexItem);
     void getAvatar(const qint64 fileId, const int priority, const int indexItem);
@@ -144,7 +147,7 @@ private slots:
 
 public slots:
     void setUserName(QString userName);
-    void setPeerId(QString peerId);
+    virtual void setPeerId(QString peerId);
     void sendForwardMessages(const QString &chat_id,
                              const QString &from_chat_id,
                              const QVariantList message_ids);
@@ -257,8 +260,9 @@ public:
     QHash<int, QByteArray> roleNames() const;
     QString userName() const;
     QString peerId() const;
+    static QString makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity>> &markup);
 
-    MessagingModel();
+    MessagingModel(QObject *parent = nullptr);
     ~MessagingModel();
 
     void fetchMore(const QModelIndex &parent) override;

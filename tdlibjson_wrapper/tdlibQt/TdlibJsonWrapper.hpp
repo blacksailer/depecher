@@ -45,7 +45,24 @@ class TdlibJsonWrapper : public QObject
 
     int m_totalUnreadCount;
     void sendToTelegram(void *Client, const char *str);
-
+    const QList<QString> m_searchFilters = {
+        "searchMessagesFilterEmpty",
+        "searchMessagesFilterAnimation",
+        "searchMessagesFilterAudio",
+        "searchMessagesFilterDocument",
+        "searchMessagesFilterPhoto",
+        "searchMessagesFilterVideo",
+        "searchMessagesFilterVoiceNote",
+        "searchMessagesFilterPhotoAndVideo",
+        "searchMessagesFilterUrl",
+        "searchMessagesFilterChatPhoto",
+        "searchMessagesFilterCall",
+        "searchMessagesFilterMissedCall",
+        "searchMessagesFilterVideoNote",
+        "searchMessagesFilterVoiceAndVideoNote",
+        "searchMessagesFilterUnreadMention",
+        "searchMessagesFilterMention"
+    };
 public:
     ParseObject *parseObject;
     static TdlibJsonWrapper *instance();
@@ -64,25 +81,7 @@ public:
     int totalUnreadCount() const;
     void checkPassword(const QString &password);
 
-    enum SearchFilter {
-        searchMessagesFilterEmpty,
-        searchMessagesFilterAnimation,
-        searchMessagesFilterAudio,
-        searchMessagesFilterDocument,
-        searchMessagesFilterPhoto,
-        searchMessagesFilterVideo,
-        searchMessagesFilterVoiceNote,
-        searchMessagesFilterPhotoAndVideo,
-        searchMessagesFilterUrl,
-        searchMessagesFilterChatPhoto,
-        searchMessagesFilterCall,
-        searchMessagesFilterMissedCall,
-        searchMessagesFilterVideoNote,
-        searchMessagesFilterVoiceAndVideoNote,
-        searchMessagesFilterUnreadMention,
-        searchMessagesFilterMention
-    };
-    Q_ENUM(SearchFilter)
+
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateUserReceived(const QJsonObject &updateNewUserObject);
@@ -183,7 +182,7 @@ public slots:
     void downloadFile(int fileId, int priority = 1, const QString &extra = "");
     void getChatHistory(qint64 chat_id = 0, qint64 from_message_id = 0, int offset = 0, int limit = 20,
                         bool only_local = false, const QString &extra = "");
-    void getChatMessageCount(qint64 chat_id, SearchFilter filter, bool return_local, const QString &extra);
+    void getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra);
     void getUserFullInfo(const int user_id, const QString &extra = "");
     void getSupergroupFullInfo(const int supergroup_id, const QString &extra = "");
     void getAttachedStickerSets(const int file_id);
@@ -224,6 +223,10 @@ public slots:
     void leaveChat(const qint64 chatId, const QString &extra = "");
     void getBasicGroup(const qint64  basicGroupId, const QString &extra = "");
     void getBasicGroupFullInfo(const int groupId, const QString &extra = "");
+    void searchChatMessages(const qint64 chat_id = 0, const qint64 from_message_id = 0, const QString &query = "",
+                            const int sender_user_id = 0, const int offset = 0, const int limit = 20,
+                            const tdlibQt::Enums::SearchFilter &filter = tdlibQt::Enums::Empty,  const QString &extra = "");
+
 
 };
 } //namespace tdlibQt

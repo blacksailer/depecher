@@ -5,6 +5,7 @@ import tdlibQtEnums 1.0
 import Nemo.Notifications 1.0
 import "items"
 import "items/delegates"
+import "items/filter_delegates"
 Page {
     property int user_id: -1
     property int supergroup_id: -1
@@ -193,299 +194,160 @@ Page {
                     height:Theme.paddingLarge
                 }
 
-                Column {
+                SharedContent {
+                    chatId:userInfo.chatId
+
+                    photoCount:userInfo.photoCount
+                    videoCount:userInfo.videoCount
+                    fileCount:userInfo.fileCount
+                    audioCount:userInfo.audioCount
+                    linkCount:userInfo.linkCount
+                    voiceCount:userInfo.voiceCount
+                }
+                BackgroundItem {
                     width: parent.width
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.photoCount
-                        Row {
-                            width: parent.width - 2 * x
+                    height: Theme.itemSizeSmall
+                    visible: sharedContent.voiceCount
+                    Row {
+                        width: parent.width - 2 * x
+                        anchors.verticalCenter: parent.verticalCenter
+                        x: Theme.horizontalPageMargin
+                        Icon {
+                            id:iconVoices
+                            source: "image://theme/icon-m-people"
                             anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconImages
-                                source: "image://theme/icon-m-image"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - iconPhone.width - Theme.paddingLarge
-                                text:qsTr("%1 photos").arg(userInfo.photoCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
+                        }
+                        Item {
+                            width: Theme.paddingLarge
+                            height: Theme.paddingLarge
+                        }
+                        Label {
+                            width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                            text:qsTr("%1 groups in common").arg(userInfo.groupCount)
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.videoCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconVideos
-                                source: "image://theme/icon-m-video"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 videos").arg(userInfo.videoCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.fileCount
-                        Row {
-
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconFiles
-                                source: "image://theme/icon-m-other"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 files").arg(userInfo.fileCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.audioCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconAudios
-                                source: "image://theme/icon-m-sounds"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 audio").arg(userInfo.audioCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.linkCount
-
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconLinks
-                                source: "image://theme/icon-m-link"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 links").arg(userInfo.linkCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.groupCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconGroups
-                                source: "image://theme/icon-m-people"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 groups in common").arg(userInfo.groupCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: userInfo.voiceCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconVoices
-                                source: "image://theme/icon-m-mic"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 voice notes").arg(userInfo.voiceCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-
 
                 }
+
                 Item {
                     width: 1
                     height:Theme.paddingLarge
                 }
 
-                Column {
-                    width: parent.width
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Share contact"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Edit contact"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Delete contact"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Clear history"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Delete conversation"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:"Block user"
-                                color:Theme.errorColor
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
+//                Column {
+//                    width: parent.width
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Share contact"
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Edit contact"
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Delete contact"
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Clear history"
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Delete conversation"
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:"Block user"
+//                                color:Theme.errorColor
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
 
-                }
+//                }
 
             }
         }
@@ -648,186 +510,45 @@ Page {
                     height:Theme.paddingLarge
                 }
 
-                Column {
-                    width: parent.width
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.photoCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconImages
-                                source: "image://theme/icon-m-image"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - iconPhone.width - Theme.paddingLarge
-                                text:qsTr("%1 photos").arg(channelInfo.photoCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.videoCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconVideos
-                                source: "image://theme/icon-m-video"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 videos").arg(channelInfo.videoCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.fileCount
-                        Row {
 
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconFiles
-                                source: "image://theme/icon-m-other"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 files").arg(channelInfo.fileCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.audioCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconAudios
-                                source: "image://theme/icon-m-sounds"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 audio").arg(channelInfo.audioCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.linkCount
+                SharedContent {
+                    chatId:channelInfo.chatId
 
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconLinks
-                                source: "image://theme/icon-m-link"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 links").arg(channelInfo.linkCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        visible: channelInfo.voiceCount
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Icon {
-                                id:iconVoices
-                                source: "image://theme/icon-m-mic"
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            Item {
-                                width: Theme.paddingLarge
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr("%1 voice notes").arg(channelInfo.voiceCount)
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-
-
-                }
-                Item {
+                    photoCount:channelInfo.photoCount
+                    videoCount:channelInfo.videoCount
+                    fileCount:channelInfo.fileCount
+                    audioCount:channelInfo.audioCount
+                    linkCount:channelInfo.linkCount
+                    voiceCount:channelInfo.voiceCount
+                }                Item {
                     width: 1
                     height:Theme.paddingLarge
                 }
 
-                Column {
-                    width: parent.width
+//                Column {
+//                    width: parent.width
 
-                    BackgroundItem {
-                        width: parent.width
-                        height: Theme.itemSizeSmall
-                        Row {
-                            width: parent.width - 2 * x
-                            anchors.verticalCenter: parent.verticalCenter
-                            x: Theme.horizontalPageMargin
-                            Item {
-                                width: Theme.paddingLarge + Theme.iconSizeMedium
-                                height: Theme.paddingLarge
-                            }
-                            Label {
-                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-                                text:qsTr('Report')
-                                color:Theme.errorColor
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
+//                    BackgroundItem {
+//                        width: parent.width
+//                        height: Theme.itemSizeSmall
+//                        Row {
+//                            width: parent.width - 2 * x
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            x: Theme.horizontalPageMargin
+//                            Item {
+//                                width: Theme.paddingLarge + Theme.iconSizeMedium
+//                                height: Theme.paddingLarge
+//                            }
+//                            Label {
+//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+//                                text:qsTr('Report')
+//                                color:Theme.errorColor
+//                                anchors.verticalCenter: parent.verticalCenter
+//                            }
+//                        }
+//                    }
 
-                }
+//                }
 
             }
         }

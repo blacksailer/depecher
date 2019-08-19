@@ -124,6 +124,11 @@ DISTFILES += \
     depecher.desktop \
     qml/pages/GroupInfoPage.qml \
     qml/pages/UserPage.qml \
+    qml/pages/items/filter_delegates/AudioView.qml \
+    qml/pages/items/filter_delegates/DocumentView.qml \
+    qml/pages/items/filter_delegates/LinkView.qml \
+    qml/pages/items/filter_delegates/PhotoView.qml \
+    qml/pages/items/filter_delegates/VoiceView.qml \
     rpm/depecher.yaml \
     rpm/depecher.spec \
     rpm/depecher.changes.in \

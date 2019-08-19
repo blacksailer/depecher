@@ -183,6 +183,10 @@ ListItem {
                                                          !messagingModel.chatType["is_channel"]  &&
                                                          messagingModel.chatType["type"] != TdlibState.Private &&
                                                          messagingModel.chatType["type"] != TdlibState.Secret
+                    MouseArea {
+                    anchors.fill: parent
+                    onClicked: pageStack.push(Qt.resolvedUrl("../UserPage.qml"),{user_id:parseInt(sender_user_id)})
+                    }
                     }
                 }
             }

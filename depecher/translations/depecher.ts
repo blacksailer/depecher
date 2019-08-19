@@ -242,6 +242,13 @@
     </message>
 </context>
 <context>
+    <name>AudioView</name>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -347,6 +354,13 @@
     </message>
 </context>
 <context>
+    <name>DocumentView</name>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
@@ -368,30 +382,6 @@
         <source>Click to enable notifications</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1 photos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 videos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 links</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 voice notes</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>JoinByLinkDelegate</name>
@@ -404,6 +394,13 @@
     <name>JoinedDelegate</name>
     <message>
         <source>%1 joined Telegram!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LinkView</name>
+    <message>
+        <source>Links</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -496,6 +493,13 @@
     <name>NewMessageDelegate</name>
     <message>
         <source>New messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PhotoView</name>
+    <message>
+        <source>Images</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -693,6 +697,33 @@
     </message>
 </context>
 <context>
+    <name>SharedContent</name>
+    <message>
+        <source>%1 photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -799,31 +830,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 photos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 videos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 links</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 groups in common</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 voice notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -848,6 +855,20 @@
     </message>
     <message>
         <source>Leaving</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VideoView</name>
+    <message>
+        <source>Videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceView</name>
+    <message>
+        <source>Voice notes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

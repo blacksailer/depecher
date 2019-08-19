@@ -2,6 +2,7 @@
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "tdlibQt/ParseObject.hpp"
+#include "tdlibQt/include/TdlibNamespace.hpp"
 #include <QMetaEnum>
 namespace tdlibQt {
 static const QString c_extra = QLatin1String("InfoProvider %1");
@@ -45,25 +46,25 @@ void InfoProvider::countReceived(const QJsonObject &countObject)
 {
     if (countObject.keys().contains("@extra")) {
         QString filter = countObject["@extra"].toString();
-        TdlibJsonWrapper::SearchFilter searchFilter = (TdlibJsonWrapper::SearchFilter)
-                QMetaEnum::fromType<tdlibQt::TdlibJsonWrapper::SearchFilter>().keyToValue(filter.toStdString().c_str());
+        Enums::SearchFilter searchFilter = (Enums::SearchFilter)
+                                           QMetaEnum::fromType<tdlibQt::Enums::SearchFilter>().keyToValue(filter.toStdString().c_str());
         switch (searchFilter) {
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterPhoto:
+        case Enums::SearchFilter::Photo:
             setPhotoCount(countObject["count"].toInt());
             break;
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterVideo:
+        case Enums::SearchFilter::Video:
             setVideoCount(countObject["count"].toInt());
             break;
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterDocument:
+        case Enums::SearchFilter::Document:
             setFileCount(countObject["count"].toInt());
             break;
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterAudio:
+        case Enums::SearchFilter::Audio:
             setAudioCount(countObject["count"].toInt());
             break;
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterUrl:
+        case Enums::SearchFilter::Url:
             setLinkCount(countObject["count"].toInt());
             break;
-        case TdlibJsonWrapper::SearchFilter::searchMessagesFilterVoiceNote:
+        case Enums::SearchFilter::VoiceNote:
             setVoiceCount(countObject["count"].toInt());
             break;
         default:
@@ -79,18 +80,18 @@ void InfoProvider::setChatId(double chatId)
     if (qFuzzyCompare(m_chatId, chatId))
         return;
     m_chatId = chatId;
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterPhoto,
-                                     false, "searchMessagesFilterPhoto");
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterVideo,
-                                     false, "searchMessagesFilterVideo");
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterDocument,
-                                     false, "searchMessagesFilterDocument");
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterAudio,
-                                     false, "searchMessagesFilterAudio");
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterUrl,
-                                     false, "searchMessagesFilterUrl");
-    m_tdlibJson->getChatMessageCount(m_chatId, TdlibJsonWrapper::SearchFilter::searchMessagesFilterVoiceNote,
-                                     false, "searchMessagesFilterVoiceNote");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Photo,
+                                     false, "Photo");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Video,
+                                     false, "Video");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Document,
+                                     false, "Document");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Audio,
+                                     false, "Audio");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::Url,
+                                     false, "Url");
+    m_tdlibJson->getChatMessageCount(m_chatId, Enums::SearchFilter::VoiceNote,
+                                     false, "VoiceNote");
     m_chat = UsersModel::instance()->getChat(m_chatId);
     emit chatIdChanged(m_chatId);
     emit muteForChanged();

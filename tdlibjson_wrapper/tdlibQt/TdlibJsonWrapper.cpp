@@ -790,7 +790,32 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
     sendToTelegram(client, getChatHistory.toStdString().c_str());
 }
 
-void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, SearchFilter filter, bool return_local, const QString &extra)
+void TdlibJsonWrapper::searchChatMessages(const qint64 chat_id, const qint64 from_message_id, const QString &query,
+        const int sender_user_id, const int offset, const int limit,
+        const Enums::SearchFilter &filter, const QString &extra)
+{
+    QString queryStr = "{\"@type\":\"searchChatMessages\","
+                       "\"chat_id\":\"%1\","
+                       "\"from_message_id\":\"%2\","
+                       "\"query\":\"%3\","
+                       "\"sender_user_id\":%4,"
+                       "\"offset\":%5,"
+                       "\"limit\":%6,"
+                       "\"filter\":%7"
+                       "}";
+    QString filterStr = "{\"@type\":\"%1\"}";
+    filterStr = filterStr.arg(m_searchFilters[(int)filter]);
+    queryStr = queryStr.arg(QString::number(chat_id), QString::number(from_message_id), query,
+                            QString::number(sender_user_id), QString::number(offset), QString::number(limit),
+                            filterStr);
+    if (extra != "") {
+        queryStr.remove(queryStr.size() - 1, 1);
+        queryStr.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, queryStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra)
 {
     QString query = "{\"@type\":\"getChatMessageCount\","
                     "\"chat_id\":\"%1\","
@@ -798,7 +823,7 @@ void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, SearchFilter filter, 
                     "\"return_local\":%3"
                     "}";
     QString filterStr = "{\"@type\":\"%1\"}";
-    filterStr = filterStr.arg(QMetaEnum::fromType<TdlibJsonWrapper::SearchFilter>().valueToKey(filter));
+    filterStr = filterStr.arg(m_searchFilters[(int)filter]);
     query = query.arg(QString::number(chat_id), filterStr,
                       return_local ? QString("true") : QString("false"));
 

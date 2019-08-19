@@ -26,6 +26,7 @@ public:
     qint64 getLastMessageOutbox(const qint64 chatId);
     qint64 getLastMessageId(const qint64 chatId);
     QVariantMap getChatType(const qint64 chatId);
+    QString getUserFirstName(const int userId);
     QString getUserFullName(const int userId);
     void setSmallAvatar(qint64 id, QSharedPointer<file> small);
     QSharedPointer<profilePhoto> getUserPhoto(const int userId);
