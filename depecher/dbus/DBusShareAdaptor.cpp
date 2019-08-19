@@ -73,7 +73,6 @@ void DBusShareAdaptor::sendDocument(const QList<qlonglong> &chat_ids, const QStr
 
 void DBusShareAdaptor::sendText(const QList<qlonglong> &chat_ids, const QString &data)
 {
-    qDebug() << data;
     QString name = QJsonDocument::fromJson(data.toUtf8()).object()["name"].toString();
     QString content = QJsonDocument::fromJson(data.toUtf8()).object()["data"].toString();
     for (int i = 0; i < chat_ids.size(); i++) {
@@ -98,6 +97,75 @@ void DBusShareAdaptor::sendText(const QList<qlonglong> &chat_ids, const QString 
         m_tdlibJson->sendMessage(jsonObject.toJson());
         emit uploadFinished("0", QString::number(i), QString::number(i));
     }
+}
+
+void DBusShareAdaptor::sendVCard(const QList<qlonglong> &chat_ids, const QString &data)
+{
+    QString name = QJsonDocument::fromJson(data.toUtf8()).object()["name"].toString();
+    QString content = QJsonDocument::fromJson(data.toLatin1()).object()["data"].toString();
+    qDebug() << content;
+
+    for (int i = 0; i < chat_ids.size(); i++) {
+        emit uploadStarted("0", QString::number(i), name);
+        tdlibQt::TlStorerToString json;
+        tdlibQt::sendMessage sendMessageObject;
+        sendMessageObject.chat_id_ = chat_ids[i];
+        sendMessageObject.disable_notification_ = false;
+        sendMessageObject.from_background_ = true;
+        sendMessageObject.input_message_content_ = QSharedPointer<tdlibQt::inputMessageContact>(new tdlibQt::inputMessageContact);
+        tdlibQt::inputMessageContact *ptr = static_cast<tdlibQt::inputMessageContact *>
+                                            (sendMessageObject.input_message_content_.data());
+        ptr->contact_ = QSharedPointer<tdlibQt::contact>(new tdlibQt::contact);
+
+        QRegularExpression getNameRxp("\\nN(;ENCODING=QUOTED-PRINTABLE)?(;CHARSET=(?:ISO-8859-1|UTF-8))*:([A-Za-z0-9\\s=\\rn]*);([A-Za-z0-9\\s=\\rn]*)", QRegularExpression::UseUnicodePropertiesOption);
+        QRegularExpression getTelRxp("TEL;(.*?)?:([0-9\\+\\-\\(\\)]*)", QRegularExpression::UseUnicodePropertiesOption);
+
+        QRegularExpressionMatch pos = getNameRxp.match(content);
+        QRegularExpressionMatch pos2 = getTelRxp.match(content);
+
+        QStringList list = pos.capturedTexts();
+        QStringList listPhone = pos2.capturedTexts();
+        if (pos.hasMatch()) {
+            QString fn = decode(list[4].replace("=\r\n", "").toUtf8());
+            QString ln = decode(list[3].replace("=\r\n", "").toUtf8());
+            ptr->contact_->first_name_ = fn.toStdString();
+            ptr->contact_->last_name_ = ln.toStdString();
+
+        }
+        if (pos2.hasMatch()) {
+            QString phone = listPhone[2];
+            ptr->contact_->phone_number_ = phone.toStdString();
+        }
+        ptr->contact_->vcard_ = content.toStdString();
+
+        sendMessageObject.store(json, "input_message_content");
+        QVariantMap originalObject = json.doc["input_message_content"].toMap();
+        originalObject.remove("reply_markup");
+        auto jsonObject = QJsonDocument::fromVariant(originalObject);
+        m_tdlibJson->sendMessage(jsonObject.toJson());
+        emit uploadFinished("0", QString::number(i), QString::number(i));
+    }
+}
+
+QString DBusShareAdaptor::decode(const QByteArray &input)
+{
+    QByteArray output;
+
+    for (int i = 0; i < input.length(); ++i) {
+        if (input.at(i) == '=' && i + 2 < input.length()) {
+            QString strValue = input.mid((++i)++, 2);
+            bool converted;
+            char character = strValue.toUInt(&converted, 16);
+            if (converted)
+                output.append(character);
+            else
+                output.append("=" + strValue);
+        } else {
+            output.append(input.at(i));
+        }
+    }
+
+    return QString::fromUtf8(output);
 }
 
 DBusShareAdaptor::DBusShareAdaptor(QObject *parent) : QObject(parent)
@@ -125,14 +193,6 @@ DBusShareAdaptor::~DBusShareAdaptor()
 }
 
 
-/*
- * "{\"@type\":\"updateFile\",\"file\":{\"@type\":\"file\",\"id\":1149,\"size\":0,
- * \"expected_size\":1818210,\"local\":{\"@type\":\"localFile\",\"path\":\"\",
- * \"can_be_downloaded\":true,\"can_be_deleted\":false,\"is_downloading_active\":false,
- * \"is_downloading_completed\":false,\"downloaded_prefix_size\":0,\"downloaded_size\":0},
- * \"remote\":{\"@type\":\"remoteFile\",\"id\":\"\",\"is_uploading_active\":true,
- * \"is_uploading_completed\":false,\"uploaded_size\":0}}}"
- * */
 void DBusShareAdaptor::updateFileReceived(const QJsonObject &updateFileObject)
 {
     QSharedPointer<tdlibQt::file> tmp = tdlibQt::ParseObject::parseFile(updateFileObject["file"].toObject());
@@ -140,11 +200,8 @@ void DBusShareAdaptor::updateFileReceived(const QJsonObject &updateFileObject)
         if (m_files.contains(tmp->id_)) {
             m_files[tmp->id_] = tmp;
             int percent = int((qreal)tmp->remote_->uploaded_size_ / (qreal)tmp->local_->downloaded_size_ * 100);
-            qDebug() << percent;
             emit uploadProgress("0", QString::number(m_fileIdToGenerationIdMap[tmp->id_]), percent);
             if (percent >= 100) {
-                qDebug() << "Upload Finished" << percent;
-
                 emit uploadFinished("0", QString::number(m_fileIdToGenerationIdMap[tmp->id_]), "0");
                 m_files.remove(tmp->id_);
                 m_fileIdToGenerationIdMap.remove(tmp->id_);
@@ -189,8 +246,11 @@ void DBusShareAdaptor::fileGenerationStoped(const QJsonObject &updateFileGenerat
 
 void DBusShareAdaptor::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType)
 {
+    qDebug() << mimeType;
     if (mimeType.contains("image")) {
         sendPhoto(chat_ids, filepath);
+    } else if (mimeType.contains("vcard")) {
+        sendVCard(chat_ids, filepath);
     } else if (mimeType.contains("text")) {
         sendText(chat_ids, filepath);
     } else {
@@ -199,9 +259,6 @@ void DBusShareAdaptor::sendMedia(const QList<qlonglong> &chat_ids, const QString
 
 }
 
-void DBusShareAdaptor::sendVCard(const QList<qlonglong> &chat_ids, const QString &data)
-{
 
-}
 
 

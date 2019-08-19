@@ -69,16 +69,4 @@ void DBusShareAdaptorWrapper::sendMedia(const QList<qlonglong> &chat_ids, const 
                              );
 }
 
-void DBusShareAdaptorWrapper::sendVCard(const QList<qlonglong> &chat_ids, const QString &data, const QDBusMessage &message)
-{
-    if (sailfish_access_policy_check(message.service().toLatin1().constData(),
-                                     SEND_VCARD, 0) == AUTH_DENY) {
-        QDBusConnection::sessionBus().send(message.createErrorReply(QDBusError::AccessDenied, "Policy error"));
-        return;
-    }
-    // handle method call org.blacksailer.depecher.share.sendVCard
-    QMetaObject::invokeMethod(parent(), "sendVCard",
-                              Q_ARG(QList<qlonglong>, chat_ids),
-                              Q_ARG(QString, data));
-}
 

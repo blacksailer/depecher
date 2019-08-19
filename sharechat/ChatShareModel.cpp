@@ -16,7 +16,7 @@ ChatShareModel::ChatShareModel(QObject *parent) :
     remoteAppIface = new QDBusInterface(QString(),
                                         c_dbusObjectPath,
                                         c_dbusInterface,
-                                        QDBusConnection::connectToPeer("unix:path=/tmp/depecher", "depecherBus"),
+                                        QDBusConnection::connectToPeer("unix:abstract=depecher-dbus", "depecherBus"),
                                         this);
 }
 

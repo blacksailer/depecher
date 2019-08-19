@@ -45,16 +45,5 @@ void DepecherAdaptor::openConversation(qlonglong chatId)
     QMetaObject::invokeMethod(parent(), "openConversation", Q_ARG(qlonglong, chatId));
 }
 
-//QDBusVariant DepecherAdaptor::getChatList(const qint64 lastChatId, const int offset, const QDBusMessage &message)
-//{
-//    QVariant result;
-//    message.setDelayedReply(true);
-//    QMetaObject::invokeMethod(parent(), "getChatList",
-//                              Q_RETURN_ARG(QVariant, result),
-//                              Q_ARG(qint64, lastChatId),
-//                              Q_ARG(int, offset),
-//                              Q_ARG(QDBusMessage, message));
-//    return QDBusVariant(result);
-//}
 
 

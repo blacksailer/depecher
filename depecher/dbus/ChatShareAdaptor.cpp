@@ -12,7 +12,7 @@ static const QString c_extraName = QStringLiteral("dbus");
 
 ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent)
 {
-    m_dbusServer = new QDBusServer("unix:path=/tmp/depecher", this);
+    m_dbusServer = new QDBusServer("unix:abstract=depecher-dbus", this);
     connect(m_dbusServer, &QDBusServer::newConnection,
     [this](const QDBusConnection & dbus) {
         qDebug() << "New Connection";

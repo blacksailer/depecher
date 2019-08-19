@@ -24,12 +24,7 @@ Item {
         label: qsTr("Type")
         menu: ContextMenu {
             MenuItem { text: qsTr("Photo") } //Порядок жестко определен. В родителе перечесление
-            //            MenuItem { text: qsTr("Аудио") }
-            MenuItem { text: qsTr("Document") }
-            //            MenuItem { text:qsTr("Видео") }
-            //            MenuItem { text: qsTr("Место") }
-            //            MenuItem { text: qsTr("Фото VK") }
-            //            MenuItem { text: qsTr("Видео VK") }
+               MenuItem { text: qsTr("Document") }
         }
         onCurrentIndexChanged:
         {
@@ -37,30 +32,6 @@ Item {
         }
 
     }
-    //nemo-qml-plugin-thumbnailer-qt5-video
-    /*!
-        \qmlproperty enum DocumentGalleryModel::rootType
-        This property contains the type of item a query should return.
-        It can be one of:
-        \list
-        \o DocumentGallery.InvalidType
-        \o DocumentGallery.File
-        \o DocumentGallery.Folder
-        \o DocumentGallery.Document
-        \o DocumentGallery.Text
-        \o DocumentGallery.Audio
-        \o DocumentGallery.Image
-        \o DocumentGallery.Video
-        \o DocumentGallery.Playlist
-        \o DocumentGallery.Artist
-        \o DocumentGallery.AlbumArtist
-        \o DocumentGallery.Album
-        \o DocumentGallery.AudioGenre
-        \o DocumentGallery.PhotoAlbum
-        \endlist
-        The default value is DocumentGallery.File
-    */
-
     DocumentGalleryModel {
         id: galleryModel
         rootType: DocumentGallery.Image //DocumentGallery.File || DocumentGallery.Audio

@@ -21,7 +21,8 @@ class DBusShareAdaptor : public QObject
     inline void sendPhoto(const QList<qlonglong> &chat_ids, const QString &filepath);
     inline void sendDocument(const QList<qlonglong> &chat_ids, const QString &filepath);
     inline void sendText(const QList<qlonglong> &chat_ids, const QString &data);
-
+    inline void sendVCard(const QList<qlonglong> &chat_ids, const QString &data);
+    static QString decode(const QByteArray &input);
 public:
     explicit DBusShareAdaptor(QObject *parent = nullptr);
     ~DBusShareAdaptor();
@@ -32,7 +33,6 @@ signals:
     void uploadStarted(const QString &chat_id, const QString &message_id, const QString &local_url);
 public slots:
     void sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType);
-    void sendVCard(const QList<qlonglong> &chat_ids, const QString &data);
 private slots:
     void updateFileReceived(const QJsonObject &updateFileObject);
     void fileGenerationStarted(const QJsonObject &updateFileGenerationStartObject);

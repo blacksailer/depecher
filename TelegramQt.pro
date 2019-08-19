@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS =  webp \
+            icons \
             lib \
             shareui \
             sharechat \

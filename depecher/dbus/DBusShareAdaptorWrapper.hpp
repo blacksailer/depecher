@@ -32,12 +32,6 @@ class DBusShareAdaptorWrapper: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.blacksailer.depecher.share")
     Q_CLASSINFO("D-Bus Introspection", ""
                 "  <interface name=\"org.blacksailer.depecher.share\">\n"
-                "    <method name=\"sendVCard\">\n"
-                "      <arg direction=\"in\" type=\"ax\" name=\"chat_ids\"/>\n"
-                "      <annotation value=\"QList&lt;qlonglong&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
-                "      <arg direction=\"in\" type=\"s\" name=\"data\"/>\n"
-                "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
-                "    </method>\n"
                 "    <method name=\"sendMedia\">\n"
                 "      <arg direction=\"in\" type=\"ax\" name=\"chat_ids\"/>\n"
                 "      <annotation value=\"QList&lt;qlonglong&gt;\" name=\"org.qtproject.QtDBus.QtTypeName.In0\"/>\n"
@@ -73,7 +67,6 @@ public:
     void initPolicy();
 public Q_SLOTS: // METHODS
     Q_NOREPLY void sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType, const QDBusMessage &message);
-    Q_NOREPLY void sendVCard(const QList<qlonglong> &chat_ids, const QString &data, const QDBusMessage &message);
 Q_SIGNALS: // SIGNALS
     void uploadFailed(const QString &chat_id, const QString &message_id);
     void uploadFinished(const QString &chat_id, const QString &message_id, const QString &remote_url);

@@ -135,8 +135,8 @@ static void sailfish_access_load_config_intf(GKeyFile *config,
         const char *group = depecher_intf_name((depecher_intf)i);
         char *spec = g_key_file_get_string(config, group,
                            DEFAULT_INTF_POLICY, NULL);
-        qDebug("Parsing default %s rule \"%s\"",
-            group, spec);
+//        qDebug("Parsing default %s rule \"%s\"",
+//            group, spec);
         /* Parse the default policy for this interface */
         if (spec) {
             default_intf_policy = da_policy_new(spec);
@@ -159,7 +159,7 @@ static void sailfish_access_load_config_intf(GKeyFile *config,
         enum depecher_intf intf = depecher_intf_from_method((depecher_method)i);
         const char *group = depecher_intf_name(intf);
         char *spec = g_key_file_get_string(config, group, method, NULL);
-        qDebug(" rule \"%s\"", spec);
+//        qDebug(" rule \"%s\"", spec);
 
         if (spec) {
             policy = da_policy_new(spec);

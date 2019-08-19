@@ -50,7 +50,6 @@ public: // PROPERTIES
 public Q_SLOTS: // METHODS
     Q_NOREPLY void showApp(const QStringList &item);
     Q_NOREPLY void openConversation(qlonglong chatId);
-//    QDBusVariant getChatList(const qint64 lastChatId, const int offset, const QDBusMessage &message);
 Q_SIGNALS: // SIGNALS
 };
 

@@ -12,6 +12,7 @@ Name:       depecher
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
+%define theme sailfish-default
 Summary:    Telegram client for Sailfish OS
 Version:    0.7.0
 Release:    1
@@ -33,6 +34,7 @@ BuildRequires:  pkgconfig(tdlibjson)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(vorbisfile)
 BuildRequires:  pkgconfig(libdbusaccess)
+BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  desktop-file-utils
 
 %description
@@ -114,5 +116,11 @@ fi
 %{_libdir}/systemd/user/org.blacksailer.depecher.service
 %{_libdir}/nemo-transferengine/plugins/*
 %{_sysconfdir}/%{name}/depecher-dbus-access.conf
+%{_datadir}/themes/%{theme}/meegotouch/z1.0/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/z1.25/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/z1.5/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/z1.5-large/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/z1.75/icons/*.png
+%{_datadir}/themes/%{theme}/meegotouch/z2.0/icons/*.png
 # >> files
 # << files

@@ -46,7 +46,7 @@ public:
         Sending_Read
     };
     enum SearchFilter {
-        Empty,
+        Empty = 5,
         Animation,
         Audio,
         Document,

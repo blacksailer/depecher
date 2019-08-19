@@ -313,7 +313,7 @@ void TdlibJsonWrapper::searchContacts(const QString &query, const int limit)
     QString searchContactsStr = "{\"@type\":\"searchContacts\","
                                 "\"query\":\"%1\","
                                 "\"limit\":%2,"
-                                "\@extra\":\"searchContacts\"}";
+                                "\"@extra\":\"searchContacts\"}";
     searchContactsStr.arg(query, QString::number(limit));
     sendToTelegram(client, searchContactsStr.toStdString().c_str());
 }
