@@ -29,7 +29,8 @@ UserInfoProvider::UserInfoProvider(QObject *parent) : InfoProvider(parent)
             this, &UserInfoProvider::userFullInfoReceived);
     connect(m_tdlibJson, &TdlibJsonWrapper::errorReceived,
             this, &UserInfoProvider::errorReceived);
-
+    connect(m_tdlibJson, &TdlibJsonWrapper::chatReceived,
+            this, &UserInfoProvider::onChatReceived);
 }
 
 int UserInfoProvider::userId() const
@@ -177,16 +178,36 @@ void UserInfoProvider::processFile(const QJsonObject &fileObject)
     }
 }
 
+void UserInfoProvider::onChatReceived(const QJsonObject &userObject)
+{
+    if (userObject["@extra"].toString() == c_extra.arg("createPrivateChat")) {
+        auto chatItem = ParseObject::parseChat(userObject);
+        emit chatIdReceived(QString::number(chatItem->id_));
+    }
+}
+
 void UserInfoProvider::setUserId(int userId)
 {
     if (m_userId == userId)
         return;
     m_userId = userId;
-    setChatId((double)m_userId);
+    if (chatId() == -1)
+        setChatId((double)m_userId);
     m_userInfo = UsersModel::instance()->getUser(m_userId);
     m_tdlibJson->getUserFullInfo(m_userId, c_extra.arg(QString::number(m_userId)));
     emitAll();
     emit userIdChanged(m_userId);
+}
+
+QString UserInfoProvider::getChatId()
+{
+    auto chat = UsersModel::instance()->getChat(m_userId);
+    if (chat.data())
+        return QString::number(chat->id_);
+    else {
+        m_tdlibJson->createPrivateChat(m_userId, false, c_extra.arg("createPrivateChat"));
+        return QString::number(-1);
+    }
 }
 
 void UserInfoProvider::setGroupCount(int groupCount)

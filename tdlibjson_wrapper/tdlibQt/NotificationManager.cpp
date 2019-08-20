@@ -75,7 +75,6 @@ void NotificationManager::processNotificationGroup(QSharedPointer<notificationGr
         case notificationTypeNewMessage::ID:
             QSharedPointer<message> messageItem = static_cast<notificationTypeNewMessage *>(notification->type_.data())->message_;
             auto notificationTimestamp = qint64(messageItem->date_);
-            qDebug() << "Publishing...";
             QString notificationSummary;
             QString notificationBody;
             qint64 chatId = messageItem->chat_id_;
@@ -152,10 +151,8 @@ void NotificationManager::gotNewMessage(const QJsonObject &updateNewMessage)
 {
 #warning parse notifiocation
     bool disableNotification  = true;//updateNewMessage["disable_notification"].toBool();
-    qDebug() << disableNotification;
     if (!disableNotification) {
         auto messageObject = updateNewMessage["message"].toObject();
-        qDebug() << "Publishing...";
         auto notificationTimestamp = qint64(messageObject["date"].toInt());
         QString notificationSummary;
         QString notificationBody;

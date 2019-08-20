@@ -118,7 +118,7 @@ Page {
                 wrapMode: Text.WordWrap
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeTiny
-                text: qsTr("Be aware, after clicking you will join chat. Leaving chats not supported for now.")
+                text: qsTr("Be aware, after clicking you will join chat.")
             }
             BackgroundItem {
                 width: parent.width
@@ -165,7 +165,42 @@ Page {
                 } )
 
             }
+            BackgroundItem {
+                width: parent.width
+                height: Theme.itemSizeMedium
+                Row{
+                    width:parent.width - 2 * x
+                    height: parent.height
+                    x:Theme.horizontalPageMargin
+                    spacing:Theme.paddingMedium
+                    Image {
+                        width: parent.height
+                        height: width
+                        source: "qrc:/qml/assets/icons/it_sailfish.jpg"
+                    }
+                    Column {
+                        width: parent.width - parent.height - parent.spacing
+                        Label{
+                            width: parent.width
+                            text:"Jolla Community Italian Club"
+                            truncationMode: TruncationMode.Fade
+                            color: parent.pressed ? Theme.highlightColor : Theme.primaryColor
+                        }
+                        Label{
+                            width: parent.width
+                            text:qsTr("Italian speaking community")
+                            truncationMode: TruncationMode.Fade
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                        }
+                    }
+                }
+                onClicked: joinPopup.execute(qsTr("Joining chat"), function() {
 
+                        c_telegramWrapper.joinChat(parseFloat("-1001105250707"),"EnSailfish")
+                } )
+
+            }
             SectionHeader{
                 text: qsTr("Donations")
             }

@@ -17,7 +17,7 @@ tdlibQt::AuthenticationHandler::AuthenticationHandler(QObject *parent) :
             this, &AuthenticationHandler::setOk);
 
     m_authorizationState = QSharedPointer<AuthorizationState>(nullptr);
-    if(m_client->authorizationState() == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
+    if (m_client->authorizationState() == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
         m_client->setEncryptionKey();
 
 }
@@ -74,7 +74,7 @@ bool tdlibQt::AuthenticationHandler::hasRecoveryEmail() const
 }
 
 void tdlibQt::AuthenticationHandler::setCurrentAuthorizationState(tdlibQt::Enums::AuthorizationState
-                                                                  currentAuthorizationState)
+        currentAuthorizationState)
 {
     if (m_currentAuthorizationState == currentAuthorizationState)
         return;
@@ -138,13 +138,11 @@ QString tdlibQt::AuthenticationHandler::getCurrentCodeType() const
 }
 
 void tdlibQt::AuthenticationHandler::setAuthorizationState(const
-                                                           QSharedPointer<tdlibQt::AuthorizationState> &authorizationState)
+        QSharedPointer<tdlibQt::AuthorizationState> &authorizationState)
 {
     m_authorizationState = authorizationState;
     if (m_authorizationState->get_id() == authorizationStateWaitPassword::ID) {
         auto waitCode = static_cast<authorizationStateWaitPassword *>(m_authorizationState.data());
-        qDebug() << QString::fromStdString(waitCode->recovery_email_address_pattern_) <<
-                 waitCode->has_recovery_email_address_ <<  QString::fromStdString(waitCode->password_hint_);
 
         emit getHintChanged(getHint());
         emit emailPatternChanged(emailPattern());

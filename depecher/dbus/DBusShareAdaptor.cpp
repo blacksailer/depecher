@@ -103,7 +103,6 @@ void DBusShareAdaptor::sendVCard(const QList<qlonglong> &chat_ids, const QString
 {
     QString name = QJsonDocument::fromJson(data.toUtf8()).object()["name"].toString();
     QString content = QJsonDocument::fromJson(data.toLatin1()).object()["data"].toString();
-    qDebug() << content;
 
     for (int i = 0; i < chat_ids.size(); i++) {
         emit uploadStarted("0", QString::number(i), name);
@@ -173,7 +172,7 @@ DBusShareAdaptor::DBusShareAdaptor(QObject *parent) : QObject(parent)
 
     auto adaptor = new DBusShareAdaptorWrapper(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    qDebug() << dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this);
+    dbus.registerObject(c_dbusObjectPath, c_dbusInterface, this);
 
     adaptor->initPolicy();
     m_tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
@@ -246,7 +245,6 @@ void DBusShareAdaptor::fileGenerationStoped(const QJsonObject &updateFileGenerat
 
 void DBusShareAdaptor::sendMedia(const QList<qlonglong> &chat_ids, const QString &filepath, const QString &mimeType)
 {
-    qDebug() << mimeType;
     if (mimeType.contains("image")) {
         sendPhoto(chat_ids, filepath);
     } else if (mimeType.contains("vcard")) {

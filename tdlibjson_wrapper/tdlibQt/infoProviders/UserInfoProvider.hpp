@@ -31,7 +31,7 @@ private:
 
     QSharedPointer<user> m_userInfo;
     QSharedPointer<userFullInfo> m_userFullInfo;
-    int m_userId;
+    int m_userId = 0;
 
     linkState m_incomingLink;
 
@@ -39,7 +39,7 @@ private:
 
     void emitAll();
 
-    int m_groupCount;
+    int m_groupCount  = 0;
 
 public:
     explicit UserInfoProvider(QObject *parent = nullptr);
@@ -86,15 +86,17 @@ signals:
     void usernameChanged();
 
     void groupCountChanged(int groupCount);
-
+    void chatIdReceived(const QString &chatId);
 private slots:
     void updateUserReceived(const QJsonObject &userObject);
     void userFullInfoReceived(const QJsonObject &userFullInfoObject);
     void errorReceived(const QJsonObject &errorObject);
     void setGroupCount(int groupCount);
     void processFile(const QJsonObject &fileObject);
+    void onChatReceived(const QJsonObject &userObject);
 public slots:
     void setUserId(int userId);
+    QString getChatId();
 };
 } // namespace tdlibQt
 Q_DECLARE_METATYPE(tdlibQt::UserInfoProvider::linkState)

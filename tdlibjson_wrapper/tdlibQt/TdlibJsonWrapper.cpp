@@ -484,7 +484,6 @@ void TdlibJsonWrapper::addProxy(const QString &address, const int port,
                     "\"type\":%4"
                     "}";
     proxy = proxy.arg(address, QString::number(port), enabled ? QString("true") : QString("false"), proxyType);
-    qDebug() << proxy;
     sendToTelegram(client, proxy.toStdString().c_str());
 }
 
@@ -813,6 +812,41 @@ void TdlibJsonWrapper::searchChatMessages(const qint64 chat_id, const qint64 fro
         queryStr.append(",\"@extra\":\"" + extra + "\"}");
     }
     sendToTelegram(client, queryStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::createPrivateChat(const int user_id, bool force, const QString &extra)
+{
+    QString query = "{\"@type\":\"createPrivateChat\","
+                    "\"user_id\":%1,"
+                    "\"force\":%2}";
+    query = query.arg(QString::number(user_id),
+                      force ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::deleteChatHistory(qint64 chat_id, bool remove_from_chat_list, bool revoke, const QString &extra)
+{
+    QString query = "{\"@type\":\"deleteChatHistory\","
+                    "\"chat_id\":\"%1\","
+                    "\"remove_from_chat_list\":%2,"
+                    "\"revoke\":%3"
+                    "}";
+    query = query.arg(QString::number(chat_id),
+                      remove_from_chat_list ? QString("true") : QString("false"),
+                      revoke ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra)

@@ -17,13 +17,13 @@ class UsernameResolver : public QObject
     tdlibQt::Enums::ChatType m_chatType;
 
     TdlibJsonWrapper *m_tdlibJson;
-    QString m_username;
+    QString m_username = "";
 
-    double m_resolvedId;
+    double m_resolvedId = 0;
 
-    double m_resolvedChatId;
+    double m_resolvedChatId = 0;
 
-    QString m_error;
+    QString m_error = "";
 
 public:
     explicit UsernameResolver(QObject *parent = nullptr);

@@ -20,10 +20,8 @@ Page {
                 else if(messagingModel.chatType["type"] == TdlibState.Secret || messagingModel.chatType["type"] == TdlibState.Private)
                 pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{user_id:parseInt(chatId)})
             else if (messagingModel.chatType["type"] == TdlibState.Supergroup)// && messagingModel.chatType["is_channel"])
-            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),supergroup_id: 0})
+            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),hideOpenMenu:true})
         }
-
-
 
     }
 

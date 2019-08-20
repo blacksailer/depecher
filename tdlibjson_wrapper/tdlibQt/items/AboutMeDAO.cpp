@@ -131,12 +131,13 @@ void AboutMeDAO::setId(QString id)
 
 void AboutMeDAO::setDisableGetMe(bool disableGetMe)
 {
+    if (!disableGetMe)
+        m_client->getMe();
+
     if (m_disableGetMe == disableGetMe)
         return;
 
     m_disableGetMe = disableGetMe;
-    if(!m_disableGetMe)
-        m_client->getMe();
 
     emit disableGetMeChanged(m_disableGetMe);
 }

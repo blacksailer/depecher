@@ -15,7 +15,6 @@ ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent)
     m_dbusServer = new QDBusServer("unix:abstract=depecher-dbus", this);
     connect(m_dbusServer, &QDBusServer::newConnection,
     [this](const QDBusConnection & dbus) {
-        qDebug() << "New Connection";
         m_dbusConnection = new QDBusConnection(dbus);
         m_dbusConnection->registerObject(c_dbusObjectPath, c_dbusInterface, this, QDBusConnection::RegisterOption::ExportAllSlots);
     });
@@ -28,7 +27,6 @@ ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent)
         if (chatsObject.keys().contains("@extra")) {
             if (chatsObject["@extra"].toString() == c_extraName) {
                 foreach (auto item, chatsObject["chat_ids"].toArray()) {
-                    qDebug() << m_chatIds.size();
                     switch (item.type()) {
                     case QJsonValue::Double:
                         m_chatIds.append((qint64)item.toDouble());
@@ -55,7 +53,6 @@ void ChatShareAdaptor::addChatItem(const QJsonObject &chatObject)
     if (chatObject.keys().contains("@extra")) {
         if (chatObject["@extra"].toString() == c_extraName) {
             m_chats.append(chatObject.toVariantMap());
-            qDebug() << m_chats.size() << m_chatIds.size();
             if (m_chats.size() == m_chatIds.size())
                 sendChatList();
         }
@@ -76,7 +73,6 @@ QDBusVariant ChatShareAdaptor::getChatList(const qint64 lastChatId, const qint64
     m_delayedList.append(RequestData());
     message.setDelayedReply(true);
     m_delayedList.last().reply = message.createReply();
-    qDebug() << "Received dbus chat" << lastChatId << order;
     m_tdlibJson->getChats(lastChatId,
                           order,
                           5,

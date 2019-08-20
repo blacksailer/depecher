@@ -37,10 +37,6 @@
         <translation>Grupper i Telegram</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Observera att du ansluter till chatten efter tryck. Att lämna chattar stöds inte för närvarande.</translation>
-    </message>
-    <message>
         <source>English speaking community</source>
         <translation>Engelsktalande gemenskap</translation>
     </message>
@@ -111,6 +107,14 @@
     <message>
         <source>Version</source>
         <translation>Version</translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -695,6 +699,18 @@
         <source>%1 selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SharedContent</name>
@@ -852,6 +868,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Leaving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open channel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

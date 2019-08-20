@@ -45,10 +45,6 @@
         <translation>加入讨论中</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>请注意，点击后你会加入讨论组， 暂时不支持离开讨论组。</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>获取邀请链接出错</translation>
     </message>
@@ -110,6 +106,14 @@
     </message>
     <message>
         <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -695,6 +699,18 @@
         <source>%1 selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SharedContent</name>
@@ -852,6 +868,10 @@
     </message>
     <message>
         <source>Leaving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open channel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

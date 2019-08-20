@@ -23,24 +23,24 @@ class InfoProvider : public QObject
     Q_PROPERTY(int muteFor READ muteFor NOTIFY muteForChanged)
     //End saveProperty
 
-    int m_photoCount;
+    int m_photoCount = 0;
 
-    int m_videoCount;
+    int m_videoCount = 0;
 
-    int m_fileCount;
+    int m_fileCount = 0;
 
-    int m_audioCount;
+    int m_audioCount = 0;
 
-    int m_linkCount;
+    int m_linkCount = 0;
 
-    int m_groupCount;
+    int m_groupCount = 0;
 
-    int m_voiceCount;
+    int m_voiceCount  = 0;
     double m_chatId = -1;
 
     QString m_error = "";
 
-    int m_muteFor;
+    int m_muteFor = 0;
 
 protected:
     TdlibJsonWrapper *m_tdlibJson;

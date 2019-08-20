@@ -227,7 +227,8 @@ public slots:
                             const int sender_user_id = 0, const int offset = 0, const int limit = 20,
                             const tdlibQt::Enums::SearchFilter &filter = tdlibQt::Enums::Empty,  const QString &extra = "");
 
-
+    void createPrivateChat(const int user_id = 0, bool force = false,  const QString &extra = "");
+    void deleteChatHistory(qint64 chat_id = 0, bool remove_from_chat_list  = false, bool revoke = false, const QString &extra = "");
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

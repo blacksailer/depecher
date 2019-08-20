@@ -89,10 +89,53 @@ Item {
             anchors.fill: parent
             clip: true
             //anchors.fill: parent
-            cellWidth: width/3
-            cellHeight: width/3
+            property real cellSize: Math.floor(width / columnCount)
+            property int columnCount: Math.floor(width / Theme.itemSizeHuge)
+            cellWidth: cellSize
+            cellHeight: cellSize
             model: galleryModel
-            delegate: imageComponent
+            delegate:         Image {
+                asynchronous: true
+                // From org.nemomobile.thumbnailer
+                source:   "image://nemoThumbnail/"+url
+                sourceSize: Qt.size(thumbnailPhotos.cellWidth,thumbnailPhotos.cellHeight)
+                width: thumbnailPhotos.cellWidth
+                height: width
+                fillMode: Image.PreserveAspectFit
+                Rectangle{
+                    id:selectedCircle
+                    color: "transparent"
+                    opacity:0.5
+                    width:parent.width
+                    height: width
+                }
+
+                MouseArea {
+                    anchors.fill:parent
+                    onClicked: {
+                        if(!thumbnailWrapper.selectedContainsAndRemove(index,TdlibState.Photo))
+                        {
+                            selectedCircle.color = Theme.secondaryHighlightColor;
+                            thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
+                            thumbnailWrapper.countItems++;
+                        }
+                        else
+                        {
+                            selectedCircle.color = "transparent";
+                            thumbnailWrapper.countItems--;
+                        }
+                    }
+                    onPressAndHold: {
+                        var fileUrl = galleryModel.get(index).url.toString()
+                        //                        if(fileUrl.slice(0,4) === "file")
+                        //                            fileUrl = fileUrl.slice(7, fileUrl.length)
+
+                        pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
+                    }
+
+                }
+            }
+
         }
     }
 
@@ -114,53 +157,6 @@ Item {
     }
 
 
-    Component{
-        id:imageComponent
-        Image {
-            asynchronous: true
-            // From org.nemomobile.thumbnailer
-            source:   "image://nemoThumbnail/"+url
-            sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
-            width: thumbnailWrapper.width/3
-            height: width
-
-            Rectangle{
-                id:selectedCircle
-                color: "transparent"
-                opacity:0.5
-                width:parent.width
-                height: width
-            }
-
-            MouseArea {
-                anchors.fill:parent
-                onClicked: {
-                    if(!selectedContainsAndRemove(index,files.currentIndex))
-                    {
-                        selectedCircle.color = Theme.secondaryHighlightColor;
-                        thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
-                        countItems++;
-                    }
-                    else
-                    {
-                        selectedCircle.color = "transparent";
-                        countItems--;
-                    }
-                }
-                onPressAndHold: {
-                    var fileUrl = galleryModel.get(index).url.toString()
-                    //                        if(fileUrl.slice(0,4) === "file")
-                    //                            fileUrl = fileUrl.slice(7, fileUrl.length)
-
-                    pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
-                }
-
-            }
-        }
-
-
-
-    }
 
     Component {
         id: audioComponent

@@ -8,6 +8,14 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.0-1
+- Info pages for user/group/supergroup Closes #84
+- share plugin for rivileged apps (Gallery, contacts etc.) Closes #118
+- textEntites added (text with links)
+- link to italian community addded to about page  Closes #97
+- uknown chat issue resolved #119
+- notification on startup resolved
+
 * Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-2
 - hotfix of aligning
 

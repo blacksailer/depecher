@@ -8,6 +8,9 @@ UsersModel::UsersModel(QObject *parent) : QObject(parent),
 {
     connect(m_tdlibJson, &TdlibJsonWrapper::updateUserReceived,
             this, &UsersModel::getUpdateUser);
+    connect(m_tdlibJson, &TdlibJsonWrapper::userReceived,
+            this, &UsersModel::getUpdateUser);
+
     connect(m_tdlibJson, &TdlibJsonWrapper::updateNewChat,
             this, &UsersModel::getUpdateNewChat);
     connect(m_tdlibJson, &TdlibJsonWrapper::updateSupergroup,
@@ -142,6 +145,14 @@ void UsersModel::getUpdateNewChat(const QJsonObject &updateNewChatObject)
 void UsersModel::getUpdateUser(const QJsonObject &updateNewUserObject)
 {
     auto userItem = ParseObject::parseUser(updateNewUserObject);
+    if (userItem->id_ != 0) {
+        m_users[userItem->id_] = userItem;
+    }
+}
+
+void UsersModel::parseUser(const QJsonObject &userObject)
+{
+    auto userItem = ParseObject::parseUser(userObject);
     if (userItem->id_ != 0) {
         m_users[userItem->id_] = userItem;
     }

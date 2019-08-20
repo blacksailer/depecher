@@ -1302,7 +1302,7 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
         result = result.replace(positions[i].first + bias, positions[i].second, textParts[i]);
         bias += textParts[i].size() - positions[i].second;
     }
-    return result;
+    return result.replace("\n", "<br>");
 }
 
 void MessagingModel::prependMessage(const QJsonObject &messageObject)

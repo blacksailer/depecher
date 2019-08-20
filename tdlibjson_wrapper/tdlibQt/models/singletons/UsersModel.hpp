@@ -48,6 +48,8 @@ private slots:
     void updateUserStatus(const QJsonObject &updateUserStatusObject);
     void getUpdateNewChat(const QJsonObject &updateNewChatObject);
     void getUpdateUser(const QJsonObject &updateNewUserObject);
+    void parseUser(const QJsonObject &userObject);
+
     void getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupObject);
     void getUpdateGroup(const QJsonObject &updateGroupObject);
 };

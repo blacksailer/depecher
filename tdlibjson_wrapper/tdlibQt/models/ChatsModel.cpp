@@ -180,8 +180,12 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
     muteFunction.store(jsonConverter, "muteFunction");
     QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
+    int rowIndex = getIndex(chat_id);
+    QVector<int> roles;
+    roles.append(MUTE_FOR);
+    emit dataChanged(index(rowIndex), index(rowIndex), roles);
 
-    qDebug() << jsonString;
+
     tdlibJson->sendMessage(jsonString);
 }
 
@@ -452,7 +456,6 @@ void ChatsModel::addChat(const QJsonObject &chatObject)
 
 void ChatsModel::addChats(const QJsonObject &chatsObject)
 {
-    qDebug() << chatsObject;
     if (!chatsObject.contains("@extra")) {
         QJsonArray chat_ids = chatsObject["chat_ids"].toArray();
         for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {

@@ -45,6 +45,12 @@ Page {
                 }
             }
         }
+        Connections {
+            target: contactsModel
+            onChatIdReceived: {
+                pageStack.replace("MessagingPage.qml",{chatId:chatId})
+            }
+        }
         SilicaListView {
             id:list
             width: parent.width
@@ -56,7 +62,7 @@ Page {
                 id:filterModel
                 sortRole:2
                 source:ContactsModel {
-
+                    id:contactsModel
                 }
 
                 Component.onCompleted: sortModel(Qt.AscendingOrder)
@@ -105,7 +111,9 @@ Page {
                 }
 
                 onClicked: {
-                    pageStack.replace("MessagingPage.qml",{chatId:user_id})
+                    var cid = contactsModel.getChatId(user_id)
+                    if(cid != "-1")
+                        pageStack.replace("MessagingPage.qml",{chatId:cid})
 
                 }
             }

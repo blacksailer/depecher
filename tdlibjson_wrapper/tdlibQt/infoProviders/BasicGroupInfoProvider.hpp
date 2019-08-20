@@ -15,7 +15,7 @@ class BasicGroupInfoProvider : public InfoProvider
     Q_PROPERTY(QString inviteLink READ inviteLink NOTIFY inviteLinkChanged)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(int members READ members NOTIFY membersChanged)
-    Q_PROPERTY(ChatMembersModel* membersModel READ membersModel NOTIFY membersModelChanged)
+    Q_PROPERTY(ChatMembersModel *membersModel READ membersModel NOTIFY membersModelChanged)
     QSharedPointer<basicGroup> m_group;
     QSharedPointer<basicGroupFullInfo> m_info;
 
@@ -23,7 +23,7 @@ class BasicGroupInfoProvider : public InfoProvider
     void emitGroup();
     void emitAll();
 
-    int m_groupId;
+    int m_groupId  = 0;
 
 
     ChatMembersModel *m_membersModel = nullptr;

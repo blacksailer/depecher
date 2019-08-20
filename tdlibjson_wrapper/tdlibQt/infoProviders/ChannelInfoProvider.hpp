@@ -47,12 +47,7 @@ public:
     QString description() const;
 
     QString inviteLink() const;
-//    chatMemberStatusAdministrator,
-//   chatMemberStatusRestricted,
-//  chatMemberStatusBanned,
-//    chatMemberStatusCreator,
-//    chatMemberStatusLeft,
-//    chatMemberStatusMember
+
     enum MemberStatus {
         Administrator,
         Restricted,

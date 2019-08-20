@@ -11,7 +11,7 @@ class ChatShareModel : public QAbstractListModel
     Q_PROPERTY(QVariant answer READ answer WRITE setAnswer NOTIFY answerChanged)
 
     QAbstractListModel *m_model;
-    QDBusInterface *remoteAppIface;
+    QDBusInterface *m_remoteAppIface;
     QList<QSharedPointer<tdlibQt::chat>> m_chats;
     bool m_fetchPending = false;
     enum Roles {
@@ -47,6 +47,7 @@ public:
 public slots:
     void setAnswer(QVariant answer);
     void addItems(QDBusPendingCallWatcher *call);
+    void reset();
 signals:
     void answerChanged(QVariant answer);
 private:
@@ -57,17 +58,8 @@ private:
 public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
-
-    // QAbstractItemModel interface
-public:
     QHash<int, QByteArray> roleNames() const override;
-
-    // QAbstractItemModel interface
-public:
     void fetchMore(const QModelIndex &parent) override;
-
-    // QAbstractItemModel interface
-public:
     bool canFetchMore(const QModelIndex &parent) const override;
 };
 

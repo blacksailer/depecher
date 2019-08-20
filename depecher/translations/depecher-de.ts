@@ -45,10 +45,6 @@
         <translation>Chat beitreten</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Achten Sie darauf, dass Sie sich nach dem Anklicken dem Chat beitreten. Das Verlassen von Chats jedoch derzeit nicht unterstützt wird.</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>Fehler Einladungslink zu erhalten</translation>
     </message>
@@ -111,6 +107,14 @@
     <message>
         <source>Version</source>
         <translation>Version</translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -695,6 +699,18 @@
         <source>%1 selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SharedContent</name>
@@ -852,6 +868,10 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
     </message>
     <message>
         <source>Leaving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open channel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

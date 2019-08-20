@@ -11,16 +11,20 @@ Page {
     property int supergroup_id: -1
     property double chat_id: -1
     property alias username: resolver.username
+    property bool hideOpenMenu: false
     Component.onCompleted: {
-        if(user_id > -1)
+        console.log(chat_id)
+        if(user_id > -1 && username == "")
         {
             loader.sourceComponent  = userInfoComponent
             loader.item.chatId=user_id
             loader.item.userId=user_id
-        } else
-        {
+        }
+        if  (chat_id !== -1)      {
             loader.sourceComponent  = channelInfoComponent
             loader.item.chatId=chat_id
+            loader.item.hideOpenMenu=hideOpenMenu
+
         }
     }
     Notification {
@@ -35,6 +39,8 @@ Page {
             if(resolver.chatType === TdlibState.Private)
             {
                 loader.sourceComponent  = userInfoComponent
+                console.log(resolver.resolvedChatId,resolver.resolvedId)
+
                 loader.item.chatId=resolver.resolvedChatId
                 loader.item.userId=resolver.resolvedId
             }
@@ -63,8 +69,17 @@ Page {
 
             UserInfo {
                 id:userInfo
-            }
 
+            }
+            Connections {
+                target: userInfo
+                onChatIdReceived: {
+                    var page = pageStack.find(function (page) {
+                        return page.__chat_page !== undefined;
+                    });
+                    pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:chatId})
+                }
+            }
             anchors.fill: parent
             visible: !errorPlaceholder.enabled
             contentHeight: content.height + header.height
@@ -76,10 +91,14 @@ Page {
                 MenuItem {
                     text: qsTr("Send message")
                     onClicked:    {
-                        var page = pageStack.find(function (page) {
-                            return page.__chat_page !== undefined;
-                        });
-                        pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:user_id})
+                        var cid = userInfo.getChatId()
+                        if(cid != "-1")
+                        {
+                            var page = pageStack.find(function (page) {
+                                return page.__chat_page !== undefined;
+                            });
+                            pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:cid})
+                        }
                     }
                 }
             }
@@ -207,7 +226,7 @@ Page {
                 BackgroundItem {
                     width: parent.width
                     height: Theme.itemSizeSmall
-                    visible: sharedContent.voiceCount
+                    visible: userInfo.groupCount
                     Row {
                         width: parent.width - 2 * x
                         anchors.verticalCenter: parent.verticalCenter
@@ -235,119 +254,119 @@ Page {
                     height:Theme.paddingLarge
                 }
 
-//                Column {
-//                    width: parent.width
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Share contact"
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Edit contact"
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Delete contact"
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Clear history"
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Delete conversation"
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:"Block user"
-//                                color:Theme.errorColor
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
+                //                Column {
+                //                    width: parent.width
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Share contact"
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Edit contact"
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Delete contact"
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Clear history"
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Delete conversation"
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:"Block user"
+                //                                color:Theme.errorColor
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
 
-//                }
+                //                }
 
             }
         }
@@ -356,8 +375,10 @@ Page {
     Component {
         id:channelInfoComponent
         SilicaFlickable {
+            id:flickable
             property alias chatId: channelInfo.chatId
             property alias supergroupId: channelInfo.supergroupId
+            property bool hideOpenMenu: false
 
             ChannelInfo {
                 id:channelInfo
@@ -381,11 +402,23 @@ Page {
                     text: channelInfo.isMember ?  qsTr("Leave channel") : qsTr("Join channel")
                     onClicked: {
                         if(channelInfo.isMember)
-                        leaveRemorse.execute(qsTr("Leaving"), function() {
-                            channelInfo.leaveChat()
-                        })
+                            leaveRemorse.execute(qsTr("Leaving"), function() {
+                                channelInfo.leaveChat()
+                            })
                         else
                             channelInfo.joinChat()
+                    }
+                }
+                MenuItem {
+                    text: qsTr("Open channel")
+                    visible: !flickable.hideOpenMenu
+                    onClicked:{
+                        {
+                            var page = pageStack.find(function (page) {
+                                return page.__chat_page !== undefined;
+                            });
+                            pageStack.replaceAbove(page,"MessagingPage.qml",{chatId:channelInfo.chatId})
+                        }
                     }
                 }
                 RemorsePopup {
@@ -498,7 +531,7 @@ Page {
                         text: qsTr("Notifications")
                         description: checked ? qsTr("Click to disable notifications") :  qsTr("Click to enable notifications")
                         icon.source: checked ? "image://theme/icon-m-speaker-on" :  "image://theme/icon-m-speaker-mute"
-                        checked: muteFor != 0
+                        checked: channelInfo.muteFor != 0
                         onClicked:
                         {
                             channelInfo.changeNotifications(!checked)
@@ -525,30 +558,30 @@ Page {
                     height:Theme.paddingLarge
                 }
 
-//                Column {
-//                    width: parent.width
+                //                Column {
+                //                    width: parent.width
 
-//                    BackgroundItem {
-//                        width: parent.width
-//                        height: Theme.itemSizeSmall
-//                        Row {
-//                            width: parent.width - 2 * x
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            x: Theme.horizontalPageMargin
-//                            Item {
-//                                width: Theme.paddingLarge + Theme.iconSizeMedium
-//                                height: Theme.paddingLarge
-//                            }
-//                            Label {
-//                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
-//                                text:qsTr('Report')
-//                                color:Theme.errorColor
-//                                anchors.verticalCenter: parent.verticalCenter
-//                            }
-//                        }
-//                    }
+                //                    BackgroundItem {
+                //                        width: parent.width
+                //                        height: Theme.itemSizeSmall
+                //                        Row {
+                //                            width: parent.width - 2 * x
+                //                            anchors.verticalCenter: parent.verticalCenter
+                //                            x: Theme.horizontalPageMargin
+                //                            Item {
+                //                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                //                                height: Theme.paddingLarge
+                //                            }
+                //                            Label {
+                //                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                //                                text:qsTr('Report')
+                //                                color:Theme.errorColor
+                //                                anchors.verticalCenter: parent.verticalCenter
+                //                            }
+                //                        }
+                //                    }
 
-//                }
+                //                }
 
             }
         }

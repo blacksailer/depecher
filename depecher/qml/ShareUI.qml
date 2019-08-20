@@ -14,9 +14,9 @@ ShareDialog {
 
     property string filepath: source
 
+    canAccept: listModel.count !== 0
     property bool searchEnabled: false
     Component.onCompleted:         console.log(filepath,JSON.stringify(content))
-    canAccept: true
     onAccepted: {
         if (source == '' && content && 'type' in content)
         {
@@ -40,9 +40,15 @@ ShareDialog {
         id:model
     }
     SilicaListView {
+        id:listModel
         anchors.fill: parent
         model: model
-
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Reset")
+                onClicked: model.reset()
+            }
+        }
         header:  PageHeader {
             title: chat_ids.length == 0 ? qsTr("Choose chat") :  qsTr("%1 selected").arg(chat_ids.length)
         }
@@ -79,7 +85,11 @@ ShareDialog {
             }
         }
     }
-
+    ViewPlaceholder {
+        enabled:listModel.count ===  0
+        text: qsTr("Ensure that depecher is running")
+        hintText: qsTr("Do not close until media is transfered")
+    }
     SailfishShare {
         id: shareItem
         source: root.filepath

@@ -13,11 +13,11 @@ static const QString c_extraName = QStringLiteral("dbus");
 ChatShareModel::ChatShareModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    remoteAppIface = new QDBusInterface(QString(),
-                                        c_dbusObjectPath,
-                                        c_dbusInterface,
-                                        QDBusConnection::connectToPeer("unix:abstract=depecher-dbus", "depecherBus"),
-                                        this);
+    m_remoteAppIface = new QDBusInterface(QString(),
+                                          c_dbusObjectPath,
+                                          c_dbusInterface,
+                                          QDBusConnection::connectToPeer("unix:abstract=depecher-dbus", "depecherBus"),
+                                          this);
 }
 
 ChatShareModel::~ChatShareModel()
@@ -58,11 +58,27 @@ void ChatShareModel::addItems(QDBusPendingCallWatcher *call)
     m_fetchPending = false;
 }
 
+void ChatShareModel::reset()
+{
+    beginResetModel();
+    m_chats.clear();
+    QDBusConnection::disconnectFromPeer("depecherBus");
+    m_remoteAppIface->deleteLater();
+    m_remoteAppIface = new QDBusInterface(QString(),
+                                          c_dbusObjectPath,
+                                          c_dbusInterface,
+                                          QDBusConnection::connectToPeer("unix:abstract=depecher-dbus", "depecherBus"),
+                                          this);
+    m_fetchPending = false;
+    fetchMore(QModelIndex());
+
+    endResetModel();
+}
+
 QVariantMap ChatShareModel::parseDBusArgument(QMap<QString, QVariant> value)
 {
     foreach (QString key, value.keys()) {
         if (QString(value[key].typeName()) == "QDBusArgument") {
-//            qDebug() << key << value[key].value<QDBusArgument>().currentType() << value[key].typeName();
             if (value[key].value<QDBusArgument>().currentType() != QDBusArgument::ArrayType)
                 value[key] = parseDBusArgument(qdbus_cast<QVariantMap>(value[key].value<QDBusArgument>()));
             else {
@@ -78,10 +94,8 @@ QVariantList ChatShareModel::parseDBusArgumentArray(QVariantList srcArray)
     QVariantList result;
     foreach (QVariant element, srcArray) {
         if (QString(element.typeName()) == "QDBusArgument") {
-//            qDebug() << "Array" << element.value<QDBusArgument>().currentType() << element.typeName();
             result.append(parseDBusArgument(qdbus_cast<QVariantMap>(element.value<QDBusArgument>())));
         } else
-//            qDebug() << QString(element.typeName());
             result.append(element);
     }
     return result;
@@ -258,7 +272,7 @@ void ChatShareModel::fetchMore(const QModelIndex &parent)
             offset = m_chats.last()->order_;
             lastChatId = m_chats.last()->id_;
         }
-        QDBusPendingCall async = remoteAppIface->asyncCall(c_dbusMethod, lastChatId, offset);
+        QDBusPendingCall async = m_remoteAppIface->asyncCall(c_dbusMethod, lastChatId, offset);
         QDBusPendingCallWatcher *dbusWatcher = new QDBusPendingCallWatcher(async, this);
         connect(dbusWatcher, &QDBusPendingCallWatcher::finished,
                 this, &ChatShareModel::addItems);
