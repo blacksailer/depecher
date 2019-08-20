@@ -7,6 +7,8 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.1-1
+- Info pages shared media fix
 
 * Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.0-1
 - Info pages for user/group/supergroup Closes #84

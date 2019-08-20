@@ -803,7 +803,7 @@ void TdlibJsonWrapper::searchChatMessages(const qint64 chat_id, const qint64 fro
                        "\"filter\":%7"
                        "}";
     QString filterStr = "{\"@type\":\"%1\"}";
-    filterStr = filterStr.arg(m_searchFilters[(int)filter]);
+    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
     queryStr = queryStr.arg(QString::number(chat_id), QString::number(from_message_id), query,
                             QString::number(sender_user_id), QString::number(offset), QString::number(limit),
                             filterStr);
@@ -857,7 +857,7 @@ void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter f
                     "\"return_local\":%3"
                     "}";
     QString filterStr = "{\"@type\":\"%1\"}";
-    filterStr = filterStr.arg(m_searchFilters[(int)filter]);
+    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
     query = query.arg(QString::number(chat_id), filterStr,
                       return_local ? QString("true") : QString("false"));
 

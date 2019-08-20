@@ -874,6 +874,10 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
         <source>Open channel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Benutzername</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>

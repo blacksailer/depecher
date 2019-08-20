@@ -11,11 +11,12 @@ Page {
     property alias totalCount: itemsModel.totalCount
     SearchChatMessagesModel {
         id: itemsModel
+        Component.onCompleted: console.log(filter)
     }
 SilicaListView {
     id:list
     property var currentFilter
-model:itemsModel
+    model:itemsModel
     header: PageHeader {
         title:   qsTr("Documents")
     }

@@ -874,6 +874,10 @@
         <source>Open channel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Nome utente</translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
