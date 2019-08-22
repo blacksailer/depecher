@@ -46,3 +46,4 @@ void DepecherAdaptor::openConversation(qlonglong chatId)
 }
 
 
+

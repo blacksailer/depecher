@@ -14,6 +14,9 @@ ApplicationWindow
     allowedOrientations: defaultAllowedOrientations
     _defaultPageOrientations: allowedOrientations
     initialPage: Qt.resolvedUrl("pages/DialogsPage.qml")
+//    c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady ?
+//                     Qt.resolvedUrl("pages/AuthorizeDialog.qml") :
+//                      Qt.resolvedUrl("pages/DialogsPage.qml")
 
 
     ////        if(c_telegramWrapper.authorizationState !== TdlibState.AuthorizationStateReady)

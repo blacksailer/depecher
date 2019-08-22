@@ -15,6 +15,8 @@ ContactsModel::ContactsModel(QObject *parent): QAbstractListModel(parent),
             this, &ContactsModel::addContactIds);
     connect(m_clientJson, &TdlibJsonWrapper::userReceived,
             this, &ContactsModel::parseContact);
+    connect(m_clientJson, &TdlibJsonWrapper::chatReceived,
+            this, &ContactsModel::onChatReceived);
     connect(m_clientJson, &TdlibJsonWrapper::fileReceived,
             this, &ContactsModel::updateContactPhoto);
     connect(m_clientJson, &TdlibJsonWrapper::updateUserStatusReceived,
@@ -31,7 +33,13 @@ ContactsModel::ContactsModel(QObject *parent): QAbstractListModel(parent),
 }
 
 
-
+void ContactsModel::onChatReceived(const QJsonObject &obj)
+{
+    if (obj["@extra"].toString() == "ContactsModel createPrivateChat") {
+        auto chatItem = ParseObject::parseChat(obj);
+        emit chatIdReceived(QString::number(chatItem->id_));
+    }
+}
 int ContactsModel::rowCount(const QModelIndex &parent) const
 {
     return m_contacts.size();
@@ -159,6 +167,17 @@ void ContactsModel::updateStatus(const QJsonObject &statusObject)
                 break;
             }
         }
+    }
+}
+
+QString ContactsModel::getChatId(const int userId)
+{
+    auto chat = UsersModel::instance()->getChat(userId);
+    if (chat.data())
+        return QString::number(chat->id_);
+    else {
+        m_clientJson->createPrivateChat(userId, false, "ContactsModel createPrivateChat");
+        return QString::number(-1);
     }
 }
 } // namespace tdlibQt

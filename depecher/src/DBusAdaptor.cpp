@@ -10,13 +10,20 @@
 #include "tdlibQt/models/StickerModel.hpp"
 #include "tdlibQt/models/ContactsModel.hpp"
 #include "tdlibQt/models/FilterContactsModel.hpp"
+#include "tdlibQt/models/ChatMembersModel.hpp"
+#include "tdlibQt/models/SearchChatMessagesModel.hpp"
+
 #include "tdlibQt/TelegramProfileProvider.hpp"
 #include "tdlibQt/include/AuthenticationHandler.hpp"
 #include "tdlibQt/items/ProxyDAO.hpp"
 #include "tdlibQt/items/AboutMeDAO.hpp"
-
+#include "tdlibQt/infoProviders/UserInfoProvider.hpp"
 #include "singletons/DNSTXTLookup.hpp"
 
+#include "tdlibQt/infoProviders/ChannelInfoProvider.hpp"
+#include "tdlibQt/infoProviders/BasicGroupInfoProvider.hpp"
+
+#include "tdlibQt/infoProviders/UsernameResolver.hpp"
 #include <QDebug>
 #include <QQuickView>
 #include <QQmlContext>
@@ -27,11 +34,12 @@ static const QString c_dbusServiceName = QStringLiteral("org.blacksailer.depeche
 static const QString c_dbusObjectPath = QStringLiteral("/org/blacksailer/depecher");
 static const QString c_dbusInterface = QStringLiteral("org.blacksailer.depecher");
 static const QString c_dbusMethod = QStringLiteral("showApp");
+static const QString c_extraName = QStringLiteral("dbus");
 
 DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 {
 //    connect(app, &QGuiApplication::destroyed, this, &DBusAdaptor::stopDaemon);
-
+    tdlibJson = tdlibQt::TdlibJsonWrapper::instance();
     QDBusConnection dbus = QDBusConnection::sessionBus();
     new DepecherAdaptor(this);
     pagesStarter = new PageAppStarter(this);
@@ -48,11 +56,9 @@ DBusAdaptor::DBusAdaptor(QGuiApplication *parent) : app(parent)
 DBusAdaptor::~DBusAdaptor()
 {
     QDBusConnection dbus = QDBusConnection::sessionBus();
-
     dbus.unregisterObject(c_dbusObjectPath); //object path
     bool ready = dbus.unregisterService(c_dbusServiceName);
     qDebug() << "Unregister service" << ready; //object path
-
 }
 
 bool DBusAdaptor::isRegistered()
@@ -106,9 +112,17 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
         qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
         qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");
+        qmlRegisterType<tdlibQt::SearchChatMessagesModel>("TelegramModels", 1, 0, "SearchChatMessagesModel");
+
+        qmlRegisterType<tdlibQt::UserInfoProvider>("TelegramDAO", 1, 0, "UserInfo");
+        qmlRegisterType<tdlibQt::ChannelInfoProvider>("TelegramDAO", 1, 0, "ChannelInfo");
+        qmlRegisterType<tdlibQt::BasicGroupInfoProvider>("TelegramDAO", 1, 0, "BasicGroupInfo");
+
+        qmlRegisterType<tdlibQt::UsernameResolver>("TelegramDAO", 1, 0, "UsernameResolver");
 
         qmlRegisterType<tdlibQt::AuthenticationHandler>("TelegramAuthentication", 1, 0,
                 "TelegramAuthenticationHandler");
+        qRegisterMetaType<tdlibQt::ChatMembersModel *>("ChatMembersModel*");
         view->setTitle("Depecher");
         view->rootContext()->setContextProperty("c_telegramWrapper", tdlibQt::TdlibJsonWrapper::instance());
         view->rootContext()->setContextProperty("c_PageStarter", pagesStarter);

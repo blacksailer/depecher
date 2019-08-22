@@ -1,8 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import tdlibQtEnums 1.0
-
+import tdlibQtEnums 1.0 //org.blacksailer.depecher.sharechat
 import "../items"
+
 ListItem {
     width:parent.width
     contentHeight: contentWrapper.height

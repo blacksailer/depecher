@@ -37,14 +37,11 @@ Column {
         }
     ]
 
-    LinkedLabel {
+
+    RichTextItem {
         id: textItem
         width: messageListItem.width * 2 / 3 - Theme.horizontalPageMargin * 2
-        plainText: content ? content : ""
-        color: pressed ? Theme.secondaryColor : Theme.primaryColor
-        linkColor: pressed ? Theme.secondaryHighlightColor : Theme.highlightColor
-        font.pixelSize: Theme.fontSizeSmall
-        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        content:  rich_text
     }
 
 }

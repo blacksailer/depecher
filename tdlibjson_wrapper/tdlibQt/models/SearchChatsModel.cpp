@@ -10,7 +10,7 @@ SearchChatsModel::SearchChatsModel(QObject *parent) : QAbstractItemModel(parent)
 {
     rootLocal = QSharedPointer<chat>(new chat);
     rootGlobal = QSharedPointer<chat>(new chat);
-    connect(m_clientJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
+    connect(m_clientJson, &tdlibQt::TdlibJsonWrapper::chatReceived,
             this, &tdlibQt::SearchChatsModel::addChat);
 
 }

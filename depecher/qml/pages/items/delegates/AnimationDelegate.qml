@@ -275,16 +275,12 @@ Column{
             id:animation
             sourceComponent: file_type === "video/mp4" ? mp4Component : gifComponent
         }
-        
-        LinkedLabel {
+        RichTextItem {
             id:captionText
             width: parent.width
-            plainText:file_caption
-            color: pressed ? Theme.secondaryColor :Theme.primaryColor
-            linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            content:  rich_file_caption
             visible:  file_caption === "" ? false : true
         }
+
 
     }

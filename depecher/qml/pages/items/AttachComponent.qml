@@ -24,12 +24,7 @@ Item {
         label: qsTr("Type")
         menu: ContextMenu {
             MenuItem { text: qsTr("Photo") } //Порядок жестко определен. В родителе перечесление
-            //            MenuItem { text: qsTr("Аудио") }
-            MenuItem { text: qsTr("Document") }
-            //            MenuItem { text:qsTr("Видео") }
-            //            MenuItem { text: qsTr("Место") }
-            //            MenuItem { text: qsTr("Фото VK") }
-            //            MenuItem { text: qsTr("Видео VK") }
+               MenuItem { text: qsTr("Document") }
         }
         onCurrentIndexChanged:
         {
@@ -37,30 +32,6 @@ Item {
         }
 
     }
-    //nemo-qml-plugin-thumbnailer-qt5-video
-    /*!
-        \qmlproperty enum DocumentGalleryModel::rootType
-        This property contains the type of item a query should return.
-        It can be one of:
-        \list
-        \o DocumentGallery.InvalidType
-        \o DocumentGallery.File
-        \o DocumentGallery.Folder
-        \o DocumentGallery.Document
-        \o DocumentGallery.Text
-        \o DocumentGallery.Audio
-        \o DocumentGallery.Image
-        \o DocumentGallery.Video
-        \o DocumentGallery.Playlist
-        \o DocumentGallery.Artist
-        \o DocumentGallery.AlbumArtist
-        \o DocumentGallery.Album
-        \o DocumentGallery.AudioGenre
-        \o DocumentGallery.PhotoAlbum
-        \endlist
-        The default value is DocumentGallery.File
-    */
-
     DocumentGalleryModel {
         id: galleryModel
         rootType: DocumentGallery.Image //DocumentGallery.File || DocumentGallery.Audio
@@ -118,10 +89,53 @@ Item {
             anchors.fill: parent
             clip: true
             //anchors.fill: parent
-            cellWidth: width/3
-            cellHeight: width/3
+            property real cellSize: Math.floor(width / columnCount)
+            property int columnCount: Math.floor(width / Theme.itemSizeHuge)
+            cellWidth: cellSize
+            cellHeight: cellSize
             model: galleryModel
-            delegate: imageComponent
+            delegate:         Image {
+                asynchronous: true
+                // From org.nemomobile.thumbnailer
+                source:   "image://nemoThumbnail/"+url
+                sourceSize: Qt.size(thumbnailPhotos.cellWidth,thumbnailPhotos.cellHeight)
+                width: thumbnailPhotos.cellWidth
+                height: width
+                fillMode: Image.PreserveAspectFit
+                Rectangle{
+                    id:selectedCircle
+                    color: "transparent"
+                    opacity:0.5
+                    width:parent.width
+                    height: width
+                }
+
+                MouseArea {
+                    anchors.fill:parent
+                    onClicked: {
+                        if(!thumbnailWrapper.selectedContainsAndRemove(index,TdlibState.Photo))
+                        {
+                            selectedCircle.color = Theme.secondaryHighlightColor;
+                            thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
+                            thumbnailWrapper.countItems++;
+                        }
+                        else
+                        {
+                            selectedCircle.color = "transparent";
+                            thumbnailWrapper.countItems--;
+                        }
+                    }
+                    onPressAndHold: {
+                        var fileUrl = galleryModel.get(index).url.toString()
+                        //                        if(fileUrl.slice(0,4) === "file")
+                        //                            fileUrl = fileUrl.slice(7, fileUrl.length)
+
+                        pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
+                    }
+
+                }
+            }
+
         }
     }
 
@@ -143,53 +157,6 @@ Item {
     }
 
 
-    Component{
-        id:imageComponent
-        Image {
-            asynchronous: true
-            // From org.nemomobile.thumbnailer
-            source:   "image://nemoThumbnail/"+url
-            sourceSize: Qt.size(thumbnailWrapper.width/3,thumbnailWrapper.width/3)
-            width: thumbnailWrapper.width/3
-            height: width
-
-            Rectangle{
-                id:selectedCircle
-                color: "transparent"
-                opacity:0.5
-                width:parent.width
-                height: width
-            }
-
-            MouseArea {
-                anchors.fill:parent
-                onClicked: {
-                    if(!selectedContainsAndRemove(index,files.currentIndex))
-                    {
-                        selectedCircle.color = Theme.secondaryHighlightColor;
-                        thumbnailWrapper.selectedItems.push({"id":index,"type":TdlibState.Photo,"url":galleryModel.get(index).url});
-                        countItems++;
-                    }
-                    else
-                    {
-                        selectedCircle.color = "transparent";
-                        countItems--;
-                    }
-                }
-                onPressAndHold: {
-                    var fileUrl = galleryModel.get(index).url.toString()
-                    //                        if(fileUrl.slice(0,4) === "file")
-                    //                            fileUrl = fileUrl.slice(7, fileUrl.length)
-
-                    pageStack.push("../PicturePage.qml",{imagePath:fileUrl})
-                }
-
-            }
-        }
-
-
-
-    }
 
     Component {
         id: audioComponent

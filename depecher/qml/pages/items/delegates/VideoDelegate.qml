@@ -132,16 +132,11 @@ Column{
                 }
             }
         }
-
-        LinkedLabel {
+        RichTextItem {
             id:captionText
             width: parent.width
-            plainText: file_caption
-            color: pressed ? Theme.secondaryColor :Theme.primaryColor
-            linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            visible: file_caption === "" ? false : true
+            content:  rich_file_caption
+            visible:  file_caption === "" ? false : true
         }
     }
 

@@ -13,6 +13,17 @@ Page {
     property alias chatId: messagingModel.peerId
     property var forwardMessages: ({})
     property var arrayIndex: []
+    onStatusChanged: {
+        if(status == PageStatus.Active) {
+            if(messagingModel.chatType["type"] == TdlibState.BasicGroup)
+                pageStack.pushAttached(Qt.resolvedUrl("GroupInfoPage.qml"),{chat_id:parseFloat(chatId)})
+                else if(messagingModel.chatType["type"] == TdlibState.Secret || messagingModel.chatType["type"] == TdlibState.Private)
+                pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{user_id:parseInt(chatId)})
+            else if (messagingModel.chatType["type"] == TdlibState.Supergroup)// && messagingModel.chatType["is_channel"])
+            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),hideOpenMenu:true})
+        }
+
+    }
 
     Notification {
         id: notificationError
@@ -73,6 +84,7 @@ Page {
         }
     }
     Component.onCompleted: {
+
         if (Object.keys(forwardMessages).length !== 0) {
             writer.reply_id = "-1"
         writer.replyMessageAuthor = qsTr("Forwarded messages")

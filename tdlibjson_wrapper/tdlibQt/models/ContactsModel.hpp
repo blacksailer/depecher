@@ -43,12 +43,19 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
+signals:
+    void chatIdReceived(QString chatId);
+private slots:
+    void onChatReceived(const QJsonObject &obj);
 public slots:
     void parseContact(const QJsonObject &userObject);
     void addContactIds(const QJsonObject &usersObject);
     void updateContactPhoto(const QJsonObject &fileObject);
     void updateStatus(const QJsonObject &statusObject);
+    QString getChatId(const int userId);
 };
+
+
 } // namespace tdlibQt
 
 Q_DECLARE_METATYPE(tdlibQt::ContactsModel::Status)

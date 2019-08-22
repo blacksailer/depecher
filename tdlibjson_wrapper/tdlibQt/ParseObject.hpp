@@ -32,6 +32,9 @@ public:
             return -1;
         }
     }
+    static QString messageTypeToString(const int messageTypeId);
+
+
     static QSharedPointer<message> parseMessage(const QJsonObject &messageObject);
     static QSharedPointer<ReplyMarkup> parseReplyMarkup(const QJsonObject
             &replyMarkupObject);
@@ -71,7 +74,7 @@ public:
     static QSharedPointer<messageAnimation> parseMessageAnimation(const QJsonObject
             &messageAnimationObject);
     static QSharedPointer<animation> parseAnimation(const QJsonObject &animationObject);
-    static QSharedPointer<MessageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
+    static QSharedPointer<messageForwardInfo> parseForwardInfo(const QJsonObject &forwardObject);
     static QSharedPointer<MessageSendingState> parseMessageSendingState(const QJsonObject
             &messageSendingStateObject);
     static QSharedPointer<ChatMemberStatus> parseChatMemberStatus(const QJsonObject
@@ -95,6 +98,16 @@ public:
     static QSharedPointer<videoNote> parseVideoNote(const QJsonObject &videoNoteObject);
     static QSharedPointer<messageVideoNote> parseMessageVideoNote(const QJsonObject  &messageVideoNoteObject);
 
+    static QSharedPointer<textEntity> parseTextEntity(const QJsonObject &textEntityObject);
+    static QSharedPointer<updateNotificationGroup> parseUpdateNotificationGroup(const QJsonObject &updateNotificationGroupObject);
+    static QSharedPointer<notificationGroup> parseNotificationGroup(const QJsonObject &updateNotificationGroupObject);
+    static QSharedPointer<userFullInfo> parseUserFullInfo(const QJsonObject &userFullInfoObject);
+    static QSharedPointer<botInfo> parseBotInfo(const QJsonObject &botInfoObject);
+    static QSharedPointer<supergroupFullInfo> parseSupergroupFullInfo(const QJsonObject &supergroupFullInfoObject);
+    static QSharedPointer<basicGroup> parseBasicGroup(const QJsonObject &basicGroupObject);
+    static QSharedPointer<basicGroupFullInfo> parseBasicGroupFullInfo(const QJsonObject &basicGroupFullInfoObject);
+    static QSharedPointer<chatMember> parseChatMember(const QJsonObject &chatMemberObject);
+
 signals:
 
     void updateAuthorizationState(Enums::AuthorizationState &authorizationState);
@@ -103,7 +116,7 @@ signals:
     void newAuthorizationState(const QSharedPointer<AuthorizationState> &authorizationState);
 
     void updateNewChat(const QJsonObject &updateNewChatObject);
-    void updateNewUser(const QJsonObject &updateNewUserObject);
+    void updateUserReceived(const QJsonObject &updateNewUserObject);
 
     void updateNewMessage(const QVariantMap &msg);
     void updateDeleteMessages(const QJsonObject &updateDeleteMessagesObject);
@@ -128,7 +141,8 @@ signals:
     void updateNotificationSettingsReceived(const QJsonObject &updateNotificationSettingsObject);
     void chatIds(const QVariantList &ids);
     void getChat(const qint64 id, const QString &extra);
-    void newChatReceived(const QJsonObject &chatItem);
+    void chatsReceived(const QJsonObject &chatsObject);
+    void chatReceived(const QJsonObject &chatItem);
     void newMessages(const QJsonObject &messageItem);
     void newMessageFromUpdate(const QJsonObject &messageItem);
     void updateTotalCount(int totalCount);
@@ -146,6 +160,15 @@ signals:
     void secondsReceived(const QJsonObject &secondsObject);
     void textReceived(const QJsonObject &textObject);
     void userReceived(const QJsonObject &userObject);
+    void updateNotificationGroupReceived(const QJsonObject &updateNotificationGroupObject);
+    void updateActiveNotificationReceived(const QJsonObject &updateActiveNotificationObject);
+    void countReceived(const QJsonObject &countObject);
+    void userFullInfoReceived(const QJsonObject &userFullInfoObject);
+    void supergroupFullInfoReceived(const QJsonObject &supergroupFullInfoObject);
+    void basicGroupReceived(const QJsonObject &basicGroupObject);
+    void updateBasicGroupReceived(const QJsonObject &updateBasicGroupObject);
+    void basicGroupFullInfoReceived(const QJsonObject &basicGroupFullInfoObject);
+    void updateBasicGroupFullInfoReceived(const QJsonObject &updateBasicGroupFullInfoObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

@@ -183,6 +183,10 @@ ListItem {
                                                          !messagingModel.chatType["is_channel"]  &&
                                                          messagingModel.chatType["type"] != TdlibState.Private &&
                                                          messagingModel.chatType["type"] != TdlibState.Secret
+                    MouseArea {
+                    anchors.fill: parent
+                    onClicked: pageStack.push(Qt.resolvedUrl("../UserPage.qml"),{user_id:parseInt(sender_user_id)})
+                    }
                     }
                 }
             }
@@ -196,6 +200,7 @@ ListItem {
                         text: author ? author : ""
                         color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeExtraSmall
+                        width: Math.min(implicitWidth,messageListItem.width *2/3)
                         truncationMode: TruncationMode.Fade
                         visible: {
                             if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
@@ -217,9 +222,9 @@ ListItem {
                     Label {
                         id: forwardInfoLabel
                         visible: forward_info ? true : false
-                        text: forward_info ? qsTr("Forwarded from") + " " + forward_info : ""
+                        text:forward_info  ? qsTr("Forwarded from") + " " + forward_info : ""
                         width: contentLoader.width
-                        color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
+                        color: pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeSmall
                         font.bold: true
                         truncationMode: TruncationMode.Fade

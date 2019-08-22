@@ -8,6 +8,7 @@ import org.nemomobile.notifications 1.0
 Page {
     id:root
     property alias imagePath: imagePreview.source
+    property int remoteFileId
     allowedOrientations: Orientation.All
     backNavigation: drawer.opened
     FileWorker{
@@ -117,13 +118,9 @@ Page {
             }
             ViewPlaceholder {
                 enabled: true
-anchors.centerIn: parent
+                anchors.centerIn: parent
                 text: qsTr("Share function will be here soon")
             }
-
         }
     }
-
-
-
 }

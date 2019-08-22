@@ -4,15 +4,23 @@
 #include "../ParseObject.hpp"
 #include "../TdlibJsonWrapper.hpp"
 #include "tdlibQt/include/TdlibNamespace.hpp"
-#include "MessagingModel.hpp"
+#include "tdlibQt/models/singletons/UsersModel.hpp"
+
 namespace tdlibQt {
 ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     tdlibJson(TdlibJsonWrapper::instance())
 {
+    //FIX for bug if depecher running only in foreground mode
+    connect(tdlibJson, &TdlibJsonWrapper::authorizationStateChanged,
+    [this](Enums::AuthorizationState state) {
+        if (state == Enums::AuthorizationState::AuthorizationStateReady && rowCount(QModelIndex()) == 0)
+            reset();
+    });
     connect(this, &ChatsModel::totalUnreadCountChanged,
             tdlibJson, &TdlibJsonWrapper::setTotalUnreadCount);
-
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::newChatGenerated,
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::chatsReceived,
+            this, &tdlibQt::ChatsModel::addChats);
+    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::chatReceived,
             this, &tdlibQt::ChatsModel::addChat);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
             this, &tdlibQt::ChatsModel::updateChatPhoto);
@@ -38,15 +46,21 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     connect(&chatActionTimer, &QTimer::timeout, this, &tdlibQt::ChatsModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
 }
-void ChatsModel::changeChatOrder(qint64 chatId, qint64 order)
+
+void ChatsModel::changeChatOrderOrAdd(qint64 chatId, qint64 order)
 {
+    bool notIncluded = true;
     for (int i = 0; i < m_chats.size(); i++) {
         if (m_chats[i]->id_ == chatId) {
             m_chats[i]->order_ = order;
+            notIncluded = false;
             sortByOrder();
             emit dataChanged(index(0), index(rowCount(QModelIndex()) - 1));
             break;
         }
+    }
+    if (notIncluded) {
+        tdlibJson->getChat(chatId, "");
     }
 }
 
@@ -58,8 +72,6 @@ const int ChatsModel::indexByOrder(const qint64 order)
     }
     return -1;
 }
-
-
 
 bool ChatsModel::isContains(const QSharedPointer<chat> &chat)
 {
@@ -160,16 +172,20 @@ void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)
     setChatNotificationSettings muteFunction;
     muteFunction.chat_id_ = chat_id;
     if (mute)
-        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false));
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, std::numeric_limits<int>::max(), true, std::string(""), true, false, true, false, false, false));
     else
-        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false));
+        muteFunction.notification_settings_ = QSharedPointer<chatNotificationSettings>(new chatNotificationSettings(false, 0, true, std::string(""), true, false, true, false, false, false));
 
     TlStorerToString jsonConverter;
     muteFunction.store(jsonConverter, "muteFunction");
     QString jsonString = QJsonDocument::fromVariant(jsonConverter.doc["muteFunction"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
+    int rowIndex = getIndex(chat_id);
+    QVector<int> roles;
+    roles.append(MUTE_FOR);
+    emit dataChanged(index(rowIndex), index(rowIndex), roles);
 
-    qDebug() << jsonString;
+
     tdlibJson->sendMessage(jsonString);
 }
 
@@ -208,6 +224,11 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
     case IS_MARKED_UNREAD:
         return m_chats[rowIndex]->is_marked_as_unread_;
     case TYPE:
+        if (m_chats[rowIndex]->type_.data() == nullptr) {
+            QVariantMap resultType;
+            resultType["type"] = QVariant::fromValue(tdlibQt::Enums::ChatType::BasicGroup);
+            return resultType;
+        }
         switch (m_chats[rowIndex]->type_->get_id()) {
         case chatTypeBasicGroup::ID: {
             QVariantMap resultType;
@@ -259,10 +280,7 @@ QVariant ChatsModel::data(const QModelIndex &index, int role) const
                         return QString::fromStdString(contentPtr->text_->text_);
                     }
                 }
-
-                return MessagingModel::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
-
-                return QVariant();
+                return ParseObject::messageTypeToString(m_chats[rowIndex]->last_message_->content_->get_id());
             }
         }
     case LAST_MESSAGE_AUTHOR:
@@ -355,7 +373,7 @@ QHash<int, QByteArray> ChatsModel::roleNames() const
 bool ChatsModel::canFetchMore(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return !fetchPending;
+    return tdlibJson->authorizationState() == tdlibQt::Enums::AuthorizationState::AuthorizationStateReady && !fetchPending;
 }
 
 int ChatsModel::getIndex(const qint64 chatId)
@@ -364,6 +382,53 @@ int ChatsModel::getIndex(const qint64 chatId)
         if (m_chats[i]->id_ == chatId)
             return i;
     return -1;
+}
+
+int ChatsModel::totalUnreadCount() const
+{
+    int result = 0;
+    for (auto item : m_chats) {
+        result += item->unread_mention_count_;
+        if (item->notification_settings_->mute_for_ == 0)
+            result += item->unread_count_;
+    }
+    return result;
+}
+
+void ChatsModel::addItem(const QSharedPointer<chat> &chatItem)
+{
+
+    int chatIndex = indexByOrder(chatItem->order_);
+    if (chatItem->last_message_->get_id() == messagePhoto::ID) {
+        auto photoItemPtr = static_cast<messagePhoto *>(chatItem->last_message_->content_.data());
+        if (photoItemPtr->photo_->sizes_.size() > 0) {
+            if (!photoItemPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
+                tdlibJson->downloadFile(photoItemPtr->photo_->sizes_[0]->photo_->id_, 16, "messageHistory");
+            }
+        }
+    }
+    if (chatItem->last_message_->get_id() == messageAnimation::ID) {
+        auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
+        if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
+            tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
+        }
+    }
+    if (chatIndex == -1) {
+        beginInsertRows(QModelIndex(), m_chats.size(), m_chats.size());
+        m_chats.append(chatItem);
+        endInsertRows();
+    } else {
+        beginInsertRows(QModelIndex(), chatIndex, chatIndex);
+        m_chats.insert(chatIndex, chatItem);
+        endInsertRows();
+    }
+
+    //getChatPhotos
+    if (chatItem->photo_.data() != nullptr) {
+        if (chatItem->photo_->small_.data() != nullptr)
+            if (!chatItem->photo_->small_->local_->is_downloading_completed_)
+                tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+    }
 }
 
 void ChatsModel::chatActionCleanUp()
@@ -379,46 +444,23 @@ void ChatsModel::chatActionCleanUp()
 
 void ChatsModel::addChat(const QJsonObject &chatObject)
 {
-    if(!chatObject.contains("@extra"))
-    {
+    if (!chatObject.contains("@extra")) {
         fetchPending = false;
 
         QSharedPointer<chat> chatItem = ParseObject::parseChat(chatObject);
         if (isContains(chatItem))
             return;
-        int chatIndex = indexByOrder(chatItem->order_);
-        if (chatItem->last_message_->get_id() == messagePhoto::ID) {
-            auto photoItemPtr = static_cast<messagePhoto *>(chatItem->last_message_->content_.data());
-            if (photoItemPtr->photo_->sizes_.size() > 0) {
-                if (!photoItemPtr->photo_->sizes_[0]->photo_->local_->is_downloading_completed_) {
-                    tdlibJson->downloadFile(photoItemPtr->photo_->sizes_[0]->photo_->id_, 16, "messageHistory");
-                }
-            }
-        }
-        if (chatItem->last_message_->get_id() == messageAnimation::ID) {
-            auto photoItemPtr = static_cast<messageAnimation *>(chatItem->last_message_->content_.data());
-            if (!photoItemPtr->animation_->thumbnail_->photo_->local_->is_downloading_completed_) {
-                tdlibJson->downloadFile(photoItemPtr->animation_->thumbnail_->photo_->id_, 16, "messageHistory");
-            }
-        }
+        addItem(chatItem);
+    }
+}
 
-        //    if (chatItem->notification_settings_->mute_for_ == 0)
-        //        emit totalUnreadCountChanged(totalUnreadCount());
-        if (chatIndex == -1) {
-            beginInsertRows(QModelIndex(), m_chats.size(), m_chats.size());
-            m_chats.append(chatItem);
-            endInsertRows();
-        } else {
-            beginInsertRows(QModelIndex(), chatIndex, chatIndex);
-            m_chats.insert(chatIndex, chatItem);
-            endInsertRows();
-        }
-
-        //getChatPhotos
-        if (chatItem->photo_.data() != nullptr) {
-            if (chatItem->photo_->small_.data() != nullptr)
-                if (!chatItem->photo_->small_->local_->is_downloading_completed_)
-                    tdlibJson->downloadFile(chatItem->photo_->small_->id_, 1, "chatPhoto");
+void ChatsModel::addChats(const QJsonObject &chatsObject)
+{
+    if (!chatsObject.contains("@extra")) {
+        QJsonArray chat_ids = chatsObject["chat_ids"].toArray();
+        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
+            qint64 id = ParseObject::getInt64(*it);
+            tdlibJson->getChat(id, "");
         }
     }
 }
@@ -446,7 +488,7 @@ void ChatsModel::updateChatOrder(const QJsonObject &chatOrderObject)
 {
     qint64 chatId = ParseObject::getInt64(chatOrderObject["chat_id"]);
     qint64 order =  ParseObject::getInt64(chatOrderObject["order"]);
-    changeChatOrder(chatId, order);
+    changeChatOrderOrAdd(chatId, order);
     //If no chat, get chat
 }
 
@@ -461,7 +503,7 @@ void ChatsModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)
             break;
         }
     }
-    changeChatOrder(chatId, order);
+    changeChatOrderOrAdd(chatId, order);
 }
 
 void ChatsModel::updateChatReadInbox(const QJsonObject &chatReadInboxObject)
