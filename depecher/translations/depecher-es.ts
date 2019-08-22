@@ -110,7 +110,7 @@
     </message>
     <message>
         <source>Be aware, after clicking you will join chat.</source>
-        <translation>Ten en cuenta que después de hacer clic te unirás al chat.</translation>
+        <translation>Ten en cuenta que al pulsar te unirás al chat.</translation>
     </message>
     <message>
         <source>Italian speaking community</source>
