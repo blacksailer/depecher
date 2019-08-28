@@ -93,14 +93,21 @@ ListItem {
                         id:messageTimestamp
                         anchors.verticalCenter: parent.verticalCenter
                         function timestamp(dateTime){
-                            var postedTimeDate=new Date(dateTime*1000)
-                            var date = postedTimeDate.getDate()
-                            var current_date = new Date().getDate()
-                            //if elapsed more than a day
-                            if (date==current_date)
-                                return Format.formatDate(postedTimeDate, Formatter.TimeValue)
+                            var postedDateTime = new Date(dateTime*1000)
+                            var postedMidnight = new Date(postedDateTime.getTime())
+                            postedMidnight.setHours(0, 0, 0, 0)
+                            var postedMidnightUnixTime = postedMidnight.getTime()
+                            var postedYear = postedDateTime.getFullYear()
+                            var currentMidnight = new Date()
+                            currentMidnight.setHours(0, 0, 0, 0)
+                            var currentMidnightUnixTime = currentMidnight.getTime()
+                            var currentYear = currentMidnight.getFullYear()
+                            if (postedMidnightUnixTime === currentMidnightUnixTime)
+                                return Format.formatDate(postedDateTime, Formatter.TimeValue)
+                            else if (postedYear === currentYear)
+                                return Format.formatDate(postedDateTime, Formatter.DateMediumWithoutYear)
                             else
-                                return Format.formatDate(postedTimeDate, Formatter.DateMediumWithoutYear)
+                                return Format.formatDate(postedDateTime, Formatter.DateMedium)
                         }
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: Theme.fontSizeSmall
