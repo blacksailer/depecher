@@ -16,6 +16,7 @@ void UserInfoProvider::emitAll()
     emit outcomingLinkChanged();
     emit phoneNumberChanged();
     emit usernameChanged();
+    emit bioChanged();
 }
 
 UserInfoProvider::UserInfoProvider(QObject *parent) : InfoProvider(parent)
@@ -154,6 +155,7 @@ void UserInfoProvider::userFullInfoReceived(const QJsonObject &userFullInfoObjec
     if (userFullInfoObject["@extra"].toString() == c_extra.arg(QString::number(m_userId))) {
         m_userFullInfo = ParseObject::parseUserFullInfo(userFullInfoObject);
         setGroupCount(m_userFullInfo->group_in_common_count_);
+        setBio(QString::fromStdString(m_userFullInfo->bio_));
     }
 }
 
@@ -219,8 +221,14 @@ void UserInfoProvider::setGroupCount(int groupCount)
     emit groupCountChanged(m_groupCount);
 }
 
+void UserInfoProvider::setBio(const QString &bio)
+{
+    if (m_bio == bio)
+        return;
 
-
+    m_bio = bio;
+    emit bioChanged();
+}
 
 
 

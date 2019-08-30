@@ -12,6 +12,8 @@ Page {
     property double chat_id: -1
     property alias username: resolver.username
     property bool hideOpenMenu: false
+    readonly property string httpTgPrefix: "https://t.me/"
+    property string tgDN: ""
     Component.onCompleted: {
         console.log(chat_id)
         if(user_id > -1 && username == "")
@@ -24,7 +26,6 @@ Page {
             loader.sourceComponent  = channelInfoComponent
             loader.item.chatId=chat_id
             loader.item.hideOpenMenu=hideOpenMenu
-
         }
     }
     Notification {
@@ -60,6 +61,17 @@ Page {
     Loader {
         id:loader
         anchors.fill: parent
+    }
+    ContextMenu {
+        id: tgDNCtxMenu
+        MenuItem {
+            text: qsTr("Copy")
+            onClicked: Clipboard.text = "@" + tgDN
+        }
+        MenuItem {
+            text: qsTr("Copy link")
+            onClicked: Clipboard.text = httpTgPrefix + tgDN
+        }
     }
     Component {
         id:userInfoComponent
@@ -198,6 +210,47 @@ Page {
                                 }
                             }
 
+                        }
+                        onPressAndHold: {
+                            tgDN = userInfo.username
+                            tgDNCtxMenu.open(hiddenUserInfoUsername)
+                        }
+                    }
+                    Item {
+                        id: hiddenUserInfoUsername
+                        height: tgDNCtxMenu.visible ? tgDNCtxMenu.height : 0
+                        width: parent.width
+                    }
+                    BackgroundItem {
+                        width: parent.width
+                        height: bioWrapper.height
+                        visible: userInfo.bio != ""
+
+                        Row {
+                            width: parent.width - 2 * x
+                            anchors.verticalCenter: parent.verticalCenter
+                            x: Theme.horizontalPageMargin
+                            Item {
+                                width: Theme.paddingLarge + Theme.iconSizeMedium
+                                height: Theme.paddingLarge
+                            }
+                            Column {
+                                id: bioWrapper
+                                width: parent.width - Theme.iconSizeMedium - Theme.paddingLarge
+                                anchors.verticalCenter: parent.verticalCenter
+                                RichTextItem {
+                                    text: userInfo.bio
+                                    font.pixelSize: Theme.fontSizeSmall
+                                    wrapMode: Text.WordWrap
+                                    width: parent.width
+                                }
+                                Label {
+                                    font.pixelSize: Theme.fontSizeTiny
+                                    color: Theme.secondaryColor
+                                    text: qsTr("Bio")
+                                    width:parent.width
+                                }
+                            }
                         }
                     }
                     IconTextSwitch {
@@ -493,6 +546,15 @@ Page {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                         }
+                        onPressAndHold: {
+                            tgDN = channelInfo.link
+                            tgDNCtxMenu.open(hiddenChannelInfoLink)
+                        }
+                    }
+                    Item {
+                        id: hiddenChannelInfoLink
+                        height: tgDNCtxMenu.visible ? tgDNCtxMenu.height : 0
+                        width: parent.width
                     }
                     BackgroundItem {
                         width: parent.width
