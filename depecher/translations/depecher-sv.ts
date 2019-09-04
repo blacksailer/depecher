@@ -974,5 +974,9 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source>Wait closed</source>
         <translation>Vänta stängd</translation>
     </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

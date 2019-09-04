@@ -974,5 +974,9 @@
         <source>Wait closed</source>
         <translation>Attendo chiusura</translation>
     </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

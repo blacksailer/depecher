@@ -5,6 +5,7 @@ import QtFeedback 5.0
 import tdlibQtEnums 1.0
 import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
+import "../js/utils.js" as Utils
 import "items"
 Page {
     id: page
@@ -211,12 +212,20 @@ Page {
                 property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
+                signal showDateSection()
+                signal hideDateSection()
 
                 onHeightChanged: {
                     if(messageList.indexAt(width/2,height+contentY) >= count - 2)
 {
                         messageList.positionViewAtEnd()
 }
+                }
+                onMovementStarted: {
+                    showDateSection()
+                }
+                onMovementEnded: {
+                    hideDateSection()
                 }
 
                 clip: true
@@ -262,15 +271,16 @@ Page {
                     }
                 ]
                 section {
+                    id: dateSection
                     property: "section"
-                    labelPositioning:ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
+                    labelPositioning: ViewSection.InlineLabels
                     delegate: Label {
                         id:secLabel
-                        property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
                         wrapMode: Text.WordWrap
                         color:Theme.highlightColor
                         font.pixelSize: Theme.fontSizeSmall
-                        text: defaultString
+                        font.bold: true
+                        text: Utils.formatDate(section, true)
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.topMargin: Theme.paddingMedium
                         anchors.bottomMargin: Theme.paddingMedium
@@ -278,15 +288,25 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked:{
-                                parent.text = Format.formatDate(new Date(section*1000),Formatter.DateFull)
-                                restoreDefaultInlineSectionTimer.start()
+                                // TODO: move to the 1st message for the section
                             }
                         }
                         Timer {
-                            id:restoreDefaultInlineSectionTimer
-                            interval: 3 * 1000
+                            id: changeToInlineLabelsTimer
+                            interval: 1500
                             onTriggered: {
-                                parent.text = parent.defaultString
+                                if (!messageList.moving) {
+                                    dateSection.labelPositioning = ViewSection.InlineLabels
+                                }
+                            }
+                        }
+                        Connections {
+                            target: messageList
+                            onShowDateSection: {
+                                dateSection.labelPositioning = ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
+                            }
+                            onHideDateSection: {
+                                changeToInlineLabelsTimer.start()
                             }
                         }
                     }

@@ -974,5 +974,9 @@
         <source>Wait closed</source>
         <translation>等待已关闭</translation>
     </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

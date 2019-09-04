@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import tdlibQtEnums 1.0 //org.blacksailer.depecher.sharechat
+import "../../js/utils.js" as Utils
 import "../items"
 
 ListItem {
@@ -92,27 +93,10 @@ ListItem {
                     Label{
                         id:messageTimestamp
                         anchors.verticalCenter: parent.verticalCenter
-                        function timestamp(dateTime){
-                            var postedDateTime = new Date(dateTime*1000)
-                            var postedMidnight = new Date(postedDateTime.getTime())
-                            postedMidnight.setHours(0, 0, 0, 0)
-                            var postedMidnightUnixTime = postedMidnight.getTime()
-                            var postedYear = postedDateTime.getFullYear()
-                            var currentMidnight = new Date()
-                            currentMidnight.setHours(0, 0, 0, 0)
-                            var currentMidnightUnixTime = currentMidnight.getTime()
-                            var currentYear = currentMidnight.getFullYear()
-                            if (postedMidnightUnixTime === currentMidnightUnixTime)
-                                return Format.formatDate(postedDateTime, Formatter.TimeValue)
-                            else if (postedYear === currentYear)
-                                return Format.formatDate(postedDateTime, Formatter.DateMediumWithoutYear)
-                            else
-                                return Format.formatDate(postedDateTime, Formatter.DateMedium)
-                        }
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: Theme.fontSizeSmall
                         color: pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                        text:timestamp(date)
+                        text: Utils.formatDate(date, false)
                     }
                 }
                 Row {

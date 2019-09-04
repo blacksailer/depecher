@@ -978,5 +978,9 @@
         <source>Wait closed</source>
         <translation>Odota suljettu</translation>
     </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -974,5 +974,9 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
         <source>Wait closed</source>
         <translation>Geschlossen</translation>
     </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
