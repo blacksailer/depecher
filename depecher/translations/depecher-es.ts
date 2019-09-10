@@ -110,11 +110,11 @@
     </message>
     <message>
         <source>Be aware, after clicking you will join chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten en cuenta que al pulsar te unirás al chat.</translation>
     </message>
     <message>
         <source>Italian speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidad de habla italiana</translation>
     </message>
 </context>
 <context>
@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>Reset to default</source>
-        <translation>Resetear</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
@@ -169,15 +169,15 @@
     </message>
     <message>
         <source>Always align messages to left</source>
-        <translation type="unfinished"></translation>
+        <translation>Alinear mensajes a la izquierda</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished"></translation>
+        <translation>Varios</translation>
     </message>
     <message>
         <source>Show full screen images in channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar mensajes a pantalla completa en los canales</translation>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
     <name>AudioView</name>
     <message>
         <source>Audios</source>
-        <translation type="unfinished"></translation>
+        <translation>Audios</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info de canal</translation>
     </message>
 </context>
 <context>
@@ -361,30 +361,30 @@
     <name>DocumentView</name>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Documentos</translation>
+        <translation>Documentos</translation>
     </message>
 </context>
 <context>
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info de grupo</translation>
     </message>
     <message>
         <source>%1 members</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 miembros</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificaciones</translation>
     </message>
     <message>
         <source>Click to disable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulsa para desactivar notificaciones</translation>
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulsa para activar notificaciones</translation>
     </message>
 </context>
 <context>
@@ -405,7 +405,7 @@
     <name>LinkView</name>
     <message>
         <source>Links</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlaces</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     <name>PhotoView</name>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes</translation>
     </message>
 </context>
 <context>
@@ -693,50 +693,50 @@
     <name>ShareUI</name>
     <message>
         <source>Choose chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Elige chat</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 seleccionado</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Asegúrate de que depecher se está ejecutando</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation type="unfinished"></translation>
+        <translation>No cierres hasta que el contenido multimedia se haya transferido</translation>
     </message>
 </context>
 <context>
     <name>SharedContent</name>
     <message>
         <source>%1 photos</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fotos</translation>
     </message>
     <message>
         <source>%1 videos</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vídeos</translation>
     </message>
     <message>
         <source>%1 files</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 archivos</translation>
     </message>
     <message>
         <source>%1 audio</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 audios</translation>
     </message>
     <message>
         <source>%1 links</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 enlaces</translation>
     </message>
     <message>
         <source>%1 voice notes</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 notas de voz</translation>
     </message>
 </context>
 <context>
@@ -828,69 +828,69 @@
     <name>UserPage</name>
     <message>
         <source>User info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info de usuario</translation>
     </message>
     <message>
         <source>Send message</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar mensaje</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificaciones</translation>
     </message>
     <message>
         <source>Click to disable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulsa para desactivar notificaciones</translation>
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pulsa para activar notificaciones</translation>
     </message>
     <message>
         <source>%1 groups in common</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 grupos en común</translation>
     </message>
     <message>
         <source>Channel info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info de canal</translation>
     </message>
     <message>
         <source>%1 members</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 miembros</translation>
     </message>
     <message>
         <source>Leave channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Dejar canal</translation>
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Unirse a canal</translation>
     </message>
     <message>
         <source>Leaving</source>
-        <translation type="unfinished"></translation>
+        <translation>Dejando</translation>
     </message>
     <message>
         <source>Open channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir canal</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">Nombre de usuario</translation>
+        <translation>Nombre de usuario</translation>
     </message>
 </context>
 <context>
     <name>VideoView</name>
     <message>
         <source>Videos</source>
-        <translation type="unfinished"></translation>
+        <translation>Vídeos</translation>
     </message>
 </context>
 <context>
     <name>VoiceView</name>
     <message>
         <source>Voice notes</source>
-        <translation type="unfinished"></translation>
+        <translation>Notas de voz</translation>
     </message>
 </context>
 <context>
@@ -956,11 +956,11 @@
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Espera cierre</translation>
+        <translation>Cerrando espera</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Espera cerrado</translation>
+        <translation>Espera cerrada</translation>
     </message>
 </context>
 </TS>
