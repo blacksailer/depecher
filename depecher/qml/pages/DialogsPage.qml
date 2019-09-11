@@ -20,7 +20,12 @@ Page {
                 pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
         }
     }
+    onStatusChanged: {
+    if (status == PageStatus.Active)
+        if(c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+            pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
 
+    }
     SilicaListView {
         anchors.fill: parent
         model:   ChatsModel {
@@ -85,6 +90,7 @@ Page {
             }
         }
     }
+
 }
 
 

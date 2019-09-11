@@ -7,6 +7,12 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Sun Sep 11 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.2-1
+- Added pull requests (added bio, copy link and phone number)
+- Auth seg fault fix
+- HTML escaping in message text
+- Translations added
+
 * Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.1-1
 - Info pages shared media fix
 

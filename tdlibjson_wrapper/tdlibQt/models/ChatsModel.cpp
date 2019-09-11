@@ -3,7 +3,6 @@
 #include <memory.h>
 #include "../ParseObject.hpp"
 #include "../TdlibJsonWrapper.hpp"
-#include "tdlibQt/include/TdlibNamespace.hpp"
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 
 namespace tdlibQt {
@@ -12,10 +11,7 @@ ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
 {
     //FIX for bug if depecher running only in foreground mode
     connect(tdlibJson, &TdlibJsonWrapper::authorizationStateChanged,
-    [this](Enums::AuthorizationState state) {
-        if (state == Enums::AuthorizationState::AuthorizationStateReady && rowCount(QModelIndex()) == 0)
-            reset();
-    });
+            this, &ChatsModel::onAuthorizationStateChanged);
     connect(this, &ChatsModel::totalUnreadCountChanged,
             tdlibJson, &TdlibJsonWrapper::setTotalUnreadCount);
     connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::chatsReceived,
@@ -161,6 +157,12 @@ void ChatsModel::updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarke
             emit dataChanged(index(rowIndex), index(rowIndex), roles);
         }
     }
+}
+
+void ChatsModel::onAuthorizationStateChanged(const Enums::AuthorizationState state)
+{
+    if (state == Enums::AuthorizationState::AuthorizationStateReady && rowCount(QModelIndex()) == 0)
+        reset();
 }
 
 void ChatsModel::changeNotificationSettings(const QString &chatId, bool mute)

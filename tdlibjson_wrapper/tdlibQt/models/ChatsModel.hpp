@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <memory>
 #include "tdlibQt/items/TdApi.hpp"
+#include "tdlibQt/include/TdlibNamespace.hpp"
 
 namespace tdlibQt {
 class TdlibJsonWrapper;
@@ -79,6 +80,8 @@ private slots:
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject);
     void updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject);
+    void onAuthorizationStateChanged(const Enums::AuthorizationState state);
+
 signals:
 
     void totalUnreadCountChanged(int totalUnreadCount);

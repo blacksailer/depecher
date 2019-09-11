@@ -1219,7 +1219,7 @@ bool MessagingModel::canFetchOlder()
 QString MessagingModel::makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity> > &markup)
 {
     if (markup.size() == 0)
-        return data;
+        return data.toHtmlEscaped().replace("\n", "<br>");
 
     QList<QPair<int, int>> positions;
 
@@ -1230,9 +1230,9 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
 
     for (int i = 0; i < positions.size(); ++i) {
         auto pair = positions[i];
-        textParts.append(data.mid(pair.first, pair.second));
+        textParts.append(data.mid(pair.first, pair.second).toHtmlEscaped());
     }
-
+    qDebug() << textParts;
     for (int i = 0; i < markup.size(); ++i) {
         switch (markup[i]->type_->get_id()) {
         case textEntityTypeItalic::ID:
@@ -1302,6 +1302,22 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
         result = result.replace(positions[i].first + bias, positions[i].second, textParts[i]);
         bias += textParts[i].size() - positions[i].second;
     }
+    //HTML escaping
+    bias = 0;
+    for (int i = 0; i < textParts.size(); ++i) {
+        if (i == 0) {
+            QString newText = result.mid(bias, positions[i].first);
+            result = result.replace(bias, positions[i].first, newText.toHtmlEscaped());
+            bias += textParts[i].size() - positions[i].second + newText.toHtmlEscaped().size() - newText.size();
+        } else {
+            int previousChatNum = positions[i - 1].first + bias + positions[i - 1].second;
+            QString newText = result.mid(previousChatNum, positions[i].first - previousChatNum + bias);
+            result = result.replace(previousChatNum, positions[i].first - previousChatNum + bias, newText.toHtmlEscaped());
+            bias += textParts[i].size() - positions[i].second + newText.toHtmlEscaped().size() - newText.size();
+
+        }
+    }
+
     return result.replace("\n", "<br>");
 }
 

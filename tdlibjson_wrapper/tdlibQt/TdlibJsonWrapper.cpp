@@ -641,6 +641,7 @@ void TdlibJsonWrapper::setTdlibParameters()
     parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
     parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
     parametersObject["use_secret_chats"] = false;
+    parametersObject["use_test_dc"] = false;
 #ifdef TEST_DC
     parametersObject["use_test_dc"] = true;
 #endif

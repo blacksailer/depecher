@@ -259,6 +259,7 @@ ListItem {
                                     id:replyContentColumn
                                     Label {
                                         id:replyAuthorLabel
+                                        width: Math.min(implicitWidth,messageListItem.width *2/3)
                                         color: Theme.secondaryHighlightColor
                                         font.pixelSize: Theme.fontSizeSmall
                                         text:reply_author ? reply_author : ""

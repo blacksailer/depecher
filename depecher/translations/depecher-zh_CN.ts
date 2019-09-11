@@ -169,11 +169,7 @@
     </message>
     <message>
         <source>Always align messages to left</source>
-<<<<<<< HEAD
         <translation>消息总是靠左排列</translation>
-=======
-        <translation>消息总是靠左</translation>
->>>>>>> 227aae758fd2a6ed0b8504c9a8d561f3816a3676
     </message>
     <message>
         <source>Miscellaneous</source>
@@ -181,11 +177,7 @@
     </message>
     <message>
         <source>Show full screen images in channels</source>
-<<<<<<< HEAD
         <translation>在群组显示全屏图片</translation>
-=======
-        <translation>在频道中显示全屏图片</translation>
->>>>>>> 227aae758fd2a6ed0b8504c9a8d561f3816a3676
     </message>
 </context>
 <context>
