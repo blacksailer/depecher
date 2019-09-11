@@ -15,6 +15,7 @@ class UserInfoProvider : public InfoProvider
     Q_PROPERTY(QString lastName READ lastName NOTIFY lastNameChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString username READ username NOTIFY usernameChanged)
+    Q_PROPERTY(QString bio READ bio NOTIFY bioChanged)
     Q_PROPERTY(QString phoneNumber READ phoneNumber NOTIFY phoneNumberChanged)
     Q_PROPERTY(linkState incomingLink READ incomingLink NOTIFY incomingLinkChanged)
     Q_PROPERTY(linkState outgoingLink READ outgoingLink  NOTIFY outcomingLinkChanged)
@@ -41,6 +42,8 @@ private:
 
     int m_groupCount  = 0;
 
+    QString m_bio;
+
 public:
     explicit UserInfoProvider(QObject *parent = nullptr);
     int userId() const;
@@ -52,6 +55,11 @@ public:
     QString avatar() const override;
 
     QString username() const;
+
+    QString bio() const
+    {
+        return m_bio;
+    }
 
     QString status() const;
 
@@ -85,6 +93,8 @@ signals:
 
     void usernameChanged();
 
+    void bioChanged();
+
     void groupCountChanged(int groupCount);
     void chatIdReceived(const QString &chatId);
 private slots:
@@ -92,6 +102,7 @@ private slots:
     void userFullInfoReceived(const QJsonObject &userFullInfoObject);
     void errorReceived(const QJsonObject &errorObject);
     void setGroupCount(int groupCount);
+    void setBio(const QString &bio);
     void processFile(const QJsonObject &fileObject);
     void onChatReceived(const QJsonObject &userObject);
 public slots:

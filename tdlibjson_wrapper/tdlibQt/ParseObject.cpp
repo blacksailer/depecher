@@ -1450,7 +1450,7 @@ QSharedPointer<userFullInfo> ParseObject::parseUserFullInfo(const QJsonObject &u
     resultUserFullInfo->can_be_called_ = userFullInfoObject["can_be_called"].toBool();
     resultUserFullInfo->has_private_calls_ = userFullInfoObject["has_private_calls"].toBool();
     resultUserFullInfo->share_text_ = userFullInfoObject["share_text"].toString().toStdString();
-    resultUserFullInfo->bio_ = userFullInfoObject["share_text"].toString().toStdString();
+    resultUserFullInfo->bio_ = userFullInfoObject["bio"].toString().toStdString();
     resultUserFullInfo->group_in_common_count_ = userFullInfoObject["group_in_common_count"].toInt();
     resultUserFullInfo->bot_info_ = parseBotInfo(userFullInfoObject["bot_info"].toObject());
     return resultUserFullInfo;

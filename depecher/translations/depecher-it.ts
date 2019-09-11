@@ -878,6 +878,18 @@
         <source>Username</source>
         <translation type="unfinished">Nome utente</translation>
     </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -961,6 +973,10 @@
     <message>
         <source>Wait closed</source>
         <translation>Attendo chiusura</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

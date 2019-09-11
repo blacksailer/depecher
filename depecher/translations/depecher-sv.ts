@@ -878,6 +878,18 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VideoView</name>
@@ -961,6 +973,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <message>
         <source>Wait closed</source>
         <translation>Vänta stängd</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
