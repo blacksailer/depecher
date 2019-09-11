@@ -13,16 +13,11 @@ Page {
     SearchChatMessagesModel {
         id: itemsModel
     }
-    Connections {
-        target: loader.item
-        onDownloadDocument: console.log(index)
-    }
 
     Loader {
         id:loader
         anchors.fill: parent
         function onDownloadDocument(index) {
-            console.log("CLICK")
         itemsModel.downloadDocument(index)
         }
         onLoaded: {

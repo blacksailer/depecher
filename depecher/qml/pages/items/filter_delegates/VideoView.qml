@@ -98,8 +98,6 @@ SilicaGridView {
 }
                             else
 {
-                                console.log("Insane")
-
                             itemsModel.downloadDocument(index)
 }
                     }

@@ -15,7 +15,6 @@ Page {
     readonly property string httpTgPrefix: "https://t.me/"
     property string tgDN: ""
     Component.onCompleted: {
-        console.log(chat_id)
         if(user_id > -1 && username == "")
         {
             loader.sourceComponent  = userInfoComponent
@@ -40,8 +39,6 @@ Page {
             if(resolver.chatType === TdlibState.Private)
             {
                 loader.sourceComponent  = userInfoComponent
-                console.log(resolver.resolvedChatId,resolver.resolvedId)
-
                 loader.item.chatId=resolver.resolvedChatId
                 loader.item.userId=resolver.resolvedId
             }

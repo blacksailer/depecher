@@ -16,7 +16,6 @@ ShareDialog {
 
     canAccept: listModel.count !== 0
     property bool searchEnabled: false
-    Component.onCompleted:         console.log(filepath,JSON.stringify(content))
     onAccepted: {
         if (source == '' && content && 'type' in content)
         {
@@ -81,7 +80,6 @@ ShareDialog {
                         }
                     }
                 }
-                console.log(chat_ids)
             }
         }
     }

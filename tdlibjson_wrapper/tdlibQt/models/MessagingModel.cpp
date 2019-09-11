@@ -1232,7 +1232,6 @@ QString MessagingModel::makeRichText(const QString &data, const std::vector<QSha
         auto pair = positions[i];
         textParts.append(data.mid(pair.first, pair.second).toHtmlEscaped());
     }
-    qDebug() << textParts;
     for (int i = 0; i < markup.size(); ++i) {
         switch (markup[i]->type_->get_id()) {
         case textEntityTypeItalic::ID:
