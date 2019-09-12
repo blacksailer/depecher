@@ -6,7 +6,7 @@
     <message id="sailfish_browser-la-no_accounts">
         <source>No sharing accounts available. You can add accounts in settings</source>
         <extracomment>Empty state for share link page</extracomment>
-        <translation>没有可用的共享帐户, 您可以在设置中添加帐户</translation>
+        <translation>没有可用的共享帐户, 你可以在设置中添加帐户</translation>
     </message>
     <message id="Share">
         <source>Share link</source>
@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>English speaking community</source>
-        <translation>讲英语的社区</translation>
+        <translation>英语社区</translation>
     </message>
     <message>
         <source>Error %1</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Depecher - Another Telegram client for Sailfish OS based on tdlib.</source>
-        <translation>Depecher - 基于tdlib的另一个SailfishOS telegram客户端</translation>
+        <translation>Depecher - 基于tdlib的另一个旗鱼系统电报客户端</translation>
     </message>
     <message>
         <source>Features:</source>
@@ -98,11 +98,11 @@
     </message>
     <message>
         <source>Here enumerated groups where you can ask any questions (general,dev etc.) related to Sailfish OS.</source>
-        <translation>这里列举了的群组，您可以在这里询问与Sailfish OS相关的任何问题（一般，开发等）。</translation>
+        <translation>这里列举了一些群组，你可以在此询问与旗鱼系统相关的任何问题（一般，开发等）。</translation>
     </message>
     <message>
         <source>This groups lives only because of community and by community around Sailfish OS.</source>
-        <translation>这个群组生于社区，服务于Sailfish OS相关的社区。</translation>
+        <translation>这个群组产生并服务与旗鱼系统关联社区。</translation>
     </message>
     <message>
         <source>Version</source>
@@ -276,7 +276,7 @@
     </message>
     <message>
         <source>Attention: If Telegram is blocked in your country, first setup proxy server in settings via PulleyMenu</source>
-        <translation>注意：如果电报在你的国家被墙，请先通过下拉菜单设置代理服务器</translation>
+        <translation>注意：如果电报在你的国家被封锁，请先通过下拉菜单设置代理服务器</translation>
     </message>
 </context>
 <context>
@@ -880,15 +880,15 @@
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>复制</translation>
     </message>
     <message>
         <source>Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>复制链接</translation>
     </message>
     <message>
         <source>Bio</source>
-        <translation type="unfinished"></translation>
+        <translation>个人简介</translation>
     </message>
 </context>
 <context>
@@ -976,7 +976,7 @@
     </message>
     <message>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>今天</translation>
     </message>
 </context>
 </TS>
