@@ -45,10 +45,6 @@
         <translation>加入讨论中</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>请注意，点击后你会加入讨论组， 暂时不支持离开讨论组。</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>获取邀请链接出错</translation>
     </message>
@@ -110,7 +106,15 @@
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>版本</translation>
+    </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation>注意，点击之后你将加入讨论组</translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
+        <translation>意大利语系社区</translation>
     </message>
 </context>
 <context>
@@ -144,28 +148,36 @@
         <translation>最小化名字</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>始终将消息对齐到左侧</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
-        <translation type="unfinished"></translation>
+        <translation>启用夜间模式</translation>
     </message>
     <message>
         <source>Night Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>夜间模式</translation>
     </message>
     <message>
         <source>Enable schedule</source>
-        <translation type="unfinished"></translation>
+        <translation>启用时间</translation>
     </message>
     <message>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>从</translation>
     </message>
     <message>
         <source>Till</source>
-        <translation type="unfinished"></translation>
+        <translation>至</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation>消息总是靠左排列</translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation>杂项</translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation>在群组显示全屏图片</translation>
     </message>
 </context>
 <context>
@@ -234,6 +246,13 @@
     </message>
 </context>
 <context>
+    <name>AudioView</name>
+    <message>
+        <source>Audios</source>
+        <translation>音频</translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -272,10 +291,28 @@
     </message>
 </context>
 <context>
+    <name>ChannelInfoPage</name>
+    <message>
+        <source>Channel info</source>
+        <translation>频道信息</translation>
+    </message>
+</context>
+<context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
         <translation>%1 创建了群组 %2</translation>
+    </message>
+</context>
+<context>
+    <name>ContactsPage</name>
+    <message>
+        <source>Contacts</source>
+        <translation>联系人</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>搜索</translation>
     </message>
 </context>
 <context>
@@ -285,10 +322,8 @@
         <translation>Depecher</translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translation>未读
-消息</translation>
+        <source>Unread messages</source>
+        <translation>未读消息</translation>
     </message>
 </context>
 <context>
@@ -311,11 +346,45 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>标记为已读</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>标记为未读</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation>联系人</translation>
+    </message>
+</context>
+<context>
+    <name>DocumentView</name>
+    <message>
+        <source>Documents</source>
+        <translation>文档</translation>
+    </message>
+</context>
+<context>
+    <name>GroupInfoPage</name>
+    <message>
+        <source>Group info</source>
+        <translation>群组信息</translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation>%1 位成员</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>通知</translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation>点击禁用通知</translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation>点击启用通知</translation>
     </message>
 </context>
 <context>
@@ -333,6 +402,13 @@
     </message>
 </context>
 <context>
+    <name>LinkView</name>
+    <message>
+        <source>Links</source>
+        <translation>链接</translation>
+    </message>
+</context>
+<context>
     <name>MenuComponent</name>
     <message>
         <source>Settings</source>
@@ -347,7 +423,7 @@
     </message>
     <message>
         <source>Forwarded from</source>
-        <translation type="unfinished"></translation>
+        <translation>转发自</translation>
     </message>
 </context>
 <context>
@@ -402,19 +478,19 @@
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>转发</translation>
     </message>
     <message>
         <source>Forwarded messages</source>
-        <translation type="unfinished"></translation>
+        <translation>转发消息</translation>
     </message>
     <message>
         <source>messages</source>
-        <translation type="unfinished"></translation>
+        <translation>消息</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
 </context>
 <context>
@@ -422,6 +498,13 @@
     <message>
         <source>New messages</source>
         <translation>新消息</translation>
+    </message>
+</context>
+<context>
+    <name>PhotoView</name>
+    <message>
+        <source>Images</source>
+        <translation>图片</translation>
     </message>
 </context>
 <context>
@@ -462,101 +545,101 @@
     <name>ProxyDialog</name>
     <message>
         <source>Server address</source>
-        <translation type="unfinished">服务器地址</translation>
+        <translation>服务器地址</translation>
     </message>
     <message>
         <source>Server port</source>
-        <translation type="unfinished">服务器端口</translation>
+        <translation>服务器端口</translation>
     </message>
     <message>
         <source>port</source>
-        <translation type="unfinished">端口</translation>
+        <translation>端口</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">用户名</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <source>username</source>
-        <translation type="unfinished">用户名</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">密码</translation>
+        <translation>密码</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>添加代理</translation>
     </message>
     <message>
         <source>Proxy type</source>
-        <translation type="unfinished"></translation>
+        <translation>代理类型</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>地址</translation>
     </message>
     <message>
         <source>HTTP only</source>
-        <translation type="unfinished"></translation>
+        <translation>仅 HTTP</translation>
     </message>
     <message>
         <source>Secret</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>secret</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <source>Edit proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑代理</translation>
     </message>
 </context>
 <context>
     <name>ProxyPage</name>
     <message>
         <source>Proxy is ready</source>
-        <translation type="unfinished">代理可用</translation>
+        <translation>代理可用</translation>
     </message>
     <message>
         <source>Link copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>链接已复制到剪贴板</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>代理</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">连接状态：</translation>
+        <translation>连接状态：</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已启用</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已禁用</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>移除</translation>
     </message>
     <message>
         <source>Add proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>添加代理</translation>
     </message>
 </context>
 <context>
     <name>SelectChatDialog</name>
     <message>
         <source>Select chat</source>
-        <translation type="unfinished"></translation>
+        <translation>选择对话</translation>
     </message>
 </context>
 <context>
@@ -583,7 +666,7 @@
     </message>
     <message>
         <source>Credits and stuff</source>
-        <translation>归功于的工作</translation>
+        <translation>荣誉和工作</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -599,11 +682,61 @@
     </message>
     <message>
         <source>Logging out</source>
-        <translation type="unfinished"></translation>
+        <translation>正在登出</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>代理</translation>
+    </message>
+</context>
+<context>
+    <name>ShareUI</name>
+    <message>
+        <source>Choose chat</source>
+        <translation>选择聊天</translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
+        <translation>%1 已选中</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>重置</translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation>确保depecher在运行</translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation>在多媒体传输完之前不要关闭</translation>
+    </message>
+</context>
+<context>
+    <name>SharedContent</name>
+    <message>
+        <source>%1 photos</source>
+        <translation>%1 张图片</translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation>%1 段视频</translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation>%1 个文件</translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation>%1 首音乐</translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation>%1 条链接</translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
+        <translation>%1 条留言</translation>
     </message>
 </context>
 <context>
@@ -672,7 +805,7 @@
     </message>
     <message>
         <source>recovery code sent to %1</source>
-        <translation>恢复码发送到%1</translation>
+        <translation>恢复码发送到 %1</translation>
     </message>
     <message>
         <source>Password hint</source>
@@ -692,21 +825,95 @@
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
+    <name>UserPage</name>
     <message>
-        <source>Voice note</source>
-        <translation>语音留言</translation>
+        <source>User info</source>
+        <translation>用户信息</translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation>发送消息</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>通知</translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation>点击禁用通知</translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation>点击启用通知</translation>
+    </message>
+    <message>
+        <source>%1 groups in common</source>
+        <translation>%1 个共同加入的群组</translation>
+    </message>
+    <message>
+        <source>Channel info</source>
+        <translation>频道信息</translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation>%1 位成员</translation>
+    </message>
+    <message>
+        <source>Leave channel</source>
+        <translation>退出频道</translation>
+    </message>
+    <message>
+        <source>Join channel</source>
+        <translation>加入频道</translation>
+    </message>
+    <message>
+        <source>Leaving</source>
+        <translation>退出中</translation>
+    </message>
+    <message>
+        <source>Open channel</source>
+        <translation>打开频道</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>用户名</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VideoView</name>
+    <message>
+        <source>Videos</source>
+        <translation>视频</translation>
+    </message>
+</context>
+<context>
+    <name>VoiceView</name>
+    <message>
+        <source>Voice notes</source>
+        <translation>语音记事</translation>
     </message>
 </context>
 <context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑文本</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑说明文字</translation>
     </message>
 </context>
 <context>
@@ -757,7 +964,7 @@
     </message>
     <message>
         <source>Wait logging out</source>
-        <translation>等待退出种</translation>
+        <translation>正在等待退出</translation>
     </message>
     <message>
         <source>Wait closing</source>
@@ -766,6 +973,10 @@
     <message>
         <source>Wait closed</source>
         <translation>等待已关闭</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

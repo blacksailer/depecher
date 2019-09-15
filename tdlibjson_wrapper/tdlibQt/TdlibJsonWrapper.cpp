@@ -14,48 +14,6 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 {
     td_set_log_verbosity_level(2);
     client = td_json_client_create();
-    //SEG FAULT means that json has error input variable names
-    MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
-    MGConfItem useFileDatabase("/apps/depecher/tdlib/use_file_database");
-    MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
-    MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
-    MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
-
-    QFileInfo checkDir(filesDirectory.value("").toString());
-    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
-        filesDirectory.set("");
-    else {
-        //Disable directory from being tracked by tracker
-        QFile file(filesDirectory.value("").toString() + "/.nomedia");
-        if (!file.exists()) {
-            file.open(QIODevice::WriteOnly);
-            file.close();
-        }
-    }
-
-    QVariantMap parametersObject;
-    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
-    parametersObject["files_directory"] = filesDirectory.value("").toString();
-    parametersObject["api_id"] = tdlibQt::appid.toInt();
-    parametersObject["api_hash"] = tdlibQt::apphash;
-    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
-    parametersObject["device_model"] = QSysInfo::prettyProductName();
-    parametersObject["system_version"] = QSysInfo::productVersion();
-    parametersObject["application_version"] = APP_VERSION;
-    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
-    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
-    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
-    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
-    parametersObject["use_secret_chats"] = false;
-#ifdef TEST_DC
-    parametersObject["use_test_dc"] = true;
-#endif
-
-    QVariantMap rootObject;
-    rootObject["@type"] = "setTdlibParameters";
-    rootObject["parameters"] = parametersObject;
-    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
-    //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
 }
 
 void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
@@ -64,6 +22,12 @@ void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
     qDebug() << QString::fromLatin1(str);
 #endif
     td_json_client_send(Client, str);
+}
+
+QByteArray TdlibJsonWrapper::sendSyncroniousMessage(const QString &json)
+{
+    std::string reply = td_json_client_execute(client, json.toStdString().c_str());
+    return QByteArray::fromStdString(reply);
 }
 
 TdlibJsonWrapper *TdlibJsonWrapper::instance()
@@ -122,9 +86,9 @@ void TdlibJsonWrapper::startListen()
 
     connect(parseObject, &ParseObject::updateNewChat,
             this, &TdlibJsonWrapper::updateNewChat);
-    connect(parseObject, &ParseObject::updateNewUser,
-            this, &TdlibJsonWrapper::updateNewUser);
-    connect(parseObject, &ParseObject::newChatReceived,
+    connect(parseObject, &ParseObject::updateUserReceived,
+            this, &TdlibJsonWrapper::updateUserReceived);
+    connect(parseObject, &ParseObject::chatReceived,
     [this](const QJsonObject & chat) {
         if (chat.contains("@extra")) {
             if (chat["@extra"].toString() == "EnSailfish") {
@@ -155,7 +119,7 @@ void TdlibJsonWrapper::startListen()
                                    QString::number(chatPtr->last_message_->id_));
             }
         }
-        emit newChatGenerated(chat);
+        emit chatReceived(chat);
     });
     connect(parseObject, &ParseObject::updateFile,
             this, &TdlibJsonWrapper::updateFile);
@@ -213,10 +177,38 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::secondsReceived);
     connect(parseObject, &ParseObject::textReceived,
             this, &TdlibJsonWrapper::textReceived);
-
+    connect(parseObject, &ParseObject::updateFileGenerationStartReceived,
+            this, &TdlibJsonWrapper::updateFileGenerationStartReceived);
+    connect(parseObject, &ParseObject::updateFileGenerationStopReceived,
+            this, &TdlibJsonWrapper::updateFileGenerationStopReceived);
+    connect(parseObject, &ParseObject::usersReceived,
+            this, &TdlibJsonWrapper::usersReceived);
+    connect(parseObject, &ParseObject::userReceived,
+            this, &TdlibJsonWrapper::userReceived);
+    connect(parseObject, &ParseObject::updateUserStatusReceived,
+            this, &TdlibJsonWrapper::updateUserStatusReceived);
+    connect(parseObject, &ParseObject::chatsReceived,
+            this, &TdlibJsonWrapper::chatsReceived);
+    connect(parseObject, &ParseObject::updateNotificationGroupReceived,
+            this, &TdlibJsonWrapper::updateNotificationGroupReceived);
+    connect(parseObject, &ParseObject::updateActiveNotificationReceived,
+            this, &TdlibJsonWrapper::updateActiveNotificationReceived);
+    connect(parseObject, &ParseObject::countReceived,
+            this, &TdlibJsonWrapper::countReceived);
+    connect(parseObject, &ParseObject::userFullInfoReceived,
+            this, &TdlibJsonWrapper::userFullInfoReceived);
+    connect(parseObject, &ParseObject::supergroupFullInfoReceived,
+            this, &TdlibJsonWrapper::supergroupFullInfoReceived);
+    connect(parseObject, &ParseObject::basicGroupReceived,
+            this, &TdlibJsonWrapper::basicGroupReceived);
+    connect(parseObject, &ParseObject::basicGroupFullInfoReceived,
+            this, &TdlibJsonWrapper::basicGroupFullInfoReceived);
+    connect(parseObject, &ParseObject::updateBasicGroupFullInfoReceived,
+            this, &TdlibJsonWrapper::updateBasicGroupFullInfoReceived);
+    connect(parseObject, &ParseObject::updateBasicGroupReceived,
+            this, &TdlibJsonWrapper::updateBasicGroupReceived);
     listenThread->start();
     parseThread->start();
-
 
 
 }
@@ -236,6 +228,11 @@ Enums::ConnectionState TdlibJsonWrapper::connectionState() const
     return m_connectionState;
 }
 
+int TdlibJsonWrapper::totalUnreadCount() const
+{
+    return m_totalUnreadCount;
+}
+
 void TdlibJsonWrapper::openChat(const QString &chat_id)
 {
     std::string openChat = "{\"@type\":\"openChat\","
@@ -249,6 +246,76 @@ void TdlibJsonWrapper::closeChat(const QString &chat_id)
     std::string closeChat = "{\"@type\":\"closeChat\","
                             "\"chat_id\":\"" + chat_id.toStdString() + "\"}";
     sendToTelegram(client, closeChat.c_str());
+}
+
+void TdlibJsonWrapper::setOption(const QString &name, const QVariant &value)
+{
+    QString str = "{\"@type\":\"setOption\","
+                  "\"name\":\"%1\","
+                  "\"value\":%2}";
+
+    QString objValue = "{\"@type\":\"%1\","
+                       "\"value\":%2}";
+    if (value.isNull())
+        objValue = "{\"@type\":\"optionValueEmpty\"}";
+    else {
+        switch (value.type()) {
+        case QVariant::Type::Bool:
+            if (value.toBool())
+                objValue = objValue.arg("optionValueBoolean", "true");
+            else
+                objValue = objValue.arg("optionValueBoolean", "false");
+            break;
+        case QVariant::Type::Int:
+        case QVariant::Type::Double:
+            objValue = objValue.arg("optionValueInteger", value.toString());
+
+            break;
+        case QVariant::Type::String:
+            objValue = objValue.arg("optionValueString", value.toString().prepend("\"").append("\""));
+        default:
+            objValue = "{\"@type\":\"optionValueEmpty\"}";
+            break;
+        }
+    }
+    str = str.arg(name, objValue);
+
+    sendToTelegram(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getContacts()
+{
+    std::string getContactsStr = "{\"@type\":\"getContacts\","
+                                 "\"@extra\":\"getContacts\"}";
+    sendToTelegram(client, getContactsStr.c_str());
+}
+
+void TdlibJsonWrapper::getUser(const qint64 chatId, const QString &extra)
+{
+    QString getContactStr;
+    if (extra != "") {
+        getContactStr = "{\"@type\":\"getUser\","
+                        "\"user_id\":\"%1\","
+                        "\"@extra\":\"%2\"}";
+        getContactStr = getContactStr.arg(QString::number(chatId), extra);
+    } else {
+        {
+            getContactStr = "{\"@type\":\"getUser\","
+                            "\"user_id\":\"%1\"}";
+            getContactStr = getContactStr.arg(QString::number(chatId));
+        }
+    }
+    sendToTelegram(client, getContactStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::searchContacts(const QString &query, const int limit)
+{
+    QString searchContactsStr = "{\"@type\":\"searchContacts\","
+                                "\"query\":\"%1\","
+                                "\"limit\":%2,"
+                                "\"@extra\":\"searchContacts\"}";
+    searchContactsStr.arg(query, QString::number(limit));
+    sendToTelegram(client, searchContactsStr.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getMe()
@@ -296,13 +363,69 @@ void TdlibJsonWrapper::joinChatByInviteLink(const QString &link, const QString &
 {
     QString joinChatByInviteLink =
         "{\"@type\":\"joinChatByInviteLink\","
-        "\"invite_link\":\"" + link  + "\"}";
+        "\"invite_link\":\"%1\"}";
+    joinChatByInviteLink = joinChatByInviteLink.arg(link);
     if (extra != "") {
         joinChatByInviteLink.remove(joinChatByInviteLink.size() - 1, 1);
         joinChatByInviteLink.append(",\"@extra\":\"" + extra + "\"}");
     }
 
     sendToTelegram(client, joinChatByInviteLink.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::joinChat(const qint64 chatId, const QString &extra)
+{
+    QString joinChat =
+        "{\"@type\":\"joinChat\","
+        "\"chat_id\":\"%1\"}";
+    joinChat = joinChat.arg(QString::number(chatId));
+    if (extra != "") {
+        joinChat.remove(joinChat.size() - 1, 1);
+        joinChat.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, joinChat.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::leaveChat(const qint64 chatId, const QString &extra)
+{
+    QString leaveChat =
+        "{\"@type\":\"leaveChat\","
+        "\"chat_id\":\"%1\"}";
+    leaveChat = leaveChat.arg(QString::number(chatId));
+    if (extra != "") {
+        leaveChat.remove(leaveChat.size() - 1, 1);
+        leaveChat.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, leaveChat.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getBasicGroup(const qint64 basicGroupId, const QString &extra)
+{
+    QString query = "{\"@type\":\"getBasicGroup\","
+                    "\"basic_group_id\":%1}";
+    query = query.arg(QString::number(basicGroupId));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getBasicGroupFullInfo(const int groupId, const QString &extra)
+{
+    QString query =
+        "{\"@type\":\"getBasicGroupFullInfo\","
+        "\"basic_group_id\":%1}";
+    query = query.arg(QString::number(groupId));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+
+    sendToTelegram(client, query.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::setTotalUnreadCount(int totalUnreadCount)
@@ -361,7 +484,6 @@ void TdlibJsonWrapper::addProxy(const QString &address, const int port,
                     "\"type\":%4"
                     "}";
     proxy = proxy.arg(address, QString::number(port), enabled ? QString("true") : QString("false"), proxyType);
-    qDebug() << proxy;
     sendToTelegram(client, proxy.toStdString().c_str());
 }
 
@@ -479,6 +601,58 @@ void TdlibJsonWrapper::checkPassword(const QString &password)
 
     sendToTelegram(client, setAuthenticationPassword.c_str());
 }
+
+void TdlibJsonWrapper::setTdlibParameters()
+{
+    //SEG FAULT means that json has error input variable names
+    MGConfItem filesDirectory("/apps/depecher/tdlib/files_directory");
+    MGConfItem useFileDatabase("/apps/depecher/tdlib/use_file_database");
+    MGConfItem useChatInfoDatabase("/apps/depecher/tdlib/use_chat_info_database");
+    MGConfItem useMessageDatabase("/apps/depecher/tdlib/use_message_database");
+    MGConfItem enableStorageOptimizer("/apps/depecher/tdlib/enable_storage_optimizer");
+    MGConfItem notificationGroupCountMax("/apps/depecher/tdlib/notification_group_count_max");
+    MGConfItem notificationGroupSizeMax("/apps/depecher/tdlib/notification_group_size_max");
+    setOption("notification_group_count_max", notificationGroupCountMax.value(3));
+    setOption("notification_group_size_max", notificationGroupSizeMax.value(10));
+
+    QFileInfo checkDir(filesDirectory.value("").toString());
+    if (!checkDir.exists() || !(checkDir.isDir() && checkDir.isWritable()))
+        filesDirectory.set("");
+    else {
+        //Disable directory from being tracked by tracker
+        QFile file(filesDirectory.value("").toString() + "/.nomedia");
+        if (!file.exists()) {
+            file.open(QIODevice::WriteOnly);
+            file.close();
+        }
+    }
+
+    QVariantMap parametersObject;
+    parametersObject["database_directory"] = "/home/nemo/.local/share/harbour-depecher";
+    parametersObject["files_directory"] = filesDirectory.value("").toString();
+    parametersObject["api_id"] = tdlibQt::appid.toInt();
+    parametersObject["api_hash"] = tdlibQt::apphash;
+    parametersObject["system_language_code"] = QLocale::languageToString(QLocale::system().language());
+    parametersObject["device_model"] = QSysInfo::prettyProductName();
+    parametersObject["system_version"] = QSysInfo::productVersion();
+    parametersObject["application_version"] = APP_VERSION;
+    parametersObject["use_file_database"] = useFileDatabase.value(true).toBool();
+    parametersObject["use_chat_info_database"] = useChatInfoDatabase.value(true).toBool();
+    parametersObject["use_message_database"] = useMessageDatabase.value(true).toBool();
+    parametersObject["enable_storage_optimizer"] = enableStorageOptimizer.value(true).toBool();
+    parametersObject["use_secret_chats"] = false;
+    parametersObject["use_test_dc"] = false;
+#ifdef TEST_DC
+    parametersObject["use_test_dc"] = true;
+#endif
+
+    QVariantMap rootObject;
+    rootObject["@type"] = "setTdlibParameters";
+    rootObject["parameters"] = parametersObject;
+    sendToTelegram(client, QJsonDocument::fromVariant(rootObject).toJson(QJsonDocument::Compact).constData());
+    //answer is - {"@type":"updateAuthorizationState","authorization_state":{"@type":"authorizationStateWaitEncryptionKey","is_encrypted":false}}
+
+}
 void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firstName,
                                         const QString &lastName)
 {
@@ -492,24 +666,73 @@ void TdlibJsonWrapper::setCodeIfNewUser(const QString &code, const QString &firs
 
 }
 void TdlibJsonWrapper::getChats(const qint64 offset_chat_id, const qint64 offset_order,
-                                const int limit)
+                                const int limit, const QString &extra)
 {
-    auto max_order = std::to_string(offset_order);
-    std::string getChats =
-        "{\"@type\":\"getChats\","
-        "\"offset_order\":\"" + max_order + "\","
-        "\"offset_chat_id\":\"" + std::to_string(offset_chat_id) + "\","
-        "\"limit\":" + std::to_string(limit) + "}";
-    sendToTelegram(client, getChats.c_str());
+    QString str;
+    if (extra != "") {
+        str = "{\"@type\":\"getChats\","
+              "\"offset_order\":\"%1\","
+              "\"offset_chat_id\":\"%2\","
+              "\"limit\":%3,"
+              "\"@extra\":\"%4\""
+              "}";
+        str = str.arg(QString::number(offset_order),
+                      QString::number(offset_chat_id),
+                      QString::number(limit),  extra);
+    } else {
+        str = "{\"@type\":\"getChats\","
+              "\"offset_order\":\"%1\","
+              "\"offset_chat_id\":\"%2\","
+              "\"limit\":%3"
+              "}";
+        str = str.arg(QString::number(offset_order),
+                      QString::number(offset_chat_id),
+                      QString::number(limit));
+    }
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
-void TdlibJsonWrapper::getChat(const qint64 chatId)
+void TdlibJsonWrapper::getChat(const qint64 chatId, const QString &extra)
 {
-    std::string getChat = "{\"@type\":\"getChat\","
-                          "\"chat_id\":\"" + std::to_string(chatId) + "\""
-                          "}";
-    sendToTelegram(client, getChat.c_str());
+    QString str;
+    if (extra != "") {
+        str = "{\"@type\":\"getChat\","
+              "\"chat_id\":\"%1\","
+              "\"@extra\":\"%2\""
+              "}";
+        str = str.arg(QString::number(chatId), extra);
+    } else {
+        str = "{\"@type\":\"getChat\","
+              "\"chat_id\":\"%1\"}";
+        str = str.arg(QString::number(chatId));
+    }
 
+    sendToTelegram(client, str.toStdString().c_str());
+
+}
+
+void TdlibJsonWrapper::searchChatsOnServer(const QString &query, const int limit)
+{
+    QString str = "{\"@type\":\"searchChatsOnServer\","
+                  "\"query\":\"%1\","
+                  "\"limit\":%2,"
+                  "\"@extra\":\"searchChatsOnServer\""
+                  "}";
+
+    str = str.arg(query, QString::number(limit));
+    sendToTelegram(client, str.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::searchChats(const QString &query, const int limit)
+{
+    QString str = "{\"@type\":\"searchChats\","
+                  "\"query\":\"%1\","
+                  "\"limit\":%2,"
+                  "\"@extra\":\"searchChats\""
+                  "}";
+
+    str = str.arg(query, QString::number(limit));
+    sendToTelegram(client, str.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::markChatUnread(const qint64 chatId, const bool flag)
@@ -529,10 +752,17 @@ void TdlibJsonWrapper::downloadFile(int fileId, int priority, const QString &ext
         priority = 32;
     if (priority < 1)
         priority = 1;
+    bool sync = false;
     QString getFile = "{\"@type\":\"downloadFile\","
-                      "\"file_id\":" + QString::number(fileId) + ","
-                      "\"priority\":" + QString::number(priority) +
+                      "\"file_id\":\"%1\","
+                      "\"priority\":%2,"
+                      "\"offset\":%3,"
+                      "\"limit\":%4,"
+                      "\"synchronous\":%5"
                       "}";
+
+    getFile = getFile.arg(QString::number(fileId), QString::number(priority),
+                          QString::number(0), QString::number(0), sync ? QString("true") : QString("false"));
     if (extra != "") {
         getFile.remove(getFile.size() - 1, 1);
         getFile.append(",\"@extra\":\"" + extra + "\"}");
@@ -558,6 +788,121 @@ void TdlibJsonWrapper::getChatHistory(qint64 chat_id, qint64 from_message_id,
         getChatHistory.append(",\"@extra\": \"" + extra + "\"");
     getChatHistory.append("}");
     sendToTelegram(client, getChatHistory.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::searchChatMessages(const qint64 chat_id, const qint64 from_message_id, const QString &query,
+        const int sender_user_id, const int offset, const int limit,
+        const Enums::SearchFilter &filter, const QString &extra)
+{
+    QString queryStr = "{\"@type\":\"searchChatMessages\","
+                       "\"chat_id\":\"%1\","
+                       "\"from_message_id\":\"%2\","
+                       "\"query\":\"%3\","
+                       "\"sender_user_id\":%4,"
+                       "\"offset\":%5,"
+                       "\"limit\":%6,"
+                       "\"filter\":%7"
+                       "}";
+    QString filterStr = "{\"@type\":\"%1\"}";
+    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
+    queryStr = queryStr.arg(QString::number(chat_id), QString::number(from_message_id), query,
+                            QString::number(sender_user_id), QString::number(offset), QString::number(limit),
+                            filterStr);
+    if (extra != "") {
+        queryStr.remove(queryStr.size() - 1, 1);
+        queryStr.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, queryStr.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::createPrivateChat(const int user_id, bool force, const QString &extra)
+{
+    QString query = "{\"@type\":\"createPrivateChat\","
+                    "\"user_id\":%1,"
+                    "\"force\":%2}";
+    query = query.arg(QString::number(user_id),
+                      force ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::deleteChatHistory(qint64 chat_id, bool remove_from_chat_list, bool revoke, const QString &extra)
+{
+    QString query = "{\"@type\":\"deleteChatHistory\","
+                    "\"chat_id\":\"%1\","
+                    "\"remove_from_chat_list\":%2,"
+                    "\"revoke\":%3"
+                    "}";
+    query = query.arg(QString::number(chat_id),
+                      remove_from_chat_list ? QString("true") : QString("false"),
+                      revoke ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra)
+{
+    QString query = "{\"@type\":\"getChatMessageCount\","
+                    "\"chat_id\":\"%1\","
+                    "\"filter\":%2,"
+                    "\"return_local\":%3"
+                    "}";
+    QString filterStr = "{\"@type\":\"%1\"}";
+    filterStr = filterStr.arg(m_searchFilters[(int)filter - 5]);
+    query = query.arg(QString::number(chat_id), filterStr,
+                      return_local ? QString("true") : QString("false"));
+
+
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getUserFullInfo(const int user_id, const QString &extra)
+{
+    QString query = "{\"@type\":\"getUserFullInfo\","
+                    "\"user_id\":%1}";
+    query = query.arg(QString::number(user_id));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+
+void TdlibJsonWrapper::getSupergroupFullInfo(const int supergroup_id, const QString &extra)
+{
+    QString query = "{\"@type\":\"getSupergroupFullInfo\","
+                    "\"supergroup_id\":%1}";
+    query = query.arg(QString::number(supergroup_id));
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
+}
+void TdlibJsonWrapper::searchPublicChat(const QString &username, const QString extra)
+{
+    QString query = "{\"@type\":\"searchPublicChat\","
+                    "\"username\":\"%1\"}";
+    query = query.arg(username);
+    if (extra != "") {
+        query.remove(query.size() - 1, 1);
+        query.append(",\"@extra\":\"" + extra + "\"}");
+    }
+    sendToTelegram(client, query.toStdString().c_str());
 }
 
 void TdlibJsonWrapper::getAttachedStickerSets(const int file_id)
@@ -747,7 +1092,10 @@ void TdlibJsonWrapper::setIsCredentialsEmpty(bool isCredentialsEmpty)
 
 void TdlibJsonWrapper::setAuthorizationState(Enums::AuthorizationState &authorizationState)
 {
-
+    if (authorizationState == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitTdlibParameters)
+        setTdlibParameters();
+    else if (authorizationState == tdlibQt::Enums::AuthorizationState::AuthorizationStateWaitEncryptionKey)
+        setEncryptionKey();
     if (m_authorizationState == authorizationState)
         return;
 
@@ -765,5 +1113,6 @@ void TdlibJsonWrapper::setConnectionState(Enums::ConnectionState &connState)
     m_connectionState = connectionState;
     emit connectionStateChanged(connectionState);
 }
+
 
 }// namespace tdlibQt

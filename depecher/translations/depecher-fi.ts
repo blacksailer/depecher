@@ -45,10 +45,6 @@
         <translation>Liitytään keskusteluun</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Huomioi että valinnan jälkeen liityt keskusteluun. Keskusteluista poistuminen ei ole tuettu tällä hetkellä.</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>Virhe kutsulinkin vastaanottamisessa</translation>
     </message>
@@ -112,6 +108,14 @@
         <source>Version</source>
         <translation>Versio</translation>
     </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -144,10 +148,6 @@
         <translation>Piilota nimi</translation>
     </message>
     <message>
-        <source>Aways align messages to left</source>
-        <translation>Tasaa viestit aina vasemmalle</translation>
-    </message>
-    <message>
         <source>Enable night mode</source>
         <translation>Ota yötila käyttöön</translation>
     </message>
@@ -166,6 +166,18 @@
     <message>
         <source>Till</source>
         <translation>Mihin</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -234,6 +246,13 @@
     </message>
 </context>
 <context>
+    <name>AudioView</name>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -272,10 +291,28 @@
     </message>
 </context>
 <context>
+    <name>ChannelInfoPage</name>
+    <message>
+        <source>Channel info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
         <translation>%1 loi ryhmän %2</translation>
+    </message>
+</context>
+<context>
+    <name>ContactsPage</name>
+    <message>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -285,10 +322,8 @@
         <translation>Depecher</translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translatorcomment>Probably should have different strings for one and multiple unread messages for better translations. For example one unread message and two unread messages (applies also for zero unread messages). So I just translated this as &quot;Message(s)&quot;.</translatorcomment>
-        <translation>Viesti(ä)</translation>
+        <source>Unread messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -311,10 +346,44 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkitse luetuksi</translation>
     </message>
     <message>
         <source>Mark as unread</source>
+        <translation>Merkitse lukemattomaksi</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DocumentView</name>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Dokumentit</translation>
+    </message>
+</context>
+<context>
+    <name>GroupInfoPage</name>
+    <message>
+        <source>Group info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -330,6 +399,13 @@
     <message>
         <source>%1 joined Telegram!</source>
         <translation>%1 liittyi Telegramiin!</translation>
+    </message>
+</context>
+<context>
+    <name>LinkView</name>
+    <message>
+        <source>Links</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -415,7 +491,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa</translation>
     </message>
 </context>
 <context>
@@ -423,6 +499,13 @@
     <message>
         <source>New messages</source>
         <translation>Uudet viestit</translation>
+    </message>
+</context>
+<context>
+    <name>PhotoView</name>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -610,6 +693,56 @@
     </message>
 </context>
 <context>
+    <name>ShareUI</name>
+    <message>
+        <source>Choose chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SharedContent</name>
+    <message>
+        <source>%1 photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -695,21 +828,95 @@
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
+    <name>UserPage</name>
     <message>
-        <source>Voice note</source>
-        <translation>Ääniviesti</translation>
+        <source>User info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 groups in common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leaving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished">Käyttäjätunnus</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VideoView</name>
+    <message>
+        <source>Videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VoiceView</name>
+    <message>
+        <source>Voice notes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa teksti??</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa kuvateksti??</translation>
     </message>
 </context>
 <context>
@@ -770,6 +977,10 @@
     <message>
         <source>Wait closed</source>
         <translation>Odota suljettu</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

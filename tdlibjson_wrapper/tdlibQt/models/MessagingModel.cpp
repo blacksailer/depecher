@@ -11,9 +11,7 @@ namespace tdlibQt {
 constexpr int MESSAGE_LIMIT = 50;
 constexpr int FETCH_OFFSET = 10;
 
-MessagingModel::MessagingModel() :
-    tdlibJson(TdlibJsonWrapper::instance()),
-    m_NotificationsManager(NotificationManager::instance())
+MessagingModel::MessagingModel(QObject *parent) : QAbstractListModel(parent)
 {
     /* Reply Workthrough
      * 1. Create map of replyMessagesMap, queue of messagesId +
@@ -31,29 +29,31 @@ MessagingModel::MessagingModel() :
      * 6.  highlight for two seconds messageId message
      * 7. Test UI
      */
+    m_tdlibJson = TdlibJsonWrapper::instance();
+    m_NotificationsManager = NotificationManager::instance();
 
-    connect(tdlibJson, &TdlibJsonWrapper::newMessages,
+    connect(m_tdlibJson, &TdlibJsonWrapper::newMessages,
             this, &MessagingModel::addMessages);
-    connect(tdlibJson, &TdlibJsonWrapper::messageReceived,
+    connect(m_tdlibJson, &TdlibJsonWrapper::messageReceived,
             this, &MessagingModel::appendMessage);
-    connect(tdlibJson, &TdlibJsonWrapper::callbackQueryAnswerReceived,
+    connect(m_tdlibJson, &TdlibJsonWrapper::callbackQueryAnswerReceived,
             this, &MessagingModel::onCallbackAnswerReceived);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateFile,
             this, &tdlibQt::MessagingModel::updateFile);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::fileReceived,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::fileReceived,
             this, &tdlibQt::MessagingModel::processFile);
 
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadInbox,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadInbox,
             this, &MessagingModel::updateChatReadInbox);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateChatReadOutbox,
             this, &MessagingModel::updateChatReadOutbox);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageEdited,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageEdited,
             this, &MessagingModel::onMessageEdited);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageContent,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateMessageContent,
             this, &MessagingModel::onMessageContentEdited);
-    connect(tdlibJson, &TdlibJsonWrapper::updateTotalCount,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateTotalCount,
             this, &MessagingModel::updateTotalCount);
-    connect(tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserChatAction,
+    connect(m_tdlibJson, &tdlibQt::TdlibJsonWrapper::updateUserChatAction,
             this, &MessagingModel::updateChatAction);
     connect(this, &MessagingModel::downloadFileStart,
             this, &MessagingModel::getFile);
@@ -61,19 +61,19 @@ MessagingModel::MessagingModel() :
             this, &MessagingModel::getAvatar);
     connect(this, &MessagingModel::isActiveChanged,
             this, &MessagingModel::onActiveChanged);
-    connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendSucceeded,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateMessageSendSucceeded,
             this, &MessagingModel::updateMessageSend);
-    connect(tdlibJson, &TdlibJsonWrapper::updateDeleteMessages,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateDeleteMessages,
             this, &MessagingModel::onMessageDeleted);
 
-    connect(tdlibJson, &TdlibJsonWrapper::updateMessageSendFailed,
+    connect(m_tdlibJson, &TdlibJsonWrapper::updateMessageSendFailed,
             this, &MessagingModel::updateMessageSend);
     connect(this, &MessagingModel::viewMessagesChanged,
             m_NotificationsManager, &NotificationManager::onViewMessages);
     connect(this, &MessagingModel::firstIdChanged, [this]() {
         if (m_messages.last()->id_ == lastMessage().toLongLong()) {
             if (!isUpdateConnected)
-                connect(tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
+                connect(m_tdlibJson, &TdlibJsonWrapper::newMessageFromUpdate,
                         this, &MessagingModel::addMessageFromUpdate);
             isUpdateConnected = true;
             setAtYEnd(isUpdateConnected);
@@ -83,7 +83,10 @@ MessagingModel::MessagingModel() :
     m_NotificationsManager->currentViewableChatId = static_cast<qint64>(peerId().toLongLong());
     connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::chatActionCleanUp);
     chatActionTimer.setInterval(5 * 1000);
-
+    userStatusTimer.setInterval(60 * 1000);
+    connect(&chatActionTimer, &QTimer::timeout, this, &MessagingModel::updateStatus);
+    connect(UsersModel::instance(), &UsersModel::userStatusChanged, this, &MessagingModel::updateStatus);
+    userStatusTimer.start();
     //Adding empty item. fetchOlder issue
     beginInsertRows(QModelIndex(), 0, 0);
     endInsertRows();
@@ -176,7 +179,7 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
                 return QString::fromStdString(contentPtr->text_->text_);
 
             } else
-                return messageTypeToString(messagePtr.data()->get_id());
+                return ParseObject::messageTypeToString(messagePtr.data()->get_id());
         }
         return QVariant();
     }
@@ -191,20 +194,69 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case MEDIA_ALBUM_ID:
         return QString::number(m_messages[rowIndex]->media_album_id_);
     case FORWARD_INFO: {
-        if (m_messages[rowIndex]->forward_info_.data()) {
-            if (m_messages[rowIndex]->forward_info_->get_id() == messageForwardedFromUser::ID) {
-                messageForwardedFromUser *messageForwardInfoPtr = static_cast<messageForwardedFromUser *>
-                        (m_messages[rowIndex]->forward_info_.data());
+//        if (m_messages[rowIndex]->forward_info_.data()) {
+        if (m_messages[rowIndex]->forward_info_->origin_.data()) {
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginUser::ID) {
+                messageForwardOriginUser *messageForwardInfoPtr = static_cast<messageForwardOriginUser *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getUserFullName(messageForwardInfoPtr->sender_user_id_);
             }
-            if (m_messages[rowIndex]->forward_info_->get_id() == messageForwardedPost::ID) {
-                messageForwardedPost *messageForwardInfoPtr = static_cast<messageForwardedPost *>
-                        (m_messages[rowIndex]->forward_info_.data());
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginChannel::ID) {
+                messageForwardOriginChannel *messageForwardInfoPtr = static_cast<messageForwardOriginChannel *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
 
                 return UsersModel::instance()->getChatTitle(messageForwardInfoPtr->chat_id_);
             }
+            if (m_messages[rowIndex]->forward_info_->origin_->get_id() == messageForwardOriginHiddenUser::ID) {
+                messageForwardOriginHiddenUser *messageForwardInfoPtr = static_cast<messageForwardOriginHiddenUser *>
+                        (m_messages[rowIndex]->forward_info_->origin_.data());
+
+                return QString::fromStdString(messageForwardInfoPtr->sender_name_);
+            }
         }
+
+//        }
+        return QVariant();
+    }
+    case RICH_FILE_CAPTION: {
+        if (m_messages[rowIndex]->content_->get_id() == messagePhoto::ID) {
+            auto contentPhotoPtr = static_cast<messagePhoto *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentPhotoPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentPhotoPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageDocument::ID) {
+            auto contentDocumentPtr = static_cast<messageDocument *>
+                                      (m_messages[rowIndex]->content_.data());
+            auto entities = contentDocumentPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentDocumentPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
+            auto contentAnimationPtr = static_cast<messageAnimation *>
+                                       (m_messages[rowIndex]->content_.data());
+            auto entities = contentAnimationPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentAnimationPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageVoiceNote::ID) {
+            auto contentVoicePtr = static_cast<messageVoiceNote *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentVoicePtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentVoicePtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageAudio::ID) {
+            auto contentAudioPtr = static_cast<messageAudio *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentAudioPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentAudioPtr->caption_->text_), entities);
+        }
+        if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
+            auto contentVideoPtr = static_cast<messageVideo *>
+                                   (m_messages[rowIndex]->content_.data());
+            auto entities = contentVideoPtr->caption_->entities_;
+            return makeRichText(QString::fromStdString(contentVideoPtr->caption_->text_), entities);
+        }
+
         return QVariant();
     }
 
@@ -350,8 +402,10 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
     case FILE_DOWNLOADED_SIZE:
     case FILE_UPLOADED_SIZE:
     case FILE_TYPE:
+    case FILE_ID:
         return dataFileMeta(rowIndex, role);
         break;
+
     case STICKER_SET_ID:
         if (m_messages[rowIndex]->content_->get_id() == messageSticker::ID) {
             auto contentStickerPtr = static_cast<messageSticker *>
@@ -472,9 +526,19 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         auto DateTimestamp = QDateTime::fromString(messageDate.toString(Qt::ISODate), Qt::ISODate);
         return DateTimestamp.toTime_t();
     }
-    //        FORWARD_INFO,
+    case RICH_TEXT:
+        if (m_messages[rowIndex]->content_.data() != nullptr) {
+            if (m_messages[rowIndex]->content_->get_id() == messageText::ID) {
+                auto contentPtr = static_cast<messageText *>
+                                  (m_messages[rowIndex]->content_.data());
+                if (contentPtr->text_.data() != nullptr) {
+                    auto t = contentPtr->text_->entities_;
+                    return makeRichText(QString::fromStdString(contentPtr->text_->text_), t);
+                }
+            }
+        }
+        return QVariant();
     //        VIEWS,
-
     default:
         break;
     }
@@ -520,6 +584,7 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[MEDIA_PREVIEW] = "media_preview";
     roles[CONTENT] = "content";
     roles[FILE_CAPTION] = "file_caption";
+    roles[RICH_FILE_CAPTION] = "rich_file_caption";
     roles[PHOTO_ASPECT] = "photo_aspect";
     roles[DOCUMENT_NAME] = "document_name";
     roles[DURATION] = "duration";
@@ -538,14 +603,18 @@ QHash<int, QByteArray> MessagingModel::roleNames() const
     roles[MESSAGE_TYPE] = "message_type";
     roles[SECTION] = "section";
     roles[WAVEFORM] = "waveform";
+    roles[RICH_TEXT] = "rich_text";
+    roles[FILE_ID] = "file_id";
+
+
     return roles;
 }
 void MessagingModel::fetchOlder()
 {
     if (m_messages.size() > 0 && canFetchOlder()) {
         setFetching(true);
-        tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.first()->id_, 0,
-                                  MESSAGE_LIMIT, false, "prepend");
+        m_tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.first()->id_, 0,
+                                    MESSAGE_LIMIT, false, m_extra.arg("prepend"));
     }
 }
 
@@ -559,11 +628,11 @@ void MessagingModel::fetchMore(const QModelIndex & /*parent*/)
     if (!fetching()) {
         setFetching(true);
         if (rowCount(QModelIndex()) == 1) {
-            tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageId, -10,
-                                      MESSAGE_LIMIT, false);
+            m_tdlibJson->getChatHistory(peerId().toLongLong(), lastMessageId, -10,
+                                        MESSAGE_LIMIT, false, m_extra.arg(m_peerId));
         } else {
-            tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.last()->id_, MESSAGE_LIMIT * -1 + 1, MESSAGE_LIMIT,
-                                      false, "append");
+            m_tdlibJson->getChatHistory(peerId().toLongLong(), m_messages.last()->id_, MESSAGE_LIMIT * -1 + 1, MESSAGE_LIMIT,
+                                        false, m_extra.arg("append"));
         }
     }
 }
@@ -668,25 +737,23 @@ void MessagingModel::chatActionCleanUp()
 {
     chatActionUserMap.clear();
     chatActionTimer.stop();
-    setAction("");
+    userStatusTimer.start();
+    updateStatus();
 }
-
 void MessagingModel::getFile(const int fileId, const int priority, const int indexItem)
 {
-    tdlibJson->downloadFile(fileId, priority);
+    m_tdlibJson->downloadFile(fileId, priority);
     messagePhotoQueue[fileId] = indexItem;
 }
 
 void MessagingModel::getAvatar(const qint64 fileId, const int priority, const int indexItem)
 {
     if (!avatarPhotoQueue.contains(fileId)) {
-        tdlibJson->downloadFile(fileId, priority);
+        m_tdlibJson->downloadFile(fileId, priority);
         avatarPhotoQueue[fileId] = QVector<int>();
     }
     if (!avatarPhotoQueue[fileId].contains(indexItem))
         avatarPhotoQueue[fileId].append(indexItem);
-
-
 }
 
 
@@ -723,13 +790,12 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
 
     QJsonArray messagesArray = messagesObject["messages"].toArray();
     if (ParseObject::getInt64(messagesArray[0].toObject()["chat_id"]) == peerId().toDouble()) {
-        qDebug() << "add extra:" << extra << "total Count" << totalCount;
         QVector<qint64> messageReplyIds;
-        if (extra == "prepend" && totalCount == 0)
+        if (extra == m_extra.arg("prepend") && totalCount == 0)
             setReachedHistoryEnd(true);
 
         //Oldest
-        if (extra == "prepend") {
+        if (extra == m_extra.arg("prepend")) {
             beginInsertRows(QModelIndex(), 0, totalCount - 1);
             for (int i = 0; i < messagesArray.size(); i++) {
 
@@ -748,7 +814,7 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 emit dataChanged(index(m_indexToUpdate), index(m_indexToUpdate), QVector<int>());
             });
 
-        } else if (extra == "append") {
+        } else if (extra == m_extra.arg("append")) {
             //Newest
             int totalGoodMessages = 0;
 
@@ -775,11 +841,9 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
                 }
             }
             endInsertRows();
-        } else if (extra == "getReplies") {
+        } else if (extra == m_extra.arg("getReplies")) {
             addRepliedMessage(messagesObject);
-        } else if (extra == "forwardMessagesExtra") {
-
-        } else {
+        } else if (extra == m_extra.arg(m_peerId)) {
             int indexToAppend = -1;
             int objTime = -1;
 
@@ -798,7 +862,7 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
             //            fetchOlder();
 
             if (messageReplyIds.size() > 0)
-                tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, "getReplies");
+                m_tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, m_extra.arg("getReplies"));
 
             if (lastInbox() != lastMessage())
                 for (int i = m_messages.size() - 1; i != -1; i--) {
@@ -832,44 +896,10 @@ void MessagingModel::addMessages(const QJsonObject &messagesObject)
             viewMessages(messagesIds);
 
         if (messageReplyIds.size() > 0)
-            tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, "getReplies");
+            m_tdlibJson->getMessages(peerId().toLongLong(), messageReplyIds, m_extra.arg("getReplies"));
 
 
         setFetching(false);
-    }
-}
-
-QString MessagingModel::messageTypeToString(const int messageTypeId)
-{
-    switch (messageTypeId) {
-    case  messageText::ID:
-        return tr("Text");
-    case  messagePhoto::ID:
-        return tr("Photo");
-    case  messageDocument::ID:
-        return tr("Document");
-    case messageVideo::ID:
-        return tr("Video");
-    case messageAudio::ID:
-        return tr("Audio");
-    case messageVideoNote::ID:
-        return tr("Video note");
-    case messageAnimation::ID:
-        return tr("GIF");
-    case messageCall::ID:
-        return tr("Call");
-    case messageContact::ID:
-        return tr("Contact");
-    case messageVoiceNote::ID:
-        return tr("Audio note");
-    case messageVenue::ID:
-        return tr("Venue");
-    case messageUnsupported::ID:
-        return tr("Unsupported");
-    case messageSticker::ID:
-        return tr("Sticker");
-    default:
-        return tr("Message content");
     }
 }
 
@@ -877,15 +907,8 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
 {
     auto messageItem = ParseObject::parseMessage(messageObject);
     if (messageObject.contains("@extra")) {
-        if (messageObject["@extra"].toString() == "editText") {
-            //skip from edit
-            return;
-        }
-        if (messageObject["@extra"].toString() == "editCaption") {
-            //skip from edit
-            return;
-        } else if (messageObject["@extra"].toString() != "") {
-            //do not rembeber why...
+        if (messageObject["@extra"].toString() != "") {
+            //do not remember why...
             replyMessagesMap[messageItem->id_] = messageItem;
             return;
         }
@@ -909,7 +932,7 @@ void MessagingModel::appendMessage(const QJsonObject &messageObject)
         if (reply_id != 0) {
             QVector<qint64> message_ids;
             message_ids << reply_id;
-            tdlibJson->getMessages(peerId().toLongLong(), message_ids, "getReplies");
+            m_tdlibJson->getMessages(peerId().toLongLong(), message_ids, m_extra.arg("getReplies"));
         }
         m_messages.append(messageItem);
 
@@ -1094,6 +1117,11 @@ QVariant MessagingModel::dataFileMeta(const int rowIndex, int role) const
         filePtr = contentAnimationPtr->animation_->animation_.data();
     }
     switch (role) {
+    case FILE_ID:
+        if (filePtr)
+            return QString::fromStdString(filePtr->remote_->id_);
+        return QVariant();
+        break;
     case FILE_IS_DOWNLOADING:
         if (filePtr)
             return filePtr->local_->is_downloading_active_;
@@ -1182,9 +1210,114 @@ void MessagingModel::addRepliedMessage(const QJsonObject &messageObject)
     emit dataChanged(index(1), index(m_messages.size()), roles);
 }
 
+
 bool MessagingModel::canFetchOlder()
 {
     return !reachedHistoryEnd();
+}
+
+QString MessagingModel::makeRichText(const QString &data, const std::vector<QSharedPointer<textEntity> > &markup)
+{
+    if (markup.size() == 0)
+        return data.toHtmlEscaped().replace("\n", "<br>");
+
+    QList<QPair<int, int>> positions;
+
+    for (int i = 0; i < markup.size(); ++i)
+        positions.append(QPair<int, int>(markup[i]->offset_, markup[i]->length_));
+
+    QStringList textParts;
+
+    for (int i = 0; i < positions.size(); ++i) {
+        auto pair = positions[i];
+        textParts.append(data.mid(pair.first, pair.second).toHtmlEscaped());
+    }
+    for (int i = 0; i < markup.size(); ++i) {
+        switch (markup[i]->type_->get_id()) {
+        case textEntityTypeItalic::ID:
+            textParts[i] = textParts[i].prepend("<i>");
+            textParts[i] = textParts[i].append("</i>");
+            break;
+        case textEntityTypeBold::ID:
+            textParts[i] = textParts[i].prepend("<b>");
+            textParts[i] = textParts[i].append("</b>");
+            break;
+        case textEntityTypeEmailAddress::ID:
+            textParts[i] = textParts[i].prepend("<a href=\"mailto:" + textParts[i] + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeHashtag::ID:
+            textParts[i] = textParts[i].prepend("<a href=\"hashtag/" + textParts[i] + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeMention::ID:
+            textParts[i] = textParts[i].prepend("<a href=\"user/" + textParts[i] + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypePhoneNumber::ID: {
+            QString phone_trimmed = textParts[i];
+            textParts[i] = textParts[i].prepend("<a href=\"tel:" + phone_trimmed.remove(QRegExp("[- )(]")) + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        }
+        case textEntityTypeUrl::ID: {
+            if (textParts[i].left(4) == "http")
+                textParts[i] = textParts[i].prepend("<a href=\"" + textParts[i] + "\">");
+            else
+                textParts[i] = textParts[i].prepend("<a href=\"" + QUrl::fromUserInput(textParts[i]).toString() + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        }
+        case textEntityTypeMentionName::ID: {
+            auto tmp = static_cast<textEntityTypeMentionName *>(markup[i]->type_.data());
+            textParts[i] = textParts[i].prepend(QString("<a href=\"id_user/%1\">").arg(QString::number(tmp->user_id_)));
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        }
+        case textEntityTypeBotCommand::ID:
+            textParts[i] = textParts[i].prepend("<a href=\"bot_command/" + textParts[i] + "\">");
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        case textEntityTypeTextUrl::ID: {
+            auto tmp = static_cast<textEntityTypeTextUrl *>(markup[i]->type_.data());
+            textParts[i] = textParts[i].prepend(QString("<a href=\"%1\">").arg(QString::fromStdString(tmp->url_)));
+            textParts[i] = textParts[i].append("</a>");
+            break;
+        }
+        break;
+        case textEntityTypeCashtag::ID:
+        case textEntityTypeCode::ID:
+        case textEntityTypePre::ID:
+        case textEntityTypePreCode::ID:
+            break;
+        default:
+            break;
+        }
+    }
+
+    int bias = 0;
+    QString result = data;
+    for (int i = 0; i < textParts.size(); ++i) {
+        result = result.replace(positions[i].first + bias, positions[i].second, textParts[i]);
+        bias += textParts[i].size() - positions[i].second;
+    }
+    //HTML escaping
+    bias = 0;
+    for (int i = 0; i < textParts.size(); ++i) {
+        if (i == 0) {
+            QString newText = result.mid(bias, positions[i].first);
+            result = result.replace(bias, positions[i].first, newText.toHtmlEscaped());
+            bias += textParts[i].size() - positions[i].second + newText.toHtmlEscaped().size() - newText.size();
+        } else {
+            int previousChatNum = positions[i - 1].first + bias + positions[i - 1].second;
+            QString newText = result.mid(previousChatNum, positions[i].first - previousChatNum + bias);
+            result = result.replace(previousChatNum, positions[i].first - previousChatNum + bias, newText.toHtmlEscaped());
+            bias += textParts[i].size() - positions[i].second + newText.toHtmlEscaped().size() - newText.size();
+
+        }
+    }
+
+    return result.replace("\n", "<br>");
 }
 
 void MessagingModel::prependMessage(const QJsonObject &messageObject)
@@ -1254,6 +1387,7 @@ void MessagingModel::updateFile(const QJsonObject &fileObject)
 void MessagingModel::processFile(const QJsonObject &fileObject)
 {
     auto file = ParseObject::parseFile(fileObject);
+
     //1. - can be file in message
     //2. - can be avatar photo
     if (messagePhotoQueue.keys().contains(file->id_)) {
@@ -1369,7 +1503,8 @@ void MessagingModel::updateChatAction(const QJsonObject &chatActionObject)
     chatActionUserMap[action->user_id_] = action;
     if (chatActionUserMap.size() == 1) {
         chatActionTimer.start();
-        QString userName = tdlibJson->parseObject->getFirstName(chatActionUserMap.first()->user_id_);
+        userStatusTimer.stop();
+        QString userName = UsersModel::instance()->getUserFirstName(chatActionUserMap.first()->user_id_);
         setAction(userName + " is typing");
     } else
         setAction(QString::number(chatActionUserMap.size()) + " people are typing");
@@ -1407,7 +1542,7 @@ void MessagingModel::setPeerId(QString peerId)
     setLastInbox(QString::number(UsersModel::instance()->getLastMessageInbox(m_peerId.toLongLong())));
     setUserName(UsersModel::instance()->getChatTitle(m_peerId.toLongLong()));
     setChatType(UsersModel::instance()->getChatType(m_peerId.toLongLong()));
-
+    updateStatus();
     if (m_messages.size() > 0)
         emit firstIdChanged();
     emit peerIdChanged(peerId);
@@ -1424,7 +1559,7 @@ void MessagingModel::sendForwardMessages(const qint64 chat_id, const qint64 from
     for (QVariant item : message_ids)
         ids.append(item.toString().toLongLong());
 
-    tdlibJson->forwardMessage(chat_id, from_chat_id, ids, disable_notification, from_background, as_album);
+    m_tdlibJson->forwardMessage(chat_id, from_chat_id, ids, disable_notification, from_background, as_album);
 }
 
 void MessagingModel::sendEditCaptionMessage(const QString &message_id, const QString &caption)
@@ -1442,7 +1577,7 @@ void MessagingModel::sendEditCaptionMessage(const QString &message_id, const QSt
     originalObject["@extra"] = "editCaption";
     originalObject.remove("reply_markup");
     auto jsonObject = QJsonDocument::fromVariant(originalObject);
-    tdlibJson->sendMessage(jsonObject.toJson());
+    m_tdlibJson->sendMessage(jsonObject.toJson());
 }
 
 void MessagingModel::sendEditTextMessage(const QString &message_id, const QString &text)
@@ -1462,15 +1597,20 @@ void MessagingModel::sendEditTextMessage(const QString &message_id, const QStrin
     editMessageObject.store(json, "input_message_content");
     QVariantMap originalObject = json.doc["input_message_content"].toMap();
     originalObject.remove("reply_markup");
-    originalObject["@extra"] = "editText";
+    originalObject["@extra"] = m_extra.arg("editText");
 
     auto jsonObject = QJsonDocument::fromVariant(originalObject);
-    tdlibJson->sendMessage(jsonObject.toJson());
+    m_tdlibJson->sendMessage(jsonObject.toJson());
 }
 
 void MessagingModel::sendTextMessage(const QString &text,
                                      const QString &reply_id)
 {
+//    QByteArray formattedTextEntities = m_tdlibJson->sendSyncroniousMessage(QString("{\"@type\":\"parseTextEntities\","
+//                                       "\"text\":\"%1\","
+//                                       "\"parse_mode\":"
+//                                       "{\"@type\":\"textParseModeMarkdown\"}}").arg(QString(text).replace(QChar('"'), "\\\"")));
+//    qDebug() << formattedTextEntities;
     TlStorerToString json;
     sendMessage sendMessageObject;
     sendMessageObject.chat_id_ = m_peerId.toLongLong();
@@ -1482,9 +1622,8 @@ void MessagingModel::sendTextMessage(const QString &text,
                             (sendMessageObject.input_message_content_.data());
     ptr->clear_draft_ = true;
     ptr->disable_web_page_preview_ = true;
-    ptr->text_ = QSharedPointer<formattedText>(new formattedText);
+    ptr->text_ = QSharedPointer<formattedText>(new formattedText);//ParseObject::parseFormattedTextContent(QJsonDocument::fromJson(formattedTextEntities).object());
     ptr->text_->text_ = text.toStdString();
-
     if (reply_id != "0" && reply_id != "-1" && !replyMessagesMap.contains(reply_id.toLongLong())) {
         auto repliedMessage = findMessageById(reply_id.toLongLong());
         if (repliedMessage.data() != nullptr)
@@ -1495,7 +1634,7 @@ void MessagingModel::sendTextMessage(const QString &text,
     QVariantMap originalObject = json.doc["input_message_content"].toMap();
     originalObject.remove("reply_markup");
     auto jsonObject = QJsonDocument::fromVariant(originalObject);
-    tdlibJson->sendMessage(jsonObject.toJson());
+    m_tdlibJson->sendMessage(jsonObject.toJson());
 }
 
 void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &reply_id,
@@ -1510,8 +1649,10 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     sendMessageObject.input_message_content_ = QSharedPointer<inputMessagePhoto>(new inputMessagePhoto);
     inputMessagePhoto *ptr = static_cast<inputMessagePhoto *>
                              (sendMessageObject.input_message_content_.data());
-    auto photoPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    photoPtr->path_ = filepath.toStdString();
+    auto photoPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    photoPtr->original_path_ = filepath.toStdString();
+    photoPtr->conversion_ = "copy";
+    photoPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->photo_ = photoPtr;
 
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
@@ -1527,7 +1668,7 @@ void MessagingModel::sendPhotoMessage(const QString &filepath, const QString &re
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
 
-    tdlibJson->sendMessage(jsonString);
+    m_tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::sendDocumentMessage(const QString &filepath, const QString &reply_id,
@@ -1543,8 +1684,10 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
             (new inputMessageDocument);
     inputMessageDocument *ptr = static_cast<inputMessageDocument *>
                                 (sendMessageObject.input_message_content_.data());
-    auto docPtr = QSharedPointer<inputFileLocal>(new inputFileLocal);
-    docPtr->path_ = filepath.toStdString();
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
     ptr->document_ = docPtr;
     ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
     ptr->caption_->text_ = caption.toStdString();
@@ -1559,7 +1702,7 @@ void MessagingModel::sendDocumentMessage(const QString &filepath, const QString 
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
 
-    tdlibJson->sendMessage(jsonString);
+    m_tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_id)
@@ -1590,8 +1733,45 @@ void MessagingModel::sendStickerMessage(const int &fileId, const QString &reply_
     QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
 
-    tdlibJson->sendMessage(jsonString);
+    m_tdlibJson->sendMessage(jsonString);
 
+}
+
+void MessagingModel::sendVoiceMessage(const QString &filepath, const int secDuration,
+                                      const QString &reply_id, const QString &caption,
+                                      const QString &waveform)
+{
+    TlStorerToString json;
+    sendMessage sendMessageObject;
+    sendMessageObject.chat_id_ = m_peerId.toLongLong();
+    sendMessageObject.disable_notification_ = false;
+    sendMessageObject.from_background_ = false;
+    sendMessageObject.reply_to_message_id_ = reply_id.toLongLong();
+    sendMessageObject.input_message_content_ = QSharedPointer<inputMessageVoiceNote>
+            (new inputMessageVoiceNote);
+    inputMessageVoiceNote *ptr = static_cast<inputMessageVoiceNote *>
+                                 (sendMessageObject.input_message_content_.data());
+    auto docPtr = QSharedPointer<inputFileGenerated>(new inputFileGenerated);
+    docPtr->original_path_ = filepath.toStdString();
+    docPtr->conversion_ = "copy";
+    docPtr->expected_size_ = QFileInfo(filepath).size();
+    ptr->voice_note_ = docPtr;
+    ptr->duration_ = secDuration;
+    ptr->caption_ = QSharedPointer<formattedText>(new formattedText);
+    ptr->caption_->text_ = caption.toStdString();
+    ptr->waveform_ =  waveform.toLatin1().toBase64().toStdString();
+
+    if (reply_id != "0" && !replyMessagesMap.contains(reply_id.toLongLong())) {
+        auto repliedMessage = findMessageById(reply_id.toLongLong());
+        if (repliedMessage.data() != nullptr)
+            replyMessagesMap[reply_id.toLongLong()] = repliedMessage;
+    }
+
+    sendMessageObject.store(json, "input_message_content");
+    QString jsonString = QJsonDocument::fromVariant(json.doc["input_message_content"]).toJson();
+    jsonString = jsonString.replace("\"null\"", "null");
+
+    m_tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::getCallbackQueryAnswerFunc(const QString &messageId, const QString &payloadType, const QString &payloadData)
@@ -1613,7 +1793,7 @@ void MessagingModel::getCallbackQueryAnswerFunc(const QString &messageId, const 
     obj.store(json, "getCallbackQueryAnswer");
     QString jsonString = QJsonDocument::fromVariant(json.doc["getCallbackQueryAnswer"]).toJson();
     jsonString = jsonString.replace("\"null\"", "null");
-    tdlibJson->sendMessage(jsonString);
+    m_tdlibJson->sendMessage(jsonString);
 }
 
 void MessagingModel::downloadDocument(const int rowIndex)
@@ -1695,7 +1875,7 @@ void MessagingModel::cancelDownload(const int rowIndex)
                                (m_messages[messageIndex ]->content_.data());
         fileId = contentVideoPtr->video_note_->video_->id_;
     }
-    tdlibJson->cancelDownloadFile(fileId);
+    m_tdlibJson->cancelDownloadFile(fileId);
 }
 
 void MessagingModel::cancelUpload(const int rowIndex)
@@ -1734,7 +1914,7 @@ void MessagingModel::cancelUpload(const int rowIndex)
                                (m_messages[messageIndex ]->content_.data());
         fileId = contentVideoPtr->video_note_->video_->id_;
     }
-    tdlibJson->cancelUploadFile(fileId);
+    m_tdlibJson->cancelUploadFile(fileId);
 }
 
 void MessagingModel::deleteMessage(const int rowIndex, const bool revoke)
@@ -1745,7 +1925,7 @@ void MessagingModel::deleteMessage(const int rowIndex, const bool revoke)
         QVector<qint64> messageIds;
         messageIds.append(m_messages[messageIndex]->id_);
 
-        tdlibJson->deleteMessages(chatId, messageIds, revoke);
+        m_tdlibJson->deleteMessages(chatId, messageIds, revoke);
 
         //1. if exists in fileUpdates (messageIndex == fileIndex) -> remove
         //2. if messageIndex > fileIndex -> nothing
@@ -1788,12 +1968,10 @@ void MessagingModel::viewMessages(const QVariantList &ids)
     bool force_read = false;
 
     if (qApp->applicationState() == Qt::ApplicationActive)    {
-        tdlibJson->viewMessages(peerId(), ids, force_read);
+        m_tdlibJson->viewMessages(peerId(), ids, force_read);
         emit viewMessagesChanged(peerId().toLongLong());
     }
 }
-
-
 
 void MessagingModel::setChatType(const QVariantMap &chatType)
 {
@@ -1858,6 +2036,7 @@ void MessagingModel::onMessageContentEdited(const QJsonObject &updateMessageCont
             QVector<int> roles;
             roles.append(CONTENT);
             roles.append(FILE_CAPTION);
+            roles.append(RICH_TEXT);
             emit dataChanged(index(i + 1), index(i + 1), roles);
             break;
         }
@@ -1913,6 +2092,18 @@ void MessagingModel::onMessageDeleted(const QJsonObject &updateDeleteMessagesObj
 void MessagingModel::onCallbackAnswerReceived(const QJsonObject &callbackAnswerObject)
 {
     emit callbackQueryAnswerShow(callbackAnswerObject["text"].toString(), callbackAnswerObject["show_alert"].toBool());
+}
+
+void MessagingModel::updateStatus()
+{
+    auto chatType = static_cast<tdlibQt::Enums::ChatType>(m_chatType["type"].toInt());
+    if (chatType == tdlibQt::Enums::ChatType::Private ||
+            chatType == tdlibQt::Enums::ChatType::Secret) {
+        auto userStatus = UsersModel::instance()->getUserStatus(m_peerId.toInt());
+        setAction(UsersModel::getUserStatusAsString(userStatus));
+    } else
+        setAction("");
+
 }
 
 void MessagingModel::setLastInbox(const QString &currentMessage)
@@ -1971,8 +2162,8 @@ void MessagingModel::loadAndRefreshByMessageId(const QVariant messageId)
     beginResetModel();
     m_messages.clear();
     setFetching(true);
-    tdlibJson->getChatHistory(peerId().toLongLong(), messageId.toLongLong(), -10,
-                              MESSAGE_LIMIT, false);
+    m_tdlibJson->getChatHistory(peerId().toLongLong(), messageId.toLongLong(), -10,
+                                MESSAGE_LIMIT, false);
     endResetModel();
 }
 
@@ -1981,4 +2172,5 @@ int MessagingModel::findIndexById(const QString &messageId) const
     return findIndexById(messageId.toLongLong());
 }
 
-} //namespace tdlibQt
+}//namespace tdlibQt
+

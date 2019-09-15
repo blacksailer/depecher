@@ -1,8 +1,9 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import tdlibQtEnums 1.0
-
+import tdlibQtEnums 1.0 //org.blacksailer.depecher.sharechat
+import "../../js/utils.js" as Utils
 import "../items"
+
 ListItem {
     width:parent.width
     contentHeight: contentWrapper.height
@@ -92,20 +93,10 @@ ListItem {
                     Label{
                         id:messageTimestamp
                         anchors.verticalCenter: parent.verticalCenter
-                        function timestamp(dateTime){
-                            var postedTimeDate=new Date(dateTime*1000)
-                            var date = postedTimeDate.getDate()
-                            var current_date = new Date().getDate()
-                            //if elapsed more than a day
-                            if (date==current_date)
-                                return Format.formatDate(postedTimeDate, Formatter.TimeValue)
-                            else
-                                return Format.formatDate(postedTimeDate, Formatter.DateMediumWithoutYear)
-                        }
                         horizontalAlignment: Text.AlignRight
                         font.pixelSize: Theme.fontSizeSmall
                         color: pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                        text:timestamp(date)
+                        text: Utils.formatDate(date, false)
                     }
                 }
                 Row {

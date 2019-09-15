@@ -9,10 +9,11 @@ class TdlibJsonWrapper;
 class UsersModel : public QObject
 {
     Q_OBJECT
-    TdlibJsonWrapper *m_client;
+    TdlibJsonWrapper *m_tdlibJson;
     QMap<qint64, QSharedPointer<chat>> m_chats;
-    QMap<qint64, QSharedPointer<supergroup>> m_supergroups;
-    QMap<qint64, QSharedPointer<user>> m_users;
+    QMap<int, QSharedPointer<supergroup>> m_supergroups;
+    QMap<int, QSharedPointer<basicGroup>> m_groups;
+    QMap<int, QSharedPointer<user>> m_users;
     UsersModel(QObject *parent = 0);
 public:
     static UsersModel *instance();
@@ -25,19 +26,32 @@ public:
     qint64 getLastMessageOutbox(const qint64 chatId);
     qint64 getLastMessageId(const qint64 chatId);
     QVariantMap getChatType(const qint64 chatId);
-    QSharedPointer<profilePhoto> getUserPhoto(const qint64 userId);
-    QString getUserFullName(const qint64 userId);
+    QString getUserFirstName(const int userId);
+    QString getUserFullName(const int userId);
     void setSmallAvatar(qint64 id, QSharedPointer<file> small);
-    QSharedPointer<ChatMemberStatus> getGroupStatus(qint64 group_id);
+    QSharedPointer<profilePhoto> getUserPhoto(const int userId);
+    QSharedPointer<ChatMemberStatus> getGroupStatus(int group_id);
+    QSharedPointer<user> getUser(const int userId);
+    QSharedPointer<basicGroup> getGroup(const int groupId);
+
+    QSharedPointer<supergroup> getSupergroup(const int supergroupId);
+    QSharedPointer<chat> getChat(const qint64 chatId);
+    QSharedPointer<UserStatus> getUserStatus(const int userId);
+    static QString getUserStatusAsString(const QSharedPointer<UserStatus> &userStatus);
+
+signals:
+    void userStatusChanged(const int userId);
 private slots:
     void updateChatLastMessage(const QJsonObject &chatLastMessageObject);
     void updateChatReadInbox(const QJsonObject &chatReadInboxObject);
     void updateChatReadOutbox(const QJsonObject &chatReadOutboxObject);
-public slots:
+    void updateUserStatus(const QJsonObject &updateUserStatusObject);
     void getUpdateNewChat(const QJsonObject &updateNewChatObject);
-    void getUpdateNewUser(const QJsonObject &updateNewUserObject);
-    void getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupObject);
+    void getUpdateUser(const QJsonObject &updateNewUserObject);
+    void parseUser(const QJsonObject &userObject);
 
+    void getUpdateNewSupergroup(const QJsonObject &updateNewSupergroupObject);
+    void getUpdateGroup(const QJsonObject &updateGroupObject);
 };
 } //tdlibQt
 

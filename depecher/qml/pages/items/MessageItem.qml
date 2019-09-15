@@ -59,10 +59,10 @@ ListItem {
     }
     Rectangle {
         id:background
-        width: columnWrapper.width
+        width:  columnWrapper.width + columnWrapper.anchors.leftMargin
         height: columnWrapper.height
-        x:columnWrapper.x
-        y:columnWrapper.y
+        x: columnWrapper.x
+        y: columnWrapper.y
         visible: currentMessageType != MessagingModel.STICKER &&
                  currentMessageType != MessagingModel.VIDEO_NOTE &&
                  currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
@@ -98,18 +98,46 @@ ListItem {
         }
     }
 
+    states: [
+        State {
+            name: "fullSizeInCannels"
+            when: contentLoader.item.state === "fullSizeWithMarginCorrection"
+            PropertyChanges {
+                target: columnWrapper
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+//                anchors.left:undefined
+//                anchors.right:undefined
+                width: contentLoader.item.width
+//                x:0
+            }
+            PropertyChanges {
+                target: metaInfoRow
+                x: Theme.paddingMedium
+                layoutDirection:Qt.LeftToRight
+
+            }
+            PropertyChanges {
+                target: contentWrapper
+                x: 0
+                layoutDirection:Qt.LeftToRight
+            }
+
+        }
+    ]
     Column {
         id: columnWrapper
-        width: contentWrapper.width + 20
+        width: contentWrapper.width
         anchors.right: oneAligningValue.value ? undefined :
                                           is_outgoing ? parent.right : undefined
-        anchors.left: oneAligningValue.value ? parent.left :
-                                         is_outgoing ? undefined : parent.left
         anchors.rightMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                             currentMessageType != MessagingModel.JOINBYLINK &&
                             currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-                            currentMessageType != MessagingModel.CHAT_CREATED ? Theme.horizontalPageMargin
+                            currentMessageType != MessagingModel.CHAT_CREATED ?
+                                is_outgoing ?Theme.horizontalPageMargin * 2 : Theme.horizontalPageMargin
                                                                               : 0
+        anchors.left: oneAligningValue.value ? parent.left :
+                                         is_outgoing ? undefined : parent.left
         anchors.leftMargin:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
                            currentMessageType != MessagingModel.JOINBYLINK &&
                            currentMessageType != MessagingModel.CONTACT_REGISTERED &&
@@ -125,7 +153,7 @@ ListItem {
             x:currentMessageType != MessagingModel.SYSTEM_NEW_MESSAGE &&
               currentMessageType != MessagingModel.JOINBYLINK &&
               currentMessageType != MessagingModel.CONTACT_REGISTERED &&
-              currentMessageType != MessagingModel.CHAT_CREATED ? 10 : 0
+              currentMessageType != MessagingModel.CHAT_CREATED ? Theme.paddingMedium : 0
             width: Math.max(metaInfoRow.width,replyLoader.width,
                             userAvatarLoader.width + contentColumn.width +
                             (userAvatarLoader.width == 0 ? 0:spacing))
@@ -155,10 +183,13 @@ ListItem {
                                                          !messagingModel.chatType["is_channel"]  &&
                                                          messagingModel.chatType["type"] != TdlibState.Private &&
                                                          messagingModel.chatType["type"] != TdlibState.Secret
+                    MouseArea {
+                    anchors.fill: parent
+                    onClicked: pageStack.push(Qt.resolvedUrl("../UserPage.qml"),{user_id:parseInt(sender_user_id)})
+                    }
                     }
                 }
             }
-
 
             Column {
                 id: contentColumn
@@ -169,6 +200,7 @@ ListItem {
                         text: author ? author : ""
                         color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeExtraSmall
+                        width: Math.min(implicitWidth,messageListItem.width *2/3)
                         truncationMode: TruncationMode.Fade
                         visible: {
                             if(currentMessageType == MessagingModel.SYSTEM_NEW_MESSAGE ||
@@ -190,9 +222,9 @@ ListItem {
                     Label {
                         id: forwardInfoLabel
                         visible: forward_info ? true : false
-                        text: forward_info ? qsTr("Forwarded from") + " " + forward_info : ""
+                        text:forward_info  ? qsTr("Forwarded from") + " " + forward_info : ""
                         width: contentLoader.width
-                        color: pressed ? Theme.highlightColor: Theme.secondaryHighlightColor
+                        color: pressed ? Theme.highlightColor : Theme.secondaryHighlightColor
                         font.pixelSize: Theme.fontSizeSmall
                         font.bold: true
                         truncationMode: TruncationMode.Fade
@@ -202,6 +234,7 @@ ListItem {
                 Loader {
                     id:replyLoader
                     active: reply_to_message_id != 0 && index != 0
+
                     sourceComponent: Component {
                         MouseArea {
                             id:replyBackgroundItem
@@ -226,6 +259,7 @@ ListItem {
                                     id:replyContentColumn
                                     Label {
                                         id:replyAuthorLabel
+                                        width: Math.min(implicitWidth,messageListItem.width *2/3)
                                         color: Theme.secondaryHighlightColor
                                         font.pixelSize: Theme.fontSizeSmall
                                         text:reply_author ? reply_author : ""
@@ -251,6 +285,8 @@ ListItem {
 
                 Loader {
                     id:contentLoader
+                    z:0
+
                     function reload() {
                             source = ""
                             source = setItem()
@@ -364,11 +400,8 @@ ListItem {
 
 
         }
-//        Loader {
-//            sourceComponent: Component {
-//            }
-//        }
     }
+
     ListView {
         id:inlineView
         anchors.top: columnWrapper.bottom

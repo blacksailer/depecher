@@ -7,6 +7,42 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Sun Sep 11 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.2-1
+- Added pull requests (added bio, copy link and phone number)
+- Auth seg fault fix
+- HTML escaping in message text
+- Translations added
+
+* Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.1-1
+- Info pages shared media fix
+
+* Sun Aug 20 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.7.0-1
+- Info pages for user/group/supergroup Closes #84
+- share plugin for rivileged apps (Gallery, contacts etc.) Closes #118
+- textEntites added (text with links)
+- link to italian community addded to about page  Closes #97
+- uknown chat issue resolved #119
+- notification on startup resolved
+
+* Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-2
+- hotfix of aligning
+
+* Sun Jun 02 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6.1-1
+- Pull request merged, thanks to @foolsbazar
+- Added translations
+- Mic button is swapping to send button while typing
+- Added option to full size messages in channels (Appearences -> Show full screen)
+
+
+* Fri Apr 19 2019 Ivan Chernenkiy <blacksailer@yandex.ru> 0.6-0
+- Bug fix of textArea
+- List of contacts added (no stync from phone)
+- Show user status in MessagingPage #54
+- Audio recording
+- File sended as inputFileGenerated (https://github.com/tdlib/td/issues/126)
+- waveform of audioMessage is visible
+- Remove notification on app exit if daemon is disabled #103
+
 * Mon Mar 11 2019 Ivan Chernenky <blacksailer@yandex.ru> 0.5-2
 - Edit messages and captions of media
 - Added is_sponsored, is_marked_is_unread flags to chat list

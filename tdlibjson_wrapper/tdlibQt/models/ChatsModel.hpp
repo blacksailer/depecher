@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <memory>
 #include "tdlibQt/items/TdApi.hpp"
+#include "tdlibQt/include/TdlibNamespace.hpp"
 
 namespace tdlibQt {
 class TdlibJsonWrapper;
@@ -14,6 +15,7 @@ class ChatsModel : public QAbstractListModel
     Q_PROPERTY(int totalUnreadCount READ totalUnreadCount NOTIFY
                totalUnreadCountChanged)
     QList<QSharedPointer<chat>> m_chats;
+    QList<int> m_chatIds;
     QMap<qint64, QSharedPointer<updateUserChatAction>> chatActionMap;
     QVector<int> chatActionIndices;
     QTimer chatActionTimer;
@@ -43,10 +45,11 @@ class ChatsModel : public QAbstractListModel
         SENDING_STATE
     };
     TdlibJsonWrapper *tdlibJson;
-    void changeChatOrder(qint64 chatId, qint64 order);
+    void changeChatOrderOrAdd(qint64 chatId, qint64 order);
     const int indexByOrder(const qint64 order);
     bool isContains(const QSharedPointer<chat> &chat);
     bool fetchPending = false;
+    void addItem(const QSharedPointer<chat> &chatItem);
 public:
     explicit ChatsModel(QObject *parent = 0);
 
@@ -59,19 +62,12 @@ public:
     bool canFetchMore(const QModelIndex &parent) const override;
     int getIndex(const qint64 chatId);
 
-    int totalUnreadCount() const
-    {
-        int result = 0;
-        for (auto item : m_chats) {
-            result += item->unread_mention_count_;
-            if (item->notification_settings_->mute_for_ == 0)
-                result += item->unread_count_;
-        }
-        return result;
-    }
+    int totalUnreadCount() const;
+
 private slots:
     void chatActionCleanUp();
     void addChat(const QJsonObject &chatObject);
+    void addChats(const QJsonObject &chatsObject);
     void updateChatPhoto(const QJsonObject &chatObject);
     void updateChatOrder(const QJsonObject &chatOrderObject);
     void updateChatLastMessage(const QJsonObject &chatLastMessageObject);
@@ -84,6 +80,8 @@ private slots:
     void updateMentionRead(const QJsonObject &messageMentionReadObject);
     void updateNotificationSettings(const QJsonObject &updateNotificationSettingsObject);
     void updateChatIsMarkedAsUnread(const QJsonObject &updateChatIsMarkedAsUnreadObject);
+    void onAuthorizationStateChanged(const Enums::AuthorizationState state);
+
 signals:
 
     void totalUnreadCountChanged(int totalUnreadCount);

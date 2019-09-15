@@ -5,13 +5,26 @@ import QtFeedback 5.0
 import tdlibQtEnums 1.0
 import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
+import "../js/utils.js" as Utils
 import "items"
 Page {
     id: page
     allowedOrientations: Orientation.All
+    property alias nameplateHeight: nameplate.height
     property alias chatId: messagingModel.peerId
     property var forwardMessages: ({})
     property var arrayIndex: []
+    onStatusChanged: {
+        if(status == PageStatus.Active) {
+            if(messagingModel.chatType["type"] == TdlibState.BasicGroup)
+                pageStack.pushAttached(Qt.resolvedUrl("GroupInfoPage.qml"),{chat_id:parseFloat(chatId)})
+                else if(messagingModel.chatType["type"] == TdlibState.Secret || messagingModel.chatType["type"] == TdlibState.Private)
+                pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{user_id:parseInt(chatId)})
+            else if (messagingModel.chatType["type"] == TdlibState.Supergroup)// && messagingModel.chatType["is_channel"])
+            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),hideOpenMenu:true})
+        }
+
+    }
 
     Notification {
         id: notificationError
@@ -72,6 +85,7 @@ Page {
         }
     }
     Component.onCompleted: {
+
         if (Object.keys(forwardMessages).length !== 0) {
             writer.reply_id = "-1"
         writer.replyMessageAuthor = qsTr("Forwarded messages")
@@ -107,6 +121,22 @@ Page {
                 sendText(messageText,writer.reply_id)
             }
         }
+        Keys.onUpPressed: {
+            var listItems=messageList.contentItem.children
+            for (var i=0; i<listItems.length; ++i){
+                if (listItems[i].currentMessageType !== undefined) {
+                    if (listItems[i].messageEditable) {
+                        listItems[i].triggerEdit()
+                        // break;   // break here if you want to edit even if someone answered.
+                                    // If the list is scrolling, children change index while looping,
+                                    // and it ends up peaking the wrong child.
+                                    // Is there any porperty that tells whether it is scrolling?
+                    }
+                    break;
+                }
+            }
+        }
+
         returnButtonItem.onClicked: {
             if(arrayIndex.length>0)
             {
@@ -120,6 +150,10 @@ Page {
             sendText(textArea.text,writer.reply_id)
 
         }
+        onSendVoice: {
+            messagingModel.sendVoiceMessage(location,duration,writer.reply_id, "",waveform)
+            writer.clearReplyArea()
+        }
         onSendFiles: {
             for(var i = 0; i < files.length; i++)
             {
@@ -128,22 +162,14 @@ Page {
                     fileUrl = fileUrl.slice(7, fileUrl.length)
                 //Slicing removes occurance of file://
                 if(files[i].type === TdlibState.Photo)
-                {
                     messagingModel.sendPhotoMessage(fileUrl, writer.reply_id, "")
-                    writer.clearReplyArea()
-                }
                 if(files[i].type === TdlibState.Document)
-                {
                     messagingModel.sendDocumentMessage(fileUrl,writer.reply_id,"")
-                    writer.clearReplyArea()
-                }
                 if(files[i].type === TdlibState.Sticker)
-                {
                     messagingModel.sendStickerMessage(files[i].id,writer.reply_id)
-                    writer.clearReplyArea()
-
-                }
             }
+            writer.clearReplyArea()
+
         }
     onReplyAreaCleared: {
     forwardMessages = {}
@@ -154,11 +180,6 @@ Page {
             size: BusyIndicatorSize.Large
             anchors.centerIn: messageList.parent
         }
-
-//        bottomArea.onFocusChanged: {
-//            messageList.positionViewAtEnd()
-//        }
-
         Column {
             width: page.width
 //            height: parent.height - writer.sendAreaHeight
@@ -191,12 +212,20 @@ Page {
                 property bool needToScroll: false
                 width: parent.width
                 height: parent.height - nameplate.height
+                signal showDateSection()
+                signal hideDateSection()
 
                 onHeightChanged: {
                     if(messageList.indexAt(width/2,height+contentY) >= count - 2)
 {
                         messageList.positionViewAtEnd()
 }
+                }
+                onMovementStarted: {
+                    showDateSection()
+                }
+                onMovementEnded: {
+                    hideDateSection()
                 }
 
                 clip: true
@@ -242,15 +271,16 @@ Page {
                     }
                 ]
                 section {
+                    id: dateSection
                     property: "section"
-                    labelPositioning:ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
+                    labelPositioning: ViewSection.InlineLabels
                     delegate: Label {
                         id:secLabel
-                        property string defaultString: Format.formatDate(new Date(section*1000),Formatter.DateMediumWithoutYear)
                         wrapMode: Text.WordWrap
                         color:Theme.highlightColor
                         font.pixelSize: Theme.fontSizeSmall
-                        text: defaultString
+                        font.bold: true
+                        text: Utils.formatDate(section, true)
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.topMargin: Theme.paddingMedium
                         anchors.bottomMargin: Theme.paddingMedium
@@ -258,15 +288,25 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked:{
-                                parent.text = Format.formatDate(new Date(section*1000),Formatter.DateFull)
-                                restoreDefaultInlineSectionTimer.start()
+                                // TODO: move to the 1st message for the section
                             }
                         }
                         Timer {
-                            id:restoreDefaultInlineSectionTimer
-                            interval: 3 * 1000
+                            id: changeToInlineLabelsTimer
+                            interval: 1500
                             onTriggered: {
-                                parent.text = parent.defaultString
+                                if (!messageList.moving) {
+                                    dateSection.labelPositioning = ViewSection.InlineLabels
+                                }
+                            }
+                        }
+                        Connections {
+                            target: messageList
+                            onShowDateSection: {
+                                dateSection.labelPositioning = ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
+                            }
+                            onHideDateSection: {
+                                changeToInlineLabelsTimer.start()
                             }
                         }
                     }
@@ -294,7 +334,7 @@ Page {
 //                    needToScroll = indexAt(messageList.width/2,contentY + 50) > messageList.count - 8
 
                 }
-                delegate:           MessageItem {
+                delegate: MessageItem {
                     id: myDelegate
                     onReplyMessageClicked:    {
                         if(messagingModel.findIndexById(replied_message_index) !== -1) {
@@ -317,12 +357,16 @@ Page {
                     ListView.onRemove: RemoveAnimation {
                         target: myDelegate
                     }
+
+                    property alias messageEditable: editEntry.visible
+                    signal triggerEdit()
+                    onTriggerEdit: editEntry.clicked()
                     menu: ContextMenu {
                         MenuItem {
                             text: qsTr("Reply")
                             visible:  ((messagingModel.chatType["type"] == TdlibState.Supergroup && !messagingModel.chatType["is_channel"]) ||
-                                      messagingModel.chatType["type"] == TdlibState.BasicGroup ||
-                                      messagingModel.chatType["type"] == TdlibState.Private)
+                                        messagingModel.chatType["type"] == TdlibState.BasicGroup ||
+                                        messagingModel.chatType["type"] == TdlibState.Private)
                             onClicked: {
                                 writer.reply_id = id
                                 writer.replyMessageAuthor = author
@@ -351,14 +395,15 @@ Page {
                             }
                         }
                         MenuItem {
+                        id: editEntry
                         text:qsTr("Edit")
                         visible: can_be_edited && (message_type == MessagingModel.TEXT
-                        || message_type == MessagingModel.PHOTO
-                        || message_type == MessagingModel.VIDEO
-                        || message_type == MessagingModel.DOCUMENT
-                         || message_type == MessagingModel.ANIMATION
-                         || message_type == MessagingModel.VOICE
-                         || message_type == MessagingModel.AUDIO)
+                                                || message_type == MessagingModel.PHOTO
+                                                || message_type == MessagingModel.VIDEO
+                                                || message_type == MessagingModel.DOCUMENT
+                                                || message_type == MessagingModel.ANIMATION
+                                                || message_type == MessagingModel.VOICE
+                                                || message_type == MessagingModel.AUDIO)
 
 
 
@@ -371,6 +416,8 @@ Page {
                             writer.edit_message_id = id
                             writer.replyMessageText = replyMessageContent()
                             writer.text = message_type == MessagingModel.TEXT ? content : file_caption
+                            writer.textArea.focus = true
+                            writer.textArea.cursorPosition = writer.text.length
                             function replyMessageContent() {
                                 if(message_type == MessagingModel.TEXT) {
                                     return content
@@ -397,7 +444,7 @@ Page {
                         }
                         MenuItem {
                             text: qsTr("Forward")
-                            visible: can_be_forwarded
+                            visible: can_be_forwarded && !writer.textArea.activeFocus
                             onClicked: {
                                 pageStack.push("SelectChatDialog.qml",{"from_chat_id": chatId,
                                                     "messages": [id]})
@@ -416,14 +463,14 @@ Page {
                         }
                         MenuItem {
                             text: qsTr("Delete Message")
-                            visible: can_be_deleted_only_for_yourself ? can_be_deleted_only_for_yourself : false
+                            visible: can_be_deleted_only_for_yourself && !writer.textArea.activeFocus ? can_be_deleted_only_for_yourself : false
                             onClicked: {
                                 showRemorseDelete()
                             }
                         }
                         MenuItem {
                             text: qsTr("Delete for everyone")
-                            visible: can_be_deleted_for_all_users ? can_be_deleted_for_all_users : false
+                            visible: can_be_deleted_for_all_users && !writer.textArea.activeFocus ? can_be_deleted_for_all_users : false
                             onClicked: {
                                 showRemorseDeleteToAll()
                             }
@@ -473,18 +520,16 @@ Page {
         }
 
         function sendText(text,reply_id) {
-            if(writer.state == "publish")
-{
-            if(text.trim().length > 0)
-                messagingModel.sendTextMessage(text,reply_id)
-            if(reply_id == -1)
-                messagingModel.sendForwardMessages(chatId,forwardMessages.from_chat_id,forwardMessages.messages)
-} else if (writer.state == "editText") {
+            Qt.inputMethod.commit()
+            if(writer.state == "publish"){
+                if(text.trim().length > 0)
+                    messagingModel.sendTextMessage(text,reply_id)
+                if(reply_id == -1)
+                    messagingModel.sendForwardMessages(chatId,forwardMessages.from_chat_id,forwardMessages.messages)
+            } else if (writer.state == "editText") {
                 messagingModel.sendEditTextMessage(writer.edit_message_id,text)
-            }
-            else if (writer.state == "editCaption") {
+            } else if (writer.state == "editCaption") {
                 messagingModel.sendEditCaptionMessage(writer.edit_message_id,text)
-
             }
 
             buzz.play()

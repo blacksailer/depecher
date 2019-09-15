@@ -7,16 +7,55 @@ import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import QtQml.Models 2.3
 import depecherUtils 1.0
+import "utils.js" as JsUtils
 
 
 Column{
+    id:videoColumn
         width: image.width
         property alias textHeight: captionText.height
+        property real currentWidth: JsUtils.getWidth()
+        property real currentHeight: JsUtils.getHeight()
+        property bool marginCorrection: currentWidth < currentHeight*photo_aspect ||
+                                        currentHeight*photo_aspect > currentWidth - Theme.horizontalPageMargin + 10
+
+        ConfigurationValue {
+            id: fullSizeInChannels
+            key:"/apps/depecher/ui/message/fullSizeInChannels"
+            defaultValue: false
+        }
+        states: [
+            State {
+                name: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      !marginCorrection
+                PropertyChanges {
+                    target: image
+                    maxWidth: currentWidth
+                    maxHeight: currentHeight
+                    width: Math.min(maxHeight * photo_aspect, maxWidth)
+                    height: Math.min(maxHeight, maxWidth / photo_aspect)
+                }
+            }, State {
+                name: "fullSizeWithMarginCorrection"
+                extend: "fullSize"
+                when: fullSizeInChannels.value && messagingModel.chatType["is_channel"] &&
+                      marginCorrection
+                PropertyChanges {
+                    target: captionText
+                    x: Theme.paddingMedium
+                    width: image.width - 2 * x
+                }
+
+            }
+        ]
+
+
         Image {
             id: image
             asynchronous: true
-            property int maxWidth: getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
-            property int maxHeight: getHeight()/2
+            property int maxWidth: JsUtils.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
+            property int maxHeight: JsUtils.getHeight()/2
             width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
             height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
             fillMode: Image.PreserveAspectFit
@@ -92,39 +131,12 @@ Column{
                     }
                 }
             }
-            function getWidth() {
-                switch(page.orientation) {
-                case Orientation.Portrait:
-                case Orientation.PortraitInverted:
-                    return Screen.width
-                case Orientation.Landscape:
-                case Orientation.LandscapeInverted:
-                    return Screen.height
-
-                }
-            }
-            function getHeight() {
-                switch(page.orientation) {
-                case Orientation.Portrait:
-                case Orientation.PortraitInverted:
-                    return Screen.height
-                case Orientation.Landscape:
-                case Orientation.LandscapeInverted:
-                    return Screen.width
-
-                }
-            }
         }
-
-        LinkedLabel {
+        RichTextItem {
             id:captionText
             width: parent.width
-            plainText: file_caption
-            color: pressed ? Theme.secondaryColor :Theme.primaryColor
-            linkColor: pressed ? Theme.secondaryHighlightColor :Theme.highlightColor
-            font.pixelSize: Theme.fontSizeSmall
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            visible: file_caption === "" ? false : true
+            content:  rich_file_caption
+            visible:  file_caption === "" ? false : true
         }
     }
 

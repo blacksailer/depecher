@@ -12,10 +12,10 @@
 # The name of your application
 TARGET = depecher
 
-QT += sql dbus multimedia network
+QT += core sql dbus multimedia network
 
-##Application must be also changel in depecher.yaml file
-VERSION = 0.5.2
+##Application must be also changed in depecher.yaml file and tdlibjsonwrapper.pro
+VERSION = 0.7.2
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
 CONFIG += sailfishapp
@@ -23,7 +23,11 @@ CONFIG += c++11
 CONFIG += link_pkgconfig
 PKGCONFIG += nemonotifications-qt5 tdlibjson
 PKGCONFIG += sailfishapp mlite5
+PKGCONFIG += vorbisfile libglibutil libdbusaccess
 
+dbus_policy.files = dbus/depecher-dbus-access.conf
+dbus_policy.path = /etc/$$TARGET
+INSTALLS += dbus_policy
 
 LIBS += -L$$OUT_PWD/../tdlibjson_wrapper -ltdlibjson_wrapper -lresolv
 
@@ -81,12 +85,19 @@ SOURCES += \
     src/DBusAdaptor.cpp \
     dbus/DepecherAdaptor.cpp \
     src/singletons/PageAppStarter.cpp \
-    src/singletons/DNSTXTLookup.cpp
+    src/singletons/DNSTXTLookup.cpp \
+    src/fileGeneratedHandlers/FileGeneratedHandler.cpp \
+    src/fileGeneratedHandlers/CopyFileConversion.cpp \
+    src/components/AudioRecorder.cpp \
+    dbus/DBusShareAdaptor.cpp \
+    dbus/DBusShareAdaptorWrapper.cpp \
+    dbus/sailfish_access.c \
+    dbus/ChatShareAdaptor.cpp
 
 
 OTHER_FILES += qml/app.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
+    qml/pages/*.qml \
 qml/pages/items/delegates/*.qml \
     translations/*.ts
 
@@ -111,6 +122,13 @@ RESOURCES += \
 DISTFILES += \
     qml/js/countries.js \
     depecher.desktop \
+    qml/pages/GroupInfoPage.qml \
+    qml/pages/UserPage.qml \
+    qml/pages/items/filter_delegates/AudioView.qml \
+    qml/pages/items/filter_delegates/DocumentView.qml \
+    qml/pages/items/filter_delegates/LinkView.qml \
+    qml/pages/items/filter_delegates/PhotoView.qml \
+    qml/pages/items/filter_delegates/VoiceView.qml \
     rpm/depecher.yaml \
     rpm/depecher.spec \
     rpm/depecher.changes.in \
@@ -123,7 +141,6 @@ DISTFILES += \
     translations/depecher-es.ts \
     dbus/org.blacksailer.depecher.service \
     dbus/org.blacksailer.depecher.xml \
-    dbus/application.xml \
     settings/DepecherAppSettings.qml \
     qml/app.qml \
     systemd/org.blacksailer.depecher.service \
@@ -131,7 +148,11 @@ DISTFILES += \
     qml/pages/items/delegates/AudioDelegate.qml \
     qml/Background.qml \
     qml/pages/items/delegates/VideoDelegate.qml \
-    qml/pages/items/delegates/VideoNoteDelegate.qml
+    qml/pages/items/delegates/VideoNoteDelegate.qml \
+    qml/pages/components/ChatItemShare.qml \
+    dbus/org.blacksailer.depecher.share.xml \
+    qml/js/mimetypes.js \
+    dbus/depecher-dbus-access.conf
 
 HEADERS += \
     src/FileWorker.hpp \
@@ -139,4 +160,11 @@ HEADERS += \
     src/DBusAdaptor.hpp \
     dbus/DepecherAdaptor.hpp \
     src/singletons/PageAppStarter.hpp \
-    src/singletons/DNSTXTLookup.hpp
+    src/singletons/DNSTXTLookup.hpp \
+    src/fileGeneratedHandlers/FileGeneratedHandler.hpp \
+    src/fileGeneratedHandlers/FileGeneratedInterface.hpp \
+    src/fileGeneratedHandlers/CopyFileConversion.hpp \
+    src/components/AudioRecorder.hpp \
+    dbus/DBusShareAdaptor.hpp \
+    dbus/DBusShareAdaptorWrapper.hpp \
+    dbus/ChatShareAdaptor.hpp

@@ -45,10 +45,6 @@
         <translation>Unirse a chat</translation>
     </message>
     <message>
-        <source>Be aware, after clicking you will join chat. Leaving chats not supported for now.</source>
-        <translation>Ten en cuenta que después de hacer clic te unirás al chat. Dejar chats no está soportado aún.</translation>
-    </message>
-    <message>
         <source>Error to get invite link</source>
         <translation>Error al obtener enlace de invitación</translation>
     </message>
@@ -112,6 +108,14 @@
         <source>Version</source>
         <translation>Versión</translation>
     </message>
+    <message>
+        <source>Be aware, after clicking you will join chat.</source>
+        <translation>Ten en cuenta que al pulsar te unirás al chat.</translation>
+    </message>
+    <message>
+        <source>Italian speaking community</source>
+        <translation>Comunidad de habla italiana</translation>
+    </message>
 </context>
 <context>
     <name>AppearancePage</name>
@@ -137,15 +141,11 @@
     </message>
     <message>
         <source>Reset to default</source>
-        <translation>Resetear</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Minimize nameplate</source>
         <translation>Ocultar nombre del chat</translation>
-    </message>
-    <message>
-        <source>Aways align messages to left</source>
-        <translation>Alinear todo a la izquierda</translation>
     </message>
     <message>
         <source>Enable night mode</source>
@@ -166,6 +166,18 @@
     <message>
         <source>Till</source>
         <translation>A</translation>
+    </message>
+    <message>
+        <source>Always align messages to left</source>
+        <translation>Alinear mensajes a la izquierda</translation>
+    </message>
+    <message>
+        <source>Miscellaneous</source>
+        <translation>Varios</translation>
+    </message>
+    <message>
+        <source>Show full screen images in channels</source>
+        <translation>Mostrar mensajes a pantalla completa en los canales</translation>
     </message>
 </context>
 <context>
@@ -234,6 +246,13 @@
     </message>
 </context>
 <context>
+    <name>AudioView</name>
+    <message>
+        <source>Audios</source>
+        <translation>Audios</translation>
+    </message>
+</context>
+<context>
     <name>AuthorizeDialog</name>
     <message>
         <source>Insert your phone number and press &apos;Next&apos;</source>
@@ -272,10 +291,28 @@
     </message>
 </context>
 <context>
+    <name>ChannelInfoPage</name>
+    <message>
+        <source>Channel info</source>
+        <translation>Info de canal</translation>
+    </message>
+</context>
+<context>
     <name>ChatCreatedDelegate</name>
     <message>
         <source>%1 created the group %2</source>
         <translation>%1 ha creado el grupo %2</translation>
+    </message>
+</context>
+<context>
+    <name>ContactsPage</name>
+    <message>
+        <source>Contacts</source>
+        <translation>Contactos</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Buscar</translation>
     </message>
 </context>
 <context>
@@ -285,10 +322,8 @@
         <translation>Depecher</translation>
     </message>
     <message>
-        <source>Unread 
- messages</source>
-        <translation>Mensajes 
- sin leer</translation>
+        <source>Unread messages</source>
+        <translation>Mensajes no leídos</translation>
     </message>
 </context>
 <context>
@@ -311,11 +346,45 @@
     </message>
     <message>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcar como leído</translation>
     </message>
     <message>
         <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcar como no leído</translation>
+    </message>
+    <message>
+        <source>Contacts</source>
+        <translation>Contactos</translation>
+    </message>
+</context>
+<context>
+    <name>DocumentView</name>
+    <message>
+        <source>Documents</source>
+        <translation>Documentos</translation>
+    </message>
+</context>
+<context>
+    <name>GroupInfoPage</name>
+    <message>
+        <source>Group info</source>
+        <translation>Info de grupo</translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation>%1 miembros</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>Notificaciones</translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation>Pulsa para desactivar notificaciones</translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation>Pulsa para activar notificaciones</translation>
     </message>
 </context>
 <context>
@@ -330,6 +399,13 @@
     <message>
         <source>%1 joined Telegram!</source>
         <translation>¡%1 se unió a Telegram!</translation>
+    </message>
+</context>
+<context>
+    <name>LinkView</name>
+    <message>
+        <source>Links</source>
+        <translation>Enlaces</translation>
     </message>
 </context>
 <context>
@@ -414,7 +490,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar</translation>
     </message>
 </context>
 <context>
@@ -422,6 +498,13 @@
     <message>
         <source>New messages</source>
         <translation>Nuevos mensajes</translation>
+    </message>
+</context>
+<context>
+    <name>PhotoView</name>
+    <message>
+        <source>Images</source>
+        <translation>Imágenes</translation>
     </message>
 </context>
 <context>
@@ -607,6 +690,56 @@
     </message>
 </context>
 <context>
+    <name>ShareUI</name>
+    <message>
+        <source>Choose chat</source>
+        <translation>Elige chat</translation>
+    </message>
+    <message>
+        <source>%1 selected</source>
+        <translation>%1 seleccionado</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>Reiniciar</translation>
+    </message>
+    <message>
+        <source>Ensure that depecher is running</source>
+        <translation>Asegúrate de que depecher se está ejecutando</translation>
+    </message>
+    <message>
+        <source>Do not close until media is transfered</source>
+        <translation>No cierres hasta que el contenido multimedia se haya transferido</translation>
+    </message>
+</context>
+<context>
+    <name>SharedContent</name>
+    <message>
+        <source>%1 photos</source>
+        <translation>%1 fotos</translation>
+    </message>
+    <message>
+        <source>%1 videos</source>
+        <translation>%1 vídeos</translation>
+    </message>
+    <message>
+        <source>%1 files</source>
+        <translation>%1 archivos</translation>
+    </message>
+    <message>
+        <source>%1 audio</source>
+        <translation>%1 audios</translation>
+    </message>
+    <message>
+        <source>%1 links</source>
+        <translation>%1 enlaces</translation>
+    </message>
+    <message>
+        <source>%1 voice notes</source>
+        <translation>%1 notas de voz</translation>
+    </message>
+</context>
+<context>
     <name>SignInDialog</name>
     <message>
         <source>Code</source>
@@ -692,21 +825,95 @@
     </message>
 </context>
 <context>
-    <name>VoiceNoteDelegate</name>
+    <name>UserPage</name>
     <message>
-        <source>Voice note</source>
-        <translation>Nota de voz</translation>
+        <source>User info</source>
+        <translation>Info de usuario</translation>
+    </message>
+    <message>
+        <source>Send message</source>
+        <translation>Enviar mensaje</translation>
+    </message>
+    <message>
+        <source>Notifications</source>
+        <translation>Notificaciones</translation>
+    </message>
+    <message>
+        <source>Click to disable notifications</source>
+        <translation>Pulsa para desactivar notificaciones</translation>
+    </message>
+    <message>
+        <source>Click to enable notifications</source>
+        <translation>Pulsa para activar notificaciones</translation>
+    </message>
+    <message>
+        <source>%1 groups in common</source>
+        <translation>%1 grupos en común</translation>
+    </message>
+    <message>
+        <source>Channel info</source>
+        <translation>Info de canal</translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation>%1 miembros</translation>
+    </message>
+    <message>
+        <source>Leave channel</source>
+        <translation>Dejar canal</translation>
+    </message>
+    <message>
+        <source>Join channel</source>
+        <translation>Unirse a canal</translation>
+    </message>
+    <message>
+        <source>Leaving</source>
+        <translation>Dejando</translation>
+    </message>
+    <message>
+        <source>Open channel</source>
+        <translation>Abrir canal</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Nombre de usuario</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VideoView</name>
+    <message>
+        <source>Videos</source>
+        <translation>Vídeos</translation>
+    </message>
+</context>
+<context>
+    <name>VoiceView</name>
+    <message>
+        <source>Voice notes</source>
+        <translation>Notas de voz</translation>
     </message>
 </context>
 <context>
     <name>WritingItem</name>
     <message>
         <source>Edit text</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar texto</translation>
     </message>
     <message>
         <source>Edit caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar subtítulo</translation>
     </message>
 </context>
 <context>
@@ -761,11 +968,15 @@
     </message>
     <message>
         <source>Wait closing</source>
-        <translation>Espera cierre</translation>
+        <translation>Cerrando espera</translation>
     </message>
     <message>
         <source>Wait closed</source>
-        <translation>Espera cerrado</translation>
+        <translation>Espera cerrada</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

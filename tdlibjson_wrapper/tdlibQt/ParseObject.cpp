@@ -1,11 +1,10 @@
-#include "ParseObject.hpp"
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QDebug>
-#include "NotificationManager.hpp"
 #include <QDateTime>
 #include <QGuiApplication>
 #include <QFile>
+#include "ParseObject.hpp"
 
 namespace tdlibQt {
 ParseObject::ParseObject(QObject *parent) : QObject(parent)
@@ -36,8 +35,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
 #endif
     //    switch (doc.object()["@type"].toString()) {
-    //    case "updateBasicGroup":
-    //    case "updateBasicGroupFullInfo":
     //    case "updateCall":
     //    case "updateChatDraftMessage":
     //    case "updateChatIsPinned":
@@ -45,8 +42,7 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateChatReplyMarkup":
     //    case "updateChatTitle":
     //    case "updateFavoriteStickers":
-    //    case "updateFileGenerationStart":
-    //    case "updateFileGenerationStop":
+
     //    case "updateInstalledStickerSets":
     //    case "updateMessageContentOpened":
     //    case "updateMessageSendAcknowledged":
@@ -68,7 +64,6 @@ void ParseObject::parseResponse(const QByteArray &json)
     //    case "updateTrendingStickerSets":
     //    case "updateUserFullInfo":
     //    case "updateUserPrivacySettingRules":
-    //    case "updateUserStatus":
     //        break;
     if (typeField == "error") {
         emit errorReceived(doc.object());
@@ -76,6 +71,9 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "ok") {
         emit okReceived(doc.object());
     }
+    if (typeField == "updateUserStatus")
+        emit updateUserStatusReceived(doc.object());
+
     if (typeField == "updateChatIsMarkedAsUnread") {
         emit updateChatIsMarkedAsUnread(doc.object());
     }
@@ -180,13 +178,17 @@ void ParseObject::parseResponse(const QByteArray &json)
         QString firstName = userObject["first_name"].toString();
         QString lastName = userObject["last_name"].toString();
         users_[user_id] = firstName + " " + lastName;
-        emit updateNewUser(userObject);
+        emit updateUserReceived(userObject);
     }
     if (typeField == "seconds")
         emit secondsReceived(doc.object());
     if (typeField == "text")
         emit textReceived(doc.object());
+    if (typeField == "count")
+        emit countReceived(doc.object());
 
+    if (typeField == "users")
+        emit usersReceived(doc.object());
     if (typeField == "message")
         emit messageReceived(doc.object());
     if (typeField == "stickerSets")
@@ -200,9 +202,17 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateFile") {
         emit updateFile(doc.object());
     }
-    if (typeField ==  "updateNotificationSettings") {
+    if (typeField == "updateNotificationGroup")
+        emit updateNotificationGroupReceived(doc.object());
+    if (typeField == "updateActiveNotifications")
+        emit updateActiveNotificationReceived(doc.object());
+    if (typeField ==  "updateNotificationSettings")
         emit updateNotificationSettingsReceived(doc.object());
-    }
+    if (typeField == "updateFileGenerationStart")
+        emit updateFileGenerationStartReceived(doc.object());
+    if (typeField == "updateFileGenerationStop")
+        emit updateFileGenerationStopReceived(doc.object());
+
     if (typeField == "updateChatOrder") {
         emit updateChatOrder(doc.object());
     }
@@ -248,21 +258,32 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
 
     if (typeField == "chats") {
-        QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
-        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
-            emit getChat(getInt64(*it));
-        }
-        emit chatIds(chat_ids.toVariantList());
+        emit chatsReceived(doc.object());
+//        QJsonArray chat_ids = doc.object()["chat_ids"].toArray();
+//        QString extra = "";
+//        if (doc.object().contains("@extra"))
+//            extra =  doc.object()["@extra"].toString();
+//        for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
+//            emit getChat(getInt64(*it), extra);
+//        }
     }
     if (typeField == "chat") {
         auto chatItem = doc.object();
-        emit newChatReceived(chatItem);
+        emit chatReceived(chatItem);
     }
     if (typeField == "user") {
         auto userItem = doc.object();
         if (userItem["@extra"].toString() == "getMe")
             emit meReceived(userItem);
+        else
+            emit userReceived(userItem);
     }
+    if (typeField == "userFullInfo")
+        emit userFullInfoReceived(doc.object());
+    if (typeField == "supergroupFullInfo")
+        emit supergroupFullInfoReceived(doc.object());
+
+
     if (typeField == "proxies") {
         auto proxyItem = doc.object();
         emit proxiesReceived(proxyItem);
@@ -277,6 +298,21 @@ void ParseObject::parseResponse(const QByteArray &json)
     if (typeField == "updateUserChatAction") {
         emit updateChatAction(doc.object());
     }
+    if (typeField == "basicGroup") {
+        emit basicGroupReceived(doc.object());
+    }
+    if (typeField == "updateBasicGroup") {
+        emit updateBasicGroupReceived(doc.object());
+    }
+    if (typeField == "updateBasicGroupFullInfo") {
+        emit updateBasicGroupFullInfoReceived(doc.object());
+    }
+    if (typeField == "basicGroupFullInfo") {
+        emit basicGroupFullInfoReceived(doc.object());
+    }
+    //    case "updateBasicGroup":
+    //    case "updateBasicGroupFullInfo":
+
 }
 
 QString ParseObject::getUserName(int userId)
@@ -284,6 +320,41 @@ QString ParseObject::getUserName(int userId)
     if (users_.contains(userId))
         return users_[userId];
     return "Unknown";
+}
+
+QString ParseObject::messageTypeToString(const int messageTypeId)
+{
+    switch (messageTypeId) {
+    case  messageText::ID:
+        return tr("Text");
+    case  messagePhoto::ID:
+        return tr("Photo");
+    case  messageDocument::ID:
+        return tr("Document");
+    case messageVideo::ID:
+        return tr("Video");
+    case messageAudio::ID:
+        return tr("Audio");
+    case messageVideoNote::ID:
+        return tr("Video note");
+    case messageAnimation::ID:
+        return tr("GIF");
+    case messageCall::ID:
+        return tr("Call");
+    case messageContact::ID:
+        return tr("Contact");
+    case messageVoiceNote::ID:
+        return tr("Audio note");
+    case messageVenue::ID:
+        return tr("Venue");
+    case messageUnsupported::ID:
+        return tr("Unsupported");
+    case messageSticker::ID:
+        return tr("Sticker");
+    default:
+        return tr("Message content");
+    }
+
 }
 QString ParseObject::getFirstName(int userId)
 {
@@ -463,38 +534,40 @@ QSharedPointer<document> ParseObject::parseDocument(const QJsonObject &documentO
     return resultDocument;
 }
 
-QSharedPointer<MessageForwardInfo> ParseObject::parseForwardInfo(const QJsonObject &forwardObject)
+QSharedPointer<messageForwardInfo> ParseObject::parseForwardInfo(const QJsonObject &forwardObject)
 {
-    if (forwardObject["@type"].toString() == "messageForwardedFromUser") {
-        auto resultMessageForwardedFromUser = QSharedPointer<messageForwardedFromUser>
-                                              (new messageForwardedFromUser);
-        resultMessageForwardedFromUser->date_ = forwardObject["date"].toInt();
-        resultMessageForwardedFromUser->forwarded_from_chat_id_ = getInt64(
-                    forwardObject["forwarded_from_chat_id"]);
-        resultMessageForwardedFromUser->forwarded_from_message_id_ = getInt64(
-                    forwardObject["forwarded_from_message_id"]);
-        resultMessageForwardedFromUser->sender_user_id_ = forwardObject["sender_user_id"].toInt();
-        return resultMessageForwardedFromUser;
+    QSharedPointer<messageForwardInfo> resultMessage = QSharedPointer<messageForwardInfo>
+            (new messageForwardInfo);
+
+    resultMessage->from_chat_id_ = getInt64(
+                                       forwardObject["from_chat_id"]);
+    resultMessage->from_message_id_ = getInt64(
+                                          forwardObject["from_message_id"]);
+    resultMessage->date_ = forwardObject["date"].toInt();
+    auto forwardOriginObj = forwardObject["origin"].toObject();
+    if (forwardOriginObj["@type"].toString() == "messageForwardOriginUser") {
+        auto resultMessageForwardedFromUser = QSharedPointer<messageForwardOriginUser>
+                                              (new messageForwardOriginUser);
+        resultMessageForwardedFromUser->sender_user_id_ = forwardOriginObj["sender_user_id"].toInt();
+        resultMessage->origin_ = resultMessageForwardedFromUser;
     }
-    if (forwardObject["@type"].toString() == "messageForwardedPost") {
-        auto resultMessageForwardedPost = QSharedPointer<messageForwardedPost>
-                                          (new messageForwardedPost);
+    if (forwardOriginObj["@type"].toString() == "messageForwardOriginChannel") {
+        auto resultMessageForwardedPost = QSharedPointer<messageForwardOriginChannel>
+                                          (new messageForwardOriginChannel);
         resultMessageForwardedPost->author_signature_ =
-            forwardObject["author_signature"].toString().toStdString();
-        resultMessageForwardedPost->chat_id_ = getInt64(forwardObject["chat_id"]);
-        resultMessageForwardedPost->date_ = forwardObject["date"].toInt();
-        resultMessageForwardedPost->forwarded_from_chat_id_ = getInt64(
-                    forwardObject["forwarded_from_chat_id"]);
-        resultMessageForwardedPost->forwarded_from_message_id_ = getInt64(
-                    forwardObject["forwarded_from_message_id"]);
+            forwardOriginObj["author_signature"].toString().toStdString();
+        resultMessageForwardedPost->chat_id_ = getInt64(forwardOriginObj["chat_id"]);
         resultMessageForwardedPost->message_id_ = getInt64(
-                    forwardObject["message_id"]);
-
-        return resultMessageForwardedPost;
-
+                    forwardOriginObj["message_id"]);
+        resultMessage->origin_ = resultMessageForwardedPost;
     }
-    return QSharedPointer<messageForwardedFromUser>
-           (nullptr);
+    if (forwardOriginObj["@type"].toString() == "messageForwardOriginHiddenUser") {
+        auto resultMessageForwardedHiddenUser = QSharedPointer<messageForwardOriginHiddenUser>
+                                                (new messageForwardOriginHiddenUser);
+        resultMessageForwardedHiddenUser->sender_name_ = forwardOriginObj["author_signature"].toString().toStdString();
+        resultMessage->origin_ = resultMessageForwardedHiddenUser;
+    }
+    return resultMessage;
 }
 
 QSharedPointer<ChatType> ParseObject::parseType(const QJsonObject &typeObject)
@@ -726,7 +799,30 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
     if (messageContentObject["@type"].toString() == "messageBasicGroupChatCreate") {
         return parseMessageBasicGroupChatCreate(messageContentObject);
     }
+
+#warning parseMessageEndsHere
     return typeMessageText;
+    if (messageContentObject["@type"].toString() == "messageChatChangePhoto") {
+        if (messageContentObject["@type"].toString() != "messageChatChangePhoto")
+            return QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
+        auto resultMessage = QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
+        resultMessage->photo_ = parsePhoto(messageContentObject["photo"].toObject());
+        return resultMessage;
+    }
+    if (messageContentObject["@type"].toString() == "messageChatChangeTitle") {
+        if (messageContentObject["@type"].toString() != "messageChatChangeTitle")
+            return QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
+        auto resultMessage = QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
+        resultMessage->title_ = messageContentObject["title"].toString().toStdString();
+        return resultMessage;
+    }
+    if (messageContentObject["@type"].toString() == "messageUnsupported") {
+        if (messageContentObject["@type"].toString() != "messageUnsupported")
+            return QSharedPointer<messageUnsupported>(new messageUnsupported);
+        auto resultMessage = QSharedPointer<messageUnsupported>(new messageUnsupported);
+        return resultMessage;
+    }
+
     if (messageContentObject["@type"].toString() == "messageCall") {
         if (messageContentObject["@type"].toString() != "messageCall")
             return QSharedPointer<messageCall>(new messageCall);
@@ -742,20 +838,6 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         auto resultMessage = QSharedPointer<messageChatAddMembers>(new messageChatAddMembers);
         for (auto val : messageContentObject["member_user_ids"].toArray())
             resultMessage->member_user_ids_.push_back(val.toInt());
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageChatChangePhoto") {
-        if (messageContentObject["@type"].toString() != "messageChatChangePhoto")
-            return QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
-        auto resultMessage = QSharedPointer<messageChatChangePhoto>(new messageChatChangePhoto);
-        resultMessage->photo_ = parsePhoto(messageContentObject["photo"].toObject());
-        return resultMessage;
-    }
-    if (messageContentObject["@type"].toString() == "messageChatChangeTitle") {
-        if (messageContentObject["@type"].toString() != "messageChatChangeTitle")
-            return QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
-        auto resultMessage = QSharedPointer<messageChatChangeTitle>(new messageChatChangeTitle);
-        resultMessage->title_ = messageContentObject["title"].toString().toStdString();
         return resultMessage;
     }
     if (messageContentObject["@type"].toString() == "messageChatDeleteMember") {
@@ -893,12 +975,6 @@ QSharedPointer<MessageContent> ParseObject::parseMessageContent(const QJsonObjec
         auto resultMessage = QSharedPointer<messageScreenshotTaken>(new messageScreenshotTaken);
         return resultMessage;
     }
-    if (messageContentObject["@type"].toString() == "messageUnsupported") {
-        if (messageContentObject["@type"].toString() != "messageUnsupported")
-            return QSharedPointer<messageUnsupported>(new messageUnsupported);
-        auto resultMessage = QSharedPointer<messageUnsupported>(new messageUnsupported);
-        return resultMessage;
-    }
     if (messageContentObject["@type"].toString() == "messageVenue") {
         if (messageContentObject["@type"].toString() != "messageVenue")
             return QSharedPointer<messageVenue>(new messageVenue);
@@ -919,6 +995,7 @@ QSharedPointer<messageText> ParseObject::parseMessageText(const QJsonObject &mes
     auto resultMessageContent = QSharedPointer<messageText>(new messageText);
     resultMessageContent->web_page_  = QSharedPointer<webPage>(new webPage);
     resultMessageContent->text_  = parseFormattedTextContent(messageTextObject["text"].toObject());
+#warning "TODO Webpage"
     return resultMessageContent;
 }
 QSharedPointer<messageAnimation> ParseObject::parseMessageAnimation(const QJsonObject
@@ -1152,7 +1229,10 @@ QSharedPointer<chatNotificationSettings> ParseObject::parseNotificationSettings(
     settingsResult->mute_for_ = notificationSettingsObject["mute_for"].toInt();
     settingsResult->sound_ = notificationSettingsObject["sound"].toString().toStdString();
     settingsResult->show_preview_ = notificationSettingsObject["show_preview"].toBool();
-
+    settingsResult->use_default_disable_pinned_message_notifications_ = notificationSettingsObject["use_default_disable_pinned_message_notifications"].toBool();
+    settingsResult->disable_pinned_message_notifications_ = notificationSettingsObject["disable_pinned_message_notifications"].toBool();
+    settingsResult->use_default_disable_mention_notifications_ = notificationSettingsObject["use_default_disable_mention_notifications"].toBool();
+    settingsResult->disable_mention_notifications_ = notificationSettingsObject["disable_mention_notifications"].toBool();
     settingsResult->use_default_mute_for_ = notificationSettingsObject["use_default_mute_for"].toBool();
     settingsResult->use_default_sound_ = notificationSettingsObject["use_default_sound"].toBool();
     settingsResult->use_default_show_preview_ = notificationSettingsObject["use_default_show_preview"].toBool();
@@ -1179,8 +1259,6 @@ QSharedPointer<photo> ParseObject::parsePhoto(const QJsonObject &photoObject)
         return QSharedPointer<photo>(new photo);
 
     auto resultMessagePhoto = QSharedPointer <photo>(new photo);
-    resultMessagePhoto->id_ = getInt64(photoObject["id"]);
-    resultMessagePhoto->has_stickers_ = photoObject["has_stickers"].toBool();
     for (auto photoSize : photoObject["sizes"].toArray())
         resultMessagePhoto->sizes_.push_back(parsePhotoSize(photoSize.toObject()));
     return resultMessagePhoto;
@@ -1206,9 +1284,261 @@ QSharedPointer<formattedText> ParseObject::parseFormattedTextContent(const QJson
 
     auto resultFormattedText  = QSharedPointer<formattedText>(new formattedText);
     resultFormattedText->text_ = formattedTextObject["text"].toString().toStdString();
-#warning "TODO Entities, Webpage"
+    for (auto row : formattedTextObject["entities"].toArray())
+        resultFormattedText->entities_.push_back(parseTextEntity(row.toObject()));
+
     return resultFormattedText;
 }
+QSharedPointer<textEntity> ParseObject::parseTextEntity(const QJsonObject
+        &textEntityObject)
+{
+    if (textEntityObject["@type"].toString() != "textEntity")
+        return QSharedPointer<textEntity>(new textEntity);
+    QSharedPointer<textEntity> resultTextEntity  = QSharedPointer<textEntity>(new textEntity);
+    //default
+    resultTextEntity->type_ = QSharedPointer<textEntityTypeMention>(new textEntityTypeMention);
+    resultTextEntity->length_ = textEntityObject["length"].toInt();
+    resultTextEntity->offset_ = textEntityObject["offset"].toInt();
+    QString entityType = textEntityObject["type"].toObject()["@type"].toString();
+    if (entityType == "textEntityTypeMention")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeMention>(new textEntityTypeMention);
+    if (entityType == "textEntityTypeHashtag")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeHashtag>(new textEntityTypeHashtag);
+    if (entityType == "textEntityTypeCashtag")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeCashtag>(new textEntityTypeCashtag);
+    if (entityType == "textEntityTypeBotCommand")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeBotCommand>(new textEntityTypeBotCommand);
+    if (entityType == "textEntityTypeUrl")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeUrl>(new textEntityTypeUrl);
+    if (entityType == "textEntityTypeEmailAddress")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeEmailAddress>(new textEntityTypeEmailAddress);
+    if (entityType == "textEntityTypeBold")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeBold>(new textEntityTypeBold);
+    if (entityType == "textEntityTypeItalic")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeItalic>(new textEntityTypeItalic);
+    if (entityType == "textEntityTypeCode")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypeCode>(new textEntityTypeCode);
+    if (entityType == "textEntityTypePre")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypePre>(new textEntityTypePre);
+    if (entityType == "textEntityTypePhoneNumber")
+        resultTextEntity->type_ = QSharedPointer<textEntityTypePhoneNumber>(new textEntityTypePhoneNumber);
+    if (entityType == "textEntityTypePreCode") {
+        auto tp  = QSharedPointer<textEntityTypePreCode>(new textEntityTypePreCode);
+        tp->language_ = textEntityObject["type"].toObject()["language"].toString().toStdString();
+        resultTextEntity->type_ = tp;
+    }
+    if (entityType == "textEntityTypeTextUrl") {
+        auto tp  = QSharedPointer<textEntityTypeTextUrl>(new textEntityTypeTextUrl);
+        tp->url_ = textEntityObject["type"].toObject()["url"].toString().toStdString();
+        resultTextEntity->type_ = tp;
+    }
+    if (entityType == "textEntityTypeMentionName") {
+        auto tp  = QSharedPointer<textEntityTypeMentionName>(new textEntityTypeMentionName);
+        tp->user_id_ = textEntityObject["type"].toObject()["user_id"].toInt();
+        resultTextEntity->type_ = tp;
+    }
+    return resultTextEntity;
+}
+
+QSharedPointer<updateNotificationGroup> ParseObject::parseUpdateNotificationGroup(const QJsonObject &updateNotificationGroupObject)
+{
+    QSharedPointer<updateNotificationGroup> result = QSharedPointer<updateNotificationGroup>(new updateNotificationGroup);
+    result->notification_group_id_ = updateNotificationGroupObject["notification_group_id"].toInt();
+    result->chat_id_ = ParseObject::getInt64(updateNotificationGroupObject["chat_id"]);
+    result->notification_settings_chat_id_ = ParseObject::getInt64(updateNotificationGroupObject["notification_settings_chat_id"]);
+    result->is_silent_ = updateNotificationGroupObject["is_silent"].toBool();
+    result->total_count_ = updateNotificationGroupObject["total_count"].toInt();
+    QString groupTypeStr = updateNotificationGroupObject["type"].toObject()["@type"].toString();
+    if (groupTypeStr == "notificationGroupTypeMessages")
+        result->type_ = QSharedPointer<notificationGroupTypeMessages>(new notificationGroupTypeMessages);
+    if (groupTypeStr == "notificationGroupTypeMentions")
+        result->type_ = QSharedPointer<notificationGroupTypeMentions>(new notificationGroupTypeMentions);
+    if (groupTypeStr == "notificationGroupTypeSecretChat")
+        result->type_ = QSharedPointer<notificationGroupTypeSecretChat>(new notificationGroupTypeSecretChat);
+    if (groupTypeStr == "notificationGroupTypeCalls")
+        result->type_ = QSharedPointer<notificationGroupTypeCalls>(new notificationGroupTypeCalls);
+
+    for (auto itm : updateNotificationGroupObject["removed_notification_ids"].toArray())
+        result->removed_notification_ids_.push_back(itm.toInt());
+    for (auto itm : updateNotificationGroupObject["added_notifications"].toArray()) {
+        auto notificationObject = itm.toObject();
+        QSharedPointer<notification> notificationItem = QSharedPointer<notification>(new notification);
+        notificationItem->id_ = notificationObject["id"].toInt();
+        notificationItem->date_ = notificationObject["date"].toInt();
+        QString notifTypeStr = notificationObject["type"].toObject()["@type"].toString();
+        if (notifTypeStr == "notificationTypeNewMessage") {
+            QSharedPointer<notificationTypeNewMessage> notifType =  QSharedPointer<notificationTypeNewMessage>(new notificationTypeNewMessage);
+            notifType->message_ = ParseObject::parseMessage(notificationObject["type"].toObject()["message"].toObject());
+            notificationItem->type_ = notifType;
+        }
+        if (notifTypeStr == "notificationTypeNewSecretChat")
+            notificationItem->type_ =   QSharedPointer<notificationTypeNewSecretChat> (new notificationTypeNewSecretChat);
+        if (notifTypeStr == "notificationTypeNewCall") {
+            QSharedPointer<notificationTypeNewCall> notifType =  QSharedPointer<notificationTypeNewCall>(new notificationTypeNewCall);
+            notifType->call_id_ = notificationObject["type"].toObject()["call_id"].toInt();
+            notificationItem->type_ = notifType;
+        }
+        if (notifTypeStr == "notificationTypeNewPushMessage") {
+            auto notifTypeObj = notificationObject["type"].toObject();
+            QSharedPointer<notificationTypeNewPushMessage> notifType =  QSharedPointer<notificationTypeNewPushMessage>(new notificationTypeNewPushMessage);
+            notifType->message_id_ = ParseObject::getInt64(notifTypeObj["message_id"]);
+            notifType->sender_user_id_ = notifTypeObj["sender_user_id"].toInt();
+#warning TODO PushMessageContent
+            notifType->content_ = QSharedPointer<pushMessageContentText>(new pushMessageContentText);
+            notificationItem->type_ = notifType;
+        }
+        result->added_notifications_.push_back(notificationItem);
+    }
+    return result;
+}
+
+QSharedPointer<notificationGroup> ParseObject::parseNotificationGroup(const QJsonObject &updateNotificationGroupObject)
+{
+    QSharedPointer<notificationGroup> result = QSharedPointer<notificationGroup>(new notificationGroup);
+    result->id_ = updateNotificationGroupObject["id"].toInt();
+    result->chat_id_ = ParseObject::getInt64(updateNotificationGroupObject["chat_id"]);
+    result->total_count_ = updateNotificationGroupObject["total_count"].toInt();
+    QString groupTypeStr = updateNotificationGroupObject["type"].toObject()["@type"].toString();
+    if (groupTypeStr == "notificationGroupTypeMessages")
+        result->type_ = QSharedPointer<notificationGroupTypeMessages>(new notificationGroupTypeMessages);
+    if (groupTypeStr == "notificationGroupTypeMentions")
+        result->type_ = QSharedPointer<notificationGroupTypeMentions>(new notificationGroupTypeMentions);
+    if (groupTypeStr == "notificationGroupTypeSecretChat")
+        result->type_ = QSharedPointer<notificationGroupTypeSecretChat>(new notificationGroupTypeSecretChat);
+    if (groupTypeStr == "notificationGroupTypeCalls")
+        result->type_ = QSharedPointer<notificationGroupTypeCalls>(new notificationGroupTypeCalls);
+
+    for (auto itm : updateNotificationGroupObject["notifications"].toArray()) {
+        auto notificationObject = itm.toObject();
+        QSharedPointer<notification> notificationItem = QSharedPointer<notification>(new notification);
+        notificationItem->id_ = notificationObject["id"].toInt();
+        notificationItem->date_ = notificationObject["date"].toInt();
+        QString notifTypeStr = notificationObject["type"].toObject()["@type"].toString();
+        if (notifTypeStr == "notificationTypeNewMessage") {
+            QSharedPointer<notificationTypeNewMessage> notifType =  QSharedPointer<notificationTypeNewMessage>(new notificationTypeNewMessage);
+            notifType->message_ = ParseObject::parseMessage(notificationObject["type"].toObject()["message"].toObject());
+            notificationItem->type_ = notifType;
+        }
+        if (notifTypeStr == "notificationTypeNewSecretChat")
+            notificationItem->type_ =   QSharedPointer<notificationTypeNewSecretChat> (new notificationTypeNewSecretChat);
+        if (notifTypeStr == "notificationTypeNewCall") {
+            QSharedPointer<notificationTypeNewCall> notifType =  QSharedPointer<notificationTypeNewCall>(new notificationTypeNewCall);
+            notifType->call_id_ = notificationObject["type"].toObject()["call_id"].toInt();
+            notificationItem->type_ = notifType;
+        }
+        if (notifTypeStr == "notificationTypeNewPushMessage") {
+            auto notifTypeObj = notificationObject["type"].toObject();
+            QSharedPointer<notificationTypeNewPushMessage> notifType =  QSharedPointer<notificationTypeNewPushMessage>(new notificationTypeNewPushMessage);
+            notifType->message_id_ = ParseObject::getInt64(notifTypeObj["message_id"]);
+            notifType->sender_user_id_ = notifTypeObj["sender_user_id"].toInt();
+#warning TODO PushMessageContent
+            notifType->content_ = QSharedPointer<pushMessageContentText>(new pushMessageContentText);
+            notificationItem->type_ = notifType;
+        }
+        result->notifications_.push_back(notificationItem);
+    }
+    return result;
+}
+
+QSharedPointer<userFullInfo> ParseObject::parseUserFullInfo(const QJsonObject &userFullInfoObject)
+{
+    if (userFullInfoObject["@type"].toString() != "userFullInfo")
+        return QSharedPointer<userFullInfo>(new userFullInfo);
+
+    auto resultUserFullInfo = QSharedPointer<userFullInfo>(new userFullInfo);
+    resultUserFullInfo->is_blocked_ = userFullInfoObject["is_blocked"].toBool();
+    resultUserFullInfo->can_be_called_ = userFullInfoObject["can_be_called"].toBool();
+    resultUserFullInfo->has_private_calls_ = userFullInfoObject["has_private_calls"].toBool();
+    resultUserFullInfo->share_text_ = userFullInfoObject["share_text"].toString().toStdString();
+    resultUserFullInfo->bio_ = userFullInfoObject["bio"].toString().toStdString();
+    resultUserFullInfo->group_in_common_count_ = userFullInfoObject["group_in_common_count"].toInt();
+    resultUserFullInfo->bot_info_ = parseBotInfo(userFullInfoObject["bot_info"].toObject());
+    return resultUserFullInfo;
+}
+
+QSharedPointer<botInfo> ParseObject::parseBotInfo(const QJsonObject &botInfoObject)
+{
+    if (botInfoObject["@type"].toString() != "botInfo")
+        return QSharedPointer<botInfo>(new botInfo);
+    auto resultBotInfo = QSharedPointer<botInfo>(new botInfo);
+    resultBotInfo->description_ = botInfoObject["description"].toString().toStdString();
+    for (auto command : botInfoObject["commands"].toArray()) {
+        QSharedPointer<botCommand> cmd = QSharedPointer<botCommand>(new botCommand);
+        cmd->command_ = command.toObject()["command"].toString().toStdString();
+        cmd->description_ = command.toObject()["description"].toString().toStdString();
+        resultBotInfo->commands_.push_back(cmd);
+    }
+    return    resultBotInfo;
+
+
+}
+
+QSharedPointer<supergroupFullInfo> ParseObject::parseSupergroupFullInfo(const QJsonObject &supergroupFullInfoObject)
+{
+    if (supergroupFullInfoObject["@type"].toString() != "supergroupFullInfo")
+        return QSharedPointer<supergroupFullInfo>(new supergroupFullInfo);
+
+    QSharedPointer<supergroupFullInfo> resultFullInfo = QSharedPointer<supergroupFullInfo>
+            (new supergroupFullInfo);
+    resultFullInfo->description_ = supergroupFullInfoObject["description"].toString().toStdString();
+    resultFullInfo->invite_link_ = supergroupFullInfoObject["invite_link"].toString().toStdString();
+    resultFullInfo->member_count_ = supergroupFullInfoObject["member_count"].toInt();
+    resultFullInfo->administrator_count_ = supergroupFullInfoObject["administrator_count"].toInt();
+    resultFullInfo->restricted_count_ = supergroupFullInfoObject["restricted_count"].toInt();
+    resultFullInfo->banned_count_ = supergroupFullInfoObject["banned_count"].toInt();
+    resultFullInfo->upgraded_from_basic_group_id_ = supergroupFullInfoObject["upgraded_from_basic_group_id"].toInt();
+    resultFullInfo->sticker_set_id_ = getInt64(supergroupFullInfoObject["sticker_set_id"]);
+    resultFullInfo->upgraded_from_max_message_id_ = getInt64(supergroupFullInfoObject["upgraded_from_max_message_id"]);
+
+
+    resultFullInfo->can_get_members_ = supergroupFullInfoObject["can_get_members"].toBool();
+    resultFullInfo->can_set_username_ = supergroupFullInfoObject["can_set_username"].toBool();
+    resultFullInfo->can_set_sticker_set_ = supergroupFullInfoObject["can_set_sticker_set"].toBool();
+    resultFullInfo->can_view_statistics_ = supergroupFullInfoObject["can_view_statistics"].toBool();
+    resultFullInfo->is_all_history_available_ = supergroupFullInfoObject["is_all_history_available"].toBool();
+    return resultFullInfo;
+}
+
+QSharedPointer<basicGroup> ParseObject::parseBasicGroup(const QJsonObject &basicGroupObject)
+{
+    if (basicGroupObject["@type"].toString() != "basicGroup")
+        return QSharedPointer<basicGroup>(new basicGroup);
+    auto result = QSharedPointer<basicGroup>(new basicGroup);
+    result->id_ = basicGroupObject["id"].toInt();
+    result->member_count_ = basicGroupObject["member_count"].toInt();
+    result->upgraded_to_supergroup_id_ = basicGroupObject["upgraded_to_supergroup_id"].toInt();
+    result->everyone_is_administrator_ = basicGroupObject["everyone_is_administrator"].toInt();
+    result->is_active_ = basicGroupObject["is_active"].toInt();
+    result->status_ = parseChatMemberStatus(basicGroupObject["status"].toObject());
+    return result;
+}
+
+QSharedPointer<basicGroupFullInfo> ParseObject::parseBasicGroupFullInfo(const QJsonObject &basicGroupFullInfoObject)
+{
+    if (basicGroupFullInfoObject["@type"].toString() != "basicGroupFullInfo")
+        return QSharedPointer<basicGroupFullInfo>(new basicGroupFullInfo);
+    QSharedPointer<basicGroupFullInfo> result = QSharedPointer<basicGroupFullInfo>(new basicGroupFullInfo);
+    result->creator_user_id_ = basicGroupFullInfoObject["creator_user_id"].toInt();
+    result->invite_link_ = basicGroupFullInfoObject["invite_link"].toString().toStdString();
+    foreach (auto itm, basicGroupFullInfoObject["members"].toArray()) {
+        result->members_.push_back(parseChatMember(itm.toObject()));
+    }
+    return result;
+}
+
+QSharedPointer<chatMember> ParseObject::parseChatMember(const QJsonObject &chatMemberObject)
+{
+    if (chatMemberObject["@type"].toString() != "chatMember")
+        return QSharedPointer<chatMember>(new chatMember);
+    auto result = QSharedPointer<chatMember>(new chatMember);
+    result->user_id_ = chatMemberObject["user_id"].toInt();
+    result->inviter_user_id_ = chatMemberObject["inviter_user_id"].toInt();
+    result->joined_chat_date_ = chatMemberObject["joined_chat_date"].toInt();
+    result->status_ = parseChatMemberStatus(chatMemberObject["status"].toObject());
+    result->bot_info_ = parseBotInfo(chatMemberObject["bot_info"].toObject());
+    return result;
+}
+
 
 QSharedPointer<chatPhoto> ParseObject::parseChatPhoto(const QJsonObject &chatPhotoObject)
 {
@@ -1248,6 +1578,7 @@ QSharedPointer<file> ParseObject::parseFile(const QJsonObject &fileObject)
     resultFile->local_->downloaded_prefix_size_ =
         localFileObject["downloaded_prefix_size"].toInt();
     resultFile->local_->downloaded_size_ = localFileObject["downloaded_size"].toInt();
+    resultFile->local_->download_offset_ = localFileObject["download_offset"].toInt();
 
     auto remoteFileObject = smallPhotoObject["remote"].toObject();
     resultFile->remote_->id_ = remoteFileObject["id"].toString().toStdString();
@@ -1335,9 +1666,11 @@ QSharedPointer<chat> ParseObject::parseChat(const QJsonObject &chatObject)
     chatItem->is_sponsored_ = chatObject["is_sponsored"].toBool();
     chatItem->can_be_reported_ =  chatObject["can_be_reported"].toBool();
     chatItem->default_disable_notification_ =  chatObject["default_disable_notification"].toBool();
-
+    chatItem->can_be_deleted_for_all_users_ =  chatObject["can_be_deleted_for_all_users"].toBool();
+    chatItem->can_be_deleted_only_for_self_ =  chatObject["can_be_deleted_only_for_self"].toBool();
     chatItem->client_data_ = chatObject["client_data"].toString().toStdString();
     chatItem->id_ =  getInt64(chatObject["id"]);
+    chatItem->pinned_message_id_ =  getInt64(chatObject["pinned_message_id"]);
     chatItem->is_pinned_ = chatObject["is_pinned"].toBool();
     chatItem->last_read_inbox_message_id_ =  getInt64(
                 chatObject["last_read_inbox_message_id"]);
@@ -1367,12 +1700,14 @@ QSharedPointer<user> ParseObject::parseUser(const QJsonObject &userObject)
         return QSharedPointer<user>(new user);
 
     QSharedPointer<user> resultUser =  QSharedPointer<user>(new user);
-    resultUser->id_ = getInt64(userObject["id"]);
+    resultUser->id_ = userObject["id"].toInt();
     resultUser->first_name_ = userObject["first_name"].toString().toStdString();
     resultUser->have_access_ = userObject["have_access"].toBool();
     resultUser->incoming_link_ = parseLinkState(userObject["incoming_link"].toObject());
     resultUser->outgoing_link_ = parseLinkState(userObject["outgoing_link"].toObject());
     resultUser->is_verified_ = userObject["is_verified"].toBool();
+    resultUser->is_support_ = userObject["is_support"].toBool();
+
     resultUser->language_code_ = userObject["language_code"].toString().toStdString();
     resultUser->last_name_ = userObject["last_name"].toString().toStdString();
     resultUser->username_ = userObject["username"].toString().toStdString();
@@ -1439,7 +1774,6 @@ QSharedPointer<UserType> ParseObject::parseUserType(const QJsonObject &userTypeO
         resultTypeBot->need_location_ = userTypeObject["need_location"].toBool();
         return resultTypeBot;
     }
-
     return QSharedPointer<UserType>(new userTypeUnknown);
 }
 

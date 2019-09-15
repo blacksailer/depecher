@@ -17,10 +17,15 @@ Page {
         target: c_telegramWrapper
         onErrorReceivedMap: {
             if(errorObject["code"] === 401)
-                pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"))
+                pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
         }
     }
+    onStatusChanged: {
+    if (status == PageStatus.Active)
+        if(c_telegramWrapper.authorizationState == TdlibState.AuthorizationStateWaitPhoneNumber)
+            pageStack.replace(Qt.resolvedUrl("AuthorizeDialog.qml"),{},PageStackAction.Immediate)
 
+    }
     SilicaListView {
         anchors.fill: parent
         model:   ChatsModel {
@@ -33,6 +38,7 @@ Page {
 
 
         PullDownMenu {
+
             MenuItem {
                 text:qsTr("Reset dialogs")
                 onClicked: chatsModel.reset()
@@ -40,6 +46,10 @@ Page {
             MenuItem {
                 text:qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+            }
+            MenuItem {
+                text:qsTr("Contacts")
+                onClicked: pageStack.push(Qt.resolvedUrl("ContactsPage.qml"))
             }
         }
 
@@ -80,6 +90,7 @@ Page {
             }
         }
     }
+
 }
 
 
