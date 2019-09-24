@@ -16,8 +16,3 @@ app.depends = lib
 # build the project sequentially as listed in SUBDIRS !
 CONFIG += ordered
 
-DISTFILES += \
-    depecher/qml/pages/FilterMessagesPage.qml \
-    depecher/qml/pages/items/filter_delegates/PhotoModel.qml \
-    depecher/qml/pages/items/filter_delegates/SharedContent.qml
-

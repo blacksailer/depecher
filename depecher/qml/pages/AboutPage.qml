@@ -66,7 +66,7 @@ Page {
                 x : Theme.horizontalPageMargin
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
-                text: qsTr("Version") + "-" + Qt.application.version
+                text: qsTr("Version") + " - 0.7.3"// + Qt.application.version
 
             }
             SectionHeader{

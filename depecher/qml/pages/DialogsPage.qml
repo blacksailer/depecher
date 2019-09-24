@@ -9,7 +9,7 @@ Page {
     id: page
     allowedOrientations: Orientation.All
 
-    property string titleHeader: "Depecher"
+    property string titleHeader:Qt.application.version
     //for search in pageStack
     property bool __chat_page: true
     property string _opened_chat_id: ""

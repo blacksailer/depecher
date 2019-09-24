@@ -6,6 +6,9 @@
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 
 namespace tdlibQt {
+
+static const QString c_extra = QLatin1String("ChatsModel");
+
 ChatsModel::ChatsModel(QObject *parent) : QAbstractListModel(parent),
     tdlibJson(TdlibJsonWrapper::instance())
 {
@@ -56,7 +59,7 @@ void ChatsModel::changeChatOrderOrAdd(qint64 chatId, qint64 order)
         }
     }
     if (notIncluded) {
-        tdlibJson->getChat(chatId, "");
+        tdlibJson->getChat(chatId, c_extra);
     }
 }
 
@@ -446,10 +449,10 @@ void ChatsModel::chatActionCleanUp()
 
 void ChatsModel::addChat(const QJsonObject &chatObject)
 {
-    if (!chatObject.contains("@extra")) {
+    if (chatObject["@extra"].toString() == c_extra) {
         fetchPending = false;
-
         QSharedPointer<chat> chatItem = ParseObject::parseChat(chatObject);
+
         if (isContains(chatItem))
             return;
         addItem(chatItem);
@@ -462,7 +465,7 @@ void ChatsModel::addChats(const QJsonObject &chatsObject)
         QJsonArray chat_ids = chatsObject["chat_ids"].toArray();
         for (auto it = chat_ids.begin(); it != chat_ids.end(); ++it) {
             qint64 id = ParseObject::getInt64(*it);
-            tdlibJson->getChat(id, "");
+            tdlibJson->getChat(id, c_extra);
         }
     }
 }
@@ -502,10 +505,10 @@ void ChatsModel::updateChatLastMessage(const QJsonObject &chatLastMessageObject)
     for (int i = 0; i < m_chats.size(); i++) {
         if (m_chats[i]->id_ == chatId) {
             m_chats[i]->last_message_ = lastMessage;
+            changeChatOrderOrAdd(chatId, order);
             break;
         }
     }
-    changeChatOrderOrAdd(chatId, order);
 }
 
 void ChatsModel::updateChatReadInbox(const QJsonObject &chatReadInboxObject)

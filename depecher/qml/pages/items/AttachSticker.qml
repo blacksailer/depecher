@@ -156,7 +156,10 @@ Item {
             width: parent.width
             height: parent.height - thumbnails.height
             property int indexAtTop: 0
-            onContentYChanged: indexAtTop = indexAt(root.width/2,contentY + height/2)
+            onContentYChanged: {
+
+                indexAtTop = indexAt(root.width/2,contentY + height/2)
+            }
             clip:true
             interactive: !_previewEnabled
             onDragStarted: {
@@ -165,6 +168,7 @@ Item {
             onFlickingChanged: {
                 previewTimer.stop()
             }
+
             model:  DelegateModel {
                 id:stickerSetModel
                 model: stickerModel
