@@ -34,6 +34,7 @@ BuildRequires:  pkgconfig(tdlibjson)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(vorbisfile)
 BuildRequires:  pkgconfig(libdbusaccess)
+BuildRequires:  pkgconfig(nemotransferengine-qt5)
 BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  desktop-file-utils
 

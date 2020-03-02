@@ -30,6 +30,7 @@ PkgConfigBR:
   - nemonotifications-qt5
   - vorbisfile
   - libdbusaccess
+  - nemotransferengine-qt5
 
 # Build dependencies without a pkgconfig setup can be listed here
 PkgBR:
