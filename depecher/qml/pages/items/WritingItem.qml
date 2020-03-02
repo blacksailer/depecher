@@ -29,12 +29,32 @@ Drawer {
     signal setFocusToEdit()
     signal replyAreaCleared()
 
+    property string settingsUiPath:  "/apps/depecher/ui"
     property string settingsBehaviorPath:  "/apps/depecher/behavior"
     ConfigurationValue {
         id:sendByEnter
         key:settingsBehaviorPath +"/sendByEnter"
         defaultValue: false
     }
+
+    ConfigurationValue {
+        id: showVoiceMessageButton
+        key: settingsUiPath + "/showVoiceMessageButton"
+        defaultValue: true
+    }
+
+    ConfigurationValue {
+        id:showCurrentTimeLabel
+        key:settingsUiPath + "/showCurrentTimeLabel"
+        defaultValue: true
+        onValueChanged: {
+            if (value) {
+                var date = new Date()
+                labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+            }
+        }
+    }
+
     function clearReplyArea() {
         if(attachDrawer.state == "editText" || attachDrawer.state == "editCaption") {
             messageArea.text = ""
@@ -207,8 +227,10 @@ Drawer {
                     labelVisible: false
 
                     Component.onCompleted: {
-                        var date = new Date()
-                        labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                        if (showCurrentTimeLabel.value) {
+                            var date = new Date()
+                            labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                        }
                     }
                     state:"text"
                     states:[
@@ -229,7 +251,7 @@ Drawer {
                             }
                             PropertyChanges {
                                 target:mic
-                                visible: reply_id != "-1"
+                                visible: showVoiceMessageButton.value && reply_id != "-1"
                                 y:stickerButton.y
                             }
                             PropertyChanges {
@@ -409,11 +431,12 @@ Drawer {
             anchors.leftMargin: Theme.horizontalPageMargin
             anchors.bottom: parent.bottom
             anchors.bottomMargin: Theme.paddingMedium
-            visible: messageArea.visible
+            visible: showCurrentTimeLabel.value && messageArea.visible
+            height: visible ? undefined : 0
             Timer {
                 interval: 60*1000
                 repeat: true
-                running: true
+                running: showCurrentTimeLabel.value
                 onTriggered: {
                     var date = new Date()
                     labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
