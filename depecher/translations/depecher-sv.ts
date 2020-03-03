@@ -110,11 +110,11 @@
     </message>
     <message>
         <source>Be aware, after clicking you will join chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varning! Efter klick ansluts du till chatten.</translation>
     </message>
     <message>
         <source>Italian speaking community</source>
-        <translation type="unfinished"></translation>
+        <translation>Italienskspråkig gemenskap</translation>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
     <name>AudioView</name>
     <message>
         <source>Audios</source>
-        <translation type="unfinished"></translation>
+        <translation>Ljud</translation>
     </message>
 </context>
 <context>
@@ -294,7 +294,7 @@
     <name>ChannelInfoPage</name>
     <message>
         <source>Channel info</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalinformation</translation>
     </message>
 </context>
 <context>
@@ -361,30 +361,30 @@
     <name>DocumentView</name>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Dokument</translation>
+        <translation>Dokument</translation>
     </message>
 </context>
 <context>
     <name>GroupInfoPage</name>
     <message>
         <source>Group info</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppinformation</translation>
     </message>
     <message>
         <source>%1 members</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 medlemar</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aviseringar</translation>
     </message>
     <message>
         <source>Click to disable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck för att avaktivera aviseringar</translation>
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck för att aktivera aviseringar</translation>
     </message>
 </context>
 <context>
@@ -405,7 +405,7 @@
     <name>LinkView</name>
     <message>
         <source>Links</source>
-        <translation type="unfinished"></translation>
+        <translation>Länkar</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     <name>PhotoView</name>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilder</translation>
     </message>
 </context>
 <context>
@@ -693,50 +693,50 @@
     <name>ShareUI</name>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Återställ</translation>
     </message>
     <message>
         <source>Choose chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj chatt</translation>
     </message>
     <message>
         <source>%1 selected</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vald</translation>
     </message>
     <message>
         <source>Ensure that depecher is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillse att depecher är igång</translation>
     </message>
     <message>
         <source>Do not close until media is transfered</source>
-        <translation type="unfinished"></translation>
+        <translation>Stäng inte förrän media är överfört</translation>
     </message>
 </context>
 <context>
     <name>SharedContent</name>
     <message>
         <source>%1 photos</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bilder</translation>
     </message>
     <message>
         <source>%1 videos</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 videor</translation>
     </message>
     <message>
         <source>%1 files</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 filer</translation>
     </message>
     <message>
         <source>%1 audio</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ljud</translation>
     </message>
     <message>
         <source>%1 links</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 länkar</translation>
     </message>
     <message>
         <source>%1 voice notes</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 röstanteckningar</translation>
     </message>
 </context>
 <context>
@@ -828,81 +828,81 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     <name>UserPage</name>
     <message>
         <source>User info</source>
-        <translation type="unfinished"></translation>
+        <translation>Användarinformation</translation>
     </message>
     <message>
         <source>Send message</source>
-        <translation type="unfinished"></translation>
+        <translation>Skicka meddelande</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished">Användarnamn</translation>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aviseringar</translation>
     </message>
     <message>
         <source>Click to disable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck för att avaktivera aviseringar</translation>
     </message>
     <message>
         <source>Click to enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck för att aktivera aviseringar</translation>
     </message>
     <message>
         <source>%1 groups in common</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 grupper i allmänna</translation>
     </message>
     <message>
         <source>Channel info</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalinformation</translation>
     </message>
     <message>
         <source>Leave channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Lämna kanalen</translation>
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anslut till kanalen</translation>
     </message>
     <message>
         <source>Leaving</source>
-        <translation type="unfinished"></translation>
+        <translation>Lämnar</translation>
     </message>
     <message>
         <source>Open channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Öppna kanal</translation>
     </message>
     <message>
         <source>%1 members</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 medlemar</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera</translation>
     </message>
     <message>
         <source>Copy link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiera länk</translation>
     </message>
     <message>
         <source>Bio</source>
-        <translation type="unfinished"></translation>
+        <translation>Bio</translation>
     </message>
 </context>
 <context>
     <name>VideoView</name>
     <message>
         <source>Videos</source>
-        <translation type="unfinished"></translation>
+        <translation>Videor</translation>
     </message>
 </context>
 <context>
     <name>VoiceView</name>
     <message>
         <source>Voice notes</source>
-        <translation type="unfinished"></translation>
+        <translation>Röstanteckningar</translation>
     </message>
 </context>
 <context>
@@ -976,7 +976,7 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Idag</translation>
     </message>
 </context>
 </TS>
