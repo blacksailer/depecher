@@ -179,6 +179,14 @@
         <source>Show full screen images in channels</source>
         <translation>Visa helskärmsbilder i kanaler</translation>
     </message>
+    <message>
+        <source>Show voice message button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current time below message input</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>

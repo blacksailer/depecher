@@ -156,7 +156,7 @@ SharedContent {
                         x: Theme.horizontalPageMargin
                         CircleImage {
                             id:userPhoto
-                            source: avatar
+                            source: avatar ? avatar : ""
                             fallbackItemVisible: avatar == undefined
                             fallbackText:name.charAt(0)
                             anchors.verticalCenter: parent.verticalCenter

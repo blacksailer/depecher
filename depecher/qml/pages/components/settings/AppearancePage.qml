@@ -34,6 +34,17 @@ Page {
         key:settingsUiPath + "/nightModeTill"
         defaultValue: "1900-01-01T08:00:00"
     }
+    ConfigurationValue {
+        id:showVoiceMessageButton
+        key:settingsUiPath + "/showVoiceMessageButton"
+        defaultValue: true
+    }
+    ConfigurationValue {
+        id:showCurrentTimeLabel
+        key:settingsUiPath + "/showCurrentTimeLabel"
+        defaultValue: true
+    }
+
     SilicaFlickable {
 
         anchors.fill: parent
@@ -340,6 +351,31 @@ Page {
                     fullSizeInChannels.sync()
                 }
             }
+
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: showVoiceMessageButton.value
+                automaticCheck: false
+                text: qsTr("Show voice message button")
+                onClicked: {
+                    showVoiceMessageButton.value = !checked
+                    showVoiceMessageButton.sync()
+                }
+            }
+
+            TextSwitch {
+                width: parent.width -2*x
+                x:Theme.horizontalPageMargin
+                checked: showCurrentTimeLabel.value
+                automaticCheck: false
+                text: qsTr("Show current time below message input")
+                onClicked: {
+                    showCurrentTimeLabel.value = !checked
+                    showCurrentTimeLabel.sync()
+                }
+            }
+
             ExpandingSectionGroup {
                 width: parent.width
                 ExpandingSection {
