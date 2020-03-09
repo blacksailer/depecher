@@ -107,6 +107,7 @@ public:
     static QSharedPointer<basicGroup> parseBasicGroup(const QJsonObject &basicGroupObject);
     static QSharedPointer<basicGroupFullInfo> parseBasicGroupFullInfo(const QJsonObject &basicGroupFullInfoObject);
     static QSharedPointer<chatMember> parseChatMember(const QJsonObject &chatMemberObject);
+    static QSharedPointer<chatMembers> parseChatMembers(const QJsonObject &chatMembersObject);
 
 signals:
 
@@ -169,6 +170,7 @@ signals:
     void updateBasicGroupReceived(const QJsonObject &updateBasicGroupObject);
     void basicGroupFullInfoReceived(const QJsonObject &basicGroupFullInfoObject);
     void updateBasicGroupFullInfoReceived(const QJsonObject &updateBasicGroupFullInfoObject);
+    void supergroupMembersReceived(const QJsonObject &supergroupMembersObject);
 public slots:
     void parseResponse(const QByteArray &json);
 };

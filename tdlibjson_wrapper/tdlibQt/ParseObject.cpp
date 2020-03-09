@@ -21,7 +21,7 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     QString typeField = doc.object()["@type"].toString();
 #ifdef QT_DEBUG
-    qDebug() << json;
+    qDebug().noquote() << json << "\n";
 #endif
 #ifdef WITH_LOG
     QFile logFile("/home/nemo/depecherDatabase/depecher.log");
@@ -309,6 +309,9 @@ void ParseObject::parseResponse(const QByteArray &json)
     }
     if (typeField == "basicGroupFullInfo") {
         emit basicGroupFullInfoReceived(doc.object());
+    }
+    if (typeField == "chatMembers") {
+        emit supergroupMembersReceived(doc.object());
     }
     //    case "updateBasicGroup":
     //    case "updateBasicGroupFullInfo":
@@ -1536,6 +1539,18 @@ QSharedPointer<chatMember> ParseObject::parseChatMember(const QJsonObject &chatM
     result->joined_chat_date_ = chatMemberObject["joined_chat_date"].toInt();
     result->status_ = parseChatMemberStatus(chatMemberObject["status"].toObject());
     result->bot_info_ = parseBotInfo(chatMemberObject["bot_info"].toObject());
+    return result;
+}
+
+QSharedPointer<chatMembers> ParseObject::parseChatMembers(const QJsonObject &chatMembersObject)
+{
+    QSharedPointer<chatMembers> result(new chatMembers);
+    if (chatMembersObject["@type"].toString() != "chatMembers")
+        return result;
+    result->total_count_ = chatMembersObject["total_count"].toInt();
+    foreach (auto itm, chatMembersObject["members"].toArray()) {
+        result->members_.push_back(parseChatMember(itm.toObject()));
+    }
     return result;
 }
 

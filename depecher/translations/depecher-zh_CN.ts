@@ -863,10 +863,6 @@
         <translation>频道信息</translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation>%1 位成员</translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation>退出频道</translation>
     </message>
@@ -897,6 +893,10 @@
     <message>
         <source>Bio</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished">%1 位成员</translation>
     </message>
 </context>
 <context>

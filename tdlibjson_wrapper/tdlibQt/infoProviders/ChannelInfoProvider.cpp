@@ -2,10 +2,12 @@
 #include "tdlibQt/models/singletons/UsersModel.hpp"
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/ParseObject.hpp"
+#include "tdlibQt/models/ChatMembersModel.hpp"
 namespace tdlibQt {
 static const QString c_extra = QLatin1String("ChannelInfoProvider %1");
 
-ChannelInfoProvider::ChannelInfoProvider(QObject *parent) : InfoProvider(parent)
+ChannelInfoProvider::ChannelInfoProvider(QObject *parent) : InfoProvider(parent),
+    m_membersModel(NULL)
 {
     connect(m_tdlibJson, &TdlibJsonWrapper::supergroupFullInfoReceived,
             this, &ChannelInfoProvider::infoChanged);
@@ -13,6 +15,8 @@ ChannelInfoProvider::ChannelInfoProvider(QObject *parent) : InfoProvider(parent)
             this, &ChannelInfoProvider::supergroupChanged);
     connect(this, &ChannelInfoProvider::chatIdChanged,
             this, &ChannelInfoProvider::onChatIdChanged);
+    connect(m_tdlibJson, &TdlibJsonWrapper::supergroupMembersReceived,
+            this, &ChannelInfoProvider::supergroupMembersReceived);
 }
 
 QString ChannelInfoProvider::name() const
@@ -253,6 +257,16 @@ void ChannelInfoProvider::supergroupChanged(const QJsonObject &obj)
     }
 }
 
+void ChannelInfoProvider::supergroupMembersReceived(const QJsonObject &obj)
+{
+    if (obj["@extra"].toString() == c_extra.arg(QString::number(m_supergroupId))) {
+        m_chatMembers = ParseObject::parseChatMembers(obj);
+        m_membersModel = new ChatMembersModel(this, true);
+        m_membersModel->setMembers(m_chatMembers->members_);
+        emit membersModelChanged();
+    }
+}
+
 void ChannelInfoProvider::onChatIdChanged(const double chatId)
 {
     Q_UNUSED(chatId)
@@ -294,6 +308,11 @@ void ChannelInfoProvider::emitInfo()
 
 }
 
+ChatMembersModel *ChannelInfoProvider::membersModel() const
+{
+    return m_membersModel;
+}
+
 
 void ChannelInfoProvider::setSupergroupId(int supergroupId)
 {
@@ -303,6 +322,8 @@ void ChannelInfoProvider::setSupergroupId(int supergroupId)
     m_supergroupId = supergroupId;
     m_supergroup = UsersModel::instance()->getSupergroup(m_supergroupId);
     m_tdlibJson->getSupergroupFullInfo(m_supergroupId, c_extra.arg(QString::number(m_supergroupId)));
+    m_tdlibJson->getSupergroupMembers(m_supergroupId,
+                                      "", 0, 200, c_extra.arg(QString::number(m_supergroupId)));
     emitAll();
     emit supergroupIdChanged(m_supergroupId);
 }

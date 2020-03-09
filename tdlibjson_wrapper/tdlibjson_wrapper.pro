@@ -36,6 +36,7 @@ HEADERS += \
     tdlibQt/models/ChatMembersModel.hpp \
     tdlibQt/models/ChatsModel.hpp \
     tdlibQt/TelegramProfileProvider.hpp \
+    tdlibQt/models/FilterChatMembersModel.hpp \
     tdlibQt/models/MessagingModel.hpp \
     tdlibQt/FileWriter.hpp \
     tdlibQt/ListenScheduler.hpp \
@@ -64,6 +65,7 @@ SOURCES += \
     tdlibQt/models/ChatMembersModel.cpp \
     tdlibQt/models/ChatsModel.cpp \
     tdlibQt/TelegramProfileProvider.cpp \
+    tdlibQt/models/FilterChatMembersModel.cpp \
     tdlibQt/models/MessagingModel.cpp \
     tdlibQt/FileWriter.cpp \
     tdlibQt/ListenScheduler.cpp \

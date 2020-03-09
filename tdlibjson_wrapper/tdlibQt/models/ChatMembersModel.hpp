@@ -21,8 +21,10 @@ public:
         USER_ID,
         AVATAR,
         NAME,
+        USERNAME,
         STATUS,
-        ONLINE_STATUS
+        ONLINE_STATUS,
+        DELETED
     };
     enum MemberStatus {
         Administrator,
@@ -34,6 +36,7 @@ public:
     };
     void setMembers(const std::vector<QSharedPointer<chatMember> > &members);
     Q_ENUM(MemberStatus)
+    Q_INVOKABLE QVariant getProperty(int idx, const QByteArray &prop);
 signals:
 
     void supergroupModeChanged(bool supergroupMode);

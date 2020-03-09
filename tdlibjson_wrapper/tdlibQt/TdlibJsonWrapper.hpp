@@ -45,6 +45,7 @@ class TdlibJsonWrapper : public QObject
 
     int m_totalUnreadCount;
     void sendToTelegram(void *Client, const char *str);
+    void sendJsonObjToTelegram(QJsonObject &queryObj, const QString &extra = "");
     const QList<QString> m_searchFilters = {
         "searchMessagesFilterEmpty",
         "searchMessagesFilterAnimation",
@@ -80,8 +81,6 @@ public:
 
     int totalUnreadCount() const;
     void checkPassword(const QString &password);
-
-
 signals:
     void updateNewChat(const QJsonObject &updateNewChatObject);
     void updateUserReceived(const QJsonObject &updateNewUserObject);
@@ -144,6 +143,7 @@ signals:
     void updateBasicGroupReceived(const QJsonObject &updateBasicGroupObject);
     void basicGroupFullInfoReceived(const QJsonObject &basicGroupFullInfoObject);
     void updateBasicGroupFullInfoReceived(const QJsonObject &updateBasicGroupFullInfoObject);
+    void supergroupMembersReceived(const QJsonObject &supergroupMembersObject);
 
 private slots:
     void setTdlibParameters();
@@ -229,6 +229,8 @@ public slots:
 
     void createPrivateChat(const int user_id = 0, bool force = false,  const QString &extra = "");
     void deleteChatHistory(qint64 chat_id = 0, bool remove_from_chat_list  = false, bool revoke = false, const QString &extra = "");
+    void getSupergroupMembers(const int supergroup_id,
+                              const QString &search, const int offset, const int limit, const QString &extra);
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP

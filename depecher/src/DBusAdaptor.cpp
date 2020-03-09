@@ -11,6 +11,7 @@
 #include "tdlibQt/models/ContactsModel.hpp"
 #include "tdlibQt/models/FilterContactsModel.hpp"
 #include "tdlibQt/models/ChatMembersModel.hpp"
+#include "tdlibQt/models/FilterChatMembersModel.hpp"
 #include "tdlibQt/models/SearchChatMessagesModel.hpp"
 
 #include "tdlibQt/TelegramProfileProvider.hpp"
@@ -112,6 +113,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
         qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
         qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");
+        qmlRegisterType<tdlibQt::FilterChatMembersModel>("TelegramModels", 1, 0, "FilterChatMembersModel");
         qmlRegisterType<tdlibQt::SearchChatMessagesModel>("TelegramModels", 1, 0, "SearchChatMessagesModel");
 
         qmlRegisterType<tdlibQt::UserInfoProvider>("TelegramDAO", 1, 0, "UserInfo");

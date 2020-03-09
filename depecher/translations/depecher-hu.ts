@@ -863,10 +863,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -896,6 +892,10 @@
     </message>
     <message>
         <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -883,10 +883,6 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -896,6 +892,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -863,10 +863,6 @@
         <translation>Info de canal</translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation>%1 miembros</translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation>Dejar canal</translation>
     </message>
@@ -897,6 +893,10 @@
     <message>
         <source>Bio</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished">%1 miembros</translation>
     </message>
 </context>
 <context>

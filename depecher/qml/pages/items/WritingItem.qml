@@ -4,6 +4,7 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import QtGraphicalEffects 1.0
 import depecherUtils 1.0
+import TelegramModels 1.0
 import QtMultimedia 5.6
 
 Drawer {
@@ -20,6 +21,7 @@ Drawer {
     property alias replyMessageText: authorsTextLabel.text
     property alias returnButtonItem: returnButton
     property alias returnButtonEnabled: returnButton.enabled
+    property alias chatMembersList: chatMembersList
     property string reply_id: "0"
     property string edit_message_id: "0"
 
@@ -97,13 +99,103 @@ Drawer {
     open: false
     dock: Dock.Bottom
     anchors.fill: parent
+    backgroundSize: isPortrait ? height/2 : height * 2/3
 
     Item {
         id: sendArea
         anchors.bottom: parent.bottom
         z:1
         width: parent.width
-        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
+        height: chatMembersList.height + replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
+
+        Rectangle {
+            width: parent.width
+            height: chatMembersList.height
+            color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
+            opacity: chatMembersList.opacity
+        }
+        SilicaListView {
+            id: chatMembersList
+            width: parent.width
+            height: opacity ? Math.min(3, count)*Theme.itemSizeExtraSmall : 0
+            opacity: 0
+            clip: true
+            currentIndex: -1
+            focus: false
+            highlightRangeMode: ListView.ApplyRange
+
+            // currentIndex is invalid after EnterKey is clicked
+            property int sourceIndex: -1
+
+            onCurrentIndexChanged: {
+                if (currentIndex != -1)
+                    sourceIndex = filterChatMembersModel.sourceIndex(currentIndex)
+            }
+
+            onCountChanged: {
+                if (count != 0)
+                    sourceIndex = filterChatMembersModel.sourceIndex(currentIndex)
+            }
+
+            Behavior on height { NumberAnimation { duration: 150} }
+
+            delegate: BackgroundItem {
+                width: chatMembersList.width
+                height: Theme.itemSizeExtraSmall
+                highlighted: index == chatMembersList.currentIndex
+                Row {
+                    width: parent.width - 2 * x
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: Theme.horizontalPageMargin
+                    Item {
+                        height: parent.height
+                        width: height
+                        CircleImage {
+                            id:userPhoto
+                            source: avatar ? avatar : ""
+                            fallbackItemVisible: avatar == undefined
+                            fallbackText:name.charAt(0)
+                            anchors.centerIn: parent
+                        }
+                    }
+
+                    Item {
+                        width: Theme.paddingLarge
+                        height: Theme.paddingLarge
+                    }
+                    Label {
+                        property string mText: name + (username ? " @" + username : "")
+                        text: textArea.text.length ?
+                                  Theme.highlightText(mText, filterChatMembersModel.search, Theme.highlightColor) : mText
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.primaryColor
+                        width: parent.width - userPhoto.width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                onClicked: {
+                    delegateTimer.start()
+                    if (model.username.length)
+                        textArea.text = "@" + model.username + " "
+                    else
+                        textArea.text = model.name + " "
+                }
+            }
+            VerticalScrollDecorator {
+                flickable: chatMembersList
+            }
+
+            Timer {
+                id: delegateTimer
+                interval: 0
+                onTriggered: {
+                    textArea.cursorPosition = textArea.text.length
+                    restoreFocusTimer.start()
+                }
+            }
+        }
+
 
         BackgroundItem {
             id:returnButton
@@ -212,13 +304,14 @@ Drawer {
                 TextArea {
                     id: messageArea
                     onTextChanged: {
-                        if(text === "")
-                        {
+                        if (filterChatMembersModel && text.indexOf("@") == 0 && text.indexOf(" ") < 0) {
+                            state = "searchMember"
+                        } else if (text === "") {
                             state ="text"
                             messageArea.forceActiveFocus()
-                        }
-                        if(text != "")
+                        } else if(text != "") {
                             state ="typing"
+                        }
                     }
 
                     height: Math.min(Theme.itemSizeHuge ,implicitHeight)
@@ -232,6 +325,7 @@ Drawer {
                             labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
                         }
                     }
+
                     state:"text"
                     states:[
                         State {
@@ -372,6 +466,26 @@ Drawer {
                                 target:sendButton
                                 visible:false
                             }
+                        },
+                        State {
+                            name: "searchMember"
+                            extend: "typing"
+                            PropertyChanges {
+                                target: filterChatMembersModel
+                                search: text.substr(1)
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                model: filterChatMembersModel
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                opacity: 1
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                currentIndex: 0
+                            }
                         }
                     ]
                     transitions: [
@@ -392,6 +506,16 @@ Drawer {
                                 target: labelTime
                                 properties :"x"
                                 duration :200
+                            }
+                        },
+                        Transition {
+                            from: "*"
+                            to: "searchMember"
+                            reversible: true
+                            NumberAnimation {
+                                target: chatMembersList
+                                properties: "opacity"
+                                duration: 150
                             }
                         }
                     ]
