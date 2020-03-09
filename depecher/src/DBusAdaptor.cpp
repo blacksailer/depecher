@@ -150,6 +150,7 @@ void DBusAdaptor::openConversation(const qlonglong &chatId)
 void DBusAdaptor::onViewDestroyed()
 {
     view = nullptr;
+    emit viewDestroyed();
 }
 
 void DBusAdaptor::onViewClosing(QQuickCloseEvent *v)

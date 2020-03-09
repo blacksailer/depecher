@@ -4,6 +4,9 @@
 #include <QThread>
 #include <QGuiApplication>
 namespace tdlibQt {
+
+static const QByteArray authorizationStateClosedStr("{\"@type\":\"updateAuthorizationState\",\"authorization_state\":{\"@type\":\"authorizationStateClosed\"}}");
+
 ListenObject::ListenObject(void *client_, QWaitCondition *condition,
                            QObject *parent) : QObject(parent),
     client(client_),
@@ -46,7 +49,12 @@ void ListenObject::listen()
 
                 if (!str.empty()) {
                     QByteArray result = QByteArray::fromStdString(str);
-                    emit resultReady(result);
+                    if (result == authorizationStateClosedStr) {
+                        qApp->quit();
+                        return;
+                    } else {
+                        emit resultReady(result);
+                    }
                 }
             } catch (std::logic_error err) {
 #ifdef QT_DEBUG

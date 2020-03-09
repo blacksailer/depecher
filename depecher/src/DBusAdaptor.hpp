@@ -29,6 +29,9 @@ public slots:
 private slots:
     void onViewDestroyed();
     void onViewClosing(QQuickCloseEvent *v);
+
+signals:
+    void viewDestroyed();
 };
 
 #endif // DBUSADAPTOR_HPP

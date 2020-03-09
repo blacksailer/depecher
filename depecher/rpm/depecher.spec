@@ -72,7 +72,6 @@ if /sbin/pidof depecher > /dev/null; then
 killall depecher || true
 fi
 
-systemctl restart mce.service
 systemctl-user restart ngfd.service
 #Moving db dir issue - #14
 if [ -d "/home/nemo/depecherDatabase" ]; then

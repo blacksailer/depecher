@@ -1158,5 +1158,12 @@ void TdlibJsonWrapper::setConnectionState(Enums::ConnectionState &connState)
     emit connectionStateChanged(connectionState);
 }
 
+void TdlibJsonWrapper::close()
+{
+    QJsonObject query {
+        {"@type", "close"}
+    };
+    sendJsonObjToTelegram(query);
+}
 
 }// namespace tdlibQt

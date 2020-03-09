@@ -55,11 +55,19 @@ int main(int argc, char *argv[])
 //    tdlib->setEncryptionKey();
     FileGeneratedHandler generationHandler(app);
 
+    app->setQuitOnLastWindowClosed(false);
     if (quitOnCloseUi.value(false).toBool()) {
-        app->setQuitOnLastWindowClosed(true);
+        QObject::connect(dbusWatcher.data(), &DBusAdaptor::viewDestroyed, tdlib, [=] () {
+            tdlib->close();
+            // In case tdlib close fail
+            QTimer *closeTimer = new QTimer(tdlib);
+            closeTimer->start(5000);
+            QObject::connect(closeTimer, &QTimer::timeout,
+                             app , &QGuiApplication::quit);
+        });
+
         DBusAdaptor::raiseApp();
     } else {
-        app->setQuitOnLastWindowClosed(false);
         QObject::connect(app, &QGuiApplication::aboutToQuit,
                          NotificationManager, &tdlibQt::NotificationManager::removeAll);
     }

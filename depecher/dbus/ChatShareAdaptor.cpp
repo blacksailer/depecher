@@ -10,7 +10,8 @@ static const QString c_dbusObjectPath = QStringLiteral("/org/blacksailer/depeche
 static const QString c_dbusInterface = QStringLiteral("org.blacksailer.depecher.share");
 static const QString c_extraName = QStringLiteral("dbus");
 
-ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent)
+ChatShareAdaptor::ChatShareAdaptor(QObject *parent) : QObject(parent),
+    m_dbusConnection(NULL)
 {
     m_dbusServer = new QDBusServer("unix:abstract=depecher-dbus", this);
     connect(m_dbusServer, &QDBusServer::newConnection,
@@ -83,5 +84,6 @@ QDBusVariant ChatShareAdaptor::getChatList(const qint64 lastChatId, const qint64
 
 ChatShareAdaptor::~ChatShareAdaptor()
 {
-    delete m_dbusConnection;
+    if (m_dbusConnection)
+        delete m_dbusConnection;
 }

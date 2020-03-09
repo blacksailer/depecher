@@ -231,6 +231,7 @@ public slots:
     void deleteChatHistory(qint64 chat_id = 0, bool remove_from_chat_list  = false, bool revoke = false, const QString &extra = "");
     void getSupergroupMembers(const int supergroup_id,
                               const QString &search, const int offset, const int limit, const QString &extra);
+    void close();
 };
 } //namespace tdlibQt
 #endif // TDLIBJSONWRAPPER_HPP
