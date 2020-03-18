@@ -2,6 +2,7 @@
 #include "singletons/PageAppStarter.hpp"
 #include "FileWorker.hpp"
 #include "components/AudioRecorder.hpp"
+#include "KeysEater.h"
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
@@ -106,6 +107,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
 
         qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
         qmlRegisterType<AudioRecorder>("depecherUtils", 1, 0, "AudioRecorder");
+        qmlRegisterType<KeysEater>("depecherUtils", 1, 0, "KeysEater");
         qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
         qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
         qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");

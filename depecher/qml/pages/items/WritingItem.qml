@@ -106,35 +106,29 @@ Drawer {
         anchors.bottom: parent.bottom
         z:1
         width: parent.width
-        height: chatMembersList.height + replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
+        height: basicHeight + chatMembersList.height
+        property int basicHeight: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
 
         Rectangle {
             width: parent.width
             height: chatMembersList.height
             color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
-            opacity: chatMembersList.opacity
         }
         SilicaListView {
             id: chatMembersList
             width: parent.width
-            height: opacity ? Math.min(3, count)*Theme.itemSizeExtraSmall : 0
-            opacity: 0
+            height: visible ? Math.min(page.height - sendArea.basicHeight,
+                                       3*Theme.itemSizeExtraSmall,
+                                       count*Theme.itemSizeExtraSmall) : 0
+            visible: false
             clip: true
             currentIndex: -1
             focus: false
             highlightRangeMode: ListView.ApplyRange
 
-            // currentIndex is invalid after EnterKey is clicked
-            property int sourceIndex: -1
-
-            onCurrentIndexChanged: {
-                if (currentIndex != -1)
-                    sourceIndex = filterChatMembersModel.sourceIndex(currentIndex)
-            }
-
             onCountChanged: {
-                if (count != 0)
-                    sourceIndex = filterChatMembersModel.sourceIndex(currentIndex)
+                if (count > 0 && currentIndex < 0)
+                    currentIndex = 0
             }
 
             Behavior on height { NumberAnimation { duration: 150} }
@@ -157,6 +151,7 @@ Drawer {
                             fallbackItemVisible: avatar == undefined
                             fallbackText:name.charAt(0)
                             anchors.centerIn: parent
+                            width: parent.height - 2*Theme.paddingSmall
                         }
                     }
 
@@ -176,10 +171,13 @@ Drawer {
                 }
                 onClicked: {
                     delegateTimer.start()
-                    if (model.username.length)
-                        textArea.text = "@" + model.username + " "
-                    else
-                        textArea.text = model.name + " "
+                    if (username.length) {
+                        delegateTimer.cursorPosition = textArea.searchMemberStrPos + username.length + 2
+                        textArea.text = text.substring(0, textArea.searchMemberStrPos) + "@" + username + " " + text.substring(textArea.cursorPosition)
+                    } else {
+                        delegateTimer.cursorPosition = textArea.searchMemberStrPos + name.length + 1
+                        textArea.text = text.substring(0, textArea.searchMemberStrPos) + name + " " + text.substring(textArea.cursorPosition)
+                    }
                 }
             }
             VerticalScrollDecorator {
@@ -189,8 +187,9 @@ Drawer {
             Timer {
                 id: delegateTimer
                 interval: 0
+                property int cursorPosition: 0
                 onTriggered: {
-                    textArea.cursorPosition = textArea.text.length
+                    textArea.cursorPosition = cursorPosition
                     restoreFocusTimer.start()
                 }
             }
@@ -303,14 +302,48 @@ Drawer {
                 }
                 TextArea {
                     id: messageArea
+                    property string searchMemberStr
+                    property int searchMemberStrPos: -1
+
+                    function showMembersList() {
+                        cursorTimer.stop()
+                        var atPos = text.lastIndexOf("@", cursorPosition)
+                        if (atPos === 0 || (atPos > 0 && !/[\w]/.test(text.charAt(atPos-1)))) {
+                            var spacePos = text.indexOf(" ", atPos)
+                            if (spacePos >= cursorPosition || spacePos < 0) {
+                                searchMemberStrPos = atPos
+                                searchMemberStr = text.substring(atPos+1, cursorPosition)
+                                state = "searchMember"
+                                return true
+                            }
+                        }
+
+                        if (searchMemberStr.length)
+                            searchMemberStr = ""
+                        return false
+                    }
+
                     onTextChanged: {
-                        if (filterChatMembersModel && text.indexOf("@") == 0 && text.indexOf(" ") < 0) {
-                            state = "searchMember"
-                        } else if (text === "") {
+                        if (filterChatMembersModel && showMembersList())
+							return
+                        if (text === "") {
                             state ="text"
                             messageArea.forceActiveFocus()
                         } else if(text != "") {
                             state ="typing"
+                        }
+                    }
+
+                    onCursorPositionChanged: {
+                        if (filterChatMembersModel)
+                            cursorTimer.restart()
+                    }
+                    Timer {
+                        id: cursorTimer
+                        interval: 10
+                        onTriggered: {
+                            if (!textArea.showMembersList() && textArea.state == "searchMember")
+                                textArea.state = "typing"
                         }
                     }
 
@@ -472,7 +505,7 @@ Drawer {
                             extend: "typing"
                             PropertyChanges {
                                 target: filterChatMembersModel
-                                search: text.substr(1)
+                                search: textArea.searchMemberStr
                             }
                             PropertyChanges {
                                 target: chatMembersList
@@ -480,7 +513,7 @@ Drawer {
                             }
                             PropertyChanges {
                                 target: chatMembersList
-                                opacity: 1
+                                visible: true
                             }
                             PropertyChanges {
                                 target: chatMembersList
@@ -506,16 +539,6 @@ Drawer {
                                 target: labelTime
                                 properties :"x"
                                 duration :200
-                            }
-                        },
-                        Transition {
-                            from: "*"
-                            to: "searchMember"
-                            reversible: true
-                            NumberAnimation {
-                                target: chatMembersList
-                                properties: "opacity"
-                                duration: 150
                             }
                         }
                     ]
