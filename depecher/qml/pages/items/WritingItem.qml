@@ -4,6 +4,7 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import QtGraphicalEffects 1.0
 import depecherUtils 1.0
+import TelegramModels 1.0
 import QtMultimedia 5.6
 
 Drawer {
@@ -20,6 +21,7 @@ Drawer {
     property alias replyMessageText: authorsTextLabel.text
     property alias returnButtonItem: returnButton
     property alias returnButtonEnabled: returnButton.enabled
+    property alias chatMembersList: chatMembersList
     property string reply_id: "0"
     property string edit_message_id: "0"
 
@@ -29,12 +31,32 @@ Drawer {
     signal setFocusToEdit()
     signal replyAreaCleared()
 
+    property string settingsUiPath:  "/apps/depecher/ui"
     property string settingsBehaviorPath:  "/apps/depecher/behavior"
     ConfigurationValue {
         id:sendByEnter
         key:settingsBehaviorPath +"/sendByEnter"
         defaultValue: false
     }
+
+    ConfigurationValue {
+        id: showVoiceMessageButton
+        key: settingsUiPath + "/showVoiceMessageButton"
+        defaultValue: true
+    }
+
+    ConfigurationValue {
+        id:showCurrentTimeLabel
+        key:settingsUiPath + "/showCurrentTimeLabel"
+        defaultValue: true
+        onValueChanged: {
+            if (value) {
+                var date = new Date()
+                labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+            }
+        }
+    }
+
     function clearReplyArea() {
         if(attachDrawer.state == "editText" || attachDrawer.state == "editCaption") {
             messageArea.text = ""
@@ -77,13 +99,102 @@ Drawer {
     open: false
     dock: Dock.Bottom
     anchors.fill: parent
+    backgroundSize: isPortrait ? height/2 : height * 2/3
 
     Item {
         id: sendArea
         anchors.bottom: parent.bottom
         z:1
         width: parent.width
-        height: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
+        height: basicHeight + chatMembersList.height
+        property int basicHeight: replyArea.height + messageArea.height + returnButton.height + labelTime.height + labelTime.anchors.bottomMargin + Theme.paddingSmall
+
+        Rectangle {
+            width: parent.width
+            height: chatMembersList.height
+            color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
+        }
+        SilicaListView {
+            id: chatMembersList
+            width: parent.width
+            height: visible ? Math.min(page.height - sendArea.basicHeight,
+                                       3*Theme.itemSizeExtraSmall,
+                                       count*Theme.itemSizeExtraSmall) : 0
+            visible: false
+            clip: true
+            currentIndex: -1
+            focus: false
+            highlightRangeMode: ListView.ApplyRange
+
+            onCountChanged: {
+                if (count > 0 && currentIndex < 0)
+                    currentIndex = 0
+            }
+
+            Behavior on height { NumberAnimation { duration: 150} }
+
+            delegate: BackgroundItem {
+                width: chatMembersList.width
+                height: Theme.itemSizeExtraSmall
+                highlighted: index == chatMembersList.currentIndex
+                Row {
+                    width: parent.width - 2 * x
+                    height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: Theme.horizontalPageMargin
+                    Item {
+                        height: parent.height
+                        width: height
+                        CircleImage {
+                            id:userPhoto
+                            source: avatar ? avatar : ""
+                            fallbackItemVisible: avatar == undefined
+                            fallbackText:name.charAt(0)
+                            anchors.centerIn: parent
+                            width: parent.height - 2*Theme.paddingSmall
+                        }
+                    }
+
+                    Item {
+                        width: Theme.paddingLarge
+                        height: Theme.paddingLarge
+                    }
+                    Label {
+                        property string mText: name + (username ? " @" + username : "")
+                        text: textArea.text.length ?
+                                  Theme.highlightText(mText, filterChatMembersModel.search, Theme.highlightColor) : mText
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.primaryColor
+                        width: parent.width - userPhoto.width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                onClicked: {
+                    delegateTimer.start()
+                    if (username.length) {
+                        delegateTimer.cursorPosition = textArea.searchMemberStrPos + username.length + 2
+                        textArea.text = text.substring(0, textArea.searchMemberStrPos) + "@" + username + " " + text.substring(textArea.cursorPosition)
+                    } else {
+                        delegateTimer.cursorPosition = textArea.searchMemberStrPos + name.length + 1
+                        textArea.text = text.substring(0, textArea.searchMemberStrPos) + name + " " + text.substring(textArea.cursorPosition)
+                    }
+                }
+            }
+            VerticalScrollDecorator {
+                flickable: chatMembersList
+            }
+
+            Timer {
+                id: delegateTimer
+                interval: 0
+                property int cursorPosition: 0
+                onTriggered: {
+                    textArea.cursorPosition = cursorPosition
+                    restoreFocusTimer.start()
+                }
+            }
+        }
+
 
         BackgroundItem {
             id:returnButton
@@ -191,14 +302,49 @@ Drawer {
                 }
                 TextArea {
                     id: messageArea
+                    property string searchMemberStr
+                    property int searchMemberStrPos: -1
+
+                    function showMembersList() {
+                        cursorTimer.stop()
+                        var atPos = text.lastIndexOf("@", cursorPosition)
+                        if (atPos === 0 || (atPos > 0 && !/[\w]/.test(text.charAt(atPos-1)))) {
+                            var spacePos = text.indexOf(" ", atPos)
+                            if (spacePos >= cursorPosition || spacePos < 0) {
+                                searchMemberStrPos = atPos
+                                searchMemberStr = text.substring(atPos+1, cursorPosition)
+                                state = "searchMember"
+                                return true
+                            }
+                        }
+
+                        if (searchMemberStr.length)
+                            searchMemberStr = ""
+                        return false
+                    }
+
                     onTextChanged: {
-                        if(text === "")
-                        {
+                        if (filterChatMembersModel && showMembersList())
+							return
+                        if (text === "") {
                             state ="text"
                             messageArea.forceActiveFocus()
-                        }
-                        if(text != "")
+                        } else if(text != "") {
                             state ="typing"
+                        }
+                    }
+
+                    onCursorPositionChanged: {
+                        if (filterChatMembersModel)
+                            cursorTimer.restart()
+                    }
+                    Timer {
+                        id: cursorTimer
+                        interval: 10
+                        onTriggered: {
+                            if (!textArea.showMembersList() && textArea.state == "searchMember")
+                                textArea.state = "typing"
+                        }
                     }
 
                     height: Math.min(Theme.itemSizeHuge ,implicitHeight)
@@ -207,9 +353,12 @@ Drawer {
                     labelVisible: false
 
                     Component.onCompleted: {
-                        var date = new Date()
-                        labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                        if (showCurrentTimeLabel.value) {
+                            var date = new Date()
+                            labelTime.text =  Format.formatDate(date, Formatter.TimeValue)
+                        }
                     }
+
                     state:"text"
                     states:[
                         State {
@@ -229,7 +378,7 @@ Drawer {
                             }
                             PropertyChanges {
                                 target:mic
-                                visible: reply_id != "-1"
+                                visible: showVoiceMessageButton.value && reply_id != "-1"
                                 y:stickerButton.y
                             }
                             PropertyChanges {
@@ -350,6 +499,26 @@ Drawer {
                                 target:sendButton
                                 visible:false
                             }
+                        },
+                        State {
+                            name: "searchMember"
+                            extend: "typing"
+                            PropertyChanges {
+                                target: filterChatMembersModel
+                                search: textArea.searchMemberStr
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                model: filterChatMembersModel
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                visible: true
+                            }
+                            PropertyChanges {
+                                target: chatMembersList
+                                currentIndex: 0
+                            }
                         }
                     ]
                     transitions: [
@@ -409,11 +578,12 @@ Drawer {
             anchors.leftMargin: Theme.horizontalPageMargin
             anchors.bottom: parent.bottom
             anchors.bottomMargin: Theme.paddingMedium
-            visible: messageArea.visible
+            visible: showCurrentTimeLabel.value && messageArea.visible
+            height: visible ? undefined : 0
             Timer {
                 interval: 60*1000
                 repeat: true
-                running: true
+                running: showCurrentTimeLabel.value
                 onTriggered: {
                     var date = new Date()
                     labelTime.text =  Format.formatDate(date, Formatter.TimeValue)

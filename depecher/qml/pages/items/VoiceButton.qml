@@ -120,7 +120,7 @@ Row {
         width:rootItem.width == buttonWidth ? 0  : rootItem.width - mic.width - Theme.horizontalPageMargin
         Row {
             width: parent.width
-            anchors.bottom: rootItem.bottom
+            anchors.bottom: parent.bottom
             visible: voiceLabel.width > 0
             Item {
             width: Theme.horizontalPageMargin

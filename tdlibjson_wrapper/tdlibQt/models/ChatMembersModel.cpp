@@ -54,7 +54,7 @@ QVariant ChatMembersModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     int rowIndex = index.row();
-    if (rowIndex < 0 || rowIndex > rowCount(QModelIndex()))
+    if (rowIndex < 0 || rowIndex >= rowCount(QModelIndex()))
         return QVariant();
     switch (role) {
     case AVATAR: {
@@ -99,9 +99,15 @@ QVariant ChatMembersModel::data(const QModelIndex &index, int role) const
     }
     case NAME:
         return  UsersModel::instance()->getUserFullName(m_members[rowIndex]->user_id_);
+    case USERNAME:
+        return  UsersModel::instance()->getUsername(m_members[rowIndex]->user_id_);
     case ONLINE_STATUS:
         return  UsersModel::getUserStatusAsString(UsersModel::instance()->getUserStatus(m_members[rowIndex]->user_id_));
+    case DELETED:
+        auto userTypePtr = UsersModel::instance()->getUserType(m_members[rowIndex]->user_id_);
+        return userTypePtr->get_id() == userTypeDeleted::ID;
     }
+    return QVariant();
 }
 
 void ChatMembersModel::processFile(const QJsonObject &fileObject)
@@ -115,7 +121,7 @@ void ChatMembersModel::processFile(const QJsonObject &fileObject)
             UsersModel::instance()->setSmallAvatar(m_members[rowIndex]->user_id_, file);
             QVector<int> avatarRole;
             avatarRole.append(AVATAR);
-            emit dataChanged(index(rowIndex), QModelIndex(), avatarRole);
+            emit dataChanged(index(rowIndex), index(rowIndex), avatarRole);
         }
     }
 }
@@ -135,7 +141,7 @@ void ChatMembersModel::userStatusReceived(const QJsonObject &userStatusObject)
         if (m_members[i]->user_id_ == user_id) {
             QVector<int> roles;
             roles.append(ONLINE_STATUS);
-            emit dataChanged(index(i), QModelIndex(), roles);
+            emit dataChanged(index(i), index(i), roles);
             break;
         }
     }
@@ -156,8 +162,10 @@ QHash<int, QByteArray> ChatMembersModel::roleNames() const
     roleNames[USER_ID] = "user_id";
     roleNames[AVATAR] = "avatar";
     roleNames[NAME] = "name";
+    roleNames[USERNAME] = "username";
     roleNames[STATUS] = "status";
     roleNames[ONLINE_STATUS] = "online_status";
+    roleNames[DELETED] = "deleted";
 
     return roleNames;
 
@@ -167,4 +175,10 @@ bool ChatMembersModel::supergroupMode() const
 {
     return m_supergroupMode;
 }
+
+QVariant ChatMembersModel::getProperty(int idx, const QByteArray &prop)
+{
+    return data(index(idx), roleNames().key(prop));
+}
+
 } // namespace tdlibQt

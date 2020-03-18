@@ -179,6 +179,14 @@
         <source>Show full screen images in channels</source>
         <translation>Visa helskärmsbilder i kanaler</translation>
     </message>
+    <message>
+        <source>Show voice message button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current time below message input</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -875,10 +883,6 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -888,6 +892,10 @@ Observera att efter detta, kommer 2-faktorsauktoriseringen att inaktiveras</tran
     </message>
     <message>
         <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -34,6 +34,7 @@ BuildRequires:  pkgconfig(tdlibjson)
 BuildRequires:  pkgconfig(nemonotifications-qt5)
 BuildRequires:  pkgconfig(vorbisfile)
 BuildRequires:  pkgconfig(libdbusaccess)
+BuildRequires:  pkgconfig(nemotransferengine-qt5)
 BuildRequires:  sailfish-svg2png >= 0.1.5
 BuildRequires:  desktop-file-utils
 
@@ -71,7 +72,6 @@ if /sbin/pidof depecher > /dev/null; then
 killall depecher || true
 fi
 
-systemctl restart mce.service
 systemctl-user restart ngfd.service
 #Moving db dir issue - #14
 if [ -d "/home/nemo/depecherDatabase" ]; then

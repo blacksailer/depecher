@@ -9,6 +9,7 @@ Image {
     property alias fallbackItemVisible: fallbackitem.visible
     width:parent.height-5
     height: width
+    asynchronous: true
 
     layer.enabled:true
     layer.effect: OpacityMask {

@@ -179,6 +179,14 @@
         <source>Show full screen images in channels</source>
         <translation>Mostrar mensajes a pantalla completa en los canales</translation>
     </message>
+    <message>
+        <source>Show voice message button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current time below message input</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -855,10 +863,6 @@
         <translation>Info de canal</translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation>%1 miembros</translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation>Dejar canal</translation>
     </message>
@@ -889,6 +893,10 @@
     <message>
         <source>Bio</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished">%1 miembros</translation>
     </message>
 </context>
 <context>

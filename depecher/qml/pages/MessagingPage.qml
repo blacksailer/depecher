@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import TelegramModels 1.0
 import QtFeedback 5.0
 import tdlibQtEnums 1.0
+import depecherUtils 1.0
 import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import "../js/utils.js" as Utils
@@ -14,16 +15,33 @@ Page {
     property alias chatId: messagingModel.peerId
     property var forwardMessages: ({})
     property var arrayIndex: []
-    onStatusChanged: {
-        if(status == PageStatus.Active) {
-            if(messagingModel.chatType["type"] == TdlibState.BasicGroup)
-                pageStack.pushAttached(Qt.resolvedUrl("GroupInfoPage.qml"),{chat_id:parseFloat(chatId)})
-                else if(messagingModel.chatType["type"] == TdlibState.Secret || messagingModel.chatType["type"] == TdlibState.Private)
-                pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{user_id:parseInt(chatId)})
-            else if (messagingModel.chatType["type"] == TdlibState.Supergroup)// && messagingModel.chatType["is_channel"])
-            pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),hideOpenMenu:true})
-        }
+    property FilterChatMembersModel filterChatMembersModel: null
+    property bool infoPageLoaded: false
 
+    onStatusChanged: {
+        if (!infoPageLoaded && status == PageStatus.Active) {
+            infoPageLoaded = true
+            if(messagingModel.chatType["type"] == TdlibState.BasicGroup) {
+                var infoPage = pageStack.pushAttached(Qt.resolvedUrl("GroupInfoPage.qml"),{chat_id:parseFloat(chatId)})
+                infoPage.filterChatMembersModelChanged.connect(function (membersModel) {
+                    page.filterChatMembersModel = membersModel
+                })
+            } else if (messagingModel.chatType["type"] == TdlibState.Secret || messagingModel.chatType["type"] == TdlibState.Private) {
+                pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{user_id:parseInt(chatId)})
+            } else if (messagingModel.chatType["type"] == TdlibState.Supergroup) {// && messagingModel.chatType["is_channel"])
+                var userPage = pageStack.pushAttached(Qt.resolvedUrl("UserPage.qml"),{chat_id:parseFloat(chatId),hideOpenMenu:true})
+                userPage.filterChatMembersModelChanged.connect(function (membersModel) {
+                    page.filterChatMembersModel = membersModel
+                })
+            }
+        } else if (status == PageStatus.Inactive) {
+            if (filterChatMembersModel) {
+                writer.textArea.state = "text"
+                writer.textArea.searchMemberStr = ""
+                writer.textArea.searchMemberStrPos = -1
+                filterChatMembersModel.search = ""
+            }
+        }
     }
 
     Notification {
@@ -106,6 +124,7 @@ Page {
         id: writer
         rootPage: page
         anchors.fill: parent
+
         Timer {
             //Because TextBase of TextArea uses Timer for losing focus.
             //Let's reuse that =)
@@ -113,12 +132,46 @@ Page {
             interval: 50
             onTriggered: writer.textArea.forceActiveFocus()
         }
+
+        KeysEater {
+            target: keys.length ? writer.textArea._editor : null
+            keys: {
+                if (writer.textArea.state === "searchMember" && writer.chatMembersList.count)
+                    return [Qt.Key_Return, Qt.Key_Enter, Qt.Key_Up, Qt.Key_Down]
+                else
+                    return sendByEnter.value ? [Qt.Key_Return, Qt.Key_Enter] : []
+            }
+
+            onKeyPressed: {
+                switch (key) {
+                case Qt.Key_Up:
+                    writer.chatMembersList.currentIndex = Math.max(writer.chatMembersList.currentIndex - 1, 0)
+                    break
+                case Qt.Key_Down:
+                    writer.chatMembersList.currentIndex = Math.min(writer.chatMembersList.currentIndex + 1, writer.chatMembersList.count - 1)
+                    break
+                }
+            }
+        }
+
         EnterKey.iconSource: sendByEnter.value ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter"
         EnterKey.onClicked: {
-            if(sendByEnter.value) {
-                //removing on enter clicked symbol - /n
-                var messageText = textArea.text.slice(0,textArea.cursorPosition-1) + textArea.text.slice(textArea.cursorPosition,textArea.text.length)
-                sendText(messageText,writer.reply_id)
+            if (textArea.state === "searchMember" && chatMembersList.currentIndex >= 0) {
+                var targetCursorPos
+                var sourceIndex = filterChatMembersModel.sourceIndex(chatMembersList.currentIndex)
+                var username = filterChatMembersModel.sourceModel.getProperty(sourceIndex, "username")
+                if (username.length) {
+                    targetCursorPos = textArea.searchMemberStrPos + username.length + 2
+                    textArea.text = text.substring(0, textArea.searchMemberStrPos) + "@" + username + " " + text.substring(textArea.cursorPosition)
+                } else {
+                    var name = filterChatMembersModel.sourceModel.getProperty(sourceIndex, "name")
+                    targetCursorPos = textArea.searchMemberStrPos + name.length + 1
+                    textArea.text = text.substring(0, textArea.searchMemberStrPos) + name + " " + text.substring(textArea.cursorPosition)
+                }
+                textArea.cursorPosition = targetCursorPos
+                chatMembersList.currentIndex = -1
+            } else if (sendByEnter.value) {
+                sendText(textArea.text, writer.reply_id)
             }
         }
         Keys.onUpPressed: {
@@ -128,9 +181,9 @@ Page {
                     if (listItems[i].messageEditable) {
                         listItems[i].triggerEdit()
                         // break;   // break here if you want to edit even if someone answered.
-                                    // If the list is scrolling, children change index while looping,
-                                    // and it ends up peaking the wrong child.
-                                    // Is there any porperty that tells whether it is scrolling?
+                        // If the list is scrolling, children change index while looping,
+                        // and it ends up peaking the wrong child.
+                        // Is there any porperty that tells whether it is scrolling?
                     }
                     break;
                 }

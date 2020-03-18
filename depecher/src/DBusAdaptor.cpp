@@ -2,6 +2,7 @@
 #include "singletons/PageAppStarter.hpp"
 #include "FileWorker.hpp"
 #include "components/AudioRecorder.hpp"
+#include "KeysEater.h"
 
 #include "tdlibQt/TdlibJsonWrapper.hpp"
 #include "tdlibQt/models/StickerModel.hpp"
@@ -11,6 +12,7 @@
 #include "tdlibQt/models/ContactsModel.hpp"
 #include "tdlibQt/models/FilterContactsModel.hpp"
 #include "tdlibQt/models/ChatMembersModel.hpp"
+#include "tdlibQt/models/FilterChatMembersModel.hpp"
 #include "tdlibQt/models/SearchChatMessagesModel.hpp"
 
 #include "tdlibQt/TelegramProfileProvider.hpp"
@@ -105,6 +107,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
 
         qmlRegisterType<FileWorker>("depecherUtils", 1, 0, "FileWorker");
         qmlRegisterType<AudioRecorder>("depecherUtils", 1, 0, "AudioRecorder");
+        qmlRegisterType<KeysEater>("depecherUtils", 1, 0, "KeysEater");
         qmlRegisterType<tdlibQt::AboutMeDAO>("TelegramItems", 1, 0, "AboutMeDAO");
         qmlRegisterType<tdlibQt::ProxyDAO>("TelegramItems", 1, 0, "ProxyDAO");
         qmlRegisterType<tdlibQt::MessagingModel>("TelegramModels", 1, 0, "MessagingModel");
@@ -112,6 +115,7 @@ void DBusAdaptor::showApp(const QStringList &cmd)
         qmlRegisterType<tdlibQt::StickerModel>("TelegramModels", 1, 0, "StickerModel");
         qmlRegisterType<tdlibQt::ContactsModel>("TelegramModels", 1, 0, "ContactsModel");
         qmlRegisterType<tdlibQt::FilterContactsModel>("TelegramModels", 1, 0, "FilterContactsModel");
+        qmlRegisterType<tdlibQt::FilterChatMembersModel>("TelegramModels", 1, 0, "FilterChatMembersModel");
         qmlRegisterType<tdlibQt::SearchChatMessagesModel>("TelegramModels", 1, 0, "SearchChatMessagesModel");
 
         qmlRegisterType<tdlibQt::UserInfoProvider>("TelegramDAO", 1, 0, "UserInfo");
@@ -148,6 +152,7 @@ void DBusAdaptor::openConversation(const qlonglong &chatId)
 void DBusAdaptor::onViewDestroyed()
 {
     view = nullptr;
+    emit viewDestroyed();
 }
 
 void DBusAdaptor::onViewClosing(QQuickCloseEvent *v)

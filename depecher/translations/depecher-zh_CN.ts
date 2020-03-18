@@ -179,6 +179,14 @@
         <source>Show full screen images in channels</source>
         <translation>在群组显示全屏图片</translation>
     </message>
+    <message>
+        <source>Show voice message button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current time below message input</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -855,10 +863,6 @@
         <translation>频道信息</translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation>%1 位成员</translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation>退出频道</translation>
     </message>
@@ -889,6 +893,10 @@
     <message>
         <source>Bio</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
+        <translation type="unfinished">%1 位成员</translation>
     </message>
 </context>
 <context>

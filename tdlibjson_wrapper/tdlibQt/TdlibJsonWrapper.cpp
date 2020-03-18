@@ -19,9 +19,25 @@ TdlibJsonWrapper::TdlibJsonWrapper(QObject *parent) : QObject(parent)
 void TdlibJsonWrapper::sendToTelegram(void *Client, const char *str)
 {
 #ifdef QT_DEBUG
-    qDebug() << QString::fromLatin1(str);
+    qDebug().noquote() << QString::fromLatin1(str);
 #endif
     td_json_client_send(Client, str);
+}
+
+void TdlibJsonWrapper::sendJsonObjToTelegram(QJsonObject &queryObj, const QString &extra)
+{
+    if (!extra.isEmpty())
+        queryObj.insert("@extra", extra);
+
+    QJsonDocument doc(queryObj);
+    QByteArray query;
+#ifdef QT_DEBUG
+    query = doc.toJson(QJsonDocument::Indented);
+#else
+    query = doc.toJson(QJsonDocument::Compact);
+#endif
+
+    sendToTelegram(client, query.constData());
 }
 
 QByteArray TdlibJsonWrapper::sendSyncroniousMessage(const QString &json)
@@ -207,6 +223,8 @@ void TdlibJsonWrapper::startListen()
             this, &TdlibJsonWrapper::updateBasicGroupFullInfoReceived);
     connect(parseObject, &ParseObject::updateBasicGroupReceived,
             this, &TdlibJsonWrapper::updateBasicGroupReceived);
+    connect(parseObject, &ParseObject::supergroupMembersReceived,
+            this, &TdlibJsonWrapper::supergroupMembersReceived);
     listenThread->start();
     parseThread->start();
 
@@ -850,6 +868,32 @@ void TdlibJsonWrapper::deleteChatHistory(qint64 chat_id, bool remove_from_chat_l
     sendToTelegram(client, query.toStdString().c_str());
 }
 
+void TdlibJsonWrapper::getSupergroupMembers(const int supergroup_id, const QString &search,
+                                            const int offset, const int limit, const QString &extra)
+{
+    QJsonObject filter;
+    if (search.isEmpty()) {
+        filter = QJsonObject {
+            {"@type", "supergroupMembersFilterRecent"}
+        };
+    } else {
+        filter = QJsonObject {
+            {"@type", "supergroupMembersFilterSearch"},
+            {"query", search}
+        };
+    }
+
+    QJsonObject query {
+        {"@type", "getSupergroupMembers"},
+        {"supergroup_id", supergroup_id},
+        {"filter", filter},
+        {"offset", offset},
+        {"limit", limit}
+    };
+
+    sendJsonObjToTelegram(query, extra);
+}
+
 void TdlibJsonWrapper::getChatMessageCount(qint64 chat_id, Enums::SearchFilter filter, bool return_local, const QString &extra)
 {
     QString query = "{\"@type\":\"getChatMessageCount\","
@@ -1114,5 +1158,12 @@ void TdlibJsonWrapper::setConnectionState(Enums::ConnectionState &connState)
     emit connectionStateChanged(connectionState);
 }
 
+void TdlibJsonWrapper::close()
+{
+    QJsonObject query {
+        {"@type", "close"}
+    };
+    sendJsonObjToTelegram(query);
+}
 
 }// namespace tdlibQt

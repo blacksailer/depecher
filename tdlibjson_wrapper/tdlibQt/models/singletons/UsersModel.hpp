@@ -28,7 +28,9 @@ public:
     QVariantMap getChatType(const qint64 chatId);
     QString getUserFirstName(const int userId);
     QString getUserFullName(const int userId);
+    QString getUsername(const int userId);
     void setSmallAvatar(qint64 id, QSharedPointer<file> small);
+    QSharedPointer<UserType> getUserType(const int userId);
     QSharedPointer<profilePhoto> getUserPhoto(const int userId);
     QSharedPointer<ChatMemberStatus> getGroupStatus(int group_id);
     QSharedPointer<user> getUser(const int userId);

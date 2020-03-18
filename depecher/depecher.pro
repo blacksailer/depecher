@@ -79,6 +79,7 @@ CONFIG (debug, debug|release) {
 MOC_DIR = build/mocs
 
 SOURCES += \
+    src/KeysEater.cpp \
     src/main.cpp \
     src/FileWorker.cpp \
     ModelTest.cpp \
@@ -159,6 +160,7 @@ HEADERS += \
     ModelTest.hpp \
     src/DBusAdaptor.hpp \
     dbus/DepecherAdaptor.hpp \
+    src/KeysEater.h \
     src/singletons/PageAppStarter.hpp \
     src/singletons/DNSTXTLookup.hpp \
     src/fileGeneratedHandlers/FileGeneratedHandler.hpp \

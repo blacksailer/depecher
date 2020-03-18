@@ -179,6 +179,14 @@
         <source>Show full screen images in channels</source>
         <translation>Bilder in Kanälen in Vollbild darstellen</translation>
     </message>
+    <message>
+        <source>Show voice message button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show current time below message input</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AreYouSureDialog</name>
@@ -855,10 +863,6 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 members</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Leave channel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -888,6 +892,10 @@ Beachte! Danach wird die 2FA Autorisierung deaktiviert werden.</translation>
     </message>
     <message>
         <source>Bio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 members</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

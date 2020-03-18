@@ -6,6 +6,7 @@
 #include "tdlibQt/items/TdApi.hpp"
 namespace tdlibQt {
 
+class ChatMembersModel;
 class ChannelInfoProvider : public InfoProvider
 {
     Q_OBJECT
@@ -17,6 +18,7 @@ class ChannelInfoProvider : public InfoProvider
     Q_PROPERTY(QString description READ description NOTIFY descriptionChanged)
     Q_PROPERTY(int members READ members NOTIFY membersChanged)
     Q_PROPERTY(MemberStatus status READ status NOTIFY statusChanged)
+    Q_PROPERTY(ChatMembersModel *membersModel READ membersModel NOTIFY membersModelChanged)
     Q_PROPERTY(bool canBeEdited READ canBeEdited  NOTIFY canBeEditedChanged)
     Q_PROPERTY(bool canChangeInfo READ canChangeInfo  NOTIFY canChangeInfoChanged)
     Q_PROPERTY(bool canPostMessages READ canPostMessages NOTIFY canPostMessagesChanged)
@@ -74,6 +76,8 @@ public:
     int untilDate() const;
     MemberStatus status() const;
 
+    ChatMembersModel *membersModel() const;
+
 signals:
     void nameChanged();
     void linkChanged();
@@ -97,10 +101,12 @@ signals:
     void untilDateChanged();
     void canRestrictMembersChanged();
     void statusChanged(MemberStatus status);
+    void membersModelChanged();
 
 private slots:
     void infoChanged(const QJsonObject &obj);
     void supergroupChanged(const QJsonObject &obj);
+    void supergroupMembersReceived(const QJsonObject &obj);
 
     void onChatIdChanged(const double chatId);
 public slots:
@@ -112,6 +118,8 @@ private:
     void emitInfo();
     QSharedPointer<supergroup> m_supergroup;
     QSharedPointer<supergroupFullInfo> m_supergroupFullInfo;
+    QSharedPointer<chatMembers> m_chatMembers;
+    ChatMembersModel *m_membersModel;
 
     int m_supergroupId;
 };

@@ -125,6 +125,21 @@ QString UsersModel::getUserFullName(const int userId)
                m_users[userId]->last_name_);
 }
 
+QString UsersModel::getUsername(const int userId)
+{
+    if (!m_users.contains(userId))
+        return tr("Unknown user");
+
+    return QString::fromStdString(m_users[userId]->username_);
+}
+
+QSharedPointer<UserType> UsersModel::getUserType(const int userId)
+{
+    if (!m_users.contains(userId))
+        return QSharedPointer<UserType>(nullptr);
+    return m_users[userId]->type_;
+}
+
 int UsersModel::getChatMuteFor(const qint64 chatId)
 {
     if (!m_chats.contains(chatId))
