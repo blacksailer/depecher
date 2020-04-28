@@ -312,8 +312,11 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>
                                    (m_messages[rowIndex]->content_.data());
-            return (float)contentVideoPtr->video_->thumbnail_->width_ / (float)
-                   contentVideoPtr->video_->thumbnail_->height_;
+            auto thumbnail = contentVideoPtr->video_->thumbnail_;
+            if (thumbnail)
+                return (float)thumbnail->width_ / (float)thumbnail->height_;
+            else
+                return 0.1;
         }
         if (m_messages[rowIndex]->content_->get_id() == messageAnimation::ID) {
             auto contentAnimationPtr = static_cast<messageAnimation *>
@@ -479,6 +482,8 @@ QVariant MessagingModel::data(const QModelIndex &index, int role) const
         }
         if (m_messages[rowIndex]->content_->get_id() == messageVideo::ID) {
             auto contentVideoPtr = static_cast<messageVideo *>(m_messages[rowIndex]->content_.data());
+            if (!contentVideoPtr->video_->thumbnail_)
+                return QVariant();
             if (contentVideoPtr->video_->thumbnail_->photo_->local_->is_downloading_completed_)
                 return QString::fromStdString(contentVideoPtr->video_->thumbnail_->photo_->local_->path_);
             else {
