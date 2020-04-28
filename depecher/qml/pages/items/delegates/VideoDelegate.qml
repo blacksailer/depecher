@@ -56,10 +56,10 @@ Column{
             asynchronous: true
             property int maxWidth: JsUtils.getWidth() - Theme.itemSizeExtraSmall - Theme.paddingMedium - 2*Theme.horizontalPageMargin
             property int maxHeight: JsUtils.getHeight()/2
-            width: photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect
-            height: photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight
+            width: media_preview ? (photo_aspect >= 1 ? maxWidth : maxHeight * photo_aspect) : Theme.itemSizeExtraLarge
+            height: media_preview ? (photo_aspect >= 1 ? maxWidth/photo_aspect : maxHeight) : Theme.itemSizeExtraLarge
             fillMode: Image.PreserveAspectFit
-            source: "image://depecherDb/" + media_preview
+            source: media_preview ? ("image://depecherDb/" + media_preview) : ""
 
             MouseArea{
                 anchors.fill: parent

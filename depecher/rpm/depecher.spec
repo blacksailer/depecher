@@ -64,6 +64,10 @@ rm -rf %{buildroot}
 # << install pre
 %qmake5_install
 
+desktop-file-install --delete-original       \
+  --dir %{buildroot}%{_datadir}/applications             \
+   %{buildroot}%{_datadir}/applications/*.desktop
+
 # >> install post
 %post
 systemctl-user stop org.blacksailer.depecher.service || true
@@ -85,10 +89,6 @@ systemctl-user daemon-reload
 #systemctl-user restart org.blacksailer.depecher.service || true
 
 # << install post
-
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
 
 %preun
 # >> preun
